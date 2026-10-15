@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Bombki/Bombki.csproj" />
+  </Folder>
+  <Folder Name="/tools/">
+    <Project Path="tools/expect-pty/expect-pty.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Bombki.Tests/Bombki.Tests.csproj" />
+  </Folder>
+</Solution>
