@@ -1,16 +1,16 @@
 {
   "steps": [
     {
-      "expect": "TICK !!!",
-      "send": ""
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ",
+      "label": "intro prompt"
+    },
+    {
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
     },
     {
       "expect": "NAPISZ SWA RASE",
       "send": "POL-ELF"
-    },
-    {
-      "expect": "PODAJE SWE IMIE",
-      "send": "TESTER"
     },
     {
       "expect": "ABY SIE PATRZEC UZYJ KOMENDY PATRZ",

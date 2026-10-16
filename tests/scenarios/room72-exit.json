@@ -1,24 +1,18 @@
 {
   "steps": [
     {
-      "label": "intro tick",
-      "expect": "TICK !!!",
-      "send": ""
+      "label": "intro prompt",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "player-name prompt",
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
     },
     {
       "label": "race prompt",
       "expect": "NAPISZ SWA RASE",
       "send": "OLBRZYM"
-    },
-    {
-      "label": "player-name prompt",
-      "expect": "PODAJE SWE IMIE",
-      "send": "TESTER"
-    },
-    {
-      "label": "startup key read",
-      "expect": "ABY SIE PATRZEC UZYJ KOMENDY PATRZ",
-      "send": ""
     },
     {
       "label": "starting room",
@@ -36,12 +30,12 @@
       "send": "ZACHOD"
     },
     {
-      "label": "ulica d\u0142uga (30)",
+      "label": "ulica długa (30)",
       "expect": "ULICA\\ DLUGA\\ CIAGNIE\\ SIE\\ W\\ NIESKONCZONOSC[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
-      "label": "ulica d\u0142uga (31)",
+      "label": "ulica długa (31)",
       "expect": "IDAC\\ ULICA\\ DLUGA\\ NA\\ POLNOC\\ SPOSTRZEGASZ\\ DOLINE\\ ROZRYWEK[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
@@ -56,7 +50,7 @@
       "send": "POLNOC"
     },
     {
-      "label": "t\u0142um (63)",
+      "label": "tłum (63)",
       "expect": "NA\\ BRZEGACH\\ TLUM\\ JEST\\ RZADSZY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
@@ -101,7 +95,7 @@
       "send": "WSCHOD"
     },
     {
-      "label": "wej\u015bcie na scen\u0119 (68)",
+      "label": "wejście na scenę (68)",
       "expect": "TO\\ JEST\\ WEJSCIE\\ NA\\ SCENE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "WSCHOD"
     },
@@ -116,7 +110,7 @@
       "send": "POLODNIE"
     },
     {
-      "label": "\u015brodek sceny (71)",
+      "label": "środek sceny (71)",
       "expect": "LUDZIE\\ SIE\\ NA\\ CIEBIE\\ GAPIA\\ ,\\ JESTES\\ NA\\ SRODKU\\ SCENY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLODNIE"
     },

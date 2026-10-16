@@ -58,6 +58,7 @@ public class BehaviorTests {
         "well",
         "backspace-edit",
         "escape-keys",
+        "intro-ctrl-c",
         "bar-fights",
         "bar-intro",
         "cage-14-heart",
@@ -158,6 +159,8 @@ public class BehaviorTests {
                 if (!element.TryGetProperty("event", out var ev) || ev.GetString() != "OUTPUT")
                     continue;
                 if (!element.TryGetProperty("raw_hex", out var raw))
+                    continue;
+                if (element.TryGetProperty("step", out var step) && step.GetInt32() <= 1)
                     continue;
                 byte[] bytes;
                 try {

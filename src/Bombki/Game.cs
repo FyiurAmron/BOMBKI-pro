@@ -59,6 +59,7 @@ public static class Game {
         public sbyte Level;
         public short Experience;
         public int Money;
+        public string Name = "";
     }
 
     public class TSkills {
@@ -361,23 +362,31 @@ public static class Game {
     }
 
     public static void ShowIntro() {
-        short tone, step;
         Crt.ClrScr();
         Player.MaxEnergy = 50;
-        WriteLines(TxtShowIntroLines1.Skip(1).ToList());
-        tone = 100;
-        step = 100;
-        do {
-            Crt.Sound(tone);
-            Crt.Delay(100);
-            if (tone == 600) step = -100;
-            tone = (short)(tone + step);
-            if (tone == 100) {
-                Out.WriteLine(TxtShowIntro_15);
-                step = 100;
+        WriteLines(ReadBanner());
+        WriteRainbow(TxtShowIntro_12);
+        Out.WriteLine();
+        Out.WriteLine(TxtShowIntro_13);
+        Out.WriteLine(TxtShowIntro_14);
+    }
+
+    public static List<string> ReadBanner() =>
+        File.ReadAllLines(Path.Combine(AppContext.BaseDirectory, "data", "banner.aa"), Encoding.Latin1).ToList();
+
+    static readonly List<int> RainbowColors = [91, 93, 92, 96, 94, 95];
+
+    public static void WriteRainbow(string text) {
+        int step = 0;
+        foreach (char c in text) {
+            if (c == ' ') {
+                Out.Write(" ");
+            } else {
+                Out.Write($"\x1b[{RainbowColors[step % RainbowColors.Count]}m{c}");
+                step++;
             }
-        } while (!((tone == 100) && Crt.KeyPressed()));
-        Crt.NoSound();
+        }
+        Out.Write("\x1b[m");
     }
 
     public static void BuyQuest(string cmd, string line, short quest, short kills, short price) {
@@ -1888,6 +1897,7 @@ public static class Game {
                 break;
             }
         if (Bag.Items[(int)TBagItem.Backpack] < 0) Bag.Limit = (short)(Bag.Limit + 4);
+        Out.WriteLine($"{TxtShowCharacter_30}{Player.Name}");
         Out.WriteLine(TxtShowCharacter_01);
         for (int si = 1; si < SheetItems.Count; si++) {
             TSheetItem s = SheetItems[si];
@@ -1943,9 +1953,30 @@ public static class Game {
         return 0;
     }
 
+    public static bool IsNameChar(char c) =>
+        (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == ' ';
+
     public static void ChooseRace() {
         short chosen;
         ShowIntro();
+        Out.WriteLine(TxtChooseRace_02);
+        while (true) {
+            Player.Name = Crt.ReadLn();
+            if (Player.Name.Length == 0) {
+                Out.WriteLine(TxtChooseRace_15);
+            } else if (Player.Name.Any(c => !IsNameChar(c))) {
+                Out.WriteLine(TxtChooseRace_13);
+            } else if (Player.Name.Length > 63) {
+                Out.WriteLine(TxtChooseRace_14);
+            } else {
+                break;
+            }
+        }
+        if (File.Exists(SaveFileName())) {
+            LoadGame();
+            Session.Room = Session.OuterRoom;
+            return;
+        }
         do {
             Out.WriteLine(TxtChooseRace_01);
             Command = Crt.ReadLn();
@@ -1959,8 +1990,6 @@ public static class Game {
                 Player.Energy = (short)(Player.Energy + Races[chosen].EnergyBonus);
             }
         } while (!(chosen > 0));
-        Out.WriteLine(TxtChooseRace_02);
-        Command = Crt.ReadLn();
         Player.Energy = 50;
         Player.Practice = 10;
         SpawnAt(CageInits.Skip(1).ToList());
@@ -2244,12 +2273,15 @@ public static class Game {
     public static void LoadSlotText(ref string value) =>
         value = Session.SaveFile.ReadRemainder();
 
+    public static string SaveFileName() =>
+        $"{Player.Name}.BOMBKI";
+
     public static void SaveCharacter() {
         Command = CmdJa;
         Session.SavedFlag = 1;
         Out.WriteLine(TxtSaveCharacter_01);
         Crt.ClrScr();
-        Assign(Session.SaveFile, TxtSaveFileName);
+        Assign(Session.SaveFile, SaveFileName());
         Rewrite(Session.SaveFile);
         SaveSlot(Player.Mana * SaveStatScale);
         SaveSlot(Player.Level + SaveLevelBias);
@@ -2332,6 +2364,7 @@ public static class Game {
         SaveSlot(Bag.Items[(int)TBagItem.Backpack]);
         SaveSlot(World.Monsters[(int)TMonster.Duncan]);
         SaveSlotText(Gear.WornGarment);
+        SaveSlotText(Player.Name);
         Close(Session.SaveFile);
     }
 
@@ -3077,7 +3110,6 @@ public static class Game {
     public static void Start() {
         Randomize();
         ChooseRace();
-        Crt.ReadKey();
         do {
             Checkpoints();
             CheckLevelUp();
@@ -3126,9 +3158,13 @@ public static class Game {
     }
 
     public static void LoadCharacter() {
-        short dummy = 0;
         Command = Crt.ReadLn();
-        Assign(Session.SaveFile, TxtSaveFileName);
+        LoadGame();
+    }
+
+    public static void LoadGame() {
+        short dummy = 0;
+        Assign(Session.SaveFile, SaveFileName());
         Reset(Session.SaveFile);
         LoadSlot(new IntSlot(() => Player.Mana, v => Player.Mana = v));
         Player.Mana = (short)(Player.Mana / SaveStatScale);
@@ -3219,6 +3255,7 @@ public static class Game {
         LoadSlot(IntSlot.Into(World.Monsters, (int)TMonster.Duncan));
         Session.SaveFile.SkipLine();
         LoadSlotText(ref Gear.WornGarment);
+        LoadSlotText(ref Player.Name);
         Close(Session.SaveFile);
         Out.WriteLine(TxtLoadCharacter_01 + Gear.WornGarment);
     }

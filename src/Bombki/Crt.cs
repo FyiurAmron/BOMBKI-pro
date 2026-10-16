@@ -5,6 +5,8 @@ using Microsoft.Win32.SafeHandles;
 
 public static class Crt {
     static Stream? _stdin;
+    static Termios _saved;
+    static bool _hasSaved;
     static Stream Stdin =>
         _stdin ??= new FileStream(new SafeFileHandle(0, false), FileAccess.Read, 1);
 
@@ -61,6 +63,8 @@ public static class Crt {
         if (IsWindows)
             return;
         if (tcgetattr(0, out Termios saved) == 0) {
+            _saved = saved;
+            _hasSaved = true;
             Termios raw = saved;
             raw.c_lflag &= ~(ICANON | ECHO | ISIG);
             raw.c_oflag &= ~OPOST;
@@ -136,11 +140,29 @@ public static class Crt {
         return poll(ref fds, 1, 0) > 0;
     }
 
-    public static char ReadKey() =>
-        IsWindows ? WindowsTerminal.ReadKeyRaw() : UnixReadKey();
+    public static void RestoreTerminal() {
+        if (!IsWindows && _hasSaved) {
+            Termios restore = _saved;
+            tcsetattr(0, 0, ref restore);
+        }
+    }
+
+    public static void Interrupt() {
+        RestoreTerminal();
+        Environment.Exit(130);
+    }
+
+    public static char ReadKey() {
+        char key = IsWindows ? WindowsTerminal.ReadKeyRaw() : UnixReadKey();
+        if (key == '\x3')
+            Interrupt();
+        return key;
+    }
 
     static char UnixReadKey() {
         int b = Stdin.ReadByte();
+        if (b == 3)
+            Interrupt();
         if (b == 27) {
             ConsumeEscape();
             return '\0';
@@ -184,7 +206,9 @@ public static class Crt {
         StringBuilder sb = new();
         int b;
         while ((b = Stdin.ReadByte()) >= 0 && b != '\n') {
-            if (b == 27) {
+            if (b == 3) {
+                Interrupt();
+            } else if (b == 27) {
                 ConsumeEscape();
             } else if (b == 8 || b == 127) {
                 if (sb.Length > 0) {
@@ -197,7 +221,7 @@ public static class Crt {
             }
         }
         EchoNewLine();
-        return sb.ToString();
+        return sb.ToString().ToUpperInvariant();
     }
 }
 

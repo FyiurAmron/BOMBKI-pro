@@ -1,9 +1,13 @@
 {
   "steps": [
     {
-      "label": "intro tick",
-      "expect": "TICK !!!",
-      "send": ""
+      "label": "intro prompt",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "player-name prompt",
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
     },
     {
       "label": "race prompt",
@@ -14,16 +18,6 @@
       "label": "unknown race re-prompts",
       "expect": "NAPISZ SWA RASE",
       "send": "NIMFA"
-    },
-    {
-      "label": "player-name prompt",
-      "expect": "PODAJE SWE IMIE",
-      "send": "TESTER"
-    },
-    {
-      "label": "startup key read",
-      "expect": "ABY SIE PATRZEC UZYJ KOMENDY PATRZ",
-      "send": ""
     },
     {
       "label": "first room",

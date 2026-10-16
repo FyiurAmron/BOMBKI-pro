@@ -12,9 +12,11 @@ public static class WindowsTerminal {
         StringBuilder sb = new();
         while (true) {
             ConsoleKeyInfo key = Console.ReadKey(intercept: true);
+            if (key.KeyChar == '\x3')
+                Crt.Interrupt();
             if (key.Key == ConsoleKey.Enter || key.KeyChar == '\n') {
                 Crt.EchoNewLine();
-                return sb.ToString();
+                return sb.ToString().ToUpperInvariant();
             }
             if (key.Key == ConsoleKey.Backspace || key.Key == ConsoleKey.Delete || key.KeyChar == '\b') {
                 if (sb.Length > 0) {
