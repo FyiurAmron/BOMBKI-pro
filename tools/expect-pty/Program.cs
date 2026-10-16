@@ -160,6 +160,15 @@ static class Harness {
         string? cwd = root.TryGetProperty("cwd", out JsonElement cwdElement) ? cwdElement.GetString() : null;
         cwd ??= Path.Combine(FindRepoRoot(), "build", "pty-native", Path.GetFileNameWithoutExtension(scenarioPath));
         Directory.CreateDirectory(cwd);
+        if (!root.TryGetProperty("cwd", out _)) {
+            foreach (string entry in Directory.GetFileSystemEntries(cwd)) {
+                if (Directory.Exists(entry)) {
+                    Directory.Delete(entry, true);
+                } else {
+                    File.Delete(entry);
+                }
+            }
+        }
         Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(logPath)) ?? ".");
         using StreamWriter log = new(Path.GetFullPath(logPath), false, new UTF8Encoding(false)) { NewLine = "\n" };
         Stopwatch started = Stopwatch.StartNew();

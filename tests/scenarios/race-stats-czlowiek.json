@@ -1,9 +1,23 @@
 {
   "steps": [
     {
-      "label": "intro tick",
-      "expect": "TICK !!!",
-      "send": ""
+      "label": "intro prompt",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "player-name prompt",
+      "expect": "A TWOJE IMIE TO",
+      "send": "T3STER"
+    },
+    {
+      "label": "bad name retry",
+      "expect": "ZLE ZNAKI DALES, JESZCZE RAZ IMIE:",
+      "send": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    {
+      "label": "long name retry",
+      "expect": "ZA DLUGIE, DAJ KROTSZE:",
+      "send": "TESTER"
     },
     {
       "label": "race prompt",
@@ -14,16 +28,6 @@
       "label": "unknown race re-prompts",
       "expect": "NAPISZ SWA RASE",
       "send": "CZLOWIEK"
-    },
-    {
-      "label": "player-name prompt",
-      "expect": "PODAJE SWE IMIE",
-      "send": "TESTER"
-    },
-    {
-      "label": "startup key read",
-      "expect": "ABY SIE PATRZEC UZYJ KOMENDY PATRZ",
-      "send": ""
     },
     {
       "label": "first room",

@@ -1,0 +1,18 @@
+{
+  "steps": [
+    {
+      "label": "intro prompt",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "player-name prompt",
+      "expect": "A TWOJE IMIE TO",
+      "send": "\u0003",
+      "append_newline": false
+    },
+    {
+      "label": "interrupt exits",
+      "expect_exit": true
+    }
+  ]
+}
