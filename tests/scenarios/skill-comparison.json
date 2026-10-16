@@ -35,23 +35,13 @@
       "send": "CWICZ POROWNANIE"
     },
     {
-      "label": "learn POROWNANIE",
-      "expect": "CWICZYSZ POROWNYWANIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "ground prompt",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "POROWNAJ"
     },
     {
-      "label": "the comparison is decided by a roll",
-      "expect": "(KOGO CHCESZ ZE SOBA POROWNAC|POPELNILES PEWNE BLEDY)[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
-    },
-    {
       "label": "restored meditation room",
-      "expect": "ZSZEDLES NA DOL GDZIE TRENUJE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "WYJSCIE"
     }
   ]

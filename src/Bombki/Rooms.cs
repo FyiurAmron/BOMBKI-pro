@@ -127,7 +127,6 @@ public static class Rooms {
         WriteLines([TxtYouAreIn + TxtRoom2_01, TxtRoom2_02, TxtShared_04]);
         do {
             ReadCommand();
-            CheckMode();
             if (Command == CmdExit)
                 WriteExits([ TxtShared_03,
                             TxtExitZachod, TxtPlacePok224JCentralny, ]);
@@ -142,7 +141,6 @@ public static class Rooms {
         WriteLines(TxtRoom3Lines1.Skip(1).ToList());
         do {
             ReadCommand();
-            CheckMode();
             if (Command == CmdExit)
                 Out.WriteLine(TxtRoom3_04);
             if (MoveWhenOrExit([Go(CmdGora, RoomSalon)])) return;
@@ -195,7 +193,6 @@ public static class Rooms {
         do {
             ReadCommand();
             ExpandAbbrev();
-            CheckMode();
             if (Command == CmdExit)
                 WriteExits([ TxtShared_03,
                             TxtExitWschod, TxtPlaceKlatkaCieniasa,
@@ -246,7 +243,6 @@ public static class Rooms {
             if (Command == CmdExit)
                 WriteExits([ TxtShared_03,
                             TxtExitZachod, TxtPlaceKlatkiPelneGajdy, ]);
-            CheckMode();
             if (MoveWhenOrExit([Go(CmdZachod, RoomCageCorridor)])) return;
             CageMonsterFight(IntSlot.Into(World.Monsters, (int)CageWeakling), RoomCageWeakling, 20, 3, 3, 10, 4);
         } while (!(Session.Room != RoomCageWeakling));
@@ -259,7 +255,6 @@ public static class Rooms {
             if (Command == CmdExit)
                 WriteExits([ TxtShared_03,
                             TxtExitWschod, TxtPlaceKlatkiPelneGajdy, ]);
-            CheckMode();
             if (MoveWhenOrExit([Go(CmdWschod, RoomCageCorridor)])) return;
             CageMonsterFight(IntSlot.Into(World.Monsters, (int)CageStrong), RoomCageStrong, 20, 3, 10, 15, 7);
         } while (!(Session.Room != RoomCageStrong));
@@ -272,7 +267,6 @@ public static class Rooms {
             if (Command == CmdExit)
                 WriteExits([ TxtShared_03,
                             TxtExitPolodnie, TxtPlaceKlatkiPelneGajdy, ]);
-            CheckMode();
             if (MoveWhenOrQuit([Go(CmdPolodnie, RoomCageCorridor)])) return;
             CageMonsterFight(IntSlot.Into(World.Monsters, (int)CageAgile), RoomCageAgile, 20, 30, 3, 15, 7);
         } while (!(Session.Room != RoomCageAgile));
@@ -285,7 +279,6 @@ public static class Rooms {
             if (Command == CmdExit)
                 WriteExits([ TxtShared_03,
                             TxtExitPolnoc, TxtPlaceKlatkiPelneGajdy, ]);
-            CheckMode();
             if (MoveWhenOrQuit([Go(CmdPolnoc, RoomCageCorridor)])) return;
             CageMonsterFight(IntSlot.Into(World.Monsters, (int)CageTough), RoomCageTough, 40, 3, 3, 15, 7);
         } while (!(Session.Room != RoomCageTough));
@@ -301,7 +294,7 @@ public static class Rooms {
                 DoFight();
                 if (Combat.Fled != 0) {
                     Combat.Fled = 0;
-                    Session.Room = RoomCageCorridor;
+                    MoveTo(RoomCageCorridor);
                 } else {
                     World.Monsters[(int)CageHuge] = 0;
                     Combat.Loot = Roll(30);
@@ -314,7 +307,6 @@ public static class Rooms {
             if (Command == CmdExit)
                 WriteExits([ TxtShared_03,
                             TxtExitDol, TxtPlaceKlatkiPelneGajdy, ]);
-            CheckMode();
             if (MoveWhenOrQuit([Go(CmdDol, RoomCageCorridor)])) return;
         } while (!(Session.Room != RoomCageHuge));
     }
@@ -323,7 +315,6 @@ public static class Rooms {
         Out.WriteLine(TxtYouAreIn + TxtRoom17_01);
         do {
             ReadCommand();
-            CheckMode();
             if (Command == CmdExit)
                 WriteExits([ TxtShared_03,
                             TxtExitGora, TxtPlaceKlatkiPelneGajdy,
@@ -341,7 +332,7 @@ public static class Rooms {
 
     public static void Room18() {
         WriteLines(TxtRoom18Lines1.Skip(1).ToList());
-        Session.Room = RoomSalon;
+        MoveTo(RoomSalon);
     }
 
     public static void Room20() {
@@ -349,7 +340,6 @@ public static class Rooms {
         DescribeStreet();
         do {
             ReadCommand();
-            CheckMode();
             if (Command == CmdPatrz + CmdPlakat)
                 Out.WriteLine(TxtRoom20_02);
             if (Command == CmdExit)
@@ -376,7 +366,6 @@ public static class Rooms {
         DescribeStreet();
         do {
             ReadCommand();
-            CheckMode();
             if (Command == CmdExit)
                 WriteExits([ TxtShared_03,
                             TxtExitPolodnie, TxtPlaceCentrumMiasta,
@@ -398,7 +387,6 @@ public static class Rooms {
         DescribeStreet();
         do {
             ReadCommand();
-            CheckMode();
             if (Command == CmdExit)
                 WriteExits([ TxtShared_03,
                             TxtExitPolodnie, TxtPlaceUlSklepikowa,
@@ -419,7 +407,6 @@ public static class Rooms {
         DescribeStreet();
         do {
             ReadCommand();
-            CheckMode();
             if (Command == CmdPatrz + CmdPlakat) {
                 Out.WriteLine(TxtRoom23_04);
                 Out.WriteLine(TxtRoom23_05);
@@ -438,7 +425,6 @@ public static class Rooms {
         do {
             ReadCommand();
             ArmouryShop();
-            CheckMode();
             if (Command == CmdExit)
                 WriteExits([ TxtShared_03,
                             TxtExitWschod, TxtPlaceUlicaSklepikowa, ]);
@@ -454,7 +440,6 @@ public static class Rooms {
         DescribeStreet();
         do {
             ReadCommand();
-            CheckMode();
             if (Command == CmdExit)
                 WriteExits([ TxtShared_03,
                             TxtExitZachod, TxtPlaceUlicaSklepikowa, ]);
@@ -471,7 +456,6 @@ public static class Rooms {
         DescribeStreet();
         do {
             ReadCommand();
-            CheckMode();
             if (Command == CmdExit)
                 WriteExits([ TxtShared_03,
                             TxtExitWschod, TxtPlaceUlicaSklepikowa, ]);
@@ -545,7 +529,6 @@ public static class Rooms {
             Out.WriteLine(TxtRoom76_07);
         do {
             ReadCommand();
-            CheckMode();
             if (Command == CmdExit)
                 WriteExits([ TxtShared_03,
                             TxtExitPolodnie, TxtPlaceUlicaCiemna, ]);
@@ -578,7 +561,6 @@ public static class Rooms {
             ReadCommand();
             ExpandAbbrev();
             PlantFights();
-            CheckMode();
             if (Command == CmdExit)
                 WriteExits([ TxtShared_03,
                             TxtExitPolnoc, TxtPlaceUlCiemna,
@@ -600,7 +582,6 @@ public static class Rooms {
             ReadCommand();
             ExpandAbbrev();
             PlantFights();
-            CheckMode();
             if (Command == CmdExit)
                 WriteExits([ TxtShared_03,
                             TxtExitZachod, TxtPlaceBluszcz, ]);
@@ -615,7 +596,6 @@ public static class Rooms {
             ReadCommand();
             ExpandAbbrev();
             PlantFights();
-            CheckMode();
             if (Command == CmdExit)
                 WriteExits([ TxtShared_03,
                             TxtExitWschod, TxtPlaceBluszcz, ]);
@@ -630,7 +610,6 @@ public static class Rooms {
             ReadCommand();
             ExpandAbbrev();
             PlantFights();
-            CheckMode();
             if (Command == CmdExit)
                 WriteExits([ TxtShared_03,
                             TxtExitPolnoc, TxtPlaceBluszcz,
@@ -667,7 +646,6 @@ public static class Rooms {
             ReadCommand();
             ExpandAbbrev();
             PlantFights();
-            CheckMode();
             if (Command == CmdExit)
                 WriteExits([ TxtShared_03,
                             TxtExitWschod, TxtPlaceBluszcz, ]);
@@ -682,7 +660,6 @@ public static class Rooms {
             ReadCommand();
             ExpandAbbrev();
             PlantFights();
-            CheckMode();
             if (Command == CmdExit)
                 WriteExits([ TxtShared_03,
                             TxtExitZachod, TxtPlaceBluszcz, ]);
@@ -697,7 +674,6 @@ public static class Rooms {
             ReadCommand();
             ExpandAbbrev();
             PlantFights();
-            CheckMode();
             if (Command == CmdExit)
                 WriteExits([ TxtShared_03,
                             TxtExitPolnoc, TxtPlaceBluszcz,
@@ -713,7 +689,6 @@ public static class Rooms {
             ReadCommand();
             ExpandAbbrev();
             PlantFights();
-            CheckMode();
             if (Command == CmdExit)
                 WriteExits([ TxtShared_03,
                             TxtExitWschod, TxtPlaceBluszcz,
@@ -736,7 +711,6 @@ public static class Rooms {
                     if (Player.Energy > 0) World.Door = 0;
                 }
             }
-            CheckMode();
             if (Command == CmdExit) {
                 WriteExits([ TxtShared_03,
                             TxtExitWschod, TxtPlacePodejrzaneKrzaki, ]);
@@ -747,7 +721,7 @@ public static class Rooms {
             }
             if (MoveWhenOrQuit([Go(CmdWschod, RoomCavePath)])) return;
             if (Command == CmdZachod)
-                if (World.Door == 0) Session.Room = RoomHut;
+                if (World.Door == 0) MoveTo(RoomHut);
                 else Out.WriteLine(TxtRoom85_07);
         } while (!(Session.Room != RoomLivingDoor));
     }
@@ -761,7 +735,6 @@ public static class Rooms {
         do {
             ReadCommand();
             ExpandAbbrev();
-            if (Command == CmdDawaj + CmdKunszt) Player.Experience = (short)(Player.Experience + 500);
             if (Command == CmdPatrz + CmdGarnki)
                 Out.WriteLine(TxtRoom86_04);
             if (Command == CmdRozmawiaj + CmdStaruch) {
@@ -769,7 +742,7 @@ public static class Rooms {
                     WriteLines(TxtRoom86Lines1.Skip(1).ToList());
                 if ((Bag.Items[(int)TBagItem.Sausage] < -30) && (Player.Money > 199)) {
                     WriteLines(TxtRoom86Lines2.Skip(1).ToList());
-                    Session.Room = RoomCityCentre;
+                    MoveTo(RoomCityCentre);
                     Bag.Items[(int)TBagItem.Beer] = (short)(Bag.Items[(int)TBagItem.Beer] - ItemUnit);
                     Bag.Items[(int)TBagItem.Sausage] = (short)(Bag.Items[(int)TBagItem.Sausage] + 40);
                     Player.Money = Player.Money - 200;
@@ -779,7 +752,7 @@ public static class Rooms {
                 }
                 if (Bag.Items[(int)TBagItem.ReturnScroll] < 0) {
                     Out.WriteLine(TxtRoom86_13);
-                    Session.Room = RoomCageHuge;
+                    MoveTo(RoomCageHuge);
                 }
             }
             if (Command == CmdZabij + CmdStaruch) {
@@ -791,7 +764,6 @@ public static class Rooms {
                     Player.Level = (sbyte)(Player.Level - 1);
                 }
             }
-            CheckMode();
             if (Command == CmdExit)
                 WriteExits([ TxtShared_03,
                             TxtExitWschod, TxtPlaceBudynek, ]);
@@ -810,7 +782,6 @@ public static class Rooms {
         do {
             ReadCommand();
             ExpandAbbrev();
-            CheckMode();
             if (Command == CmdExit)
                 WriteExits([ TxtShared_03,
                             TxtExitPolodnie, TxtPlaceGrota,
@@ -839,11 +810,10 @@ public static class Rooms {
             }
             if (Player.Energy > 0) {
                 Out.WriteLine(TxtRoom88_07);
-                Session.Room = RoomCaveMouth;
+                MoveTo(RoomCaveMouth);
             }
             ReadCommand();
             ExpandAbbrev();
-            CheckMode();
             if (Command == CmdExit)
                 WriteExits([ TxtShared_03,
                             TxtExitPolodnie, TxtPlaceWejscieDoGroty2, ]);
@@ -880,7 +850,6 @@ public static class Rooms {
         DescribeStreet();
         do {
             ReadCommand();
-            CheckMode();
             if (Command == CmdExit) {
                 WriteExits([ TxtShared_03,
                             TxtExitPolodnie, TxtPlaceUlSklepikowa,
@@ -963,7 +932,6 @@ public static class Rooms {
             DescribeCrowd();
             do {
                 ReadCommand();
-                CheckMode();
                 if (Command == CmdExit)
                     WriteExits([ TxtShared_03,
                                 TxtExitZachod, TxtPlaceDolinaRozrywek,
@@ -987,7 +955,6 @@ public static class Rooms {
             do {
                 ReadCommand();
                 ExpandAbbrev();
-                CheckMode();
                 if (Command == CmdExit)
                     WriteExits([ TxtShared_03,
                                 TxtExitPolnoc, TxtPlaceTlum,
@@ -1002,7 +969,6 @@ public static class Rooms {
             do {
                 ReadCommand();
                 ExpandAbbrev();
-                CheckMode();
                 if (Command == CmdExit)
                     WriteExits([ TxtShared_03,
                                 TxtExitPolodnie, TxtPlaceTlum,
@@ -1019,7 +985,6 @@ public static class Rooms {
             do {
                 ReadCommand();
                 ExpandAbbrev();
-                CheckMode();
                 if (Command == CmdExit)
                     WriteExits([ TxtShared_03,
                                 TxtExitZachod, TxtPlaceTlum,
@@ -1036,7 +1001,6 @@ public static class Rooms {
             do {
                 ReadCommand();
                 ExpandAbbrev();
-                CheckMode();
                 if (Command == CmdExit)
                     WriteExits([ TxtShared_03,
                                 TxtExitZachod, TxtPlaceTlum,
@@ -1051,7 +1015,6 @@ public static class Rooms {
             do {
                 ReadCommand();
                 ExpandAbbrev();
-                CheckMode();
                 if (Command == CmdExit)
                     WriteExits([ TxtShared_03,
                                 TxtExitZachod, TxtPlaceTlum,
@@ -1071,7 +1034,6 @@ public static class Rooms {
             do {
                 ReadCommand();
                 ExpandAbbrev();
-                CheckMode();
                 if (Command == CmdExit)
                     WriteExits([ TxtShared_03,
                                 TxtExitWschod, TxtPlaceWejscieNaEstrade,
@@ -1112,7 +1074,6 @@ public static class Rooms {
             do {
                 ReadCommand();
                 ExpandAbbrev();
-                CheckMode();
                 if (Command == CmdExit) {
                     WriteExits([ TxtShared_03,
                                 TxtExitZachod, TxtPlacePiwiarnia,
@@ -1132,7 +1093,6 @@ public static class Rooms {
                 Out.WriteLine(TxtConcertRooms_35);
             do {
                 ReadCommand();
-                CheckMode();
                 if (Command == CmdExit)
                     WriteExits([ TxtShared_03,
                                 TxtExitZachod, TxtPlaceWejscieNaScene,
@@ -1168,7 +1128,6 @@ public static class Rooms {
             DescribeStage();
             do {
                 ReadCommand();
-                CheckMode();
                 if (Command == CmdExit)
                     WriteExits([ TxtShared_03,
                                 TxtExitPolnoc, TxtPlaceScena,
@@ -1183,7 +1142,6 @@ public static class Rooms {
             DescribeStage();
             do {
                 ReadCommand();
-                CheckMode();
                 if (Command == CmdExit)
                     WriteExits([ TxtShared_03,
                                 TxtExitPolnoc, TxtPlaceScena,
@@ -1198,7 +1156,6 @@ public static class Rooms {
             DescribeStage();
             do {
                 ReadCommand();
-                CheckMode();
                 if (Command == CmdExit)
                     WriteExits([ TxtShared_03,
                                 TxtExitPolnoc, TxtPlaceSrodekSceny, ]);
@@ -1221,7 +1178,6 @@ public static class Rooms {
         WriteLines(intro);
         do {
             ReadCommand();
-            CheckMode();
             if (Command == CmdExit)
                 WriteExits(exits);
             if (MoveWhenOrExit(moves)) return;
@@ -1246,7 +1202,6 @@ public static class Rooms {
         WriteLines(intro);
         do {
             ReadCommand();
-            CheckMode();
             if (Command == CmdExit)
                 WriteExits(exits);
             if (MoveWhenOrQuit(moves)) return;
@@ -1270,7 +1225,6 @@ public static class Rooms {
             Out.WriteLine(TxtYouAreIn + TxtSimpleRoom_01);
             do {
                 ReadCommand();
-                CheckMode();
                 if (Command == CmdExit) {
                     Out.WriteLine(TxtShared_03);
                     Out.WriteLine(Direction + TxtSimpleRoom_02 + ExitDesc);

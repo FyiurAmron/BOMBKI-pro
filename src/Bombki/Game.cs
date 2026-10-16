@@ -151,10 +151,10 @@ public static class Game {
                 array[index], v => array[index] = v);
     }
 
-    public class TTranceItem {
+    public class TGroundItem {
         public IntSlot item;
         public string line = "";
-        public TTranceItem(IntSlot item, string line) {
+        public TGroundItem(IntSlot item, string line) {
             this.item = item;
             this.line = line;
         }
@@ -244,6 +244,10 @@ public static class Game {
     }
 
     public static void Randomize() {
+        if (!Crt.DebugEnabled()) {
+            _bombkiState = (ulong)DateTime.UtcNow.Ticks;
+            return;
+        }
         string? raw = Environment.GetEnvironmentVariable("BOMBKI_SEED");
         if (raw is null) {
             _bombkiState = (ulong)DateTime.UtcNow.Ticks;
@@ -291,12 +295,12 @@ public static class Game {
         new(CmdKup + CmdTrudnyQuest, TxtRoom100_11, 3, 200, 50),
     ];
 
-    public static readonly List<TTranceItem> TranceItems = [
+    public static readonly List<TGroundItem> GroundItems = [
         null!,
         new(IntSlot.Into(Bag.Items, (int)TBagItem.OldSword), TxtStart_07),
-        new(IntSlot.Into(Bag.Items, (int)TBagItem.SmallShield), TxtTranceItemLabel + TxtStart_08),
-        new(IntSlot.Into(Bag.Items, (int)TBagItem.Heart), TxtTranceItemLabel + TxtStart_09),
-        new(IntSlot.Into(Bag.Items, (int)TBagItem.Diploma), TxtTranceItemLabel + TxtStart_10),
+        new(IntSlot.Into(Bag.Items, (int)TBagItem.SmallShield), TxtGroundItemLabel + TxtStart_08),
+        new(IntSlot.Into(Bag.Items, (int)TBagItem.Heart), TxtGroundItemLabel + TxtStart_09),
+        new(IntSlot.Into(Bag.Items, (int)TBagItem.Diploma), TxtGroundItemLabel + TxtStart_10),
         new(IntSlot.Into(Bag.Items, (int)TBagItem.Pipe), TxtStart_11),
     ];
 
@@ -315,10 +319,23 @@ public static class Game {
         return result;
     }
 
+    public static void MoveTo(short room) {
+        Session.Room = room;
+        Session.OuterRoom = room;
+        GroundItemLines();
+    }
+
+    public static void GroundItemLines() {
+        for (int ti = 1; ti < GroundItems.Count; ti++) {
+            TGroundItem t = GroundItems[ti];
+            GroundItemLine(t.item.Get(), t.line);
+        }
+    }
+
     public static void MoveWhen(List<TMovement> moves) {
         for (int i = 0; i < moves.Count; i++)
             if (Command == moves[i].cmd)
-                Session.Room = moves[i].dest;
+                MoveTo(moves[i].dest);
     }
 
     public static bool MoveWhenOrExit(List<TMovement> moves) {
@@ -356,7 +373,7 @@ public static class Game {
         TryLoot(IntSlot.Into(Bag.Items, (int)TBagItem.Heart), 6, TxtShared_12);
     }
 
-    public static void TranceItemLine(short itemRoom, string line) {
+    public static void GroundItemLine(short itemRoom, string line) {
         if (itemRoom == Session.OuterRoom)
             Out.WriteLine(line);
     }
@@ -977,11 +994,6 @@ public static class Game {
     public static void ScrollGain() =>
         GainLoot100(10, TxtScrollGain_01, "", TBagItem.CompareScroll, TGainBonus.gbNone);
 
-    public static void EnterTrance() {
-        Session.OuterRoom = Session.Room;
-        Session.Room = TranceRoom;
-    }
-
     public static void DescribeStage() {
         for (int i = 1; i < StageSpots.Count; i++)
             if (World.Monsters[(int)StageSpots[i].where] == Session.Room)
@@ -1504,7 +1516,7 @@ public static class Game {
             TMazeMove m = MazeMoves[mi];
             if (Session.Room == m.room) {
                 if (m.dest[(int)dir] == m.room) Session.InArena = 1;
-                else Session.Room = m.dest[(int)dir];
+                else MoveTo(m.dest[(int)dir]);
                 break;
             }
         }
@@ -1516,10 +1528,8 @@ public static class Game {
             Out.WriteLine(TxtArenaMaze_01);
             DescribeBeasts();
             do {
-                Out.Write(Player.Energy + TxtShared_01 + Player.Experience + TxtShared_02);
-                Command = Crt.ReadLn();
+                ReadCommand();
                 ExpandAbbrev();
-                CheckMode();
                 if ((Command == CmdZabij + CmdBakteria) && (Session.Room == World.Monsters[(int)TMonster.Bacterium])) {
                     Fight(TFoe.WeakEnemy);
                     World.Monsters[(int)TMonster.Bacterium] = 0;
@@ -1634,7 +1644,7 @@ public static class Game {
                     Session.MoveGuard = 1;
                 }
                 Session.MoveGuard = 0;
-            } while (!((Session.InArena == 0) || (Session.Room == TranceRoom)));
+            } while (!(Session.InArena == 0));
         }
     }
 
@@ -1768,10 +1778,31 @@ public static class Game {
     public static void ReadCommand() {
         Out.Write(Player.Energy + TxtShared_01 + Player.Experience + TxtShared_02);
         Command = Crt.ReadLn();
+        if (Command == CmdMode || Command == CmdM) Out.WriteLine(TxtModeEgg);
+        if (Command == CmdUnmode || Command == CmdUm) Out.WriteLine(TxtUnmodeEgg);
+        RefuseCheats();
+        HandleGround();
     }
 
-    public static void CheckMode() {
-        if (Command == CmdMode) EnterTrance();
+    public static void RefuseCheats() {
+        bool dawaj = Command == CmdDawaj + CmdEn || Command == CmdDawaj + CmdKase || Command == CmdDawaj + CmdKunszt;
+        bool other = Command == CmdZabieraj + CmdKase || Command == CmdUstaw + CmdSz || Command == CmdZdejmuj || Command == CmdJestem + CmdSpeede2;
+        if (!dawaj && !other)
+            return;
+        if (!Crt.DebugEnabled()) {
+            Out.WriteLineUtf8(dawaj ? TxtCheatRefusal : TxtCheatRefusalOther);
+            Command = TxtEmpty;
+        } else {
+            Out.WriteLineUtf8($"\"{Command}\"... {(dawaj ? TxtCheatSuccess : TxtCheatSuccessOther)}");
+        }
+    }
+
+    public static void HandleGround() {
+        for (int gi = 0; gi < GroundCommands.Count; gi++)
+            if ((GroundCommands[gi].cmd == TxtEmpty) || (Command == GroundCommands[gi].cmd)) {
+                GroundCommands[gi].run();
+                if (Session.ExitRequested) return;
+            }
     }
 
     public static void ExpandAbbrev() {
@@ -1975,6 +2006,7 @@ public static class Game {
         if (File.Exists(SaveFileName())) {
             LoadGame();
             Session.Room = Session.OuterRoom;
+            Session.SavedFlag = 0;
             return;
         }
         do {
@@ -2238,8 +2270,6 @@ public static class Game {
             int b;
             while ((b = GetByte()) >= 0 && b != '\n')
                 sb.Append((char)b);
-            if (b == '\n')
-                _pushback.Add((byte)b);
             return sb.ToString();
         }
 
@@ -2374,7 +2404,7 @@ public static class Game {
         if (World.Quest > 1) World.QuestKills = 200;
         Player.Energy = Player.MaxEnergy;
         Player.Experience = (short)(Player.Experience - 250 + Roll(50) - (5 * Player.Level));
-        Session.Room = RoomCityCentre;
+        MoveTo(RoomCityCentre);
         SpawnMonsters();
         Command = CmdPamietaj;
         Crt.ReadLn();
@@ -2853,6 +2883,9 @@ public static class Game {
 
     public static void CmdGiveEnergy() =>
         Player.Energy = (short)(Player.Energy + 200);
+
+    public static void CmdGiveKunszt() =>
+        Player.Experience = (short)(Player.Experience + 500);
     public static void CmdTakeMoney() =>
         Player.Money = Player.Money - 100;
 
@@ -2871,11 +2904,6 @@ public static class Game {
         Bag.Items[(int)TBagItem.SmallShield] = -ItemUnit;
         Player.Stats[(int)TStat.Strength]--;
     }
-
-    public static void CmdNoExit() =>
-        Out.WriteLine(TxtCmdNoExit_01);
-    public static void CmdQuitGame() =>
-        Session.ExitRequested = true;
 
     public static void CmdJustSaved() {
         if (Session.SavedFlag == 1) {
@@ -3009,7 +3037,7 @@ public static class Game {
             if (Combat.Roll <= Skills.Values[(int)TSkill.Returning]) {
                 Out.WriteLine(TxtCmdOpenPortal_01);
                 Player.Mana = (short)(Player.Mana - 15);
-                Session.OuterRoom = RoomCityCentre;
+                MoveTo(RoomCityCentre);
             }
             if ((Combat.Roll > Skills.Values[(int)TSkill.Returning]) && (Skills.Values[(int)TSkill.Returning] + 30 > Combat.Roll)) {
                 Out.WriteLine(TxtCmdOpenPortal_02);
@@ -3018,7 +3046,7 @@ public static class Game {
             if (Skills.Values[(int)TSkill.Returning] + 29 < Combat.Roll) {
                 Out.WriteLine(TxtCmdOpenPortal_03);
                 Player.Mana = (short)(Player.Mana - 10);
-                Session.OuterRoom = (short)(Roll(100) + 1);
+                MoveTo((short)(Roll(100) + 1));
             }
         }
     }
@@ -3069,19 +3097,15 @@ public static class Game {
             }
     }
 
-    public static void CmdLeaveTrance() =>
-        Session.Room = Session.OuterRoom;
-
     public static readonly List<TCommandEntry> GroundCommands = [
         new(CmdPamietaj, SaveCharacter),
         new(CmdScan2, CmdScan),
         new(CmdCzysc + CmdEkran, CmdClearScreen),
         new(CmdDawaj + CmdEn, CmdGiveEnergy),
+        new(CmdDawaj + CmdKunszt, CmdGiveKunszt),
         new(CmdZabieraj + CmdKase, CmdTakeMoney),
         new(CmdUstaw + CmdSz, CmdResetArmor),
         new(CmdZdejmuj, CmdStrip),
-        new(CmdExit, CmdNoExit),
-        new(CmdWyjscie, CmdQuitGame),
         new(CmdJa, ShowCharacter),
         new(TxtEmpty, TakeDrop),
         new(TxtEmpty, CmdJustSaved),
@@ -3103,8 +3127,6 @@ public static class Game {
         new(CmdZdolnosci, CmdShowSkills),
         new(TxtEmpty, DisplayPrefs),
         new(CmdWlacz + CmdPostac, LoadCharacter),
-        new(CmdUnmode, CmdLeaveTrance),
-        new(CmdUm, CmdLeaveTrance),
     ];
 
     public static void Start() {
@@ -3132,28 +3154,8 @@ public static class Game {
 
             ArenaMaze();
             if (Session.Room == DeadRoom) Death();
-            short tmpEnergy = Player.Energy;
-            ClampStat(ref tmpEnergy, Player.MaxEnergy);
-            Player.Energy = tmpEnergy;
-            if (Session.Room == TranceRoom) {
-                for (int ti = 1; ti < TranceItems.Count; ti++) {
-                    TTranceItem t = TranceItems[ti];
-                    TranceItemLine(t.item.Get(), t.line);
-                }
-                do {
-                    ReadCommand();
-
-                    Session.ExitRequested = false;
-                    for (int gi = 0; gi < GroundCommands.Count; gi++)
-                        if ((GroundCommands[gi].cmd == TxtEmpty) || (Command == GroundCommands[gi].cmd)) {
-                            GroundCommands[gi].run();
-                            if (Session.ExitRequested) return;
-                        }
-                } while (!(Session.Room != TranceRoom));
-            }
 
             Combat.Fled = 0;
-
         } while (!(Session.Room == RoomQuit));
     }
 

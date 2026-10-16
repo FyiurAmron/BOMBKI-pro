@@ -4,14 +4,6 @@ namespace Bombki.Tests;
 
 public class UnitsPrzedmCoreTests {
     [Fact]
-    public void Mode() {
-        Session.Room = 42;
-        EnterTrance();
-        Assert.Equal(42, Session.OuterRoom);
-        Assert.Equal(1000, Session.Room);
-    }
-
-    [Fact]
     public void Komendy() {
         Command = "PN";
         ExpandAbbrev();

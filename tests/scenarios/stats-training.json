@@ -90,11 +90,6 @@
       "send": "ZACHOD"
     },
     {
-      "label": "living door, DRZWI bar the way",
-      "expect": "DO DOBRA WYGLADA TO NA JAKIS DOM[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "ground prompt in the living-door room",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "ZWIEJ"
@@ -115,13 +110,8 @@
       "send": "DAWAJ EN"
     },
     {
-      "label": "energy 450, leave ground",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
-    },
-    {
       "label": "back at the living door",
-      "expect": "TE DRZWI ZYJA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "ZABIJ DRZWI"
     },
     {
@@ -145,23 +135,42 @@
       "send": "DAWAJ KUNSZT"
     },
     {
-      "label": "visit 1: MODE into the ground context",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "visit 1: ask who you are",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "JA"
     },
     {
-      "label": "visit 1: UNMODE back to the den",
+      "label": "save",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
+      "send": "PAMIETAJ"
     },
     {
-      "label": "visit 1: level-up banner, then grant 1/2",
-      "expect": "ZDOBYLES LEVEL[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "label": "restart",
+      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "restart": true
+    },
+    {
+      "label": "intro",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "name",
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
+    },
+    {
+      "label": "loaded",
+      "expect": "suckemall:",
+      "send": ""
+    },
+    {
+      "label": "just-saved tax",
+      "expect": "ZDOBYLES LEVEL",
+      "send": ""
+    },
+    {
+      "label": "visit 1: grant 1/2",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -175,23 +184,42 @@
       "send": "DAWAJ KUNSZT"
     },
     {
-      "label": "visit 2: MODE into the ground context",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "visit 2: ask who you are",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "JA"
     },
     {
-      "label": "visit 2: UNMODE back to the den",
+      "label": "save",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
+      "send": "PAMIETAJ"
     },
     {
-      "label": "visit 2: level-up banner, then grant 1/2",
-      "expect": "ZDOBYLES LEVEL[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "label": "restart",
+      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "restart": true
+    },
+    {
+      "label": "intro",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "name",
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
+    },
+    {
+      "label": "loaded",
+      "expect": "suckemall:",
+      "send": ""
+    },
+    {
+      "label": "just-saved tax",
+      "expect": "ZDOBYLES LEVEL",
+      "send": ""
+    },
+    {
+      "label": "visit 2: grant 1/2",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -205,23 +233,42 @@
       "send": "DAWAJ KUNSZT"
     },
     {
-      "label": "visit 3: MODE into the ground context",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "visit 3: ask who you are",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "JA"
     },
     {
-      "label": "visit 3: UNMODE back to the den",
+      "label": "save",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
+      "send": "PAMIETAJ"
     },
     {
-      "label": "visit 3: level-up banner, then grant 1/2",
-      "expect": "ZDOBYLES LEVEL[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "label": "restart",
+      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "restart": true
+    },
+    {
+      "label": "intro",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "name",
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
+    },
+    {
+      "label": "loaded",
+      "expect": "suckemall:",
+      "send": ""
+    },
+    {
+      "label": "just-saved tax",
+      "expect": "ZDOBYLES LEVEL",
+      "send": ""
+    },
+    {
+      "label": "visit 3: grant 1/2",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -235,23 +282,42 @@
       "send": "DAWAJ KUNSZT"
     },
     {
-      "label": "visit 4: MODE into the ground context",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "visit 4: ask who you are",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "JA"
     },
     {
-      "label": "visit 4: UNMODE back to the den",
+      "label": "save",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
+      "send": "PAMIETAJ"
     },
     {
-      "label": "visit 4: level-up banner, then grant 1/2",
-      "expect": "ZDOBYLES LEVEL[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "label": "restart",
+      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "restart": true
+    },
+    {
+      "label": "intro",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "name",
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
+    },
+    {
+      "label": "loaded",
+      "expect": "suckemall:",
+      "send": ""
+    },
+    {
+      "label": "just-saved tax",
+      "expect": "ZDOBYLES LEVEL",
+      "send": ""
+    },
+    {
+      "label": "visit 4: grant 1/2",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -265,23 +331,42 @@
       "send": "DAWAJ KUNSZT"
     },
     {
-      "label": "visit 5: MODE into the ground context",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "visit 5: ask who you are",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "JA"
     },
     {
-      "label": "visit 5: UNMODE back to the den",
+      "label": "save",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
+      "send": "PAMIETAJ"
     },
     {
-      "label": "visit 5: level-up banner, then grant 1/2",
-      "expect": "ZDOBYLES LEVEL[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "label": "restart",
+      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "restart": true
+    },
+    {
+      "label": "intro",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "name",
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
+    },
+    {
+      "label": "loaded",
+      "expect": "suckemall:",
+      "send": ""
+    },
+    {
+      "label": "just-saved tax",
+      "expect": "ZDOBYLES LEVEL",
+      "send": ""
+    },
+    {
+      "label": "visit 5: grant 1/2",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -295,23 +380,42 @@
       "send": "DAWAJ KUNSZT"
     },
     {
-      "label": "visit 6: MODE into the ground context",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "visit 6: ask who you are",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "JA"
     },
     {
-      "label": "visit 6: UNMODE back to the den",
+      "label": "save",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
+      "send": "PAMIETAJ"
     },
     {
-      "label": "visit 6: level-up banner, then grant 1/2",
-      "expect": "ZDOBYLES LEVEL[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "label": "restart",
+      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "restart": true
+    },
+    {
+      "label": "intro",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "name",
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
+    },
+    {
+      "label": "loaded",
+      "expect": "suckemall:",
+      "send": ""
+    },
+    {
+      "label": "just-saved tax",
+      "expect": "ZDOBYLES LEVEL",
+      "send": ""
+    },
+    {
+      "label": "visit 6: grant 1/2",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -325,23 +429,42 @@
       "send": "DAWAJ KUNSZT"
     },
     {
-      "label": "visit 7: MODE into the ground context",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "visit 7: ask who you are",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "JA"
     },
     {
-      "label": "visit 7: UNMODE back to the den",
+      "label": "save",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
+      "send": "PAMIETAJ"
     },
     {
-      "label": "visit 7: level-up banner, then grant 1/2",
-      "expect": "ZDOBYLES LEVEL[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "label": "restart",
+      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "restart": true
+    },
+    {
+      "label": "intro",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "name",
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
+    },
+    {
+      "label": "loaded",
+      "expect": "suckemall:",
+      "send": ""
+    },
+    {
+      "label": "just-saved tax",
+      "expect": "ZDOBYLES LEVEL",
+      "send": ""
+    },
+    {
+      "label": "visit 7: grant 1/2",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -355,23 +478,42 @@
       "send": "DAWAJ KUNSZT"
     },
     {
-      "label": "visit 8: MODE into the ground context",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "visit 8: ask who you are",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "JA"
     },
     {
-      "label": "visit 8: UNMODE back to the den",
+      "label": "save",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
+      "send": "PAMIETAJ"
     },
     {
-      "label": "visit 8: level-up banner, then grant 1/2",
-      "expect": "ZDOBYLES LEVEL[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "label": "restart",
+      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "restart": true
+    },
+    {
+      "label": "intro",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "name",
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
+    },
+    {
+      "label": "loaded",
+      "expect": "suckemall:",
+      "send": ""
+    },
+    {
+      "label": "just-saved tax",
+      "expect": "ZDOBYLES LEVEL",
+      "send": ""
+    },
+    {
+      "label": "visit 8: grant 1/2",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -385,23 +527,42 @@
       "send": "DAWAJ KUNSZT"
     },
     {
-      "label": "visit 9: MODE into the ground context",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "visit 9: ask who you are",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "JA"
     },
     {
-      "label": "visit 9: UNMODE back to the den",
+      "label": "save",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
+      "send": "PAMIETAJ"
     },
     {
-      "label": "visit 9: level-up banner, then grant 1/2",
-      "expect": "ZDOBYLES LEVEL[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "label": "restart",
+      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "restart": true
+    },
+    {
+      "label": "intro",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "name",
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
+    },
+    {
+      "label": "loaded",
+      "expect": "suckemall:",
+      "send": ""
+    },
+    {
+      "label": "just-saved tax",
+      "expect": "ZDOBYLES LEVEL",
+      "send": ""
+    },
+    {
+      "label": "visit 9: grant 1/2",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -415,23 +576,42 @@
       "send": "DAWAJ KUNSZT"
     },
     {
-      "label": "visit 10: MODE into the ground context",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "visit 10: ask who you are",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "JA"
     },
     {
-      "label": "visit 10: UNMODE back to the den",
+      "label": "save",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
+      "send": "PAMIETAJ"
     },
     {
-      "label": "visit 10: level-up banner, then grant 1/2",
-      "expect": "ZDOBYLES LEVEL[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "label": "restart",
+      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "restart": true
+    },
+    {
+      "label": "intro",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "name",
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
+    },
+    {
+      "label": "loaded",
+      "expect": "suckemall:",
+      "send": ""
+    },
+    {
+      "label": "just-saved tax",
+      "expect": "ZDOBYLES LEVEL",
+      "send": ""
+    },
+    {
+      "label": "visit 10: grant 1/2",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -445,23 +625,42 @@
       "send": "DAWAJ KUNSZT"
     },
     {
-      "label": "visit 11: MODE into the ground context",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "visit 11: ask who you are",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "JA"
     },
     {
-      "label": "visit 11: UNMODE back to the den",
+      "label": "save",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
+      "send": "PAMIETAJ"
     },
     {
-      "label": "visit 11: level-up banner, then grant 1/2",
-      "expect": "ZDOBYLES LEVEL[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "label": "restart",
+      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "restart": true
+    },
+    {
+      "label": "intro",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "name",
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
+    },
+    {
+      "label": "loaded",
+      "expect": "suckemall:",
+      "send": ""
+    },
+    {
+      "label": "just-saved tax",
+      "expect": "ZDOBYLES LEVEL",
+      "send": ""
+    },
+    {
+      "label": "visit 11: grant 1/2",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -475,18 +674,37 @@
       "send": "DAWAJ KUNSZT"
     },
     {
-      "label": "extra trip 1: MODE into the ground context",
+      "label": "save",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
+      "send": "PAMIETAJ"
     },
     {
-      "label": "extra trip 1: UNMODE, second pass through 12",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
+      "label": "restart",
+      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "restart": true
     },
     {
-      "label": "extra trip 2: level-12 banner, then grant KUNSZT",
-      "expect": "HURRRA TO JUZ DWUNASTY POZIOM[\\s\\S]*?MASZ TERAZ",
+      "label": "intro",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "name",
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
+    },
+    {
+      "label": "loaded",
+      "expect": "suckemall:",
+      "send": ""
+    },
+    {
+      "label": "just-saved tax",
+      "expect": "HURRRA TO JUZ DWUNASTY POZIOM",
+      "send": ""
+    },
+    {
+      "label": "extra trip 2: grant KUNSZT",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -500,18 +718,37 @@
       "send": "DAWAJ KUNSZT"
     },
     {
-      "label": "extra trip 2: MODE into the ground context",
+      "label": "save",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
+      "send": "PAMIETAJ"
     },
     {
-      "label": "extra trip 2: UNMODE, pass 3 through 12",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
+      "label": "restart",
+      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "restart": true
     },
     {
-      "label": "extra trip 3: level-12 banner, then grant KUNSZT",
-      "expect": "HURRRA TO JUZ DWUNASTY POZIOM[\\s\\S]*?MASZ TERAZ",
+      "label": "intro",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "name",
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
+    },
+    {
+      "label": "loaded",
+      "expect": "suckemall:",
+      "send": ""
+    },
+    {
+      "label": "just-saved tax",
+      "expect": "HURRRA TO JUZ DWUNASTY POZIOM",
+      "send": ""
+    },
+    {
+      "label": "extra trip 3: grant KUNSZT",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -525,18 +762,37 @@
       "send": "DAWAJ KUNSZT"
     },
     {
-      "label": "extra trip 3: MODE into the ground context",
+      "label": "save",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
+      "send": "PAMIETAJ"
     },
     {
-      "label": "extra trip 3: UNMODE, pass 4 through 12",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
+      "label": "restart",
+      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "restart": true
     },
     {
-      "label": "extra trip 4: level-12 banner, then grant KUNSZT",
-      "expect": "HURRRA TO JUZ DWUNASTY POZIOM[\\s\\S]*?MASZ TERAZ",
+      "label": "intro",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "name",
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
+    },
+    {
+      "label": "loaded",
+      "expect": "suckemall:",
+      "send": ""
+    },
+    {
+      "label": "just-saved tax",
+      "expect": "HURRRA TO JUZ DWUNASTY POZIOM",
+      "send": ""
+    },
+    {
+      "label": "extra trip 4: grant KUNSZT",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -550,18 +806,37 @@
       "send": "DAWAJ KUNSZT"
     },
     {
-      "label": "extra trip 4: MODE into the ground context",
+      "label": "save",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
+      "send": "PAMIETAJ"
     },
     {
-      "label": "extra trip 4: UNMODE, pass 5 through 12",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
+      "label": "restart",
+      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "restart": true
     },
     {
-      "label": "extra trip 5: level-12 banner, then grant KUNSZT",
-      "expect": "HURRRA TO JUZ DWUNASTY POZIOM[\\s\\S]*?MASZ TERAZ",
+      "label": "intro",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "name",
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
+    },
+    {
+      "label": "loaded",
+      "expect": "suckemall:",
+      "send": ""
+    },
+    {
+      "label": "just-saved tax",
+      "expect": "HURRRA TO JUZ DWUNASTY POZIOM",
+      "send": ""
+    },
+    {
+      "label": "extra trip 5: grant KUNSZT",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -575,18 +850,37 @@
       "send": "DAWAJ KUNSZT"
     },
     {
-      "label": "extra trip 5: MODE into the ground context",
+      "label": "save",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
+      "send": "PAMIETAJ"
     },
     {
-      "label": "extra trip 5: UNMODE, pass 6 through 12",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
+      "label": "restart",
+      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "restart": true
     },
     {
-      "label": "extra trip 6: level-12 banner, then grant KUNSZT",
-      "expect": "HURRRA TO JUZ DWUNASTY POZIOM[\\s\\S]*?MASZ TERAZ",
+      "label": "intro",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "name",
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
+    },
+    {
+      "label": "loaded",
+      "expect": "suckemall:",
+      "send": ""
+    },
+    {
+      "label": "just-saved tax",
+      "expect": "HURRRA TO JUZ DWUNASTY POZIOM",
+      "send": ""
+    },
+    {
+      "label": "extra trip 6: grant KUNSZT",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -600,14 +894,33 @@
       "send": "DAWAJ KUNSZT"
     },
     {
-      "label": "extra trip 6: MODE into the ground context",
+      "label": "save",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
+      "send": "PAMIETAJ"
     },
     {
-      "label": "extra trip 6: UNMODE, pass 7 through 12",
+      "label": "restart",
+      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "restart": true
+    },
+    {
+      "label": "intro",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "name",
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
+    },
+    {
+      "label": "loaded",
+      "expect": "suckemall:",
+      "send": ""
+    },
+    {
+      "label": "just-saved tax",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
+      "send": ""
     },
     {
       "label": "back at the den prompt",
@@ -850,19 +1163,38 @@
       "send": "PATRZ PLAKAT"
     },
     {
-      "label": "ground prompt for the sheet",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "the ground context",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "JA"
     },
     {
-      "label": "the trained sheet",
-      "expect": "MASZ \\d+ MONET I \\d+ PRAKTYK[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
+      "label": "save",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
+      "send": "PAMIETAJ"
+    },
+    {
+      "label": "restart",
+      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "restart": true
+    },
+    {
+      "label": "intro",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "name",
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
+    },
+    {
+      "label": "loaded",
+      "expect": "suckemall:",
+      "send": ""
+    },
+    {
+      "label": "just-saved tax",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
+      "send": ""
     },
     {
       "label": "leave ground",

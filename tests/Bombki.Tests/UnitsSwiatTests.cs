@@ -157,8 +157,8 @@ public class UnitsSwiatTests {
     public void Pokoj13Poster() {
         RoomSetup();
         World.Monsters[(int)TMonster.CageStrong] = 0;
-        PokojAt("EXIT|MODE", 13);
-        Assert.Equal(1000, Session.Room);
+        PokojAt("EXIT|MODE|WYJSCIE", 13);
+        Assert.Equal(13, Session.Room);
     }
 
     [Fact]
@@ -166,8 +166,8 @@ public class UnitsSwiatTests {
         List<short> rooms = [6, 8, 7, 10];
         foreach (short room in rooms) {
             RoomSetup();
-            PokojAt("EXIT|MODE", room);
-            Assert.Equal(1000, Session.Room);
+            PokojAt("EXIT|MODE|WYJSCIE", room);
+            Assert.Equal(room, Session.Room);
             RoomSetup();
             PokojAt("WYJSCIE", room);
             Assert.Equal(room, Session.Room);

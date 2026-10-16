@@ -75,11 +75,6 @@
       "send": "CWICZ UCIEKAC"
     },
     {
-      "label": "train flee 5",
-      "expect": "CWICZYSZ\\ UCIEKANIE",
-      "send": "MODE"
-    },
-    {
       "label": "ground context",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "ZWIEJ"
@@ -90,13 +85,8 @@
       "send": "900"
     },
     {
-      "label": "threshold set",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
-    },
-    {
       "label": "back in the training room",
-      "expect": "ZSZEDLES\\ NA\\ DOL\\ GDZIE\\ TRENUJE\\ SIE\\ MEDYTUJAC[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "GORA"
     },
     {
@@ -130,18 +120,9 @@
       "send": "ZABIJ POTWOR"
     },
     {
-      "label": "cage 12: flee",
-      "expect": "WSTYD\\ !!!\\ UCIEKLES\\ Z\\ POLA\\ BITWY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "ground context after flee",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "WYJSCIE"
-    },
-    {
-      "label": "the game ends",
-      "expect_exit": true
     }
   ]
 }

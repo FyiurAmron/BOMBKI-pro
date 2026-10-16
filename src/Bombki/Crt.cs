@@ -49,6 +49,8 @@ public static class Crt {
     static readonly double DelayMult = ReadDelayMult();
 
     static double ReadDelayMult() {
+        if (!DebugEnabled())
+            return 1;
         string? raw = Environment.GetEnvironmentVariable("BOMBKI_DELAY_MULT");
         if (raw is not null && double.TryParse(raw,
                 System.Globalization.NumberStyles.Float,
@@ -199,6 +201,9 @@ public static class Crt {
     public static void EchoErase() =>
         Out.WriteRaw("\b \b");
 
+    public static bool DebugEnabled() =>
+        Environment.GetEnvironmentVariable("BOMBKI_DEBUG") == "2137";
+
     public static string ReadLn() =>
         IsWindows ? WindowsTerminal.ReadLine() : UnixReadLn();
 
@@ -243,6 +248,12 @@ public static class Out {
 
     public static void WriteLine(string value) =>
         WriteRaw($"{value}\r\n");
+
+    public static void WriteLineUtf8(string value) {
+        byte[] bytes = Encoding.UTF8.GetBytes($"{value}\r\n");
+        Stdout.Write(bytes, 0, bytes.Length);
+        Stdout.Flush();
+    }
 
     public static void WriteLine() =>
         WriteRaw("\r\n");

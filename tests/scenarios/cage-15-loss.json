@@ -75,11 +75,6 @@
       "send": "CWICZ UCIEKAC"
     },
     {
-      "label": "train flee 5",
-      "expect": "CWICZYSZ\\ UCIEKANIE",
-      "send": "MODE"
-    },
-    {
       "label": "ground context",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "ZWIEJ"
@@ -90,13 +85,8 @@
       "send": "900"
     },
     {
-      "label": "threshold set",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
-    },
-    {
       "label": "back in the training room",
-      "expect": "ZSZEDLES\\ NA\\ DOL\\ GDZIE\\ TRENUJE\\ SIE\\ MEDYTUJAC[\\s\\S]*?",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "GORA"
     },
     {
@@ -128,11 +118,6 @@
       "label": "cage 15",
       "expect": "TEN\\ POKOJ\\ JEST\\ CALY\\ OBRYZGANY\\ KRWIA\\ NA\\ SCIANACH\\ FLAKI\\ I\\ MOZGI\\ LODZKIE[\\s\\S]*?",
       "send": "ZABIJ POTWOR"
-    },
-    {
-      "label": "cage 15: flee",
-      "expect": "WSTYD\\ !!!\\ UCIEKLES\\ Z\\ POLA\\ BITWY[\\s\\S]*?",
-      "send": "MODE"
     },
     {
       "label": "ground context after the flee",

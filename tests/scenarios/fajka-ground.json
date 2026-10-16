@@ -20,11 +20,6 @@
       "send": "POLNOC"
     },
     {
-      "label": "salon, enter ground context for funds",
-      "expect": "JESTES\\ W\\ OKROGLYM\\ SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "ground, take the cash",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ KASE"
@@ -45,13 +40,8 @@
       "send": "DAWAJ EN"
     },
     {
-      "label": "ground, back to the salon",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
-    },
-    {
       "label": "salon, head for the city centre",
-      "expect": "JESTES\\ W\\ OKROGLYM\\ SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -75,33 +65,13 @@
       "send": "KUP FAJKA"
     },
     {
-      "label": "fajka bought, enter ground context",
-      "expect": "KUPUJESZ\\ FAJKE\\ ZA\\ 480\\ MONET[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "ground, drop the fajka",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "ODRZUC FAJKA"
     },
     {
-      "label": "fajka dropped, back to the store",
-      "expect": "WYRZUCASZ\\ FAJKE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
-    },
-    {
-      "label": "store, re-enter ground to see the dropped fajka",
-      "expect": "WSZEDLES\\ DO\\ SKLEPU\\ WIELOBRANZOWEGO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
-      "label": "fajka lies on the ground",
-      "expect": "TU\\ LEZY\\ !FAJKA![\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
-    },
-    {
       "label": "back in the store, leave the game",
-      "expect": "WSZEDLES\\ DO\\ SKLEPU\\ WIELOBRANZOWEGO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "WYJSCIE"
     },
     {

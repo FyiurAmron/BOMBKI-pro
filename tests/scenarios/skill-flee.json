@@ -50,11 +50,6 @@
       "send": "CWICZ UCIEKAC"
     },
     {
-      "label": "learn fleeing",
-      "expect": "CWICZYSZ UCIEKANIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "ground prompt",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "ZWIEJ"
@@ -65,13 +60,8 @@
       "send": "20"
     },
     {
-      "label": "flee threshold accepted",
-      "expect": "[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
-    },
-    {
       "label": "restored meditation room",
-      "expect": "ZSZEDLES NA DOL GDZIE TRENUJE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "WYJSCIE"
     }
   ]

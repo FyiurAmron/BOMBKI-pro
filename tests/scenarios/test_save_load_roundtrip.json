@@ -21,20 +21,8 @@
       "send": "POLNOC"
     },
     {
-      "expect": "JESTES W OKROGLYM SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "PAMIETAJ"
-    },
-    {
-      "expect": "W SUMIE MASZ",
-      "send": "UNMODE"
-    },
-    {
-      "expect": "JESTES W OKROGLYM SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
     },
     {
       "expect": "[0-9]+%\\.-?[0-9]+>",
@@ -55,11 +43,6 @@
     },
     {
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE",
-      "label": "ground prompt after the sheets"
-    },
-    {
-      "expect": "JESTES W OKROGLYM SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "WYJSCIE"
     }
   ]

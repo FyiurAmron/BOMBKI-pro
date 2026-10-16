@@ -20,23 +20,13 @@
       "send": "POLNOC"
     },
     {
-      "label": "salon",
-      "expect": "JESTES\\ W\\ OKROGLYM\\ SALO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "ground, fund the expedition",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ KASE"
     },
     {
-      "label": "5000 coins, leave ground",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
-    },
-    {
       "label": "salon, head for the street",
-      "expect": "JESTES\\ W\\ OKROGLYM\\ SALO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -110,11 +100,6 @@
       "send": "ZACHOD"
     },
     {
-      "label": "living door, DRZWI bar the way",
-      "expect": "DO\\ DOBRA\\ WYGLADA\\ TO\\ NA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "ground, top up energy",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ EN"
@@ -130,13 +115,8 @@
       "send": "DAWAJ EN"
     },
     {
-      "label": "energy 650, leave ground",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
-    },
-    {
       "label": "living door, fight the DRZWI",
-      "expect": "DO\\ DOBRA\\ WYGLADA\\ TO\\ NA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "ZABIJ DRZWI"
     },
     {
@@ -148,11 +128,6 @@
       "label": "staruch's den",
       "expect": "DOBRA JESTES W SRODKU BRAK OSWIETLENIA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ROZMAWIAJ STARUCH"
-    },
-    {
-      "label": "tree room after the fight",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
     },
     {
       "label": "ground prompt with the gift beer",
@@ -173,11 +148,6 @@
       "label": "beer drunk, open the return portal",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "UZYJ SCROLL POWROT"
-    },
-    {
-      "label": "portal open, leave ground",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
     },
     {
       "label": "back in the city centre",
