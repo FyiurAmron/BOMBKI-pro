@@ -190,25 +190,109 @@ static class Harness {
         int slave = -1;
         int child = -1;
         int? returncode = null;
-        try {
+        List<string> command = [];
+        string pending = "";
+        void SpawnChild() {
             if (Libc.openpty(out master, out slave, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero) != 0) {
                 throw new IOException("openpty failed");
             }
-            List<string> command = [exe, .. extra];
+            child = Spawn(command, cwd, master, slave);
+            Libc.close(slave);
+            slave = -1;
+            Libc.fcntl(master, Setfl, Nonblock);
+        }
+        void KillChild() {
+            if (child > 0 && !PollChild(child, ref returncode)) {
+                Libc.kill(-child, Sigterm);
+                if (!WaitExit(child, 2000, ref returncode)) {
+                    Libc.kill(-child, Sigkill);
+                    WaitExit(child, -1, ref returncode);
+                }
+            }
+            Record("PROCESS_EXIT", new() { ["returncode"] = returncode });
+            if (slave >= 0) {
+                Libc.close(slave);
+                slave = -1;
+            }
+            if (master >= 0) {
+                Libc.close(master);
+                master = -1;
+            }
+            child = -1;
+            returncode = null;
+            pending = "";
+        }
+        void WaitMatch(string patternText, int index, string label) {
+            Regex pattern;
+            try {
+                pattern = new Regex(patternText);
+            } catch (ArgumentException error) {
+                throw new InvalidOperationException($"step {index} has an invalid expect regex: {error.Message}");
+            }
+            double deadline = started.Elapsed.TotalSeconds + timeout;
+            while (true) {
+                Match match = pattern.Match(pending);
+                if (match.Success) {
+                    Record("MATCH", new() {
+                        ["step"] = index,
+                        ["label"] = label,
+                        ["regex"] = patternText,
+                        ["matched"] = match.Value,
+                    });
+                    pending = pending[(match.Index + match.Length)..];
+                    break;
+                }
+                double remaining = deadline - started.Elapsed.TotalSeconds;
+                if (remaining <= 0) {
+                    throw new TimeoutException($"step {index} ({label}) timed out waiting for /{patternText}/");
+                }
+                if (!WaitReadable(master, remaining)) {
+                    if (PollChild(child, ref returncode) && returncode is not null) {
+                        throw new InvalidOperationException($"child exited with status {returncode} while waiting for step {index} ({label})");
+                    }
+                    continue;
+                }
+                byte[] data = ReadChunk(master);
+                if (data.Length == 0) {
+                    throw new InvalidOperationException($"child closed its PTY while waiting for step {index} ({label})");
+                }
+                string text = Decode(data, data.Length, encoding);
+                pending += text;
+                Record("OUTPUT", new() {
+                    ["step"] = index,
+                    ["label"] = label,
+                    ["text"] = text,
+                    ["raw_hex"] = Convert.ToHexStringLower(data),
+                });
+            }
+        }
+        try {
+            command = [exe, .. extra];
             Record("START", new() {
                 ["command"] = command,
                 ["scenario"] = scenarioPath,
                 ["cwd"] = cwd,
             });
-            child = Spawn(command, cwd, master, slave);
-            Libc.close(slave);
-            slave = -1;
-            Libc.fcntl(master, Setfl, Nonblock);
+            SpawnChild();
             int index = 0;
-            string pending = "";
             foreach (JsonElement step in root.GetProperty("steps").EnumerateArray()) {
                 index++;
                 string label = step.TryGetProperty("label", out JsonElement labelElement) ? labelElement.GetString() ?? $"step {index}" : $"step {index}";
+                if (step.TryGetProperty("restart", out JsonElement restartElement) && restartElement.ValueKind == JsonValueKind.True) {
+                    if (step.TryGetProperty("send", out _) || step.TryGetProperty("expect_exit", out _)) {
+                        throw new InvalidOperationException($"step {index} combines restart with send or expect_exit");
+                    }
+                    if (step.TryGetProperty("expect", out JsonElement restartExpect) && restartExpect.ValueKind == JsonValueKind.String) {
+                        WaitMatch(restartExpect.GetString() ?? "", index, label);
+                    }
+                    KillChild();
+                    SpawnChild();
+                    Record("RESTART", new() {
+                        ["step"] = index,
+                        ["label"] = label,
+                    });
+                    continue;
+                }
                 if (step.TryGetProperty("expect_exit", out JsonElement exitElement) && exitElement.GetBoolean()) {
                     if (step.TryGetProperty("send", out _)) {
                         throw new InvalidOperationException($"step {index} combines expect_exit with send");
@@ -252,49 +336,7 @@ static class Harness {
                 if (!step.TryGetProperty("expect", out JsonElement expectElement) || expectElement.ValueKind != JsonValueKind.String) {
                     throw new InvalidOperationException($"step {index} is missing its expect regex");
                 }
-                string patternText = expectElement.GetString() ?? "";
-                Regex pattern;
-                try {
-                    pattern = new Regex(patternText);
-                } catch (ArgumentException error) {
-                    throw new InvalidOperationException($"step {index} has an invalid expect regex: {error.Message}");
-                }
-                double deadline = started.Elapsed.TotalSeconds + timeout;
-                while (true) {
-                    Match match = pattern.Match(pending);
-                    if (match.Success) {
-                        Record("MATCH", new() {
-                            ["step"] = index,
-                            ["label"] = label,
-                            ["regex"] = patternText,
-                            ["matched"] = match.Value,
-                        });
-                        pending = pending[(match.Index + match.Length)..];
-                        break;
-                    }
-                    double remaining = deadline - started.Elapsed.TotalSeconds;
-                    if (remaining <= 0) {
-                        throw new TimeoutException($"step {index} ({label}) timed out waiting for /{patternText}/");
-                    }
-                    if (!WaitReadable(master, remaining)) {
-                        if (PollChild(child, ref returncode) && returncode is not null) {
-                            throw new InvalidOperationException($"child exited with status {returncode} while waiting for step {index} ({label})");
-                        }
-                        continue;
-                    }
-                    byte[] data = ReadChunk(master);
-                    if (data.Length == 0) {
-                        throw new InvalidOperationException($"child closed its PTY while waiting for step {index} ({label})");
-                    }
-                    string text = Decode(data, data.Length, encoding);
-                    pending += text;
-                    Record("OUTPUT", new() {
-                        ["step"] = index,
-                        ["label"] = label,
-                        ["text"] = text,
-                        ["raw_hex"] = Convert.ToHexStringLower(data),
-                    });
-                }
+                WaitMatch(expectElement.GetString() ?? "", index, label);
                 if (step.TryGetProperty("send", out JsonElement sendElement)) {
                     if (sendElement.ValueKind != JsonValueKind.String) {
                         throw new InvalidOperationException($"step {index} send value must be a string");

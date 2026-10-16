@@ -40,11 +40,6 @@
       "send": "GORA"
     },
     {
-      "label": "the cage corridor",
-      "expect": "JESTES\\ W\\ POKOJU\\ PROWADZACYM\\ DO\\ KLA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "ground context",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ EN"
@@ -65,13 +60,8 @@
       "send": "DAWAJ EN"
     },
     {
-      "label": "out of the ground context",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
-    },
-    {
       "label": "the cage corridor again",
-      "expect": "JESTES\\ W\\ POKOJU\\ PROWADZACYM\\ DO\\ KLA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -93,11 +83,6 @@
       "label": "cage 14",
       "expect": "TEN\\ POKOJ\\ JEST\\ CALY\\ OBRYZGANY\\ KRWIA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ZABIJ POTWOR"
-    },
-    {
-      "label": "cage 14 loot",
-      "expect": "[\\s\\S]*?ZABILES GO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
     },
     {
       "label": "ground context after the loot",

@@ -35,11 +35,6 @@
       "send": "POLNOC"
     },
     {
-      "label": "room 21: enter ground context",
-      "expect": "JESTES\\ NA\\ ULICY\\ NA\\ ULI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "room 21: energy +200",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ EN"
@@ -60,24 +55,14 @@
       "send": "DAWAJ EN"
     },
     {
-      "label": "room 21: leave ground context",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
-    },
-    {
       "label": "shopping street again, fight the zamiatacz",
-      "expect": "JESTES\\ NA\\ ULICY\\ NA\\ ULI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "ZABIJ ZAMIATACZ"
     },
     {
       "label": "zamiatacz down, head for the street continues",
       "expect": "WYCIAGASZ [0-9]+ MONET Z CIALA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
-    },
-    {
-      "label": "room 22: enter ground context",
-      "expect": "CIAGNIE\\ SIE\\ TEDY\\ ULICA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
     },
     {
       "label": "room 22: energy +200",
@@ -100,13 +85,8 @@
       "send": "DAWAJ EN"
     },
     {
-      "label": "room 22: leave ground context",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
-    },
-    {
       "label": "street continues again, fight the sprzedawca",
-      "expect": "CIAGNIE\\ SIE\\ TEDY\\ ULICA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "ZABIJ SPRZEDAWCA"
     },
     {
@@ -118,11 +98,6 @@
       "label": "shopping street, turn into the armoury",
       "expect": "JESTES\\ NA\\ ULICY\\ NA\\ ULI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ZACHOD"
-    },
-    {
-      "label": "room 24: enter ground context",
-      "expect": "JESTES\\ W\\ ZBROJOWNI\\ \\-\\ S[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
     },
     {
       "label": "room 24: energy +200",
@@ -145,13 +120,8 @@
       "send": "DAWAJ EN"
     },
     {
-      "label": "room 24: leave ground context",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
-    },
-    {
       "label": "armoury again, fight the pijak",
-      "expect": "JESTES\\ W\\ ZBROJOWNI\\ \\-\\ S[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "ZABIJ PIJAK"
     },
     {
@@ -168,11 +138,6 @@
       "label": "street continues, turn into the multi-branch shop",
       "expect": "CIAGNIE\\ SIE\\ TEDY\\ ULICA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ZACHOD"
-    },
-    {
-      "label": "room 26: enter ground context",
-      "expect": "WCHODZISZ\\ DO\\ SKLEPU\\ AL[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
     },
     {
       "label": "room 26: energy +200",
@@ -195,13 +160,8 @@
       "send": "DAWAJ EN"
     },
     {
-      "label": "room 26: leave ground context",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
-    },
-    {
       "label": "multi-branch shop again, fight the taksowkarz",
-      "expect": "WCHODZISZ\\ DO\\ SKLEPU\\ AL[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "ZABIJ TAKSOWKARZ"
     },
     {

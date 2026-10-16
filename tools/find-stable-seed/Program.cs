@@ -145,6 +145,7 @@ static (bool, string) Run(string harness, string binary, string scenario, string
     }
     info.Environment.Remove("BOMBKI_SEED");
     info.Environment["BOMBKI_SEED"] = seed;
+    info.Environment["BOMBKI_DEBUG"] = "2137";
     using Process process = Process.Start(info)!;
     bool exited = process.WaitForExit((int)(timeout * 3 * 1000));
     if (!exited) {

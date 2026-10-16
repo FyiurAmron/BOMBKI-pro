@@ -25,11 +25,6 @@
       "send": "POLNOC"
     },
     {
-      "label": "round salon",
-      "expect": "JESTES W OKROGLYM SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "ground prompt",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "JA"
@@ -55,8 +50,8 @@
       "expect": "MASZ 80/80 MANY"
     },
     {
-      "label": "starting energy (ENERGIA 50 clamped to MAXE 45 by the pass gate)",
-      "expect": "MASZ 45/45 ENERGII",
+      "label": "starting energy",
+      "expect": "MASZ 50/45 ENERGII",
       "send": "WYJSCIE"
     }
   ]

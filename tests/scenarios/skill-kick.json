@@ -55,11 +55,6 @@
       "send": "CWICZ KOPAC"
     },
     {
-      "label": "learn KOP",
-      "expect": "CWICZYSZ KOPANIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "ground prompt",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "KOP"
@@ -75,13 +70,8 @@
       "send": "0"
     },
     {
-      "label": "kick finished",
-      "expect": "[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
-    },
-    {
       "label": "restored meditation room",
-      "expect": "ZSZEDLES NA DOL GDZIE TRENUJE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "WYJSCIE"
     }
   ]

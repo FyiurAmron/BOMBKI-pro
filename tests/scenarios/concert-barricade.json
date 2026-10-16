@@ -50,11 +50,6 @@
       "send": "WSCHOD"
     },
     {
-      "label": "room 64: enter ground context",
-      "expect": "JESTES\\ W\\ SRODKU\\ TLUMU\\ [\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "room 64: energy +200",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ EN"
@@ -75,13 +70,8 @@
       "send": "DAWAJ EN"
     },
     {
-      "label": "room 64: leave ground context",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
-    },
-    {
       "label": "thick of the crowd, fight the listener",
-      "expect": "JESTES\\ W\\ SRODKU\\ TLUMU\\ [\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "ZABIJ SLUCHACZ"
     },
     {
@@ -98,11 +88,6 @@
       "label": "child down, head for the Policeman",
       "expect": "WYCIAGASZ [0-9]+ MONET Z CIALA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
-    },
-    {
-      "label": "room 66: enter ground context",
-      "expect": "JESTES\\ PRZY\\ BALUSTRADK[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
     },
     {
       "label": "room 66: energy +200",
@@ -125,13 +110,8 @@
       "send": "DAWAJ EN"
     },
     {
-      "label": "room 66: leave ground context",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
-    },
-    {
       "label": "barricade, fight the policeman",
-      "expect": "JESTES\\ PRZY\\ BALUSTRADK[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "ZABIJ POLICJANT"
     },
     {

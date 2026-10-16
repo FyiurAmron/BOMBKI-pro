@@ -55,11 +55,6 @@
       "send": "ZACHOD"
     },
     {
-      "label": "living door bars the way",
-      "expect": "DO DOBRA WYGLADA TO NA JAKIS DOM[\\s\\S]*?TE DRZWI ZYJA[\\s\\S]*?NIE WPUSZCZE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "energy top-up 1",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ EN"
@@ -75,13 +70,8 @@
       "send": "DAWAJ EN"
     },
     {
-      "label": "back in the room",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
-    },
-    {
       "label": "back at the living door",
-      "expect": "DO DOBRA WYGLADA TO NA JAKIS DOM[\\s\\S]*?TE DRZWI ZYJA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "ZABIJ DRZWI"
     },
     {
@@ -100,14 +90,33 @@
       "send": "DAWAJ KUNSZT"
     },
     {
-      "label": "level 2: MODE",
+      "label": "save",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
+      "send": "PAMIETAJ"
     },
     {
-      "label": "level 2: UNMODE",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
+      "label": "restart",
+      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "restart": true
+    },
+    {
+      "label": "intro",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "name",
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
+    },
+    {
+      "label": "loaded",
+      "expect": "suckemall:",
+      "send": ""
+    },
+    {
+      "label": "just-saved tax",
+      "expect": "ZDOBYLES LEVEL",
+      "send": ""
     },
     {
       "label": "level 2: banner, then grant 1/2",
@@ -120,14 +129,33 @@
       "send": "DAWAJ KUNSZT"
     },
     {
-      "label": "level 3: MODE",
+      "label": "save",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
+      "send": "PAMIETAJ"
     },
     {
-      "label": "level 3: UNMODE",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
+      "label": "restart",
+      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "restart": true
+    },
+    {
+      "label": "intro",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "name",
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
+    },
+    {
+      "label": "loaded",
+      "expect": "suckemall:",
+      "send": ""
+    },
+    {
+      "label": "just-saved tax",
+      "expect": "ZDOBYLES LEVEL",
+      "send": ""
     },
     {
       "label": "level 3: banner, then grant 1/2",
@@ -140,14 +168,33 @@
       "send": "DAWAJ KUNSZT"
     },
     {
-      "label": "level 4: MODE",
+      "label": "save",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
+      "send": "PAMIETAJ"
     },
     {
-      "label": "level 4: UNMODE",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
+      "label": "restart",
+      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "restart": true
+    },
+    {
+      "label": "intro",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "name",
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
+    },
+    {
+      "label": "loaded",
+      "expect": "suckemall:",
+      "send": ""
+    },
+    {
+      "label": "just-saved tax",
+      "expect": "ZDOBYLES LEVEL",
+      "send": ""
     },
     {
       "label": "level 4: banner, then grant 1/2",
@@ -160,14 +207,33 @@
       "send": "DAWAJ KUNSZT"
     },
     {
-      "label": "level 5: MODE",
+      "label": "save",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
+      "send": "PAMIETAJ"
     },
     {
-      "label": "level 5: UNMODE",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
+      "label": "restart",
+      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "restart": true
+    },
+    {
+      "label": "intro",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "name",
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
+    },
+    {
+      "label": "loaded",
+      "expect": "suckemall:",
+      "send": ""
+    },
+    {
+      "label": "just-saved tax",
+      "expect": "ZDOBYLES LEVEL",
+      "send": ""
     },
     {
       "label": "level 5: banner, then grant 1/2",
@@ -180,14 +246,33 @@
       "send": "DAWAJ KUNSZT"
     },
     {
-      "label": "level 6: MODE",
+      "label": "save",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
+      "send": "PAMIETAJ"
     },
     {
-      "label": "level 6: UNMODE",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
+      "label": "restart",
+      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "restart": true
+    },
+    {
+      "label": "intro",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "name",
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
+    },
+    {
+      "label": "loaded",
+      "expect": "suckemall:",
+      "send": ""
+    },
+    {
+      "label": "just-saved tax",
+      "expect": "ZDOBYLES LEVEL",
+      "send": ""
     },
     {
       "label": "level 6: banner, then grant 1/2",
@@ -200,14 +285,33 @@
       "send": "DAWAJ KUNSZT"
     },
     {
-      "label": "level 7: MODE",
+      "label": "save",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
+      "send": "PAMIETAJ"
     },
     {
-      "label": "level 7: UNMODE",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
+      "label": "restart",
+      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "restart": true
+    },
+    {
+      "label": "intro",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "name",
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
+    },
+    {
+      "label": "loaded",
+      "expect": "suckemall:",
+      "send": ""
+    },
+    {
+      "label": "just-saved tax",
+      "expect": "ZDOBYLES LEVEL",
+      "send": ""
     },
     {
       "label": "level 7: banner, then grant 1/2",
@@ -220,14 +324,33 @@
       "send": "DAWAJ KUNSZT"
     },
     {
-      "label": "level 8: MODE",
+      "label": "save",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
+      "send": "PAMIETAJ"
     },
     {
-      "label": "level 8: UNMODE",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
+      "label": "restart",
+      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "restart": true
+    },
+    {
+      "label": "intro",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "name",
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
+    },
+    {
+      "label": "loaded",
+      "expect": "suckemall:",
+      "send": ""
+    },
+    {
+      "label": "just-saved tax",
+      "expect": "ZDOBYLES LEVEL",
+      "send": ""
     },
     {
       "label": "level 8: banner, then grant 1/2",
@@ -240,14 +363,33 @@
       "send": "DAWAJ KUNSZT"
     },
     {
-      "label": "level 9: MODE",
+      "label": "save",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
+      "send": "PAMIETAJ"
     },
     {
-      "label": "level 9: UNMODE",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
+      "label": "restart",
+      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "restart": true
+    },
+    {
+      "label": "intro",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "name",
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
+    },
+    {
+      "label": "loaded",
+      "expect": "suckemall:",
+      "send": ""
+    },
+    {
+      "label": "just-saved tax",
+      "expect": "ZDOBYLES LEVEL",
+      "send": ""
     },
     {
       "label": "level 9: banner, then grant 1/2",
@@ -260,14 +402,33 @@
       "send": "DAWAJ KUNSZT"
     },
     {
-      "label": "level 10: MODE",
+      "label": "save",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
+      "send": "PAMIETAJ"
     },
     {
-      "label": "level 10: UNMODE",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
+      "label": "restart",
+      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "restart": true
+    },
+    {
+      "label": "intro",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "name",
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
+    },
+    {
+      "label": "loaded",
+      "expect": "suckemall:",
+      "send": ""
+    },
+    {
+      "label": "just-saved tax",
+      "expect": "ZDOBYLES LEVEL",
+      "send": ""
     },
     {
       "label": "level 10: banner, then grant 1/2",
@@ -280,14 +441,33 @@
       "send": "DAWAJ KUNSZT"
     },
     {
-      "label": "level 11: MODE",
+      "label": "save",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
+      "send": "PAMIETAJ"
     },
     {
-      "label": "level 11: UNMODE",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
+      "label": "restart",
+      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "restart": true
+    },
+    {
+      "label": "intro",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "name",
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
+    },
+    {
+      "label": "loaded",
+      "expect": "suckemall:",
+      "send": ""
+    },
+    {
+      "label": "just-saved tax",
+      "expect": "ZDOBYLES LEVEL",
+      "send": ""
     },
     {
       "label": "level 11: banner, then grant 1/2",
@@ -300,14 +480,33 @@
       "send": "DAWAJ KUNSZT"
     },
     {
-      "label": "level 12: MODE",
+      "label": "save",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
+      "send": "PAMIETAJ"
     },
     {
-      "label": "level 12: UNMODE",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
+      "label": "restart",
+      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "restart": true
+    },
+    {
+      "label": "intro",
+      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+    },
+    {
+      "label": "name",
+      "expect": "A TWOJE IMIE TO",
+      "send": "TESTER"
+    },
+    {
+      "label": "loaded",
+      "expect": "suckemall:",
+      "send": ""
+    },
+    {
+      "label": "just-saved tax",
+      "expect": "ZDOBYLES LEVEL",
+      "send": ""
     },
     {
       "label": "level 12: banner, then grant 1/2",

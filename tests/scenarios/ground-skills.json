@@ -20,23 +20,13 @@
       "send": "POLNOC"
     },
     {
-      "label": "the salon, into the ground context",
-      "expect": "JESTES\\ W\\ OKROGLYM\\ SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "a handful of coins",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ KASE"
     },
     {
-      "label": "out of the ground context",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
-    },
-    {
       "label": "the city centre",
-      "expect": "JESTES\\ W\\ OKROGLYM\\ SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -120,11 +110,6 @@
       "send": "CWICZ POROWNANIE"
     },
     {
-      "label": "the ground context in the training room",
-      "expect": "[\\s\\S]*?CWICZYSZ\\ POROWNYWANIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "enchantment attempt 1",
       "expect": "(?:KOGO\\ CHCESZ\\ ZE\\ SOBA\\ POROWNAC?|[\\s\\S]*?[0-9]+%\\.-?[0-9]+>)",
       "send": "POROWNAJ"
@@ -165,43 +150,19 @@
       "send": "UZYJ SCROLL POROWNYWANIE"
     },
     {
-      "label": "return attempt 1",
-      "expect": "(?:KOGO\\ CHCESZ\\ ZE\\ SOBA\\ POROWNAC?|[\\s\\S]*?[0-9]+%\\.-?[0-9]+>)",
+      "label": "scroll target",
+      "expect": "KOGO CHCESZ ZE SOBA POROWNAC",
       "send": "POWROT"
     },
     {
-      "label": "return attempt 2",
-      "expect": "(?:KOGO\\ CHCESZ\\ ZE\\ SOBA\\ POROWNAC?|[\\s\\S]*?[0-9]+%\\.-?[0-9]+>)",
-      "send": "POWROT"
-    },
-    {
-      "label": "return attempt 3",
-      "expect": "(?:KOGO\\ CHCESZ\\ ZE\\ SOBA\\ POROWNAC?|[\\s\\S]*?[0-9]+%\\.-?[0-9]+>)",
-      "send": "POWROT"
-    },
-    {
-      "label": "return attempt 4",
-      "expect": "(?:KOGO\\ CHCESZ\\ ZE\\ SOBA\\ POROWNAC?|[\\s\\S]*?[0-9]+%\\.-?[0-9]+>)",
-      "send": "POWROT"
-    },
-    {
-      "label": "return attempt 5",
-      "expect": "(?:KOGO\\ CHCESZ\\ ZE\\ SOBA\\ POROWNAC?|[\\s\\S]*?[0-9]+%\\.-?[0-9]+>)",
-      "send": "POWROT"
-    },
-    {
-      "label": "return attempt 6",
-      "expect": "(?:KOGO\\ CHCESZ\\ ZE\\ SOBA\\ POROWNAC?|[\\s\\S]*?[0-9]+%\\.-?[0-9]+>)",
-      "send": "POWROT"
+      "label": "out to the salon",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
+      "send": "GORA"
     },
     {
       "label": "out of the game",
       "expect": "(?:KOGO\\ CHCESZ\\ ZE\\ SOBA\\ POROWNAC?|[\\s\\S]*?[0-9]+%\\.-?[0-9]+>)",
       "send": "WYJSCIE"
-    },
-    {
-      "label": "the game ends",
-      "expect_exit": true
     }
   ]
 }

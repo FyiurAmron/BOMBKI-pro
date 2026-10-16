@@ -40,11 +40,6 @@
       "send": "GORA"
     },
     {
-      "label": "cage corridor",
-      "expect": "JESTES W POKOJU PROWADZACYM DO KLATEK[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "ground prompt",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ EN"
@@ -60,13 +55,8 @@
       "send": "DAWAJ EN"
     },
     {
-      "label": "energy 650",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
-    },
-    {
       "label": "back in the corridor",
-      "expect": "JESTES W POKOJU PROWADZACYM DO KLATEK[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "GORA"
     },
     {

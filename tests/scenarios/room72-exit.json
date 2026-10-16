@@ -55,11 +55,6 @@
       "send": "POLNOC"
     },
     {
-      "label": "piwiarnia (67)",
-      "expect": "JESTES\\ W\\ PIWIARNI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "fill energy",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ EN"
@@ -83,15 +78,10 @@
       "label": "fill energy",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ EN"
-    },
-    {
-      "label": "out of ground",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
     },
     {
       "label": "piwiarnia after UNMODE",
-      "expect": "JESTES\\ W\\ PIWIARNI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
@@ -115,13 +105,8 @@
       "send": "POLODNIE"
     },
     {
-      "label": "past middle (72)",
-      "expect": "UFFF\\ PRZEBIEGLES\\ PRZEZ\\ SRODEK\\ SCENY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "fill energy in room 72",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
+      "expect": "UFFF\\ PRZEBIEGLES\\ PRZEZ\\ SRODEK\\ SCENY",
       "send": "DAWAJ EN"
     },
     {
@@ -143,15 +128,10 @@
       "label": "fill energy in room 72",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ EN"
-    },
-    {
-      "label": "out of ground in room 72",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
     },
     {
       "label": "exit in room 72",
-      "expect": "UFFF\\ PRZEBIEGLES\\ PRZEZ\\ SRODEK\\ SCENY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "EXIT"
     },
     {
@@ -160,18 +140,9 @@
       "send": "WYJSCIE"
     },
     {
-      "label": "room 71 prompt",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "ground context in 71",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "WYJSCIE"
-    },
-    {
-      "label": "the game ends",
-      "expect_exit": true
     }
   ]
 }

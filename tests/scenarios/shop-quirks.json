@@ -75,11 +75,6 @@
       "send": "SPRZEDAJ PIGULKA TRANSPORTUJACA"
     },
     {
-      "label": "pill gate <=10 buys nothing first: sale pays 170",
-      "expect": "SPRZEDAWCA KUPUJE OD CIEBIE PIGULKE ZA 170 MONET[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "ground prompt",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "JA"

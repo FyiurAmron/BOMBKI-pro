@@ -102,10 +102,11 @@ The suite pins its randomness with the `BOMBKI_SEED` environment
 variable (decimal or `0x` hex) and compresses timing with
 `BOMBKI_DELAY_MULT=0`, so a scenario whose outcome depends on a roll
 or on timing stays reproducible instead of passing on one run and
-timing out on the next. When a scenario is flaky for reasons that are
-not a genuine bug in the game, reach for the `tools/find-stable-seed`
-helper to search for a seed where it passes deterministically - one
-scenario at a time, as above.
+timing out on the next. Both only take effect with `BOMBKI_DEBUG=2137` set - without it the game ignores all `BOMBKI_*`
+variables, and the cheat commands refuse. When a scenario is flaky
+for reasons that are not a genuine bug in the game, reach for the
+`tools/find-stable-seed` helper to search for a seed where it
+passes deterministically - one scenario at a time, as above.
 
 ## Autonomy
 

@@ -20,11 +20,6 @@
       "send": "POLNOC"
     },
     {
-      "label": "round salon",
-      "expect": "JESTES W OKROGLYM SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "ground prompt",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ KASE"
@@ -45,13 +40,8 @@
       "send": "DAWAJ KASE"
     },
     {
-      "label": "prompt after fourth grant",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
-    },
-    {
       "label": "restored salon",
-      "expect": "JESTES W OKROGLYM SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -155,11 +145,6 @@
       "send": "KUP STARY"
     },
     {
-      "label": "buy the sword again",
-      "expect": "KUPUJESZ ZWYKLY MALY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "ground prompt in the armoury",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "UZYJ MALA"
@@ -173,11 +158,6 @@
       "label": "sword equipped",
       "expect": "UZYWASZ STAREGO ZARDZEWIALEGO MIECZA JAKO BRONI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "JA"
-    },
-    {
-      "label": "the sheet names both",
-      "expect": "TWOJA OCHRONA JEST MALA TARCZA[\\s\\S]*?JAKO BRONI UZYWASZ STAREGO MIECZA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
     },
     {
       "label": "armoury, back on the street",

@@ -486,7 +486,12 @@ public static class Texts {
     public const string TxtCheckLevelUp_10 = "ZRECZNOSCI \u0002\u0002\u0002\u0002\u0002\u0002\u0002\u0002\u0002\u0002\u0002\u0002\u0002\u0002";
     public const string TxtCheckLevelUp_11 = "MADROSCI \u0002\u0002\u0002\u0002\u0002\u0002\u0002\u0002\u0002\u0002\u0002\u0002\u0002\u0002";
     public const string TxtCmdScan_01 = "FUNKCJA BEDZIE DOSTEPNA ZA DWA LATA , I TAK ZGINIESZ , I TAK :) ";
-    public const string TxtCmdNoExit_01 = "NAPISZ UNMODE ";
+    public const string TxtModeEgg = "NO CZUJESZ JAKBY ZE COS TEGO ALE JUZ NIC NIE CZUJESZ HEHE";
+    public const string TxtUnmodeEgg = "CZUJESZ ZE NIC NIE CZUJESZ";
+    public const string TxtCheatRefusal = "DAWAJ TO DO KOLEGI NA PODWÓRKU MOŻESZ MÓWIĆ CHAMIE";
+    public const string TxtCheatRefusalOther = "TO TEŻ DO KOLEGI NA PODWÓRKU MOŻESZ MÓWIĆ CHAMIE";
+    public const string TxtCheatSuccess = "OKEJ HAKERZE, BIERZ!";
+    public const string TxtCheatSuccessOther = "NO OKEJ HAKERZE!";
     public const string TxtCmdJustSaved_01 = " MIECHO!";
     public const string TxtCmdDrinkBeer_01 = "GDY POCZULES AMBROZJE W USTACH ODZYSKALES 10 MANY ZAS GDY GO WYPILES 10% E.";
     public const string TxtCmdWieldOldSword_01 = "UZYWASZ STAREGO ZARDZEWIALEGO MIECZA JAKO BRONI";
@@ -951,7 +956,7 @@ public static class Texts {
     public const string TxtDropVerb = "ODRZUCASZ ";
     public const string TxtWearingLabel = "MASZ NA SOBIE ";
     public const string TxtMaxymalnie = " MAXYMALNIE ";
-    public const string TxtTranceItemLabel = "W TYM POKOJU ZNAJDUJE SIE ";
+    public const string TxtGroundItemLabel = "W TYM POKOJU ZNAJDUJE SIE ";
     public const string TxtShopVerb = "KUPUJESZ ";
     public const string TxtSpaceZa = " ZA ";
     public const string TxtSpaceMonet = " MONET";
