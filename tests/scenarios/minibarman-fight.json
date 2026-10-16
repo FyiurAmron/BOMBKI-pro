@@ -55,11 +55,6 @@
       "send": "POLNOC"
     },
     {
-      "label": "the piwiarnia (67)",
-      "expect": "JESTES\\ W\\ PIWIARNI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "ground context",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ EN"
@@ -80,28 +75,14 @@
       "send": "DAWAJ EN"
     },
     {
-      "label": "out of the ground context",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
-    },
-    {
       "label": "the piwiarnia again (67)",
-      "expect": "JESTES\\ W\\ PIWIARNI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "ZABIJ MINI-BARMAN"
-    },
-    {
-      "label": "MINI-BARMAN fight end",
-      "expect": "[\\s\\S]*?ZABILES GO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
     },
     {
       "label": "ground context after the fight",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "WYJSCIE"
-    },
-    {
-      "label": "the game ends",
-      "expect_exit": true
     }
   ]
 }

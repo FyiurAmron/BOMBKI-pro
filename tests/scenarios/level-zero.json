@@ -90,11 +90,6 @@
       "send": "ZACHOD"
     },
     {
-      "label": "living door bars the way",
-      "expect": "DO DOBRA WYGLADA TO NA JAKIS DOM[\\s\\S]*?TE DRZWI ZYJA[\\s\\S]*?NIE WPUSZCZE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "ground prompt in the living-door room",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "ZWIEJ"
@@ -115,13 +110,8 @@
       "send": "DAWAJ EN"
     },
     {
-      "label": "energy 450",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
-    },
-    {
       "label": "back at the living door",
-      "expect": "DO DOBRA WYGLADA TO NA JAKIS DOM[\\s\\S]*?TE DRZWI ZYJA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "ZABIJ DRZWI"
     },
     {
@@ -145,19 +135,9 @@
       "send": "DAWAJ KUNSZT"
     },
     {
-      "label": "MODE to leave the room",
+      "label": "leave to force the pass",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
-      "label": "UNMODE to force the pass",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
-    },
-    {
-      "label": "no banner: the dark room redispatches",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
+      "send": "WSCHOD"
     },
     {
       "label": "ground prompt",

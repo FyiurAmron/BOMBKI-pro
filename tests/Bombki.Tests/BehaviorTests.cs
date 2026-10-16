@@ -115,6 +115,7 @@ public class BehaviorTests {
         };
         psi.Environment["BOMBKI_SEED"] = Seed;
         psi.Environment["BOMBKI_DELAY_MULT"] = "0";
+        psi.Environment["BOMBKI_DEBUG"] = "2137";
 
         using var process = Process.Start(psi);
         Assert.NotNull(process);
@@ -202,7 +203,7 @@ public class BehaviorTests {
 
                 var label = element.TryGetProperty("label", out var l) ? l.GetString() ?? "" : "";
                 var matched = element.TryGetProperty("matched", out var m) ? m.GetString() ?? "" : "";
-                if (label.Contains("UNMODE to force the pass")) {
+                if (label.Contains("to force the pass")) {
                     var mm = promptValue.Match(matched);
                     if (mm.Success && int.TryParse(mm.Groups["kunszt"].Value, out var k)) {
                         before = k;

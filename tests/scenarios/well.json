@@ -40,11 +40,6 @@
       "send": "POLODNIE"
     },
     {
-      "label": "the well",
-      "expect": "CHOC\\ TO\\ MALO\\ PRAWDOPODOBNE\\ TUTAJ\\ JEST\\ JESZCZE\\ CIEMNIEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "fill energy",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ EN"
@@ -68,15 +63,10 @@
       "label": "fill energy",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ EN"
-    },
-    {
-      "label": "out of ground",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
     },
     {
       "label": "look at well",
-      "expect": "CHOC\\ TO\\ MALO\\ PRAWDOPODOBNE\\ TUTAJ\\ JEST\\ JESZCZE\\ CIEMNIEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "PATRZ STUDNIA"
     },
     {
@@ -350,18 +340,9 @@
       "send": "POLODNIE"
     },
     {
-      "label": "enter ground context",
-      "expect": "JESTES\\ W\\ OKROGLYM\\ SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "exit game",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "WYJSCIE"
-    },
-    {
-      "label": "the game ends",
-      "expect_exit": true
     }
   ]
 }

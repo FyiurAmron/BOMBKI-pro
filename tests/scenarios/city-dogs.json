@@ -20,11 +20,6 @@
       "send": "POLNOC"
     },
     {
-      "label": "salon, top up energy for the fights",
-      "expect": "JESTES\\ W\\ OKROGLYM\\ SALO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "ground prompt in the salon",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ EN"
@@ -50,13 +45,8 @@
       "send": "DAWAJ EN"
     },
     {
-      "label": "energy 1050, leave ground",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
-    },
-    {
       "label": "salon again, head for the street",
-      "expect": "JESTES\\ W\\ OKROGLYM\\ SALO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {

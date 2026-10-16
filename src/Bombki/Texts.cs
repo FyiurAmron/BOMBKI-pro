@@ -53,9 +53,6 @@ public static class Texts {
     public const string TxtRoom1_10 = "JE\u00BDELI CHCESZ NAUCZYC SIE NOWYCH KOMEND IDZ DO MUD SZKOLY";
     public const string TxtRoom1_11 = "DOPIERO POTEM IDZ DO MIASTA ";
     public const string TxtRoom1_12 = "A OTO TAJNE KOMENDY :";
-    public const string TxtRoom1_13 = " MODE - WPROWADZENIE W STAN PODSWIADOMOSCI";
-    public const string TxtRoom1_14 = " UNMODE - POWROT DO POPRZEDNIEGO STANU";
-    public const string TxtRoom1_15 = "W CZASIE POBYTU W STANIE PODSWIADOMOSCI DZIALA WIELE KOMEND MIN:";
     public const string TxtRoom1_16 = " JA - WSZYSTKO O TOBIE , BIERZ , UZYJ , ZDEJMIJ , ODRZUC I INNE ";
     public const string TxtRoom1_17 = " PONADTO WIELE KOMEND TRZEBA ODKRYC NP:ZMIEN KOLOR , ZMIEN TLO ";
     public const string TxtRoom1_18 = " UWAGA Z OSTATNIEJ CHWILI : KOMENDA SPIJ W STANIE PODSWIADOMOSCI!";
@@ -486,7 +483,12 @@ public static class Texts {
     public const string TxtCheckLevelUp_10 = "ZRECZNOSCI \u0002\u0002\u0002\u0002\u0002\u0002\u0002\u0002\u0002\u0002\u0002\u0002\u0002\u0002";
     public const string TxtCheckLevelUp_11 = "MADROSCI \u0002\u0002\u0002\u0002\u0002\u0002\u0002\u0002\u0002\u0002\u0002\u0002\u0002\u0002";
     public const string TxtCmdScan_01 = "FUNKCJA BEDZIE DOSTEPNA ZA DWA LATA , I TAK ZGINIESZ , I TAK :) ";
-    public const string TxtCmdNoExit_01 = "NAPISZ UNMODE ";
+    public const string TxtModeEgg = "NO CZUJESZ JAKBY ZE COS TEGO ALE JUZ NIC NIE CZUJESZ HEHE";
+    public const string TxtUnmodeEgg = "CZUJESZ ZE NIC NIE CZUJESZ";
+    public const string TxtCheatRefusal = "DAWAJ TO DO KOLEGI NA PODWÓRKU MOŻESZ MÓWIĆ CHAMIE";
+    public const string TxtCheatRefusalOther = "TO TEŻ DO KOLEGI NA PODWÓRKU MOŻESZ MÓWIĆ CHAMIE";
+    public const string TxtCheatSuccess = "OKEJ HAKERZE, BIERZ!";
+    public const string TxtCheatSuccessOther = "NO OKEJ HAKERZE!";
     public const string TxtCmdJustSaved_01 = " MIECHO!";
     public const string TxtCmdDrinkBeer_01 = "GDY POCZULES AMBROZJE W USTACH ODZYSKALES 10 MANY ZAS GDY GO WYPILES 10% E.";
     public const string TxtCmdWieldOldSword_01 = "UZYWASZ STAREGO ZARDZEWIALEGO MIECZA JAKO BRONI";
@@ -951,7 +953,7 @@ public static class Texts {
     public const string TxtDropVerb = "ODRZUCASZ ";
     public const string TxtWearingLabel = "MASZ NA SOBIE ";
     public const string TxtMaxymalnie = " MAXYMALNIE ";
-    public const string TxtTranceItemLabel = "W TYM POKOJU ZNAJDUJE SIE ";
+    public const string TxtGroundItemLabel = "W TYM POKOJU ZNAJDUJE SIE ";
     public const string TxtShopVerb = "KUPUJESZ ";
     public const string TxtSpaceZa = " ZA ";
     public const string TxtSpaceMonet = " MONET";
@@ -1081,7 +1083,7 @@ public static class Texts {
     public static readonly List<string> TxtRoom86Lines2 = ["", TxtRoom86_08, TxtRoom86_09, TxtRoom86_10, TxtRoom86_11, TxtRoom86_12];
     public static readonly List<string> TxtRoom101Lines1 = ["", TxtRoom101_01, TxtRoom101_02, TxtRoom101_03];
     public static readonly List<string> TxtRoom103Lines1 = ["", TxtRoom103_01, TxtRoom103_02, TxtRoom103_03, TxtRoom103_04];
-    public static readonly List<string> TxtRoom1Lines2 = ["", TxtShared_05, TxtRoom1_09, TxtRoom1_10, TxtRoom1_11, TxtRoom1_12, TxtRoom1_13, TxtRoom1_14, TxtRoom1_15, TxtRoom1_16, TxtRoom1_17, TxtRoom1_18];
+    public static readonly List<string> TxtRoom1Lines2 = ["", TxtShared_05, TxtRoom1_09, TxtRoom1_10, TxtRoom1_11, TxtRoom1_12, TxtRoom1_16, TxtRoom1_17, TxtRoom1_18];
     public static readonly List<string> TxtUseItemsLines1 = ["", TxtUseItems_03, TxtUseItems_04, TxtUseItems_05, TxtUseItems_06, TxtUseItems_06, TxtUseItems_06, TxtUseItems_07, TxtUseItems_08, TxtUseItems_09, TxtUseItems_10, TxtUseItems_11];
     public static readonly List<string> TxtUseItemsLines2 = ["", TxtUseItems_17, TxtUseItems_18, TxtUseItems_19, TxtUseItems_20, TxtUseItems_21, TxtUseItems_22, TxtUseItems_17];
     public static readonly List<string> TxtPlantFightsLines2 = ["", TxtPlantFights_07, TxtPlantFights_08, TxtPlantFights_09, TxtPlantFights_10, TxtPlantFights_11, TxtPlantFights_12];

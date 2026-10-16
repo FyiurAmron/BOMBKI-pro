@@ -20,11 +20,6 @@
       "send": "POLNOC"
     },
     {
-      "label": "room 1 prompt",
-      "expect": "JESTES W OKROGLYM SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "MODE prompt",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "SPIJ"
@@ -40,13 +35,8 @@
       "send": ""
     },
     {
-      "label": "prompt after draining wake key",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
-    },
-    {
       "label": "restored room",
-      "expect": "JESTES W OKROGLYM SALONIE",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "WYJSCIE"
     },
     {

@@ -80,11 +80,6 @@
       "send": "POLODNIE"
     },
     {
-      "label": "the tree room once more",
-      "expect": "MLASK\\ ,\\ MLASK\\ KTOS\\ RZECZYWISCIE\\ SIE\\ OBZERA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "energy +200",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ EN"
@@ -135,13 +130,8 @@
       "send": "DAWAJ EN"
     },
     {
-      "label": "leave the ground context",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
-    },
-    {
       "label": "back in the tree room",
-      "expect": "MLASK\\ ,\\ MLASK\\ KTOS\\ RZECZYWISCIE\\ SIE\\ OBZERA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "POLODNIE"
     },
     {

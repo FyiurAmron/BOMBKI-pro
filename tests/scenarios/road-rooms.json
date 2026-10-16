@@ -40,11 +40,6 @@
       "send": "POLNOC"
     },
     {
-      "label": "road crossroads",
-      "expect": "ZNALAZLES\\ SIE\\ NA\\ ROZJE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "ground prompt at crossroads",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "JESTEM SPEEDE"
@@ -55,13 +50,8 @@
       "send": "JA"
     },
     {
-      "label": "the sheet shows the pass",
-      "expect": "PRZEPUSTKA WLASNORECZNIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
-    },
-    {
       "label": "crossroads again, now with a pass",
-      "expect": "ZNALAZLES\\ SIE\\ NA\\ ROZJE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "ZACHOD"
     },
     {

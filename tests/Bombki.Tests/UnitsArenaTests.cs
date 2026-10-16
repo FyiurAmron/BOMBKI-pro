@@ -160,28 +160,28 @@ public class UnitsArenaTests {
     [Fact]
     public void MiniarenaSlabo() {
         MiniarenaSetup();
-        using (FeedStdin("ZABIJ BAKTERIA|ZABIJ SLIMAK|ZABIJ KORNIK|ZABIJ MUCHA|ZABIJ ZUK|ZABIJ KARALUCH|ZABIJ MROWKA|ZABIJ PAJAK|MODE"))
+        using (FeedStdin("ZABIJ BAKTERIA|ZABIJ SLIMAK|ZABIJ KORNIK|ZABIJ MUCHA|ZABIJ ZUK|ZABIJ KARALUCH|ZABIJ MROWKA|ZABIJ PAJAK|WYJSCIE"))
             ArenaMaze();
     }
 
     [Fact]
     public void MiniarenaMniejslabo() {
         MiniarenaSetup();
-        using (FeedStdin("ZABIJ DZIK|ZABIJ WILCZUR|ZABIJ SZCZUR|ZABIJ LIS|ZABIJ KUROPATWA|ZABIJ ZAJAC|ZABIJ ORZEL|ZABIJ SARNA|MODE"))
+        using (FeedStdin("ZABIJ DZIK|ZABIJ WILCZUR|ZABIJ SZCZUR|ZABIJ LIS|ZABIJ KUROPATWA|ZABIJ ZAJAC|ZABIJ ORZEL|ZABIJ SARNA|WYJSCIE"))
             ArenaMaze();
     }
 
     [Fact]
     public void MiniarenaSrednio() {
         MiniarenaSetup();
-        using (FeedStdin("ZABIJ SLON|ZABIJ LEW|ZABIJ ZYRAFA|ZABIJ WILK|ZABIJ WIELBLAD|ZABIJ STRUS|ZABIJ BOA|ZABIJ BIZON|ZABIJ PANTERA|MODE"))
+        using (FeedStdin("ZABIJ SLON|ZABIJ LEW|ZABIJ ZYRAFA|ZABIJ WILK|ZABIJ WIELBLAD|ZABIJ STRUS|ZABIJ BOA|ZABIJ BIZON|ZABIJ PANTERA|WYJSCIE"))
             ArenaMaze();
     }
 
     [Fact]
     public void MiniarenaTrudno() {
         MiniarenaSetup();
-        using (FeedStdin("ZABIJ GLADIATOR|ZABIJ WOJOWNIK|ZABIJ TRENER|MODE"))
+        using (FeedStdin("ZABIJ GLADIATOR|ZABIJ WOJOWNIK|ZABIJ TRENER|WYJSCIE"))
             ArenaMaze();
     }
 
@@ -193,16 +193,16 @@ public class UnitsArenaTests {
 
     [Fact]
     public void MiniarenaExitNav() {
-        MiniarenaAt("EXIT|MODE", 33);
-        MiniarenaAt("EXIT|MODE", 34);
-        MiniarenaAt("EXIT|MODE", 35);
-        MiniarenaAt("EXIT|MODE", 40);
-        MiniarenaAt("EXIT|MODE", 41);
-        MiniarenaAt("EXIT|MODE", 45);
-        MiniarenaAt("EXIT|MODE", 46);
-        MiniarenaAt("EXIT|MODE", 47);
-        MiniarenaAt("EXIT|MODE", 56);
-        MiniarenaAt("EXIT|MODE", 57);
+        MiniarenaAt("EXIT|WYJSCIE", 33);
+        MiniarenaAt("EXIT|WYJSCIE", 34);
+        MiniarenaAt("EXIT|WYJSCIE", 35);
+        MiniarenaAt("EXIT|WYJSCIE", 40);
+        MiniarenaAt("EXIT|WYJSCIE", 41);
+        MiniarenaAt("EXIT|WYJSCIE", 45);
+        MiniarenaAt("EXIT|WYJSCIE", 46);
+        MiniarenaAt("EXIT|WYJSCIE", 47);
+        MiniarenaAt("EXIT|WYJSCIE", 56);
+        MiniarenaAt("EXIT|WYJSCIE", 57);
         MiniarenaAt("POLODNIE", 33);
         MiniarenaAt("POLNOC", 33);
         MiniarenaAt("WSCHOD", 33);

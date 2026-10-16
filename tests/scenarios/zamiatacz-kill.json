@@ -30,11 +30,6 @@
       "send": "POLNOC"
     },
     {
-      "label": "ul. sklepiowa (21)",
-      "expect": "JESTES\\ NA\\ ULICY\\ NA\\ ULICY\\ SKLEPIKOWEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "ground context",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ EN"
@@ -55,13 +50,8 @@
       "send": "DAWAJ EN"
     },
     {
-      "label": "out of the ground context",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
-    },
-    {
       "label": "ul. sklepiowa again (21)",
-      "expect": "JESTES\\ NA\\ ULICY\\ NA\\ ULICY\\ SKLEPIKOWEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "ZABIJ ZAMIATACZ"
     },
     {

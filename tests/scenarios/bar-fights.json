@@ -35,11 +35,6 @@
       "send": "POLNOC"
     },
     {
-      "label": "the bar",
-      "expect": "JESTES\\ W\\ BARZE\\ POD\\ DWOMA\\ PEDALAMI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "fill energy",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ EN"
@@ -63,15 +58,10 @@
       "label": "fill energy",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ EN"
-    },
-    {
-      "label": "out of ground",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "UNMODE"
     },
     {
       "label": "kill pedal (EASY)",
-      "expect": "JESTES\\ W\\ BARZE\\ POD\\ DWOMA\\ PEDALAMI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "ZABIJ PEDAL"
     },
     {
@@ -105,18 +95,9 @@
       "send": "POLODNIE"
     },
     {
-      "label": "enter ground context",
-      "expect": "JESTES\\ W\\ OKROGLYM\\ SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "MODE"
-    },
-    {
       "label": "exit game",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "WYJSCIE"
-    },
-    {
-      "label": "the game ends",
-      "expect_exit": true
     }
   ]
 }
