@@ -107,7 +107,7 @@ public class BehaviorTests {
         var log = $"{logDir}/{name}.jsonl";
         var harness = FindHarnessBinary(root);
 
-        var psi = new ProcessStartInfo(harness, $"\"{binary}\" \"{scenario}\" --log \"{log}\" --timeout 20") {
+        var psi = new ProcessStartInfo(harness, $"\"{binary}\" \"{scenario}\" --log \"{log}\" --timeout 20 --settle 2") {
             WorkingDirectory = root,
             RedirectStandardOutput = true,
             RedirectStandardError = true,
