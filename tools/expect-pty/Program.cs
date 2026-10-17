@@ -81,21 +81,29 @@ static class Harness {
         List<string> positional = [];
         string? logPath = null;
         double timeout = DefaultTimeout;
+        double settle = 0;
         for (int i = 0; i < argv.Length; i++) {
             string arg = argv[i];
             if (!arg.StartsWith("--")) {
                 positional.Add(arg);
                 continue;
             }
-            if (arg == "--log" || arg == "--timeout") {
+            if (arg == "--log" || arg == "--timeout" || arg == "--settle") {
                 if (i + 1 >= argv.Length) {
                     return Fail($"missing value for option: {arg}");
                 }
                 i++;
                 if (arg == "--log") {
                     logPath = argv[i];
-                } else if (!double.TryParse(argv[i], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out timeout)) {
-                    return Fail($"invalid timeout: {argv[i]}");
+                } else {
+                    if (!double.TryParse(argv[i], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out double value)) {
+                        return Fail($"invalid value for option: {arg}");
+                    }
+                    if (arg == "--timeout") {
+                        timeout = value;
+                    } else {
+                        settle = value;
+                    }
                 }
                 continue;
             }
@@ -105,13 +113,16 @@ static class Harness {
             return Fail($"unknown option: {arg}");
         }
         if (positional.Count != 2) {
-            return Fail("expected: expect-pty <executable> <scenario> --log <path> [--timeout <seconds>]");
+            return Fail("expected: expect-pty <executable> <scenario> --log <path> [--timeout <seconds>] [--settle <seconds>]");
         }
         if (logPath is null) {
             return Fail("missing required option: --log");
         }
         if (timeout <= 0) {
             return Fail("timeout must be positive");
+        }
+        if (settle < 0) {
+            return Fail("settle must not be negative");
         }
         string exe = Path.GetFullPath(positional[0]);
         string scene = Path.GetFullPath(positional[1]);
@@ -130,7 +141,7 @@ static class Harness {
                 steps.GetArrayLength() == 0) {
                 return Fail("scenario must contain a nonempty 'steps' array");
             }
-            return Drive(exe, scene, scenario.RootElement, logPath, timeout);
+            return Drive(exe, scene, scenario.RootElement, logPath, timeout, settle);
         }
     }
 
@@ -152,8 +163,8 @@ static class Harness {
         return Encoding.GetEncoding(encoding).GetString(data, 0, count);
     }
 
-    static int Drive(string exe, string scenarioPath, JsonElement root, string logPath, double timeout) {
-        string encoding = root.TryGetProperty("encoding", out JsonElement enc) ? enc.GetString() ?? "cp437" : "cp437";
+    static int Drive(string exe, string scenarioPath, JsonElement root, string logPath, double timeout, double settle) {
+        string encoding = root.TryGetProperty("encoding", out JsonElement enc) ? enc.GetString() ?? "utf-8" : "utf-8";
         List<string> extra = root.TryGetProperty("args", out JsonElement args)
             ? args.EnumerateArray().Select(e => e.GetString() ?? "").ToList()
             : [];
@@ -230,6 +241,7 @@ static class Harness {
                 throw new InvalidOperationException($"step {index} has an invalid expect regex: {error.Message}");
             }
             double deadline = started.Elapsed.TotalSeconds + timeout;
+            double lastByte = started.Elapsed.TotalSeconds;
             while (true) {
                 Match match = pattern.Match(pending);
                 if (match.Success) {
@@ -246,7 +258,14 @@ static class Harness {
                 if (remaining <= 0) {
                     throw new TimeoutException($"step {index} ({label}) timed out waiting for /{patternText}/");
                 }
-                if (!WaitReadable(master, remaining)) {
+                if (settle > 0 && started.Elapsed.TotalSeconds - lastByte >= settle) {
+                    throw new TimeoutException($"step {index} ({label}) saw no output for {settle}s while waiting for /{patternText}/ - output settled without a match");
+                }
+                double slice = settle > 0 ? Math.Min(remaining, settle - (started.Elapsed.TotalSeconds - lastByte)) : Math.Max(remaining, 0.001);
+                if (slice <= 0) {
+                    continue;
+                }
+                if (!WaitReadable(master, slice)) {
                     if (PollChild(child, ref returncode) && returncode is not null) {
                         throw new InvalidOperationException($"child exited with status {returncode} while waiting for step {index} ({label})");
                     }
@@ -258,6 +277,7 @@ static class Harness {
                 }
                 string text = Decode(data, data.Length, encoding);
                 pending += text;
+                lastByte = started.Elapsed.TotalSeconds;
                 Record("OUTPUT", new() {
                     ["step"] = index,
                     ["label"] = label,
