@@ -2,36 +2,36 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIE TO",
+      "expect": "A TWOJE IMIĘ TO",
       "send": "T3STER"
     },
     {
       "label": "bad name retry",
-      "expect": "ZLE ZNAKI DALES, JESZCZE RAZ IMIE:",
+      "expect": "ŹLE ZNAKI DAŁEŚ, JESZCZE RAZ IMIĘ:",
       "send": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
     },
     {
       "label": "long name retry",
-      "expect": "ZA DLUGIE, DAJ KROTSZE:",
+      "expect": "ZA DŁUGIE, DAJ KRÓTSZE:",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWA RASE",
+      "expect": "NAPISZ SWĄ RASĘ",
       "send": "GADZIETO"
     },
     {
       "label": "unknown race re-prompts",
-      "expect": "NAPISZ SWA RASE",
+      "expect": "NAPISZ SWĄ RASĘ",
       "send": "CZLOWIEK"
     },
     {
       "label": "first room",
-      "expect": "TU ZACZYNA SIE GRE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "TU ZACZYNA SIĘ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -41,7 +41,7 @@
     },
     {
       "label": "item limit for the starting ZRE",
-      "expect": "W SUMIE MASZ 0/10 PRZEDMIOTOW"
+      "expect": "W SUMIE MASZ 0/10 PRZEDMIOTÓW"
     },
     {
       "label": "starting money and practices",
@@ -49,11 +49,11 @@
     },
     {
       "label": "first level gap at zero KUNSZT",
-      "expect": "JESTES NA PIERWSZYM LEVELU A DO NASTEPNEGO BRAKUJE CI 700 KUNSZTU"
+      "expect": "JESTEŚ NA PIERWSZYM LEVELU A DO NASTĘPNEGO BRAKUJE CI 700 KUNSZTU"
     },
     {
       "label": "starting attributes",
-      "expect": "TWOJE PARAMETRY : SILA - 10/15 ZRECZNOSC - 10/15 MADROSC - 10/15"
+      "expect": "TWOJE PARAMETRY: SIŁA - 10/15 ZRĘCZNOŚĆ - 10/15 MĄDROŚĆ - 10/15"
     },
     {
       "label": "starting mana",

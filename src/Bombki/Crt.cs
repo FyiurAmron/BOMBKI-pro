@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.Win32.SafeHandles;
@@ -207,8 +208,21 @@ public static class Crt {
     public static string ReadLn() =>
         IsWindows ? WindowsTerminal.ReadLine() : UnixReadLn();
 
+    public static string StripDiacritics(string value) =>
+        string.Concat(value.Normalize(NormalizationForm.FormD).Where(IsSpacing).Select(FoldStroke));
+
+    static bool IsSpacing(char c) =>
+        CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark;
+
+    static char FoldStroke(char c) =>
+        c switch {
+            'ł' => 'l',
+            'Ł' => 'L',
+            _ => c,
+        };
+
     static string UnixReadLn() {
-        StringBuilder sb = new();
+        List<byte> bytes = [];
         int b;
         while ((b = Stdin.ReadByte()) >= 0 && b != '\n') {
             if (b == 3) {
@@ -216,30 +230,48 @@ public static class Crt {
             } else if (b == 27) {
                 ConsumeEscape();
             } else if (b == 8 || b == 127) {
-                if (sb.Length > 0) {
-                    sb.Length--;
+                if (bytes.Any()) {
+                    EraseChar(bytes);
                     EchoErase();
                 }
             } else {
-                sb.Append((char)b);
-                EchoChar((char)b);
+                byte raw = (byte)b;
+                bytes.Add(raw);
+                Out.WriteByte(raw);
             }
         }
         EchoNewLine();
-        return sb.ToString().ToUpperInvariant();
+        return StripDiacritics(Encoding.UTF8.GetString([.. bytes])).ToUpperInvariant();
+    }
+
+    static void EraseChar(List<byte> bytes) {
+        int length = TrailingCharLength(bytes);
+        bytes.RemoveRange(bytes.Count - length, length);
+    }
+
+    static int TrailingCharLength(List<byte> bytes) {
+        int length = 1;
+        while (length < bytes.Count && (bytes[^length] & 0xC0) == 0x80) {
+            length++;
+        }
+        return length;
     }
 }
 
 
 public static class Out {
-    static readonly Encoding Latin1 = Encoding.Latin1;
     static readonly Stream Stdout = Crt.IsWindows
         ? Console.OpenStandardOutput()
         : new FileStream(new SafeFileHandle(1, false), FileAccess.Write);
 
     public static void WriteRaw(string value) {
-        byte[] bytes = Latin1.GetBytes(value);
+        byte[] bytes = Encoding.UTF8.GetBytes(value);
         Stdout.Write(bytes, 0, bytes.Length);
+        Stdout.Flush();
+    }
+
+    public static void WriteByte(byte value) {
+        Stdout.WriteByte(value);
         Stdout.Flush();
     }
 
@@ -248,12 +280,6 @@ public static class Out {
 
     public static void WriteLine(string value) =>
         WriteRaw($"{value}\r\n");
-
-    public static void WriteLineUtf8(string value) {
-        byte[] bytes = Encoding.UTF8.GetBytes($"{value}\r\n");
-        Stdout.Write(bytes, 0, bytes.Length);
-        Stdout.Flush();
-    }
 
     public static void WriteLine() =>
         WriteRaw("\r\n");

@@ -1366,7 +1366,7 @@ public static class Game {
             Gear.Values[(int)TGearItem.Wearing] = 1;
             Gear.WornGarment = TxtWornSyf;
         }
-        if ((Command == CmdOdlorz + CmdKomplet) && (Bag.Items[(int)TBagItem.Tracksuit] <= -ItemUnit) && (Gear.WornGarment == TxtWornSyf)) {
+        if ((Command == CmdOdloz + CmdKomplet) && (Bag.Items[(int)TBagItem.Tracksuit] <= -ItemUnit) && (Gear.WornGarment == TxtWornSyf)) {
             Out.WriteLine(TxtUseItems_29);
             Gear.Values[(int)TGearItem.Wearing] = 0;
             Gear.Values[(int)TGearItem.Armor] = (short)(Gear.Values[(int)TGearItem.Armor] - 7);
@@ -1401,7 +1401,7 @@ public static class Game {
             } else
                 Out.WriteLine(TxtUseItems_37);
         }
-        if ((Command == CmdOdlorz + TxtWornGarnitur) && (Bag.Items[(int)TBagItem.SpikedSuit] <= -ItemUnit) && (Gear.WornGarment == TxtWornGarnitur)) {
+        if ((Command == CmdOdloz + TxtWornGarnitur) && (Bag.Items[(int)TBagItem.SpikedSuit] <= -ItemUnit) && (Gear.WornGarment == TxtWornGarnitur)) {
             Out.WriteLine(TxtUseItems_38);
             Gear.Values[(int)TGearItem.Wearing] = 0;
             Gear.Values[(int)TGearItem.WornCount] = (short)(Gear.Values[(int)TGearItem.WornCount] - 1);
@@ -1790,10 +1790,10 @@ public static class Game {
         if (!dawaj && !other)
             return;
         if (!Crt.DebugEnabled()) {
-            Out.WriteLineUtf8(dawaj ? TxtCheatRefusal : TxtCheatRefusalOther);
+            Out.WriteLine(dawaj ? TxtCheatRefusal : TxtCheatRefusalOther);
             Command = TxtEmpty;
         } else {
-            Out.WriteLineUtf8($"\"{Command}\"... {(dawaj ? TxtCheatSuccess : TxtCheatSuccessOther)}");
+            Out.WriteLine($"\"{Command}\"... {(dawaj ? TxtCheatSuccess : TxtCheatSuccessOther)}");
         }
     }
 
@@ -1892,7 +1892,7 @@ public static class Game {
         new() { item = IntSlot.Into(Bag.Items, (int)TBagItem.Bread), desc = CmdDuzyCieplyChleb, width = 10, kind = TSheetKind.ikShown },
         new() { item = IntSlot.Into(Bag.Items, (int)TBagItem.Sausage), desc = CmdDlugaISmacznaWeke, width = 10, kind = TSheetKind.ikShown },
         new() { item = IntSlot.Into(Bag.Items, (int)TBagItem.Bigos), desc = CmdPysznyBigosZKapustaZWroga, width = 10, kind = TSheetKind.ikShown },
-        new() { item = IntSlot.Into(Bag.Items, (int)TBagItem.Beer), desc = CmdOzewiajacePiwskoZKonkretnymKlimatem, width = 0, kind = TSheetKind.ikDiv10 },
+        new() { item = IntSlot.Into(Bag.Items, (int)TBagItem.Beer), desc = CmdOrzezwiajacePiwskoZKonkretnymKlimatem, width = 0, kind = TSheetKind.ikDiv10 },
         new() { item = IntSlot.Into(Bag.Items, (int)TBagItem.Pipe), desc = CmdCiezkaFajkaOdDziadaMroza, width = 0, kind = TSheetKind.ikPlain },
         new() { item = IntSlot.Into(Bag.Items, (int)TBagItem.Tracksuit), desc = CmdKompletUbranFirmySyf, width = 0, kind = TSheetKind.ikPlain },
         new() { item = IntSlot.Into(Bag.Items, (int)TBagItem.SpikedSuit), desc = CmdGarniturZKolcami, width = 0, kind = TSheetKind.ikPlain },

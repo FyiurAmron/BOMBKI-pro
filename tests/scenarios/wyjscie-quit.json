@@ -2,26 +2,26 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIE TO",
+      "expect": "A TWOJE IMIĘ TO",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWA RASE",
+      "expect": "NAPISZ SWĄ RASĘ",
       "send": "POL-ELF"
     },
     {
       "label": "starting room",
-      "expect": "TU ZACZYNA SIE GRE",
+      "expect": "TU ZACZYNA SIĘ GRĘ",
       "send": "POLNOC"
     },
     {
       "label": "room 1 salon",
-      "expect": "OKROGLYM SALONIE",
+      "expect": "OKRĄGŁYM SALONIE",
       "send": "POLNOC"
     },
     {
@@ -30,12 +30,7 @@
       "send": "WYJSCIE"
     },
     {
-      "label": "correct spelling is inert here",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "WYJSC0IE"
-    },
-    {
-      "label": "typo exits to DOS",
+      "label": "WYJSCIE exits to DOS",
       "expect_exit": true
     }
   ]

@@ -2,21 +2,21 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIE TO",
+      "expect": "A TWOJE IMIĘ TO",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWA RASE",
+      "expect": "NAPISZ SWĄ RASĘ",
       "send": "POL-ELF"
     },
     {
       "label": "first room",
-      "expect": "TU ZACZYNA SIE GRE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "TU ZACZYNA SIĘ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -46,17 +46,17 @@
     },
     {
       "label": "city centre",
-      "expect": "JESTES W CENTRUM MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ W CENTRUM MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "shopping street south",
-      "expect": "JESTES NA ULICY NA ULICY SKLEPIKOWEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ NA ULICY NA ULICY SKLEPIKOWEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "bakery",
-      "expect": "JESTES W PIEKARNI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ W PIEKARNI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "LISTA"
     },
     {
@@ -76,12 +76,12 @@
     },
     {
       "label": "buy sucha",
-      "expect": "KUPUJESZ SUCHA RACJE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "KUPUJESZ SUCHĄ RACJĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "KUP BULKA"
     },
     {
       "label": "buy bulka",
-      "expect": "KUPUJESZ BULKE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "KUPUJESZ BUŁKĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "KUP CHLEB"
     },
     {
@@ -91,42 +91,42 @@
     },
     {
       "label": "buy weka",
-      "expect": "KUPUJESZ WEKE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "KUPUJESZ WEKĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "bakery exits",
-      "expect": "DOSTEPNE WYJSCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "back on the street",
-      "expect": "JESTES NA ULICY NA ULICY SKLEPIKOWEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ NA ULICY NA ULICY SKLEPIKOWEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "armoury",
-      "expect": "JESTES W ZBROJOWNI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ W ZBROJOWNI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "LISTA"
     },
     {
       "label": "armoury list",
-      "expect": "DLUGI MIECZ GLADIATORA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "DŁUGI MIECZ GLADIATORA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "KUP MALA"
     },
     {
       "label": "buy small shield",
-      "expect": "KUPUJESZ !MALA! TARCZA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "KUPUJESZ !MAŁA! TARCZA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "KUP STARY"
     },
     {
       "label": "buy sword",
-      "expect": "KUPUJESZ ZWYKLY MALY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "KUPUJESZ ZWYKŁY MAŁY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "SPRZEDAJ STARY"
     },
     {
       "label": "sell sword",
-      "expect": "SPRZEDAWCA MOWI CI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "SPRZEDAWCA MÓWI CI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "SPRZEDAJ MALA"
     },
     {
@@ -136,12 +136,12 @@
     },
     {
       "label": "armoury exits",
-      "expect": "DOSTEPNE WYJSCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "KUP MALA"
     },
     {
       "label": "buy the small shield again",
-      "expect": "KUPUJESZ !MALA! TARCZA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "KUPUJESZ !MAŁA! TARCZA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "KUP STARY"
     },
     {
@@ -151,12 +151,12 @@
     },
     {
       "label": "shield equipped",
-      "expect": "UZYWASZ MALEJ TARCZY JAKO TARCZY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "UŻYWASZ MAŁEJ TARCZY JAKO TARCZY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "UZYJ STARY"
     },
     {
       "label": "sword equipped",
-      "expect": "UZYWASZ STAREGO ZARDZEWIALEGO MIECZA JAKO BRONI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "UŻYWASZ STAREGO ZARDZEWIAŁEGO MIECZA JAKO BRONI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "JA"
     },
     {
@@ -166,17 +166,17 @@
     },
     {
       "label": "street again",
-      "expect": "JESTES NA ULICY NA ULICY SKLEPIKOWEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ NA ULICY NA ULICY SKLEPIKOWEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "shopping street north",
-      "expect": "CIAGNIE SIE TEDY ULICA SKLEPIKOWA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "CIĄGNIE SIĘ TEDY ULICA SKLEPIKOWA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "general store",
-      "expect": "WSZEDLES DO SKLEPU WIELOBRANZOWEGO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "WSZEDŁEŚ DO SKLEPU WIELOBRANŻOWEGO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "PATRZ WYWIESZKA"
     },
     {
@@ -201,22 +201,22 @@
     },
     {
       "label": "buy pipe",
-      "expect": "KUPUJESZ FAJKE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "KUPUJESZ FAJKĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "SPRZEDAJ FAJKA"
     },
     {
       "label": "sell pipe",
-      "expect": "SPRZEDAJESZ FAJKE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "SPRZEDAJESZ FAJKĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "KUP KASETA"
     },
     {
       "label": "buy cassette",
-      "expect": "KUPUJESZ KASETE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "KUPUJESZ KASETĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "SPRZEDAJ KASETA"
     },
     {
       "label": "sell cassette",
-      "expect": "SPRZEDAJESZ KASETE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "SPRZEDAJESZ KASETĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "KUP GARNITUR"
     },
     {
@@ -231,12 +231,12 @@
     },
     {
       "label": "store exits",
-      "expect": "DOSTEPNE WYJSCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "north street again",
-      "expect": "CIAGNIE SIE TEDY ULICA SKLEPIKOWA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "CIĄGNIE SIĘ TEDY ULICA SKLEPIKOWA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -256,17 +256,17 @@
     },
     {
       "label": "buy small bottle",
-      "expect": "KUPUJESZ MALA BUTELKA MANY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "KUPUJESZ MAŁĄ BUTELKĘ MANY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "KUP PIGULKA TRANSPORTUJACA"
     },
     {
       "label": "buy pill",
-      "expect": "KUPUJESZ PIGULKE TRANSPORTUJACA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "KUPUJESZ PIGUŁKĘ TRANSPORTUJĄCĄ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "SPRZEDAJ PIGULKA TRANSPORTUJACA"
     },
     {
       "label": "sell pill",
-      "expect": "SPRZEDAWCA KUPUJE OD CIEBIE PIGULKE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "SPRZEDAWCA KUPUJE OD CIEBIE PIGUŁKĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "KUP LISTEK"
     },
     {
@@ -291,12 +291,12 @@
     },
     {
       "label": "magic shop exits",
-      "expect": "DOSTEPNE WYJSCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "back on the north street",
-      "expect": "CIAGNIE SIE TEDY ULICA SKLEPIKOWA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "CIĄGNIE SIĘ TEDY ULICA SKLEPIKOWA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "WYJSCIE"
     }
   ]

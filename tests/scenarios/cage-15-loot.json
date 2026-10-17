@@ -2,41 +2,41 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIE TO",
+      "expect": "A TWOJE IMIĘ TO",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWA RASE",
+      "expect": "NAPISZ SWĄ RASĘ",
       "send": "OLBRZYM"
     },
     {
       "label": "starting room",
-      "expect": "TU\\ ZACZYNA\\ SIE\\ GRE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "TU\\ ZACZYNA\\ SIĘ\\ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "the salon",
-      "expect": "JESTES\\ W\\ OKROGLYM\\ SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ\\ W\\ OKRĄGŁYM\\ SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "the school hall",
-      "expect": "JESTES\\ W\\ HALLU\\ MUD\\ SZKOLY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ\\ W\\ HALLU\\ MUD\\ SZKOŁY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "the shock room",
-      "expect": "SZOK!!\\ AAA\\ UPSI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "SZOK!!!\\ AAA\\ UPSI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "GORA"
     },
     {
       "label": "the small room",
-      "expect": "JESTES\\ W\\ MALUTKIM\\ POKOJU[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ\\ W\\ MALUTKIM\\ POKOJU[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "GORA"
     },
     {
@@ -62,11 +62,11 @@
     {
       "label": "the silny cage corridor exit",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "POLODNIE"
+      "send": "POLUDNIE"
     },
     {
       "label": "cage 15",
-      "expect": "TEN\\ POKOJ\\ JEST\\ CALY\\ OBRYZGANY\\ KRWI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "TEN\\ POKÓJ\\ JEST\\ CAŁY\\ OBRYZGANY\\ KRWI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ZABIJ POTWOR"
     },
     {

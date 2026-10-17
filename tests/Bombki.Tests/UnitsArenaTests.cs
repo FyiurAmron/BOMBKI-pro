@@ -203,7 +203,7 @@ public class UnitsArenaTests {
         MiniarenaAt("EXIT|WYJSCIE", 47);
         MiniarenaAt("EXIT|WYJSCIE", 56);
         MiniarenaAt("EXIT|WYJSCIE", 57);
-        MiniarenaAt("POLODNIE", 33);
+        MiniarenaAt("POLUDNIE", 33);
         MiniarenaAt("POLNOC", 33);
         MiniarenaAt("WSCHOD", 33);
         MiniarenaAt("ZACHOD", 33);

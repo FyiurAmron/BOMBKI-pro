@@ -2,41 +2,41 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIE TO",
+      "expect": "A TWOJE IMIĘ TO",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWA RASE",
+      "expect": "NAPISZ SWĄ RASĘ",
       "send": "POL-ELF"
     },
     {
       "label": "starting room",
-      "expect": "TU ZACZYNA SIE GRE",
+      "expect": "TU ZACZYNA SIĘ GRĘ",
       "send": "POLNOC"
     },
     {
       "label": "room 1 to city center",
-      "expect": "JESTES W OKROGLYM SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ W OKRĄGŁYM SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "city center to dark street",
-      "expect": "JESTES W CENTRUM MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ W CENTRUM MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "dark street to bar",
-      "expect": "JESTES NA ULICY CIEMNEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ NA ULICY CIEMNEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "bar opening dialogue",
-      "expect": "JESTES W BARZE POD DWOMA PEDALAMI CHCAC ROZWIKLAC TA DZIWNA NAZWE[\\s\\S]*?PYTASZ SIE BARMANA : PRZEPRASZAM DLACZEGO TEN BAR NAZYWA SIE[\\s\\S]*?\\\"POD DWOMA PEDALAMI\\\"\\? A ON NA TO -WLASCIWIE TO NIE WIEM[\\s\\S]*?ALE SPYTAM SIE ZONY:MAREEEK!!.......\\(teraz ju[\\s\\S]*?wiesz\\)[\\s\\S]*?[0-9]+%\\.-?[0-9]+>"
+      "expect": "JESTEŚ W BARZE \"POD DWOMA PEDAŁAMI\". CHCĄC ROZWIKŁAĆ TĘ DZIWNĄ NAZWĘ[\\s\\S]*?PYTASZ SIĘ BARMANA: PRZEPRASZAM DLACZEGO TEN BAR NAZYWA SIĘ[\\s\\S]*?\\\"POD DWOMA PEDAŁAMI\\\"\\? A ON NA TO - WŁAŚCIWIE TO NIE WIEM[\\s\\S]*?ALE SPYTAM SIĘ ŻONY: MAREEEK!!! ... \\(TERAZ JUŻ WIESZ\\)[\\s\\S]*?[0-9]+%\\.-?[0-9]+>"
     }
   ]
 }

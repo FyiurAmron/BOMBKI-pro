@@ -2,56 +2,56 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIE TO",
+      "expect": "A TWOJE IMIĘ TO",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWA RASE",
+      "expect": "NAPISZ SWĄ RASĘ",
       "send": "OLBRZYM"
     },
     {
       "label": "starting room",
-      "expect": "TU\\ ZACZYNA\\ SIE\\ GRE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "TU\\ ZACZYNA\\ SIĘ\\ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "the salon",
-      "expect": "JESTES\\ W\\ OKROGLYM\\ SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ\\ W\\ OKRĄGŁYM\\ SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "the city centre",
-      "expect": "JESTES\\ W\\ CENTRUM\\ MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ\\ W\\ CENTRUM\\ MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "ulica długa (30)",
-      "expect": "ULICA\\ DLUGA\\ CIAGNIE\\ SIE\\ W\\ NIESKONCZONOSC[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "ULICA\\ DŁUGA\\ CIĄGNIE\\ SIĘ\\ W\\ NIESKOŃCZONOŚĆ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "ulica długa (31)",
-      "expect": "IDAC\\ ULICA\\ DLUGA\\ NA\\ POLNOC\\ SPOSTRZEGASZ\\ DOLINE\\ ROZRYWEK[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "IDĄC\\ ULICĄ\\ DŁUGĄ\\ NA\\ PÓŁNOC\\ SPOSTRZEGASZ\\ DOLINĘ\\ ROZRYWEK[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "dolina rozrywek (60)",
-      "expect": "JESTES\\ W\\ DOLINIE\\ ROZRYWEK[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ\\ W\\ DOLINIE\\ ROZRYWEK[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "budowla (61)",
-      "expect": "KIEDY\\ PODSZEDLES\\ BLIZEJ\\ ZBARANIALES\\ -\\ TO\\ SALA\\ KONCERTOWA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "KIEDY\\ PODSZEDŁEŚ\\ BLIŻEJ\\ ZBARANIAŁEŚ\\ -\\ TO\\ SALA\\ KONCERTOWA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "tłum (63)",
-      "expect": "NA\\ BRZEGACH\\ TLUM\\ JEST\\ RZADSZY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "NA\\ BRZEGACH\\ TŁUM\\ JEST\\ RZADSZY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -86,43 +86,43 @@
     },
     {
       "label": "kill grubas (BTRUDNO)",
-      "expect": "[\\s\\S]*?WYCIAGASZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[\\s\\S]*?WYCIĄGASZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ZABIJ GRUBAS"
     },
     {
       "label": "back to tłum",
-      "expect": "[\\s\\S]*?WYCIAGASZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "POLODNIE"
+      "expect": "[\\s\\S]*?WYCIĄGASZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "send": "POLUDNIE"
     },
     {
       "label": "back to budowla (61)",
-      "expect": "NA\\ BRZEGACH\\ TLUM\\ JEST\\ RZADSZY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "POLODNIE"
+      "expect": "NA\\ BRZEGACH\\ TŁUM\\ JEST\\ RZADSZY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "send": "POLUDNIE"
     },
     {
       "label": "back to dolina (60)",
-      "expect": "KIEDY\\ PODSZEDLES\\ BLIZEJ\\ ZBARANIALES\\ -\\ TO\\ SALA\\ KONCERTOWA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "KIEDY\\ PODSZEDŁEŚ\\ BLIŻEJ\\ ZBARANIAŁEŚ\\ -\\ TO\\ SALA\\ KONCERTOWA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "back to ulica długa (31)",
-      "expect": "JESTES\\ W\\ DOLINIE\\ ROZRYWEK[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "POLODNIE"
+      "expect": "JESTEŚ\\ W\\ DOLINIE\\ ROZRYWEK[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "send": "POLUDNIE"
     },
     {
       "label": "back to ulica długa (30)",
-      "expect": "IDAC\\ ULICA\\ DLUGA\\ NA\\ POLNOC\\ SPOSTRZEGASZ\\ DOLINE\\ ROZRYWEK[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "IDĄC\\ ULICĄ\\ DŁUGĄ\\ NA\\ PÓŁNOC\\ SPOSTRZEGASZ\\ DOLINĘ\\ ROZRYWEK[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "back to city centre",
-      "expect": "ULICA\\ DLUGA\\ CIAGNIE\\ SIE\\ W\\ NIESKONCZONOSC[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "ULICA\\ DŁUGA\\ CIĄGNIE\\ SIĘ\\ W\\ NIESKOŃCZONOŚĆ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "back to salon",
-      "expect": "JESTES\\ W\\ CENTRUM\\ MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "POLODNIE"
+      "expect": "JESTEŚ\\ W\\ CENTRUM\\ MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "send": "POLUDNIE"
     },
     {
       "label": "exit game",

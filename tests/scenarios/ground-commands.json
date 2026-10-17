@@ -2,21 +2,21 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIE TO",
+      "expect": "A TWOJE IMIĘ TO",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWA RASE",
+      "expect": "NAPISZ SWĄ RASĘ",
       "send": "POL-ELF"
     },
     {
       "label": "first room",
-      "expect": "TU ZACZYNA SIE GRE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "TU ZACZYNA SIĘ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -41,27 +41,27 @@
     },
     {
       "label": "city centre",
-      "expect": "JESTES W CENTRUM MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ W CENTRUM MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "shopping street",
-      "expect": "JESTES NA ULICY NA ULICY SKLEPIKOWEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ NA ULICY NA ULICY SKLEPIKOWEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "armoury",
-      "expect": "JESTES W ZBROJOWNI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ W ZBROJOWNI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "KUP STARY"
     },
     {
       "label": "buy sword",
-      "expect": "KUPUJESZ ZWYKLY MALY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "KUPUJESZ ZWYKŁY MAŁY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "KUP MALA"
     },
     {
       "label": "buy shield",
-      "expect": "KUPUJESZ !MALA! TARCZA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "KUPUJESZ !MAŁA! TARCZA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
@@ -71,7 +71,7 @@
     },
     {
       "label": "sword dropped",
-      "expect": "ODRZUCASZ STARY ZARDZEWIALY MIECZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "ODRZUCASZ STARY ZARDZEWIAŁY MIECZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ODRZUC MALA"
     },
     {
@@ -81,42 +81,42 @@
     },
     {
       "label": "armoury",
-      "expect": "JESTES W ZBROJOWNI",
+      "expect": "JESTEŚ W ZBROJOWNI",
       "send": "WSCHOD"
     },
     {
       "label": "re-enter ground, both items announced",
-      "expect": "W TWYM POKOJU LEZY !STARY![\\s\\S]*?W TYM POKOJU ZNAJDUJE SIE !MALA! TARCZA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "W TWYM POKOJU LEŻY !STARY![\\s\\S]*?W TYM POKOJU ZNAJDUJE SIĘ !MAŁA! TARCZA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "BIERZ STARY"
     },
     {
       "label": "pick the sword back up",
-      "expect": "PODNOSISZ STARY ZARDZEWIALY MIECZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "PODNOSISZ STARY ZARDZEWIAŁY MIECZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "BIERZ MALA"
     },
     {
       "label": "pick the shield back up",
-      "expect": "PODNOSISZ MALA TARCZA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "PODNOSISZ MAŁA TARCZA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "UZYJ STARY"
     },
     {
       "label": "equip the sword",
-      "expect": "UZYWASZ STAREGO ZARDZEWIALEGO MIECZA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "UŻYWASZ STAREGO ZARDZEWIAŁEGO MIECZA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ODLOZ STARY"
     },
     {
       "label": "stow sword",
-      "expect": "CHOWASZ STARY ZARDZEWIALY MIECZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "CHOWASZ STARY ZARDZEWIAŁY MIECZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "UZYJ MALA"
     },
     {
       "label": "equip shield",
-      "expect": "UZYWASZ MALEJ TARCZY JAKO TARCZY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "UŻYWASZ MAŁEJ TARCZY JAKO TARCZY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ODLOZ MALA"
     },
     {
       "label": "stow shield",
-      "expect": "JUZ NIE UZYWASZ MALEJ TARCZY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JUŻ NIE UŻYWASZ MAŁEJ TARCZY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "USTAW SZ"
     },
     {
@@ -141,12 +141,12 @@
     },
     {
       "label": "scan future function",
-      "expect": "FUNKCJA BEDZIE DOSTEPNA ZA DWA LATA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "FUNKCJA BĘDZIE DOSTĘPNA ZA DWA LATA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ODRZUC PACZEK"
     },
     {
       "label": "refuse to drop food",
-      "expect": "JAK SMIESZ WYRZUCAC JEDZENIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JAK ŚMIESZ WYRZUCAĆ JEDZENIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "JA"
     },
     {

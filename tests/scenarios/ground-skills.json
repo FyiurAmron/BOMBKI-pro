@@ -2,21 +2,21 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIE TO",
+      "expect": "A TWOJE IMIĘ TO",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWA RASE",
+      "expect": "NAPISZ SWĄ RASĘ",
       "send": "CZAROMIL"
     },
     {
       "label": "starting room",
-      "expect": "TU\\ ZACZYNA\\ SIE\\ GRE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "TU\\ ZACZYNA\\ SIĘ\\ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -31,17 +31,17 @@
     },
     {
       "label": "the shopping street",
-      "expect": "JESTES\\ W\\ CENTRUM\\ MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ\\ W\\ CENTRUM\\ MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "the alleys",
-      "expect": "JESTES\\ NA\\ ULICY\\ NA\\ ULICY\\ SKLEPIKOWEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ\\ NA\\ ULICY\\ NA\\ ULICY\\ SKLEPIKOWEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "the magic shop",
-      "expect": "CIAGNIE\\ SIE\\ TEDY\\ ULICA\\ SKLEPIKOWA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "CIĄGNIE\\ SIĘ\\ TEDY\\ ULICA\\ SKLEPIKOWA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -56,37 +56,37 @@
     },
     {
       "label": "the shopping street again",
-      "expect": "CIAGNIE\\ SIE\\ TEDY\\ ULICA\\ SKLEPIKOWA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "POLODNIE"
+      "expect": "CIĄGNIE\\ SIĘ\\ TEDY\\ ULICA\\ SKLEPIKOWA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "send": "POLUDNIE"
     },
     {
       "label": "the city centre again",
-      "expect": "JESTES\\ NA\\ ULICY\\ NA\\ ULICY\\ SKLEPIKOWEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "POLODNIE"
+      "expect": "JESTEŚ\\ NA\\ ULICY\\ NA\\ ULICY\\ SKLEPIKOWEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "send": "POLUDNIE"
     },
     {
       "label": "the salon again",
-      "expect": "JESTES\\ W\\ CENTRUM\\ MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "POLODNIE"
+      "expect": "JESTEŚ\\ W\\ CENTRUM\\ MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "send": "POLUDNIE"
     },
     {
       "label": "rambo's room",
-      "expect": "JESTES\\ W\\ OKROGLYM\\ SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ\\ W\\ OKRĄGŁYM\\ SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "the training list",
-      "expect": "JESTES\\ W\\ POKOJU\\ GDZIE\\ RAMBO\\ TRENUJE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ\\ W\\ POKOJU\\ GDZIE\\ RAMBO\\ TRENUJE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "TRENUJ"
     },
     {
       "label": "train madrosc #1",
-      "expect": "[\\s\\S]*?CO\\ CHCESZ\\ TRENOWAC[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[\\s\\S]*?CO\\ CHCESZ\\ TRENOWAĆ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "TRENUJ MADROSC"
     },
     {
       "label": "train madrosc #2",
-      "expect": "[\\s\\S]*?MADROSCI\\ I\\ ZOSTALO\\ CI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[\\s\\S]*?MADROSCI\\ I\\ ZOSTAŁO\\ CI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "TRENUJ MADROSC"
     },
     {
@@ -96,62 +96,62 @@
     },
     {
       "label": "the training room",
-      "expect": "JESTES\\ W\\ OKROGLYM\\ SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ\\ W\\ OKRĄGŁYM\\ SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "DOL"
     },
     {
       "label": "train the return skill",
-      "expect": "ZSZEDLES\\ NA\\ DOL\\ GDZIE\\ TRENUJE\\ SIE\\ MEDYTUJAC[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "ZSZEDŁEŚ\\ NA\\ DÓŁ\\ GDZIE\\ TRENUJE\\ SIĘ\\ MEDYTUJĄC[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "CWICZ POWROT"
     },
     {
       "label": "train the enchantment",
-      "expect": "[\\s\\S]*?CWICZYSZ\\ POWRACANIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[\\s\\S]*?ĆWICZYSZ\\ POWRACANIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "CWICZ POROWNANIE"
     },
     {
       "label": "enchantment attempt 1",
-      "expect": "(?:KOGO\\ CHCESZ\\ ZE\\ SOBA\\ POROWNAC?|[\\s\\S]*?[0-9]+%\\.-?[0-9]+>)",
+      "expect": "(?:KOGO\\ CHCESZ\\ ZE\\ SOBĄ\\ PORÓWNAĆ?|[\\s\\S]*?[0-9]+%\\.-?[0-9]+>)",
       "send": "POROWNAJ"
     },
     {
       "label": "enchantment attempt 2",
-      "expect": "(?:KOGO\\ CHCESZ\\ ZE\\ SOBA\\ POROWNAC?|[\\s\\S]*?[0-9]+%\\.-?[0-9]+>)",
+      "expect": "(?:KOGO\\ CHCESZ\\ ZE\\ SOBĄ\\ PORÓWNAĆ?|[\\s\\S]*?[0-9]+%\\.-?[0-9]+>)",
       "send": "POROWNAJ"
     },
     {
       "label": "enchantment attempt 3",
-      "expect": "(?:KOGO\\ CHCESZ\\ ZE\\ SOBA\\ POROWNAC?|[\\s\\S]*?[0-9]+%\\.-?[0-9]+>)",
+      "expect": "(?:KOGO\\ CHCESZ\\ ZE\\ SOBĄ\\ PORÓWNAĆ?|[\\s\\S]*?[0-9]+%\\.-?[0-9]+>)",
       "send": "POROWNAJ"
     },
     {
       "label": "enchantment attempt 4",
-      "expect": "(?:KOGO\\ CHCESZ\\ ZE\\ SOBA\\ POROWNAC?|[\\s\\S]*?[0-9]+%\\.-?[0-9]+>)",
+      "expect": "(?:KOGO\\ CHCESZ\\ ZE\\ SOBĄ\\ PORÓWNAĆ?|[\\s\\S]*?[0-9]+%\\.-?[0-9]+>)",
       "send": "POROWNAJ"
     },
     {
       "label": "enchantment attempt 5",
-      "expect": "(?:KOGO\\ CHCESZ\\ ZE\\ SOBA\\ POROWNAC?|[\\s\\S]*?[0-9]+%\\.-?[0-9]+>)",
+      "expect": "(?:KOGO\\ CHCESZ\\ ZE\\ SOBĄ\\ PORÓWNAĆ?|[\\s\\S]*?[0-9]+%\\.-?[0-9]+>)",
       "send": "POROWNAJ"
     },
     {
       "label": "enchantment attempt 6",
-      "expect": "(?:KOGO\\ CHCESZ\\ ZE\\ SOBA\\ POROWNAC?|[\\s\\S]*?[0-9]+%\\.-?[0-9]+>)",
+      "expect": "(?:KOGO\\ CHCESZ\\ ZE\\ SOBĄ\\ PORÓWNAĆ?|[\\s\\S]*?[0-9]+%\\.-?[0-9]+>)",
       "send": "POROWNAJ"
     },
     {
       "label": "enchantment attempt 7",
-      "expect": "(?:KOGO\\ CHCESZ\\ ZE\\ SOBA\\ POROWNAC?|[\\s\\S]*?[0-9]+%\\.-?[0-9]+>)",
+      "expect": "(?:KOGO\\ CHCESZ\\ ZE\\ SOBĄ\\ PORÓWNAĆ?|[\\s\\S]*?[0-9]+%\\.-?[0-9]+>)",
       "send": "POROWNAJ"
     },
     {
       "label": "use the enchantment scroll",
-      "expect": "(?:KOGO\\ CHCESZ\\ ZE\\ SOBA\\ POROWNAC?|[\\s\\S]*?[0-9]+%\\.-?[0-9]+>)",
+      "expect": "(?:KOGO\\ CHCESZ\\ ZE\\ SOBĄ\\ PORÓWNAĆ?|[\\s\\S]*?[0-9]+%\\.-?[0-9]+>)",
       "send": "UZYJ SCROLL POROWNYWANIE"
     },
     {
       "label": "scroll target",
-      "expect": "KOGO CHCESZ ZE SOBA POROWNAC",
+      "expect": "KOGO CHCESZ ZE SOBĄ PORÓWNAĆ",
       "send": "POWROT"
     },
     {
@@ -161,7 +161,7 @@
     },
     {
       "label": "out of the game",
-      "expect": "(?:KOGO\\ CHCESZ\\ ZE\\ SOBA\\ POROWNAC?|[\\s\\S]*?[0-9]+%\\.-?[0-9]+>)",
+      "expect": "(?:KOGO\\ CHCESZ\\ ZE\\ SOBĄ\\ PORÓWNAĆ?|[\\s\\S]*?[0-9]+%\\.-?[0-9]+>)",
       "send": "WYJSCIE"
     }
   ]

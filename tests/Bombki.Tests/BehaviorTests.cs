@@ -51,7 +51,7 @@ public class BehaviorTests {
         "cage-diploma",
         "cage-heart-drop",
         "room72-exit",
-        "wyjsc0ie-typo",
+        "wyjscie-quit",
         "living-door-escape",
         "living-door-defeat",
         "staruch-gifts",

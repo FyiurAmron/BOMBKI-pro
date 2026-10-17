@@ -17,3 +17,8 @@
   - all debugging commands are now available in all rooms
   - debug commands and env vars need BOMBKI_DEBUG=2137 in env
 - Save functionality improvements
+- Polish orthography pass
+  - diacritics restored throughout the game texts
+  - console output and input switched to UTF-8
+  - typed input matches regardless of case and diacritics
+  - punctuation and spacing normalized across the texts

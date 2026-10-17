@@ -2,47 +2,47 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIE TO",
+      "expect": "A TWOJE IMIĘ TO",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWA RASE",
+      "expect": "NAPISZ SWĄ RASĘ",
       "send": "OLBRZYM"
     },
     {
       "label": "starting room",
-      "expect": "TU\\ ZACZYNA\\ SIE\\ GRE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "TU\\ ZACZYNA\\ SIĘ\\ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "the salon",
-      "expect": "JESTES\\ W\\ OKROGLYM\\ SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ\\ W\\ OKRĄGŁYM\\ SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "the city centre",
-      "expect": "JESTES\\ W\\ CENTRUM\\ MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ\\ W\\ CENTRUM\\ MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "the dark street",
-      "expect": "JESTES\\ NA\\ ULICY\\ CIEMNEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "POLODNIE"
+      "expect": "JESTEŚ\\ NA\\ ULICY\\ CIEMNEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "send": "POLUDNIE"
     },
     {
       "label": "the bluszcz",
-      "expect": "ZNALAZLES\\ SIE\\ WSROD\\ BLUSZCZU[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "POLODNIE"
+      "expect": "ZNALAZŁEŚ\\ SIĘ\\ WŚRÓD\\ BLUSZCZU[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "send": "POLUDNIE"
     },
     {
       "label": "the well",
-      "expect": "CHOC\\ TO\\ MALO\\ PRAWDOPODOBNE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "POLODNIE"
+      "expect": "CHOĆ\\ TO\\ MAŁO\\ PRAWDOPODOBNE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "send": "POLUDNIE"
     },
     {
       "label": "the pier dut clearing",
@@ -51,33 +51,33 @@
     },
     {
       "label": "the cave entrance",
-      "expect": "TO\\ CIEKAWE\\ ZE\\ WCZESNIEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "POLODNIE"
+      "expect": "TO\\ CIEKAWE\\ ŻE\\ WCZEŚNIEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "send": "POLUDNIE"
     },
     {
       "label": "the tree room",
-      "expect": "MLASK\\ ,\\ MLASK\\ KTOS\\ RZECZYWISCIE\\ SIE\\ OBZERA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "MLASK,\\ MLASK\\ KTÓŚ\\ RZECZYWIŚCIE\\ SIĘ\\ OBŻERA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "the tree room exit list",
-      "expect": "DOSTEPNE\\ WYJSCIA[\\s\\S]*?POLODNIE-GROTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "DOSTĘPNE\\ WYJŚCIA[\\s\\S]*?POŁUDNIE: GROTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "the cave entrance again",
-      "expect": "TO\\ CIEKAWE\\ ZE\\ WCZESNIEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "POLODNIE"
+      "expect": "TO\\ CIEKAWE\\ ŻE\\ WCZEŚNIEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "send": "POLUDNIE"
     },
     {
       "label": "the tree room again",
-      "expect": "MLASK\\ ,\\ MLASK\\ KTOS\\ RZECZYWISCIE\\ SIE\\ OBZERA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "MLASK,\\ MLASK\\ KTÓŚ\\ RZECZYWIŚCIE\\ SIĘ\\ OBŻERA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "the cave entrance once more",
-      "expect": "TO\\ CIEKAWE\\ ZE\\ WCZESNIEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "POLODNIE"
+      "expect": "TO\\ CIEKAWE\\ ŻE\\ WCZEŚNIEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "send": "POLUDNIE"
     },
     {
       "label": "energy +200",
@@ -132,11 +132,11 @@
     {
       "label": "back in the tree room",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "POLODNIE"
+      "send": "POLUDNIE"
     },
     {
       "label": "the giant plant",
-      "expect": "MOJ\\ BOZE\\ ,\\ COZ\\ TO\\ JEST[\\s\\S]*?TAK\\ lub\\ NIE\\ >",
+      "expect": "MÓJ\\ BOŻE,\\ COŻ\\ TO\\ JEST[\\s\\S]*?TAK\\ lub\\ NIE\\ >",
       "send": "TAK"
     },
     {
@@ -146,7 +146,7 @@
     },
     {
       "label": "the grota exit list",
-      "expect": "DOSTEPNE\\ WYJSCIA[\\s\\S]*?POLODNIE-WEJSCIE\\ DO\\ GROTY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "DOSTĘPNE\\ WYJŚCIA[\\s\\S]*?POŁUDNIE: WEJŚCIE\\ DO\\ GROTY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "WYJSCIE"
     },
     {

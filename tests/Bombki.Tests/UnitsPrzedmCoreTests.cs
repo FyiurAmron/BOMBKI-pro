@@ -10,7 +10,7 @@ public class UnitsPrzedmCoreTests {
         Assert.Equal("POLNOC", Command);
         Command = "PD";
         ExpandAbbrev();
-        Assert.Equal("POLODNIE", Command);
+        Assert.Equal("POLUDNIE", Command);
         Command = "W";
         ExpandAbbrev();
         Assert.Equal("WSCHOD", Command);

@@ -2,71 +2,71 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIE TO",
+      "expect": "A TWOJE IMIĘ TO",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWA RASE",
+      "expect": "NAPISZ SWĄ RASĘ",
       "send": "POL-ELF"
     },
     {
       "label": "room 0 (TU ZACZYNA SIE GRE)",
-      "expect": "TU ZACZYNA SIE GRE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "TU ZACZYNA SIĘ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 0 exits -> 1",
-      "expect": "DOSTEPNE WYJSCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "room 1 (JESTES W OKROGLYM SA)",
-      "expect": "JESTES W OKROGLYM SALONIE WYPELNIONYM [\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ W OKRĄGŁYM SALONIE WYPEŁNIONYM [\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 1 exits -> 20",
-      "expect": "DOSTEPNE WYJSCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "room 20 (JESTES W CENTRUM MIA)",
-      "expect": "JESTES W CENTRUM MIASTA : NA SCIANIE J[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ W CENTRUM MIASTA: NA ŚCIANIE J[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 20 exits -> 21",
-      "expect": "DOSTEPNE WYJSCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "room 21 (JESTES NA ULICY NA U)",
-      "expect": "JESTES NA ULICY NA ULICY SKLEPIKOWEJ -[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ NA ULICY NA ULICY SKLEPIKOWEJ -[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 21 exits -> 22",
-      "expect": "DOSTEPNE WYJSCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "room 22 (CIAGNIE SIE TEDY ULI)",
-      "expect": "CIAGNIE SIE TEDY ULICA SKLEPIKOWA JEST[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "CIĄGNIE SIĘ TEDY ULICA SKLEPIKOWA JEST[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 22 exits -> 25",
-      "expect": "DOSTEPNE WYJSCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "room 25 (WSZEDLES DO SKLEPU W)",
-      "expect": "WSZEDLES DO SKLEPU WIELOBRANZOWEGO,STW[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "WSZEDŁEŚ DO SKLEPU WIELOBRANŻOWEGO, STW[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "LISTA"
     },
     {
@@ -81,17 +81,17 @@
     },
     {
       "label": "room 25 exits -> 22",
-      "expect": "DOSTEPNE WYJSCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "room 22 (CIAGNIE SIE TEDY ULI)",
-      "expect": "CIAGNIE SIE TEDY ULICA SKLEPIKOWA JEST[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "CIĄGNIE SIĘ TEDY ULICA SKLEPIKOWA JEST[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 22 exits -> 26",
-      "expect": "DOSTEPNE WYJSCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -106,32 +106,32 @@
     },
     {
       "label": "room 26 exits -> 22",
-      "expect": "DOSTEPNE WYJSCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "room 22 (CIAGNIE SIE TEDY ULI)",
-      "expect": "CIAGNIE SIE TEDY ULICA SKLEPIKOWA JEST[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "CIĄGNIE SIĘ TEDY ULICA SKLEPIKOWA JEST[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 22 exits -> 21",
-      "expect": "DOSTEPNE WYJSCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "POLODNIE"
+      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "send": "POLUDNIE"
     },
     {
       "label": "room 21 (JESTES NA ULICY NA U)",
-      "expect": "JESTES NA ULICY NA ULICY SKLEPIKOWEJ -[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ NA ULICY NA ULICY SKLEPIKOWEJ -[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 21 exits -> 23",
-      "expect": "DOSTEPNE WYJSCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "room 23 (JESTES W PIEKARNI , )",
-      "expect": "JESTES W PIEKARNI , SKLEP PRZESIAKNIET[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ W PIEKARNI, SKLEP PRZESIĄKNIĘT[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "LISTA"
     },
     {
@@ -146,22 +146,22 @@
     },
     {
       "label": "room 23 exits -> 21",
-      "expect": "DOSTEPNE WYJSCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "room 21 (JESTES NA ULICY NA U)",
-      "expect": "JESTES NA ULICY NA ULICY SKLEPIKOWEJ -[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ NA ULICY NA ULICY SKLEPIKOWEJ -[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 21 exits -> 24",
-      "expect": "DOSTEPNE WYJSCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "room 24 (JESTES W ZBROJOWNI -)",
-      "expect": "JESTES W ZBROJOWNI - SKLEP NIEDAWNO ZO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ W ZBROJOWNI - SKLEP NIEDAWNO ZO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "LISTA"
     },
     {

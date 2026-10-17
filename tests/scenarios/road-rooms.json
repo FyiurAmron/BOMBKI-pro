@@ -2,41 +2,41 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIE TO",
+      "expect": "A TWOJE IMIĘ TO",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWA RASE",
+      "expect": "NAPISZ SWĄ RASĘ",
       "send": "OLBRZYM"
     },
     {
       "label": "first room",
-      "expect": "TU ZACZYNA SIE GRE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "TU ZACZYNA SIĘ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "salon",
-      "expect": "JESTES\\ W\\ OKROGLYM\\ SALO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ\\ W\\ OKRĄGŁYM\\ SALO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "city centre",
-      "expect": "JESTES\\ W\\ CENTRUM\\ MIAST[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ\\ W\\ CENTRUM\\ MIAST[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "shopping street",
-      "expect": "JESTES\\ NA\\ ULICY\\ NA\\ ULI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ\\ NA\\ ULICY\\ NA\\ ULI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "street continues",
-      "expect": "CIAGNIE\\ SIE\\ TEDY\\ ULICA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "CIĄGNIE\\ SIĘ\\ TEDY\\ ULICA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -56,7 +56,7 @@
     },
     {
       "label": "the road, exit list",
-      "expect": "IDZIESZ\\ DROGA\\ ,\\ MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "IDZIESZ\\ DROGĄ DO MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "EXIT"
     },
     {
@@ -66,7 +66,7 @@
     },
     {
       "label": "signpost text, head west",
-      "expect": "WSCHOD\\ -\\ MIASTO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "WSCHÓD\\ -\\ MIASTO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -81,7 +81,7 @@
     },
     {
       "label": "road ends at the river, exit list",
-      "expect": "CO\\ TO\\ ZA\\ GLUPOTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "CO\\ TO\\ ZA\\ GŁUPOTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "EXIT"
     },
     {
@@ -96,37 +96,37 @@
     },
     {
       "label": "back on the road",
-      "expect": "IDZIESZ\\ DROGA\\ ,\\ MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "IDZIESZ\\ DROGĄ DO MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "back at the crossroads",
-      "expect": "ZNALAZLES\\ SIE\\ NA\\ ROZJE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "POLODNIE"
+      "expect": "ZNALAZŁEŚ\\ SIĘ\\ NA\\ ROZJE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "send": "POLUDNIE"
     },
     {
       "label": "street continues again",
-      "expect": "CIAGNIE\\ SIE\\ TEDY\\ ULICA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
-      "send": "POLODNIE"
+      "expect": "CIĄGNIE\\ SIĘ\\ TEDY\\ ULICA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "send": "POLUDNIE"
     },
     {
       "label": "shopping street again",
-      "expect": "JESTES\\ NA\\ ULICY\\ NA\\ ULI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ\\ NA\\ ULICY\\ NA\\ ULI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "bakery",
-      "expect": "JESTES\\ W\\ PIEKARNI\\ ,\\ SK[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ\\ W\\ PIEKARNI,\\ SK[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "PATRZ PLAKAT"
     },
     {
       "label": "bakery notice board",
-      "expect": "LISTA-LISTA DOSTEPNYCH RZECZY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "LISTA - LISTA DOSTĘPNYCH RZECZY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "back on the shopping street",
-      "expect": "JESTES\\ NA\\ ULICY\\ NA\\ ULI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ\\ NA\\ ULICY\\ NA\\ ULI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "EXIT"
     }
   ]
