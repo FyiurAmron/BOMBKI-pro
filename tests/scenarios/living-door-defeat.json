@@ -2,46 +2,46 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIE TO",
+      "expect": "A TWOJE IMIĘ TO",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWA RASE",
+      "expect": "NAPISZ SWĄ RASĘ",
       "send": "OLBRZYM"
     },
     {
       "label": "first room",
-      "expect": "TU ZACZYNA SIE GRE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "TU ZACZYNA SIĘ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "round salon",
-      "expect": "JESTES W OKROGLYM SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ W OKRĄGŁYM SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "city centre",
-      "expect": "JESTES W CENTRUM MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ W CENTRUM MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "dark street",
-      "expect": "JESTES NA ULICY CIEMNEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ NA ULICY CIEMNEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLODNIE"
     },
     {
       "label": "bluszcz",
-      "expect": "ZNALAZLES SIE WSROD BLUSZCZU[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "ZNALAZŁEŚ SIĘ WŚRÓD BLUSZCZU[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLODNIE"
     },
     {
       "label": "flower thicket",
-      "expect": "CHOC TO MALO PRAWDOPODOBNE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "CHOĆ TO MAŁO PRAWDOPODOBNE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLODNIE"
     },
     {
@@ -51,7 +51,7 @@
     },
     {
       "label": "cave entrance",
-      "expect": "TO CIEKAWE ZE WCZESNIEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "TO CIEKAWE ŻE WCZEŚNIEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -76,22 +76,22 @@
     },
     {
       "label": "the doors refuse to let you through",
-      "expect": "SPROBOJ OMINAC TE MEGA-PRZYPAKOWANE DRZWI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "SPRÓBUJ OMINĄĆ TE MEGA-PRZYPAKOWANE DRZWI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ZABIJ DRZWI"
     },
     {
       "label": "the blocked way west is refused",
-      "expect": "[\\s\\S]*?ZABILES GO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[\\s\\S]*?ZABIŁEŚ GO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "with the doors down the way west is open",
-      "expect": "ZACHOD-WEJSCIE DO DOMKU[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "ZACHÓD-WEJŚCIE DO DOMKU[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "past the DRZWI into the dark room",
-      "expect": "DOBRA JESTES W SRODKU BRAK OSWIETLENIA[\\s\\S]*?W ROGU ZAUWAZASZ MALEGO WYGLODZONEGO ELFIEGO STARUCHA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "DOBRA JESTEŚ W ŚRODKU BRAK OŚWIETLENIA[\\s\\S]*?W ROGU ZAUWAŻASZ MAŁEGO WYGŁODZONEGO ELFIEGO STARUCHA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -101,12 +101,12 @@
     },
     {
       "label": "PATRZ GARNKI on the empty pots",
-      "expect": "Z JEZOREM NA WIERZCHU PATRZYSZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Z JĄZOREM NA WIERZCHU PATRZYSZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "dark room exit list",
-      "expect": "WSCHOD-BUDYNEK[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "WSCHÓD-BUDYNEK[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "WYJSCIE"
     }
   ]

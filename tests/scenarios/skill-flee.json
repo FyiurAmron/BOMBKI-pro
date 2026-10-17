@@ -2,31 +2,31 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIE TO",
+      "expect": "A TWOJE IMIĘ TO",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWA RASE",
+      "expect": "NAPISZ SWĄ RASĘ",
       "send": "UFOK"
     },
     {
       "label": "first room",
-      "expect": "TU ZACZYNA SIE GRE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "TU ZACZYNA SIĘ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "round salon",
-      "expect": "JESTES W OKROGLYM SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ W OKRĄGŁYM SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "strength room",
-      "expect": "JESTES W POKOJU GDZIE RAMBO TRENUJE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ W POKOJU GDZIE RAMBO TRENUJE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "TRENUJ ZRECZNOSC"
     },
     {
@@ -41,12 +41,12 @@
     },
     {
       "label": "back to the salon",
-      "expect": "JESTES W OKROGLYM SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ W OKRĄGŁYM SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "DOL"
     },
     {
       "label": "meditation room",
-      "expect": "ZSZEDLES NA DOL GDZIE TRENUJE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "ZSZEDŁEŚ NA DÓŁ GDZIE TRENUJE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "CWICZ UCIEKAC"
     },
     {
@@ -56,7 +56,7 @@
     },
     {
       "label": "flee threshold prompt",
-      "expect": "PONIZEJ ILU ENERGII CHCESZ UCIEKAC\\?",
+      "expect": "PONIŻEJ ILU ENERGII CHCESZ UCIEKAĆ\\?",
       "send": "20"
     },
     {

@@ -2,31 +2,31 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ"
+      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIE TO",
+      "expect": "A TWOJE IMIĘ TO",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWA RASE",
+      "expect": "NAPISZ SWĄ RASĘ",
       "send": "OLBRZYM"
     },
     {
       "label": "first room",
-      "expect": "TU ZACZYNA SIE GRE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "TU ZACZYNA SIĘ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "salon",
-      "expect": "JESTES\\ W\\ OKROGLYM\\ SALO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ\\ W\\ OKRĄGŁYM\\ SALO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "city centre, read the poster",
-      "expect": "JESTES\\ W\\ CENTRUM\\ MIAST[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ\\ W\\ CENTRUM\\ MIAST[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "PATRZ PLAKAT"
     },
     {
@@ -61,7 +61,7 @@
     },
     {
       "label": "zamiatacz down, head for the street continues",
-      "expect": "WYCIAGASZ [0-9]+ MONET Z CIALA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "WYCIĄGASZ [0-9]+ MONET Z CIAŁA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -91,12 +91,12 @@
     },
     {
       "label": "sprzedawca down, back to the shopping street",
-      "expect": "WYCIAGASZ [0-9]+ MONET Z CIALA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "WYCIĄGASZ [0-9]+ MONET Z CIAŁA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLODNIE"
     },
     {
       "label": "shopping street, turn into the armoury",
-      "expect": "JESTES\\ NA\\ ULICY\\ NA\\ ULI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ\\ NA\\ ULICY\\ NA\\ ULI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -126,17 +126,17 @@
     },
     {
       "label": "pijak down, back to the shopping street",
-      "expect": "WYCIAGASZ [0-9]+ MONET Z CIALA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "WYCIĄGASZ [0-9]+ MONET Z CIAŁA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "shopping street, on to the street continues",
-      "expect": "JESTES\\ NA\\ ULICY\\ NA\\ ULI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "JESTEŚ\\ NA\\ ULICY\\ NA\\ ULI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "street continues, turn into the multi-branch shop",
-      "expect": "CIAGNIE\\ SIE\\ TEDY\\ ULICA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "CIĄGNIE\\ SIĘ\\ TEDY\\ ULICA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -166,12 +166,12 @@
     },
     {
       "label": "taksowkarz down, fight the zebrak",
-      "expect": "WYCIAGASZ [0-9]+ MONET Z CIALA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "WYCIĄGASZ [0-9]+ MONET Z CIAŁA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "ZABIJ ZEBRAK"
     },
     {
       "label": "zebrak down",
-      "expect": "Z GRUBEGO PORTFELA ZEBRAKA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Z GRUBEGO PORTFELA ŻEBRAKA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "EXIT"
     }
   ]

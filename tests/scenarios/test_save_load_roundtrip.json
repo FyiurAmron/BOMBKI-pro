@@ -1,23 +1,23 @@
 {
   "steps": [
     {
-      "expect": "DUZO POPRAWEK WIEC SIE CIESZ I GRAJ",
+      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ",
       "label": "intro prompt"
     },
     {
-      "expect": "A TWOJE IMIE TO",
+      "expect": "A TWOJE IMIĘ TO",
       "send": "TESTER"
     },
     {
-      "expect": "NAPISZ SWA RASE",
+      "expect": "NAPISZ SWĄ RASĘ",
       "send": "POL-ELF"
     },
     {
-      "expect": "ABY SIE PATRZEC UZYJ KOMENDY PATRZ",
+      "expect": "ABY SIĘ PATRZEĆ UŻYJ KOMENDY PATRZ",
       "send": ""
     },
     {
-      "expect": "TU ZACZYNA SIE GRE",
+      "expect": "TU ZACZYNA SIĘ GRĘ",
       "send": "POLNOC"
     },
     {

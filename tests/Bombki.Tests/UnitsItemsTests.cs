@@ -126,7 +126,7 @@ public class UnitsItemsTests {
         Assert.Equal(7, Gear.Values[(int)TGearItem.Armor]);
         Assert.Equal(1, Gear.Values[(int)TGearItem.Wearing]);
         Assert.Equal("SYF", Gear.WornGarment);
-        Command = "ODLORZ KOMPLET";
+        Command = "ODLOZ KOMPLET";
         UseItems();
         Assert.Equal(0, Gear.Values[(int)TGearItem.Armor]);
         Assert.Equal(0, Gear.Values[(int)TGearItem.Wearing]);
@@ -159,7 +159,7 @@ public class UnitsItemsTests {
         Assert.Equal(1, Gear.Values[(int)TGearItem.WornCount]);
         Assert.Equal(15, Gear.Values[(int)TGearItem.LuckRoll]);
         Assert.Equal("GARNITUR", Gear.WornGarment);
-        Command = "ODLORZ GARNITUR";
+        Command = "ODLOZ GARNITUR";
         UseItems();
         Assert.Equal(0, Gear.Values[(int)TGearItem.Armor]);
         Assert.Equal(0, Gear.Values[(int)TGearItem.WornCount]);

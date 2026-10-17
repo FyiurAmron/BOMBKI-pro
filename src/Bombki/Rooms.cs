@@ -763,7 +763,7 @@ public static class Rooms {
             if (Command == CmdExit) {
                 WriteExits([ TxtShared_03,
                             TxtExitPolodnie, TxtPlaceUlSklepikowa,
-                            TxtExitWschod, TxtPlaceDrogaOKtorejMozeszPomazycBoJestWProdukcji, ]);
+                            TxtExitWschod, TxtPlaceDrogaOKtorejMozeszPomarzycBoJestWProdukcji, ]);
                 if (Bag.Permit == 0) Out.WriteLine(TxtExitZachod + TxtPlaceDrogaZablokowanaPrzezQuestMastera);
                 if (Bag.Permit < 0) Out.WriteLine(TxtExitZachod + TxtPlaceDroga);
             }
