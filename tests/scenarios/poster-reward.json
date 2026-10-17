@@ -2,66 +2,66 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWĄ RASĘ",
+      "expect": "Napisz\\ swą\\ rasę",
       "send": "POL-ELF"
     },
     {
       "label": "starting room",
-      "expect": "TU ZACZYNA SIĘ GRĘ",
+      "expect": "Tu\\ zaczyna\\ się\\ grę",
       "send": "POLNOC"
     },
     {
       "label": "round salon to mud school hall",
-      "expect": "JESTEŚ W OKRĄGŁYM SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "mud school hall to shock room",
-      "expect": "JESTEŚ W HALLU MUD SZKOŁY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ hallu\\ mud\\ szkoły[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "shock room to small room",
-      "expect": "SZOK!!! AAA UPSI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Szok!!!\\ Aaa\\ upsi[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "GORA"
     },
     {
       "label": "small room to cage hall",
-      "expect": "JESTEŚ W MALUTKIM POKOJU[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ malutkim\\ pokoju[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "GORA"
     },
     {
       "label": "cage hall to poster room",
-      "expect": "JESTEŚ W POKOJU PROWADZĄCYM DO KLATEK[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ pokoju\\ prowadzącym\\ do\\ klatek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "DOL"
     },
     {
       "label": "poster room and poster text",
-      "expect": "JESTEŚ W POKOJU W KTÓRYM JEST !PLAKAT! \\(ŚMIERDZI TU\\)[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ pokoju\\ w\\ którym\\ jest\\ !PLAKAT!\\ \\(Śmierdzi\\ tu\\)[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "PATRZ PLAKAT"
     },
     {
       "label": "poster text and reward hint",
-      "expect": "SORRY ŻE NIE UMYŁEM POKOJU[\\s\\S]*?JEŚLI BYŁEŚ AKTYWNY[\\s\\S]*?SPRAWDŹ CZY LEŻY TU COŚ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Sorry\\ że\\ nie\\ umyłem\\ pokoju[\\s\\S]*?Jeśli\\ byłeś\\ aktywny[\\s\\S]*?Sprawdź\\ czy\\ leży\\ tu\\ coś[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "poster room exits",
-      "expect": "GÓRA: KLATKI PEŁNE GAJDY[\\s\\S]*?DÓŁ: TELEPORT!!![\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "GÓRA: Klatki\\ pełne\\ gajdy[\\s\\S]*?DÓŁ: Teleport!!![\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "DOL"
     },
     {
       "label": "teleport room returns to room 1",
-      "expect": "T\\*\\*\\*E\\*\\*\\*L\\*\\*\\*E\\*\\*\\*P\\*\\*\\*O\\*\\*\\*R\\*\\*\\*T\\*\\*\\*O\\*\\*\\*W\\*\\*\\*A\\*\\*\\*Ł\\*\\*\\*E\\*\\*\\*Ś[\\s\\S]*?JESTEŚ W OKRĄGŁYM SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>"
+      "expect": "T\\*\\*\\*E\\*\\*\\*L\\*\\*\\*E\\*\\*\\*P\\*\\*\\*O\\*\\*\\*R\\*\\*\\*T\\*\\*\\*O\\*\\*\\*W\\*\\*\\*A\\*\\*\\*Ł\\*\\*\\*E\\*\\*\\*Ś[\\s\\S]*?Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>"
     }
   ]
 }

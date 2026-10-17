@@ -2,46 +2,46 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWĄ RASĘ",
+      "expect": "Napisz\\ swą\\ rasę",
       "send": "CZLOWIEK"
     },
     {
       "label": "first room",
-      "expect": "TU ZACZYNA SIĘ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Tu\\ zaczyna\\ się\\ grę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "in room 1",
-      "expect": "JESTEŚ W OKRĄGŁYM SALONIE WYPEŁNIONYM [\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie\\ wypełnionym\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "in room 20",
-      "expect": "JESTEŚ W CENTRUM MIASTA: NA ŚCIANIE J[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ centrum\\ miasta:\\ na\\ ścianie\\ j[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "in room 75",
-      "expect": "JESTEŚ NA ULICY CIEMNEJ, WŁAŚCIWIE NA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ ciemnej,\\ właściwie\\ na[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "in room 77",
-      "expect": "ZNALAZŁEŚ SIĘ WŚRÓD BLUSZCZU, WOKÓŁ [\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Znalazłeś\\ się\\ wśród\\ bluszczu,\\ wokół\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "in room 80",
-      "expect": "CHOĆ TO MAŁO PRAWDOPODOBNE TUTAJ JEST [\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Choć\\ to\\ mało\\ prawdopodobne\\ tutaj\\ jest\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
@@ -51,7 +51,7 @@
     },
     {
       "label": "in the cave entrance room 84",
-      "expect": "TO CIEKAWE ŻE WCZEŚNIEJ NIE ZAUWAŻYŁEŚ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "To\\ ciekawe\\ że\\ wcześniej\\ nie\\ zauważyłeś[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -76,12 +76,12 @@
     },
     {
       "label": "defeat the DRZWI",
-      "expect": "[\\s\\S]*?ZABIŁEŚ GO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[\\s\\S]*?Zabiłeś\\ go[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "past the living door into the dark room",
-      "expect": "DOBRA JESTEŚ W ŚRODKU BRAK OŚWIETLENIA[\\s\\S]*?STARUCHA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dobra\\ jesteś\\ w\\ środku\\ brak\\ oświetlenia[\\s\\S]*?starucha[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -96,31 +96,31 @@
     },
     {
       "label": "restart",
-      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Gra\\ zapisana[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "restart": true
     },
     {
       "label": "intro",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "name",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "loaded",
-      "expect": "suckemall:",
+      "expect": "Suckemall:",
       "send": ""
     },
     {
       "label": "just-saved tax",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": ""
     },
     {
       "label": "level 2: banner, then grant 1/2",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -135,31 +135,31 @@
     },
     {
       "label": "restart",
-      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Gra\\ zapisana[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "restart": true
     },
     {
       "label": "intro",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "name",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "loaded",
-      "expect": "suckemall:",
+      "expect": "Suckemall:",
       "send": ""
     },
     {
       "label": "just-saved tax",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": ""
     },
     {
       "label": "level 3: banner, then grant 1/2",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -174,31 +174,31 @@
     },
     {
       "label": "restart",
-      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Gra\\ zapisana[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "restart": true
     },
     {
       "label": "intro",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "name",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "loaded",
-      "expect": "suckemall:",
+      "expect": "Suckemall:",
       "send": ""
     },
     {
       "label": "just-saved tax",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": ""
     },
     {
       "label": "level 4: banner, then grant 1/2",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -213,31 +213,31 @@
     },
     {
       "label": "restart",
-      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Gra\\ zapisana[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "restart": true
     },
     {
       "label": "intro",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "name",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "loaded",
-      "expect": "suckemall:",
+      "expect": "Suckemall:",
       "send": ""
     },
     {
       "label": "just-saved tax",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": ""
     },
     {
       "label": "level 5: banner, then grant 1/2",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -252,31 +252,31 @@
     },
     {
       "label": "restart",
-      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Gra\\ zapisana[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "restart": true
     },
     {
       "label": "intro",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "name",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "loaded",
-      "expect": "suckemall:",
+      "expect": "Suckemall:",
       "send": ""
     },
     {
       "label": "just-saved tax",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": ""
     },
     {
       "label": "level 6: banner, then grant 1/2",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -291,31 +291,31 @@
     },
     {
       "label": "restart",
-      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Gra\\ zapisana[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "restart": true
     },
     {
       "label": "intro",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "name",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "loaded",
-      "expect": "suckemall:",
+      "expect": "Suckemall:",
       "send": ""
     },
     {
       "label": "just-saved tax",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": ""
     },
     {
       "label": "level 7: banner, then grant 1/2",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -330,31 +330,31 @@
     },
     {
       "label": "restart",
-      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Gra\\ zapisana[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "restart": true
     },
     {
       "label": "intro",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "name",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "loaded",
-      "expect": "suckemall:",
+      "expect": "Suckemall:",
       "send": ""
     },
     {
       "label": "just-saved tax",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": ""
     },
     {
       "label": "level 8: banner, then grant 1/2",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -369,31 +369,31 @@
     },
     {
       "label": "restart",
-      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Gra\\ zapisana[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "restart": true
     },
     {
       "label": "intro",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "name",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "loaded",
-      "expect": "suckemall:",
+      "expect": "Suckemall:",
       "send": ""
     },
     {
       "label": "just-saved tax",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": ""
     },
     {
       "label": "level 9: banner, then grant 1/2",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -408,31 +408,31 @@
     },
     {
       "label": "restart",
-      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Gra\\ zapisana[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "restart": true
     },
     {
       "label": "intro",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "name",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "loaded",
-      "expect": "suckemall:",
+      "expect": "Suckemall:",
       "send": ""
     },
     {
       "label": "just-saved tax",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": ""
     },
     {
       "label": "level 10: banner, then grant 1/2",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -447,31 +447,31 @@
     },
     {
       "label": "restart",
-      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Gra\\ zapisana[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "restart": true
     },
     {
       "label": "intro",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "name",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "loaded",
-      "expect": "suckemall:",
+      "expect": "Suckemall:",
       "send": ""
     },
     {
       "label": "just-saved tax",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": ""
     },
     {
       "label": "level 11: banner, then grant 1/2",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -486,31 +486,31 @@
     },
     {
       "label": "restart",
-      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Gra\\ zapisana[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "restart": true
     },
     {
       "label": "intro",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "name",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "loaded",
-      "expect": "suckemall:",
+      "expect": "Suckemall:",
       "send": ""
     },
     {
       "label": "just-saved tax",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": ""
     },
     {
       "label": "level 12: banner, then grant 1/2",
-      "expect": "HURRRA TO JUŻ DWUNASTY POZIOM[\\s\\S]*?MASZ TERAZ",
+      "expect": "Hurrra\\ to\\ już\\ dwunasty\\ poziom[\\s\\S]*?Masz\\ teraz",
       "send": "DAWAJ KUNSZT"
     },
     {

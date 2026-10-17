@@ -2,41 +2,41 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWĄ RASĘ",
+      "expect": "Napisz\\ swą\\ rasę",
       "send": "OLBRZYM"
     },
     {
       "label": "first room",
-      "expect": "TU ZACZYNA SIĘ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Tu\\ zaczyna\\ się\\ grę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "salon",
-      "expect": "JESTEŚ\\ W\\ OKRĄGŁYM\\ SALO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salo[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "city centre",
-      "expect": "JESTEŚ\\ W\\ CENTRUM\\ MIAST[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ centrum\\ miast[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "shopping street",
-      "expect": "JESTEŚ\\ NA\\ ULICY\\ NA\\ ULI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ na\\ uli[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "street continues",
-      "expect": "CIĄGNIE\\ SIĘ\\ TEDY\\ ULICA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ciągnie\\ się\\ tedy\\ ulica[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -56,7 +56,7 @@
     },
     {
       "label": "the road, exit list",
-      "expect": "IDZIESZ\\ DROGĄ DO MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Idziesz\\ drogą\\ do\\ miasta[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
@@ -66,12 +66,12 @@
     },
     {
       "label": "signpost text, head west",
-      "expect": "WSCHÓD\\ -\\ MIASTO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "WSCHÓD\\ \\-\\ miasto[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "stony road, exit list",
-      "expect": "IDZIESZ\\ DALEJ\\ KAMIENIS[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Idziesz\\ dalej\\ kamienis[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
@@ -81,7 +81,7 @@
     },
     {
       "label": "road ends at the river, exit list",
-      "expect": "CO\\ TO\\ ZA\\ GŁUPOTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Co\\ to\\ za\\ głupota[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
@@ -91,42 +91,42 @@
     },
     {
       "label": "back on the stony road",
-      "expect": "IDZIESZ\\ DALEJ\\ KAMIENIS[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Idziesz\\ dalej\\ kamienis[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "back on the road",
-      "expect": "IDZIESZ\\ DROGĄ DO MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Idziesz\\ drogą\\ do\\ miasta[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "back at the crossroads",
-      "expect": "ZNALAZŁEŚ\\ SIĘ\\ NA\\ ROZJE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Znalazłeś\\ się\\ na\\ rozje[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "street continues again",
-      "expect": "CIĄGNIE\\ SIĘ\\ TEDY\\ ULICA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ciągnie\\ się\\ tedy\\ ulica[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "shopping street again",
-      "expect": "JESTEŚ\\ NA\\ ULICY\\ NA\\ ULI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ na\\ uli[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "bakery",
-      "expect": "JESTEŚ\\ W\\ PIEKARNI,\\ SK[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ piekarni,\\ sk[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "PATRZ PLAKAT"
     },
     {
       "label": "bakery notice board",
-      "expect": "LISTA - LISTA DOSTĘPNYCH RZECZY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "LISTA\\ \\-\\ LISTA\\ dostępnych\\ rzeczy[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "back on the shopping street",
-      "expect": "JESTEŚ\\ NA\\ ULICY\\ NA\\ ULI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ na\\ uli[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     }
   ]

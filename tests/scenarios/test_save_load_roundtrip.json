@@ -1,23 +1,23 @@
 {
   "steps": [
     {
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ",
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj",
       "label": "intro prompt"
     },
     {
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
-      "expect": "NAPISZ SWĄ RASĘ",
+      "expect": "Napisz\\ swą\\ rasę",
       "send": "POL-ELF"
     },
     {
-      "expect": "ABY SIĘ PATRZEĆ UŻYJ KOMENDY PATRZ",
+      "expect": "Aby\\ się\\ patrzeć\\ UŻYJ\\ komendy\\ PATRZ",
       "send": ""
     },
     {
-      "expect": "TU ZACZYNA SIĘ GRĘ",
+      "expect": "Tu\\ zaczyna\\ się\\ grę",
       "send": "POLNOC"
     },
     {
@@ -30,15 +30,15 @@
     },
     {
       "label": "the load consumes the next typed line",
-      "expect": "WLACZ POSTAC",
+      "expect": "WLACZ\\ POSTAC",
       "send": "JA"
     },
     {
-      "expect": "suckemall:",
+      "expect": "Suckemall:",
       "send": "JA"
     },
     {
-      "expect": "MASZ 30 MONET",
+      "expect": "Masz\\ 30\\ monet",
       "send": "JA"
     },
     {

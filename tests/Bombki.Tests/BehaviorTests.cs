@@ -186,7 +186,8 @@ public class BehaviorTests {
         int? before = null;
         int? residue = null;
         var promptValue = new Regex(@"[0-9]+%\.(?<kunszt>-?[0-9]+)>", RegexOptions.Compiled);
-        var gap = new Regex(@"BRAKUJE CI (?<gap>-?[0-9]+) KUNSZTU", RegexOptions.Compiled);
+        var gap = new Regex(@"BRAKUJE CI (?<gap>-?[0-9]+) KUNSZTU",
+            RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         foreach (var line in File.ReadLines(logPath)) {
             JsonDocument doc;

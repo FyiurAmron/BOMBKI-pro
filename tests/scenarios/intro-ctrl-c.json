@@ -2,11 +2,11 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "\u0003",
       "append_newline": false
     },

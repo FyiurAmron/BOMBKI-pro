@@ -22,3 +22,6 @@
   - console output and input switched to UTF-8
   - typed input matches regardless of case and diacritics
   - punctuation and spacing normalized across the texts
+- Sentence-case texts
+  - game texts read as normal sentences
+  - command, item and enemy names stay uppercase

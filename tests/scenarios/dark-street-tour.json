@@ -2,61 +2,61 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWĄ RASĘ",
+      "expect": "Napisz\\ swą\\ rasę",
       "send": "POL-ELF"
     },
     {
       "label": "room 0 (TU ZACZYNA SIE GRE)",
-      "expect": "TU ZACZYNA SIĘ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Tu\\ zaczyna\\ się\\ grę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 0 exits -> 1",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "room 1 (JESTES W OKROGLYM SA)",
-      "expect": "JESTEŚ W OKRĄGŁYM SALONIE WYPEŁNIONYM [\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie\\ wypełnionym\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 1 exits -> 20",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "room 20 (JESTES W CENTRUM MIA)",
-      "expect": "JESTEŚ W CENTRUM MIASTA: NA ŚCIANIE J[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ centrum\\ miasta:\\ na\\ ścianie\\ j[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 20 exits -> 75",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "room 75 (JESTES NA ULICY CIEM)",
-      "expect": "JESTEŚ NA ULICY CIEMNEJ, WŁAŚCIWIE NA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ ciemnej,\\ właściwie\\ na[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 75 exits -> 76",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "room 76 (JESTES W BARZE POD D)",
-      "expect": "JESTEŚ W BARZE \"POD DWOMA PEDAŁAMI\". CHCĄC[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ barze\\ \"pod\\ dwoma\\ pedałami\".\\ Chcąc[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "LISTA"
     },
     {
@@ -71,72 +71,72 @@
     },
     {
       "label": "room 76 exits -> 75",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "room 75 (JESTES NA ULICY CIEM)",
-      "expect": "JESTEŚ NA ULICY CIEMNEJ, WŁAŚCIWIE NA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ ciemnej,\\ właściwie\\ na[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 75 exits -> 77",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "room 77 (ZNALAZLES SIE WSROD )",
-      "expect": "ZNALAZŁEŚ SIĘ WŚRÓD BLUSZCZU, WOKÓŁ [\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Znalazłeś\\ się\\ wśród\\ bluszczu,\\ wokół\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 77 exits -> 78",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "room 78 (WSZEDLES W GASZCZ RO)",
-      "expect": "WSZEDŁEŚ W GĄSZCZ ROŚLIN I KWIATÓW[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Wszedłeś\\ w\\ gąszcz\\ roślin\\ i\\ kwiatów[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 78 exits -> 77",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "room 77 (ZNALAZLES SIE WSROD )",
-      "expect": "ZNALAZŁEŚ SIĘ WŚRÓD BLUSZCZU, WOKÓŁ [\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Znalazłeś\\ się\\ wśród\\ bluszczu,\\ wokół\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 77 exits -> 79",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "room 79 (SLYSZYSZ POKRZYWE KT)",
-      "expect": "SŁYSZYSZ POKRZYWĘ KTÓRĄ POŻERA BEZBRON[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Słyszysz\\ POKRZYWĘ\\ którą\\ pożera\\ bezbron[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 79 exits -> 77",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "room 77 (ZNALAZLES SIE WSROD )",
-      "expect": "ZNALAZŁEŚ SIĘ WŚRÓD BLUSZCZU, WOKÓŁ [\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Znalazłeś\\ się\\ wśród\\ bluszczu,\\ wokół\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 77 exits -> 80",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "room 80 (CHOC TO MALO PRAWDOP)",
-      "expect": "CHOĆ TO MAŁO PRAWDOPODOBNE TUTAJ JEST [\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Choć\\ to\\ mało\\ prawdopodobne\\ tutaj\\ jest\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "PATRZ NAPIS"
     },
     {
@@ -146,47 +146,47 @@
     },
     {
       "label": "room 80 exits -> 81",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "room 81 (PRZEDZIERASZ SIE PRZ)",
-      "expect": "PRZEDZIERASZ SIĘ PRZEZ CAŁY TEN SYF I [\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Przedzierasz\\ się\\ przez\\ cały\\ ten\\ SYF\\ i\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 81 exits -> 80",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "room 80 (CHOC TO MALO PRAWDOP)",
-      "expect": "CHOĆ TO MAŁO PRAWDOPODOBNE TUTAJ JEST [\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Choć\\ to\\ mało\\ prawdopodobne\\ tutaj\\ jest\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 80 exits -> 82",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "room 82 (W TEJ KOMNACIE JEST )",
-      "expect": "W TEJ KOMNACIE JEST ZNACZNIE JAŚNIEJ A[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "W\\ tej\\ komnacie\\ jest\\ znacznie\\ jaśniej\\ a[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 82 exits -> 80",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "room 80 (CHOC TO MALO PRAWDOP)",
-      "expect": "CHOĆ TO MAŁO PRAWDOPODOBNE TUTAJ JEST [\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Choć\\ to\\ mało\\ prawdopodobne\\ tutaj\\ jest\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 80 exits -> 83",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
@@ -196,42 +196,42 @@
     },
     {
       "label": "room 83 exits -> 84",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "room 84 (TO CIEKAWE ZE WCZESN)",
-      "expect": "TO CIEKAWE ŻE WCZEŚNIEJ NIE ZAUWAŻYŁEŚ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "To\\ ciekawe\\ że\\ wcześniej\\ nie\\ zauważyłeś[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 84 exits -> 85",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "room 85 (DO DOBRA WYGLADA TO )",
-      "expect": "DO DOBRA WYGLĄDA TO NA JAKIŚ DOM, WEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Do\\ dobra\\ wygląda\\ to\\ na\\ jakiś\\ dom,\\ wej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 85 exits -> 84",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "room 84 (TO CIEKAWE ZE WCZESN)",
-      "expect": "TO CIEKAWE ŻE WCZEŚNIEJ NIE ZAUWAŻYŁEŚ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "To\\ ciekawe\\ że\\ wcześniej\\ nie\\ zauważyłeś[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 84 exits -> 87",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "room 87 (MLASK , MLASK KTOS R)",
-      "expect": "MLASK, MLASK KTÓŚ RZECZYWIŚCIE SIĘ OB[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Mlask,\\ mlask\\ któś\\ rzeczywiście\\ się\\ ob[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     }
   ]

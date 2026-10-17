@@ -2,51 +2,51 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWĄ RASĘ",
+      "expect": "Napisz\\ swą\\ rasę",
       "send": "OLBRZYM"
     },
     {
       "label": "first room",
-      "expect": "TU ZACZYNA SIĘ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Tu\\ zaczyna\\ się\\ grę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "salon",
-      "expect": "JESTEŚ\\ W\\ OKRĄGŁYM\\ SALO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salo[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "city centre",
-      "expect": "JESTEŚ\\ W\\ CENTRUM\\ MIAST[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ centrum\\ miast[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "ulica dluga",
-      "expect": "ULICA\\ DŁUGA\\ CIĄGNIE\\ SI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ulica\\ długa\\ ciągnie\\ si[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "road junction",
-      "expect": "IDĄC\\ ULICĄ\\ DŁUGĄ\\ NA\\ PÓ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Idąc\\ ulicą\\ długą\\ na\\ PÓ[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "dolina rozrywki",
-      "expect": "JESTEŚ\\ W\\ DOLINIE\\ ROZRY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ dolinie\\ rozry[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "crowd edge, then deep into the crowd",
-      "expect": "KIEDY\\ PODSZEDŁEŚ\\ BLIŻE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Kiedy\\ podszedłeś\\ bliże[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
@@ -76,17 +76,17 @@
     },
     {
       "label": "listener down, fight the bodyguard",
-      "expect": "WYCIĄGASZ [0-9]+ MONET Z CIAŁA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "wyciągasz\\ [0-9]+\\ monet\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZABIJ OCHRONIARZ"
     },
     {
       "label": "bodyguard down, fight the child",
-      "expect": "WYCIĄGASZ [0-9]+ MONET Z CIAŁA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "wyciągasz\\ [0-9]+\\ monet\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZABIJ DZIECKO"
     },
     {
       "label": "child down, head for the Policeman",
-      "expect": "WYCIĄGASZ [0-9]+ MONET Z CIAŁA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "wyciągasz\\ [0-9]+\\ monet\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -116,7 +116,7 @@
     },
     {
       "label": "policeman down",
-      "expect": "WYCIĄGASZ [0-9]+ MONET Z CIAŁA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "wyciągasz\\ [0-9]+\\ monet\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     }
   ]

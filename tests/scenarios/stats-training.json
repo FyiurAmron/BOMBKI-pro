@@ -2,81 +2,81 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWĄ RASĘ",
+      "expect": "Napisz\\ swą\\ rasę",
       "send": "UFOK"
     },
     {
       "label": "first room",
-      "expect": "TU ZACZYNA SIĘ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Tu\\ zaczyna\\ się\\ grę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "salon, into the strength room",
-      "expect": "JESTEŚ W OKRĄGŁYM SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "strength room",
-      "expect": "JESTEŚ W POKOJU GDZIE RAMBO TRENUJE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ pokoju\\ gdzie\\ rambo\\ trenuje[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ ZRECZNOSC"
     },
     {
       "label": "train agility to 10",
-      "expect": "TRENUJESZ ZRECZNOSC I MASZ 10[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Trenujesz\\ ZRECZNOSC\\ i\\ masz\\ 10[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ ZRECZNOSC"
     },
     {
       "label": "train agility to 11, past the ZRE > 10 gate",
-      "expect": "TRENUJESZ ZRECZNOSC I MASZ 11[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Trenujesz\\ ZRECZNOSC\\ i\\ masz\\ 11[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "back at the salon",
-      "expect": "JESTEŚ W OKRĄGŁYM SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "DOL"
     },
     {
       "label": "meditation room",
-      "expect": "ZSZEDŁEŚ NA DÓŁ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Zszedłeś\\ na\\ DÓŁ[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "CWICZ UCIEKAC"
     },
     {
       "label": "learn fleeing",
-      "expect": "ĆWICZYSZ UCIEKANIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ćwiczysz\\ Uciekanie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "GORA"
     },
     {
       "label": "salon again",
-      "expect": "JESTEŚ W OKRĄGŁYM SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "city centre",
-      "expect": "JESTEŚ W CENTRUM MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ centrum\\ miasta[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "dark street",
-      "expect": "JESTEŚ NA ULICY CIEMNEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ ciemnej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "bluszcz",
-      "expect": "ZNALAZŁEŚ SIĘ WŚRÓD BLUSZCZU[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Znalazłeś\\ się\\ wśród\\ bluszczu[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "well room",
-      "expect": "CHOĆ TO MAŁO PRAWDOPODOBNE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Choć\\ to\\ mało\\ prawdopodobne[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
@@ -86,7 +86,7 @@
     },
     {
       "label": "cave entrance",
-      "expect": "TO CIEKAWE ŻE WCZEŚNIEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "To\\ ciekawe\\ że\\ wcześniej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -96,7 +96,7 @@
     },
     {
       "label": "flee threshold prompt",
-      "expect": "PONIŻEJ ILU ENERGII CHCESZ UCIEKAĆ",
+      "expect": "Poniżej\\ ilu\\ energii\\ chcesz\\ UCIEKAĆ",
       "send": "500"
     },
     {
@@ -116,12 +116,12 @@
     },
     {
       "label": "escape the fight",
-      "expect": "WSTYD!!! UCIEKŁEŚ Z POLA BITWY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Wstyd!!!\\ Uciekłeś\\ z\\ pola\\ bitwy[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "past the DRZWI into the dark room",
-      "expect": "DOBRA JESTEŚ W ŚRODKU BRAK OŚWIETLENIA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dobra\\ jesteś\\ w\\ środku\\ brak\\ oświetlenia[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -146,26 +146,26 @@
     },
     {
       "label": "restart",
-      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Gra\\ zapisana[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "restart": true
     },
     {
       "label": "intro",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "name",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "loaded",
-      "expect": "suckemall:",
+      "expect": "Suckemall:",
       "send": ""
     },
     {
       "label": "just-saved tax",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": ""
     },
     {
@@ -195,26 +195,26 @@
     },
     {
       "label": "restart",
-      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Gra\\ zapisana[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "restart": true
     },
     {
       "label": "intro",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "name",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "loaded",
-      "expect": "suckemall:",
+      "expect": "Suckemall:",
       "send": ""
     },
     {
       "label": "just-saved tax",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": ""
     },
     {
@@ -244,26 +244,26 @@
     },
     {
       "label": "restart",
-      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Gra\\ zapisana[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "restart": true
     },
     {
       "label": "intro",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "name",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "loaded",
-      "expect": "suckemall:",
+      "expect": "Suckemall:",
       "send": ""
     },
     {
       "label": "just-saved tax",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": ""
     },
     {
@@ -293,26 +293,26 @@
     },
     {
       "label": "restart",
-      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Gra\\ zapisana[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "restart": true
     },
     {
       "label": "intro",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "name",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "loaded",
-      "expect": "suckemall:",
+      "expect": "Suckemall:",
       "send": ""
     },
     {
       "label": "just-saved tax",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": ""
     },
     {
@@ -342,26 +342,26 @@
     },
     {
       "label": "restart",
-      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Gra\\ zapisana[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "restart": true
     },
     {
       "label": "intro",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "name",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "loaded",
-      "expect": "suckemall:",
+      "expect": "Suckemall:",
       "send": ""
     },
     {
       "label": "just-saved tax",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": ""
     },
     {
@@ -391,26 +391,26 @@
     },
     {
       "label": "restart",
-      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Gra\\ zapisana[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "restart": true
     },
     {
       "label": "intro",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "name",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "loaded",
-      "expect": "suckemall:",
+      "expect": "Suckemall:",
       "send": ""
     },
     {
       "label": "just-saved tax",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": ""
     },
     {
@@ -440,26 +440,26 @@
     },
     {
       "label": "restart",
-      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Gra\\ zapisana[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "restart": true
     },
     {
       "label": "intro",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "name",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "loaded",
-      "expect": "suckemall:",
+      "expect": "Suckemall:",
       "send": ""
     },
     {
       "label": "just-saved tax",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": ""
     },
     {
@@ -489,26 +489,26 @@
     },
     {
       "label": "restart",
-      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Gra\\ zapisana[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "restart": true
     },
     {
       "label": "intro",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "name",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "loaded",
-      "expect": "suckemall:",
+      "expect": "Suckemall:",
       "send": ""
     },
     {
       "label": "just-saved tax",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": ""
     },
     {
@@ -538,26 +538,26 @@
     },
     {
       "label": "restart",
-      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Gra\\ zapisana[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "restart": true
     },
     {
       "label": "intro",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "name",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "loaded",
-      "expect": "suckemall:",
+      "expect": "Suckemall:",
       "send": ""
     },
     {
       "label": "just-saved tax",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": ""
     },
     {
@@ -587,26 +587,26 @@
     },
     {
       "label": "restart",
-      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Gra\\ zapisana[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "restart": true
     },
     {
       "label": "intro",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "name",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "loaded",
-      "expect": "suckemall:",
+      "expect": "Suckemall:",
       "send": ""
     },
     {
       "label": "just-saved tax",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": ""
     },
     {
@@ -636,26 +636,26 @@
     },
     {
       "label": "restart",
-      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Gra\\ zapisana[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "restart": true
     },
     {
       "label": "intro",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "name",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "loaded",
-      "expect": "suckemall:",
+      "expect": "Suckemall:",
       "send": ""
     },
     {
       "label": "just-saved tax",
-      "expect": "ZDOBYŁEŚ LEVEL",
+      "expect": "Zdobyłeś\\ level",
       "send": ""
     },
     {
@@ -680,26 +680,26 @@
     },
     {
       "label": "restart",
-      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Gra\\ zapisana[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "restart": true
     },
     {
       "label": "intro",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "name",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "loaded",
-      "expect": "suckemall:",
+      "expect": "Suckemall:",
       "send": ""
     },
     {
       "label": "just-saved tax",
-      "expect": "HURRRA TO JUŻ DWUNASTY POZIOM",
+      "expect": "Hurrra\\ to\\ już\\ dwunasty\\ poziom",
       "send": ""
     },
     {
@@ -724,26 +724,26 @@
     },
     {
       "label": "restart",
-      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Gra\\ zapisana[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "restart": true
     },
     {
       "label": "intro",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "name",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "loaded",
-      "expect": "suckemall:",
+      "expect": "Suckemall:",
       "send": ""
     },
     {
       "label": "just-saved tax",
-      "expect": "HURRRA TO JUŻ DWUNASTY POZIOM",
+      "expect": "Hurrra\\ to\\ już\\ dwunasty\\ poziom",
       "send": ""
     },
     {
@@ -768,26 +768,26 @@
     },
     {
       "label": "restart",
-      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Gra\\ zapisana[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "restart": true
     },
     {
       "label": "intro",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "name",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "loaded",
-      "expect": "suckemall:",
+      "expect": "Suckemall:",
       "send": ""
     },
     {
       "label": "just-saved tax",
-      "expect": "HURRRA TO JUŻ DWUNASTY POZIOM",
+      "expect": "Hurrra\\ to\\ już\\ dwunasty\\ poziom",
       "send": ""
     },
     {
@@ -812,26 +812,26 @@
     },
     {
       "label": "restart",
-      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Gra\\ zapisana[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "restart": true
     },
     {
       "label": "intro",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "name",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "loaded",
-      "expect": "suckemall:",
+      "expect": "Suckemall:",
       "send": ""
     },
     {
       "label": "just-saved tax",
-      "expect": "HURRRA TO JUŻ DWUNASTY POZIOM",
+      "expect": "Hurrra\\ to\\ już\\ dwunasty\\ poziom",
       "send": ""
     },
     {
@@ -856,26 +856,26 @@
     },
     {
       "label": "restart",
-      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Gra\\ zapisana[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "restart": true
     },
     {
       "label": "intro",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "name",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "loaded",
-      "expect": "suckemall:",
+      "expect": "Suckemall:",
       "send": ""
     },
     {
       "label": "just-saved tax",
-      "expect": "HURRRA TO JUŻ DWUNASTY POZIOM",
+      "expect": "Hurrra\\ to\\ już\\ dwunasty\\ poziom",
       "send": ""
     },
     {
@@ -900,21 +900,21 @@
     },
     {
       "label": "restart",
-      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Gra\\ zapisana[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "restart": true
     },
     {
       "label": "intro",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "name",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "loaded",
-      "expect": "suckemall:",
+      "expect": "Suckemall:",
       "send": ""
     },
     {
@@ -929,12 +929,12 @@
     },
     {
       "label": "out to the living door",
-      "expect": "DO DOBRA WYGLĄDA TO NA JAKIŚ DOM[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Do\\ dobra\\ wygląda\\ to\\ na\\ jakiś\\ dom[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "out to the cave entrance",
-      "expect": "TO CIEKAWE ŻE WCZEŚNIEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "To\\ ciekawe\\ że\\ wcześniej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
@@ -944,222 +944,222 @@
     },
     {
       "label": "out to the well room",
-      "expect": "CHOĆ TO MAŁO PRAWDOPODOBNE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Choć\\ to\\ mało\\ prawdopodobne[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "out to the bluszcz",
-      "expect": "ZNALAZŁEŚ SIĘ WŚRÓD BLUSZCZU[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Znalazłeś\\ się\\ wśród\\ bluszczu[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "out to the dark street",
-      "expect": "JESTEŚ NA ULICY CIEMNEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ ciemnej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "out to the city centre",
-      "expect": "JESTEŚ W CENTRUM MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ centrum\\ miasta[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "out to the salon",
-      "expect": "JESTEŚ W OKRĄGŁYM SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "into the strength room",
-      "expect": "JESTEŚ W POKOJU GDZIE RAMBO TRENUJE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ pokoju\\ gdzie\\ rambo\\ trenuje[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ"
     },
     {
       "label": "train strength 1/6",
-      "expect": "CO CHCESZ TRENOWAĆ?[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Co\\ chcesz\\ trenować?[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ SILA"
     },
     {
       "label": "train strength 2/6",
-      "expect": "TRENUJESZ SILE I MASZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Trenujesz\\ SILE\\ i\\ masz[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ SILA"
     },
     {
       "label": "train strength 3/6",
-      "expect": "TRENUJESZ SILE I MASZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Trenujesz\\ SILE\\ i\\ masz[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ SILA"
     },
     {
       "label": "train strength 4/6",
-      "expect": "TRENUJESZ SILE I MASZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Trenujesz\\ SILE\\ i\\ masz[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ SILA"
     },
     {
       "label": "train strength 5/6",
-      "expect": "TRENUJESZ SILE I MASZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Trenujesz\\ SILE\\ i\\ masz[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ SILA"
     },
     {
       "label": "train strength 6/6",
-      "expect": "TRENUJESZ SILE I MASZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Trenujesz\\ SILE\\ i\\ masz[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ SILA"
     },
     {
       "label": "train agility 1/14",
-      "expect": "TRENUJESZ SILE I MASZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Trenujesz\\ SILE\\ i\\ masz[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ ZRECZNOSC"
     },
     {
       "label": "train agility 2/14",
-      "expect": "TRENUJESZ ZRECZNOSC I MASZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Trenujesz\\ ZRECZNOSC\\ i\\ masz[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ ZRECZNOSC"
     },
     {
       "label": "train agility 3/14",
-      "expect": "TRENUJESZ ZRECZNOSC I MASZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Trenujesz\\ ZRECZNOSC\\ i\\ masz[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ ZRECZNOSC"
     },
     {
       "label": "train agility 4/14",
-      "expect": "TRENUJESZ ZRECZNOSC I MASZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Trenujesz\\ ZRECZNOSC\\ i\\ masz[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ ZRECZNOSC"
     },
     {
       "label": "train agility 5/14",
-      "expect": "TRENUJESZ ZRECZNOSC I MASZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Trenujesz\\ ZRECZNOSC\\ i\\ masz[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ ZRECZNOSC"
     },
     {
       "label": "train agility 6/14",
-      "expect": "TRENUJESZ ZRECZNOSC I MASZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Trenujesz\\ ZRECZNOSC\\ i\\ masz[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ ZRECZNOSC"
     },
     {
       "label": "train agility 7/14",
-      "expect": "TRENUJESZ ZRECZNOSC I MASZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Trenujesz\\ ZRECZNOSC\\ i\\ masz[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ ZRECZNOSC"
     },
     {
       "label": "train agility 8/14",
-      "expect": "TRENUJESZ ZRECZNOSC I MASZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Trenujesz\\ ZRECZNOSC\\ i\\ masz[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ ZRECZNOSC"
     },
     {
       "label": "train agility 9/14",
-      "expect": "TRENUJESZ ZRECZNOSC I MASZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Trenujesz\\ ZRECZNOSC\\ i\\ masz[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ ZRECZNOSC"
     },
     {
       "label": "train agility 10/14",
-      "expect": "TRENUJESZ ZRECZNOSC I MASZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Trenujesz\\ ZRECZNOSC\\ i\\ masz[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ ZRECZNOSC"
     },
     {
       "label": "train agility 11/14",
-      "expect": "TRENUJESZ ZRECZNOSC I MASZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Trenujesz\\ ZRECZNOSC\\ i\\ masz[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ ZRECZNOSC"
     },
     {
       "label": "train agility 12/14",
-      "expect": "TRENUJESZ ZRECZNOSC I MASZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Trenujesz\\ ZRECZNOSC\\ i\\ masz[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ ZRECZNOSC"
     },
     {
       "label": "train agility 13/14",
-      "expect": "TRENUJESZ ZRECZNOSC I MASZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Trenujesz\\ ZRECZNOSC\\ i\\ masz[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ ZRECZNOSC"
     },
     {
       "label": "train agility 14/14",
-      "expect": "TRENUJESZ ZRECZNOSC I MASZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Trenujesz\\ ZRECZNOSC\\ i\\ masz[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ ZRECZNOSC"
     },
     {
       "label": "train cunning 1/7",
-      "expect": "TRENUJESZ ZRECZNOSC I MASZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Trenujesz\\ ZRECZNOSC\\ i\\ masz[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ MADROSC"
     },
     {
       "label": "train cunning 2/7",
-      "expect": "TRENUJESZ MADROSC I MASZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Trenujesz\\ MADROSC\\ i\\ masz[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ MADROSC"
     },
     {
       "label": "train cunning 3/7",
-      "expect": "TRENUJESZ MADROSC I MASZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Trenujesz\\ MADROSC\\ i\\ masz[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ MADROSC"
     },
     {
       "label": "train cunning 4/7",
-      "expect": "TRENUJESZ MADROSC I MASZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Trenujesz\\ MADROSC\\ i\\ masz[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ MADROSC"
     },
     {
       "label": "train cunning 5/7",
-      "expect": "TRENUJESZ MADROSC I MASZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Trenujesz\\ MADROSC\\ i\\ masz[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ MADROSC"
     },
     {
       "label": "train cunning 6/7",
-      "expect": "TRENUJESZ MADROSC I MASZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Trenujesz\\ MADROSC\\ i\\ masz[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ MADROSC"
     },
     {
       "label": "train cunning 7/7",
-      "expect": "TRENUJESZ MADROSC I MASZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Trenujesz\\ MADROSC\\ i\\ masz[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ MADROSC"
     },
     {
       "label": "out of the strength room",
-      "expect": "TRENUJESZ MADROSC I MASZ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Trenujesz\\ MADROSC\\ i\\ masz[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "down to the meditation room",
-      "expect": "JESTEŚ W OKRĄGŁYM SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "DOL"
     },
     {
       "label": "meditation room",
-      "expect": "ZSZEDŁEŚ NA DÓŁ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Zszedłeś\\ na\\ DÓŁ[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "CWICZ UCIEKAC"
     },
     {
       "label": "learn fleeing 2/4",
-      "expect": "ĆWICZYSZ UCIEKANIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ćwiczysz\\ Uciekanie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "CWICZ UCIEKAC"
     },
     {
       "label": "learn fleeing 3/4",
-      "expect": "ĆWICZYSZ UCIEKANIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ćwiczysz\\ Uciekanie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "CWICZ UCIEKAC"
     },
     {
       "label": "learn returning",
-      "expect": "ALBO MASZ ZA DOBRZE WYTRENOWANE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Albo\\ masz\\ za\\ dobrze\\ wytrenowane[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "CWICZ POWROT"
     },
     {
       "label": "learn stealth",
-      "expect": "ĆWICZYSZ POWRACANIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ćwiczysz\\ Powracanie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "CWICZ PAROWANIE"
     },
     {
       "label": "learn herbs",
-      "expect": "ĆWICZYSZ PAROWANIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ćwiczysz\\ PAROWANIE[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "CWICZ POTRAWKI"
     },
     {
       "label": "learn comparison",
-      "expect": "ĆWICZYSZ POTRAWKI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ćwiczysz\\ POTRAWKI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "CWICZ POROWNANIE"
     },
     {
       "label": "read the training poster",
-      "expect": "ĆWICZYSZ PORÓWNYWANIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ćwiczysz\\ PORÓWNYWANIE[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "PATRZ PLAKAT"
     },
     {
       "label": "read the training poster again",
-      "expect": "SZAŁ - KOMENDA SZAŁ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Szał\\ \\-\\ komenda\\ szał[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "PATRZ PLAKAT"
     },
     {
@@ -1174,21 +1174,21 @@
     },
     {
       "label": "restart",
-      "expect": "GRA ZAPISANA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Gra\\ zapisana[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "restart": true
     },
     {
       "label": "intro",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "name",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "loaded",
-      "expect": "suckemall:",
+      "expect": "Suckemall:",
       "send": ""
     },
     {
@@ -1203,7 +1203,7 @@
     },
     {
       "label": "exit response",
-      "expect": "ZSZEDŁEŚ NA DÓŁ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Zszedłeś\\ na\\ DÓŁ[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": ""
     }
   ]

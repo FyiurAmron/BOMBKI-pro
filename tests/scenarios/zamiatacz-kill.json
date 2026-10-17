@@ -2,31 +2,31 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWĄ RASĘ",
+      "expect": "Napisz\\ swą\\ rasę",
       "send": "UFOK"
     },
     {
       "label": "starting room",
-      "expect": "TU\\ ZACZYNA\\ SIĘ\\ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Tu\\ zaczyna\\ się\\ grę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "the salon",
-      "expect": "JESTEŚ\\ W\\ OKRĄGŁYM\\ SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "the city centre",
-      "expect": "JESTEŚ\\ W\\ CENTRUM\\ MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ centrum\\ miasta[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -56,7 +56,7 @@
     },
     {
       "label": "ZAMIATACZ fight end",
-      "expect": "[\\s\\S]*?ZABIŁEŚ GO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[\\s\\S]*?Zabiłeś\\ go[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WYJSCIE"
     },
     {

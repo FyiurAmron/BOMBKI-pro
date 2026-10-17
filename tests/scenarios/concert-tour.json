@@ -2,121 +2,121 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWĄ RASĘ",
+      "expect": "Napisz\\ swą\\ rasę",
       "send": "POL-ELF"
     },
     {
       "label": "room 0 (TU ZACZYNA SIE GRE)",
-      "expect": "TU ZACZYNA SIĘ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Tu\\ zaczyna\\ się\\ grę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 0 exits -> 1",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "room 1 (JESTES W OKROGLYM SA)",
-      "expect": "JESTEŚ W OKRĄGŁYM SALONIE WYPEŁNIONYM [\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie\\ wypełnionym\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 1 exits -> 20",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "room 20 (JESTES W CENTRUM MIA)",
-      "expect": "JESTEŚ W CENTRUM MIASTA: NA ŚCIANIE J[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ centrum\\ miasta:\\ na\\ ścianie\\ j[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 20 exits -> 30",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "room 30 (ULICA DLUGA CIAGNIE )",
-      "expect": "ULICA DŁUGA CIĄGNIE SIĘ W NIESKOŃCZONO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ulica\\ długa\\ ciągnie\\ się\\ w\\ nieskończono[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 30 exits -> 31",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "room 31 (IDAC ULICA DLUGA NA )",
-      "expect": "IDĄC ULICĄ DŁUGĄ NA PÓŁNOC SPOSTRZEGAS[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Idąc\\ ulicą\\ długą\\ na\\ PÓŁNOC\\ spostrzegas[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 31 exits -> 30",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "room 30 (ULICA DLUGA CIAGNIE )",
-      "expect": "ULICA DŁUGA CIĄGNIE SIĘ W NIESKOŃCZONO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ulica\\ długa\\ ciągnie\\ się\\ w\\ nieskończono[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 30 exits -> 32",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "room 32 (CZESC TO ARENA PRZYC)",
-      "expect": "CZEŚĆ TO ARENA PRZYCHODZA TU TACY JAK [\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Cześć\\ to\\ arena\\ przychodza\\ tu\\ tacy\\ jak\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 32 exits -> 30",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "room 30 (ULICA DLUGA CIAGNIE )",
-      "expect": "ULICA DŁUGA CIĄGNIE SIĘ W NIESKOŃCZONO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ulica\\ długa\\ ciągnie\\ się\\ w\\ nieskończono[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 30 exits -> 31",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "room 31 (IDAC ULICA DLUGA NA )",
-      "expect": "IDĄC ULICĄ DŁUGĄ NA PÓŁNOC SPOSTRZEGAS[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Idąc\\ ulicą\\ długą\\ na\\ PÓŁNOC\\ spostrzegas[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 31 exits -> 60",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "room 60 (JESTES W DOLINIE ROZ)",
-      "expect": "JESTEŚ W DOLINIE ROZRYWEK DOLINA CIĄGN[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ dolinie\\ rozrywek\\ dolina\\ ciągn[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 60 exits -> 61",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "room 61 (KIEDY PODSZEDLES BLI)",
-      "expect": "KIEDY PODSZEDŁEŚ BLIŻEJ ZBARANIAŁEŚ - [\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Kiedy\\ podszedłeś\\ bliżej\\ zbaraniałeś\\ \\-\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "PATRZ PLAKAT"
     },
     {
@@ -126,112 +126,112 @@
     },
     {
       "label": "room 61 exits -> 62",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "room 62 (NA BRZEGACH TLUM JES)",
-      "expect": "NA BRZEGACH TŁUM JEST MNIEJSZY, MIMO [\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Na\\ brzegach\\ tłum\\ jest\\ mniejszy,\\ mimo\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 62 exits -> 61",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "room 61 (KIEDY PODSZEDLES BLI)",
-      "expect": "KIEDY PODSZEDŁEŚ BLIŻEJ ZBARANIAŁEŚ - [\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Kiedy\\ podszedłeś\\ bliżej\\ zbaraniałeś\\ \\-\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 61 exits -> 63",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "room 63 (NA BRZEGACH TLUM JES)",
-      "expect": "NA BRZEGACH TŁUM JEST RZADSZY, BOISZ [\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Na\\ brzegach\\ tłum\\ jest\\ rzadszy,\\ boisz\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 63 exits -> 61",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "room 61 (KIEDY PODSZEDLES BLI)",
-      "expect": "KIEDY PODSZEDŁEŚ BLIŻEJ ZBARANIAŁEŚ - [\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Kiedy\\ podszedłeś\\ bliżej\\ zbaraniałeś\\ \\-\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 61 exits -> 64",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "room 64 (JESTES W SRODKU TLUM)",
-      "expect": "JESTEŚ W ŚRODKU TŁUMU A DO TEGO PRZY B[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ środku\\ tłumu\\ a\\ do\\ tego\\ przy\\ b[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 64 exits -> 65",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "room 65 (JESTES Z BOKU ALE PR)",
-      "expect": "JESTEŚ Z BOKU ALE PRZY BALUSTRADKACH L[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ z\\ boku\\ ale\\ przy\\ balustradkach\\ l[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 65 exits -> 64",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "room 64 (JESTES W SRODKU TLUM)",
-      "expect": "JESTEŚ W ŚRODKU TŁUMU A DO TEGO PRZY B[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ środku\\ tłumu\\ a\\ do\\ tego\\ przy\\ b[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 64 exits -> 66",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "room 66 (JESTES PRZY BALUSTRA)",
-      "expect": "JESTEŚ PRZY BALUSTRADKACH - NIE BĘDĘ SIĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ przy\\ balustradkach\\ \\-\\ nie\\ będę\\ się[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 66 exits -> 63",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "room 63 (NA BRZEGACH TLUM JES)",
-      "expect": "NA BRZEGACH TŁUM JEST RZADSZY, BOISZ [\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Na\\ brzegach\\ tłum\\ jest\\ rzadszy,\\ boisz\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 63 exits -> 67",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "room 67 (JESTES W PIWIARNI - )",
-      "expect": "JESTEŚ W PIWIARNI - WOKÓŁ CIEBIE UNOS[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ piwiarni\\ \\-\\ wokół\\ ciebie\\ unos[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 67 exits -> 68",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "room 68 (TO JEST WEJSCIE NA S)",
-      "expect": "TO JEST WEJŚCIE NA SCENĘ NA KTÓREJ TĄNC[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "To\\ jest\\ wejście\\ na\\ scenę\\ na\\ której\\ tąnc[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "PATRZ TABLICZKA"
     },
     {
@@ -241,42 +241,42 @@
     },
     {
       "label": "room 68 exits -> 69",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "room 69 (JESTES NA SCENIE , W)",
-      "expect": "JESTEŚ NA SCENIE, WŁAŚCIWIE TO DOPIER[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ scenie,\\ właściwie\\ to\\ dopier[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 69 exits -> 70",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "room 70 (ALL RIGHT JESTES NA )",
-      "expect": "ALL RIGHT JESTEŚ NA SCENIE!!! NA TWÓJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "All\\ right\\ jesteś\\ na\\ scenie!!!\\ Na\\ twój[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 70 exits -> 71",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "room 71 (LUDZIE SIE NA CIEBIE)",
-      "expect": "LUDZIE SIĘ NA CIEBIE GAPIĄ, JESTEŚ NA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ludzie\\ się\\ na\\ ciebie\\ gapią,\\ jesteś\\ na[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 71 exits -> 72",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "room 72 (UFFF PRZEBIEGLES PRZ)",
-      "expect": "UFFF PRZEBIEGŁEŚ PRZEZ ŚRODEK SCENY WI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ufff\\ przebiegłeś\\ przez\\ środek\\ sceny\\ wi[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     }
   ]

@@ -2,76 +2,76 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWĄ RASĘ",
+      "expect": "Napisz\\ swą\\ rasę",
       "send": "CZLOWIEK"
     },
     {
       "label": "starting room",
-      "expect": "TU\\ ZACZYNA\\ SIĘ\\ GRĘ[\\s\\S]*?",
+      "expect": "Tu\\ zaczyna\\ się\\ grę[\\s\\S]*?",
       "send": "POLNOC"
     },
     {
       "label": "the salon",
-      "expect": "JESTEŚ\\ W\\ OKRĄGŁYM\\ SALONIE[\\s\\S]*?",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?",
       "send": "WSCHOD"
     },
     {
       "label": "rambo's room",
-      "expect": "JESTEŚ\\ W\\ POKOJU\\ GDZIE\\ RAMBO\\ TRENUJE[\\s\\S]*?",
+      "expect": "Jesteś\\ w\\ pokoju\\ gdzie\\ rambo\\ trenuje[\\s\\S]*?",
       "send": "TRENUJ"
     },
     {
       "label": "train list",
-      "expect": "CO\\ CHCESZ\\ TRENOWAĆ",
+      "expect": "Co\\ chcesz\\ trenować",
       "send": "TRENUJ ZRECZNOSC"
     },
     {
       "label": "train zrecznosc",
-      "expect": "TRENUJESZ\\ ZRECZNOSC",
+      "expect": "Trenujesz\\ ZRECZNOSC",
       "send": "TRENUJ MADROSC"
     },
     {
       "label": "train madrosc",
-      "expect": "TRENUJESZ\\ MADROSC",
+      "expect": "Trenujesz\\ MADROSC",
       "send": "ZACHOD"
     },
     {
       "label": "the salon again",
-      "expect": "JESTEŚ\\ W\\ OKRĄGŁYM\\ SALONIE[\\s\\S]*?",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?",
       "send": "DOL"
     },
     {
       "label": "the training room",
-      "expect": "ZSZEDŁEŚ\\ NA\\ DÓŁ\\ GDZIE\\ TRENUJE\\ SIĘ\\ MEDYTUJĄC[\\s\\S]*?",
+      "expect": "Zszedłeś\\ na\\ DÓŁ\\ gdzie\\ trenuje\\ się\\ medytując[\\s\\S]*?",
       "send": "CWICZ UCIEKAC"
     },
     {
       "label": "train flee 1",
-      "expect": "ĆWICZYSZ\\ UCIEKANIE",
+      "expect": "Ćwiczysz\\ Uciekanie",
       "send": "CWICZ UCIEKAC"
     },
     {
       "label": "train flee 2",
-      "expect": "ĆWICZYSZ\\ UCIEKANIE",
+      "expect": "Ćwiczysz\\ Uciekanie",
       "send": "CWICZ UCIEKAC"
     },
     {
       "label": "train flee 3",
-      "expect": "ĆWICZYSZ\\ UCIEKANIE",
+      "expect": "Ćwiczysz\\ Uciekanie",
       "send": "CWICZ UCIEKAC"
     },
     {
       "label": "train flee 4",
-      "expect": "ĆWICZYSZ\\ UCIEKANIE",
+      "expect": "Ćwiczysz\\ Uciekanie",
       "send": "CWICZ UCIEKAC"
     },
     {
@@ -81,7 +81,7 @@
     },
     {
       "label": "flee threshold prompt",
-      "expect": "PONIŻEJ\\ ILU\\ ENERGII\\ CHCESZ\\ UCIEKAĆ",
+      "expect": "Poniżej\\ ilu\\ energii\\ chcesz\\ UCIEKAĆ",
       "send": "900"
     },
     {
@@ -91,32 +91,32 @@
     },
     {
       "label": "the salon",
-      "expect": "JESTEŚ\\ W\\ OKRĄGŁYM\\ SALONIE[\\s\\S]*?",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?",
       "send": "ZACHOD"
     },
     {
       "label": "the school hall",
-      "expect": "JESTEŚ\\ W\\ HALLU\\ MUD\\ SZKOŁY[\\s\\S]*?",
+      "expect": "Jesteś\\ w\\ hallu\\ mud\\ szkoły[\\s\\S]*?",
       "send": "ZACHOD"
     },
     {
       "label": "the shock room",
-      "expect": "SZOK!!!\\ AAA\\ UPSI[\\s\\S]*?",
+      "expect": "Szok!!!\\ Aaa\\ upsi[\\s\\S]*?",
       "send": "GORA"
     },
     {
       "label": "the small room",
-      "expect": "JESTEŚ\\ W\\ MALUTKIM\\ POKOJU[\\s\\S]*?",
+      "expect": "Jesteś\\ w\\ malutkim\\ pokoju[\\s\\S]*?",
       "send": "GORA"
     },
     {
       "label": "the cage corridor",
-      "expect": "JESTEŚ\\ W\\ POKOJU\\ PROWADZĄCYM\\ DO\\ KLA[\\s\\S]*?",
+      "expect": "Jesteś\\ w\\ pokoju\\ prowadzącym\\ do\\ kla[\\s\\S]*?",
       "send": "POLUDNIE"
     },
     {
       "label": "cage 15",
-      "expect": "TEN\\ POKÓJ\\ JEST\\ CAŁY\\ OBRYZGANY\\ KRWIĄ\\ NA\\ ŚCIANACH\\ FLAKI\\ I\\ MÓZGI\\ LUDZKIE[\\s\\S]*?",
+      "expect": "Ten\\ pokój\\ jest\\ cały\\ obryzgany\\ krwią\\ na\\ ścianach\\ flaki\\ i\\ mózgi\\ ludzkie[\\s\\S]*?",
       "send": "ZABIJ POTWOR"
     },
     {

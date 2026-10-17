@@ -2,36 +2,36 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "T3STER"
     },
     {
       "label": "bad name retry",
-      "expect": "ŹLE ZNAKI DAŁEŚ, JESZCZE RAZ IMIĘ:",
+      "expect": "Źle\\ znaki\\ dałeś,\\ jeszcze\\ raz\\ imię:",
       "send": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
     },
     {
       "label": "long name retry",
-      "expect": "ZA DŁUGIE, DAJ KRÓTSZE:",
+      "expect": "Za\\ długie,\\ daj\\ krótsze:",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWĄ RASĘ",
+      "expect": "Napisz\\ swą\\ rasę",
       "send": "GADZIETO"
     },
     {
       "label": "unknown race re-prompts",
-      "expect": "NAPISZ SWĄ RASĘ",
+      "expect": "Napisz\\ swą\\ rasę",
       "send": "CZLOWIEK"
     },
     {
       "label": "first room",
-      "expect": "TU ZACZYNA SIĘ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Tu\\ zaczyna\\ się\\ grę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -41,27 +41,27 @@
     },
     {
       "label": "item limit for the starting ZRE",
-      "expect": "W SUMIE MASZ 0/10 PRZEDMIOTÓW"
+      "expect": "W\\ sumie\\ masz\\ 0/10\\ przedmiotów"
     },
     {
       "label": "starting money and practices",
-      "expect": "MASZ 0 MONET I 10 PRAKTYK"
+      "expect": "Masz\\ 0\\ monet\\ i\\ 10\\ praktyk"
     },
     {
       "label": "first level gap at zero KUNSZT",
-      "expect": "JESTEŚ NA PIERWSZYM LEVELU A DO NASTĘPNEGO BRAKUJE CI 700 KUNSZTU"
+      "expect": "Jesteś\\ na\\ pierwszym\\ levelu\\ a\\ do\\ następnego\\ brakuje\\ ci\\ 700\\ kunsztu"
     },
     {
       "label": "starting attributes",
-      "expect": "TWOJE PARAMETRY: SIŁA - 10/15 ZRĘCZNOŚĆ - 10/15 MĄDROŚĆ - 10/15"
+      "expect": "Twoje\\ parametry:\\ SIŁA\\ \\-\\ 10/15\\ ZRĘCZNOŚĆ\\ \\-\\ 10/15\\ MĄDROŚĆ\\ \\-\\ 10/15"
     },
     {
       "label": "starting mana",
-      "expect": "MASZ 100/100 MANY"
+      "expect": "Masz\\ 100/100\\ MANY"
     },
     {
       "label": "starting energy (ENERGIA := 50 lands after the race block)",
-      "expect": "MASZ 50/50 ENERGII",
+      "expect": "Masz\\ 50/50\\ energii",
       "send": "WYJSCIE"
     }
   ]

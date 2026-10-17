@@ -2,21 +2,21 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWĄ RASĘ",
+      "expect": "Napisz\\ swą\\ rasę",
       "send": "OLBRZYM"
     },
     {
       "label": "start room, head for the salon",
-      "expect": "TU ZACZYNA SIĘ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Tu\\ zaczyna\\ się\\ grę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -46,22 +46,22 @@
     },
     {
       "label": "city centre, head for ulica sklepikowa",
-      "expect": "JESTEŚ\\ W\\ CENTRUM\\ MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ centrum\\ miasta[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "ulica sklepikowa, keep going north",
-      "expect": "JEST\\ TU\\ PARĘ\\ SKLEPIKÓW[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jest\\ tu\\ parę\\ sklepików[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "ulica sklepikowa, head for the general store",
-      "expect": "CIĄGNIE\\ SIĘ\\ TEDY\\ ULICA\\ SKLEPIKOWA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ciągnie\\ się\\ tedy\\ ulica\\ sklepikowa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "general store, buy the fajka",
-      "expect": "WSZEDŁEŚ\\ DO\\ SKLEPU\\ WIELOBRANŻOWEGO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Wszedłeś\\ do\\ sklepu\\ wielobranżowego[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "KUP FAJKA"
     },
     {

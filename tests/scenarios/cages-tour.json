@@ -2,171 +2,171 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWĄ RASĘ",
+      "expect": "Napisz\\ swą\\ rasę",
       "send": "POL-ELF"
     },
     {
       "label": "room 0 (TU ZACZYNA SIE GRE)",
-      "expect": "TU ZACZYNA SIĘ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Tu\\ zaczyna\\ się\\ grę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 0 exits -> 1",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "room 1 (JESTES W OKROGLYM SA)",
-      "expect": "JESTEŚ W OKRĄGŁYM SALONIE WYPEŁNIONYM [\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie\\ wypełnionym\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 1 exits -> 4",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "room 4 (JESTES W HALLU MUD S)",
-      "expect": "JESTEŚ W HALLU MUD SZKOŁY - OGARNIA CIĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ hallu\\ mud\\ szkoły\\ \\-\\ ogarnia\\ cię[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 4 exits -> 5",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "room 5 (SZOK!!! AAA UPSI  O N)",
-      "expect": "SZOK!!! AAA UPSI O NIE FUJ ACH AJ OCH [\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Szok!!!\\ Aaa\\ upsi\\ o\\ nie\\ fuj\\ ach\\ aj\\ och\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 5 exits -> 9",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "GORA"
     },
     {
       "label": "room 9 (JESTES W MALUTKIM PO)",
-      "expect": "JESTEŚ W MALUTKIM POKOJU ALE WIDZISZ W[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ malutkim\\ pokoju\\ ale\\ widzisz\\ W[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 9 exits -> 11",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "GORA"
     },
     {
       "label": "room 11 (JESTES W POKOJU PROW)",
-      "expect": "JESTEŚ W POKOJU PROWADZĄCYM DO KLATEK[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ pokoju\\ prowadzącym\\ do\\ klatek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 11 exits -> 12",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "room 12 (TEN POKOJ JEST CALY )",
-      "expect": "TEN POKÓJ JEST CAŁY OBRYZGANY KRWIĄ NA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ten\\ pokój\\ jest\\ cały\\ obryzgany\\ krwią\\ na[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 12 exits -> 11",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "room 11 (JESTES W POKOJU PROW)",
-      "expect": "JESTEŚ W POKOJU PROWADZĄCYM DO KLATEK[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ pokoju\\ prowadzącym\\ do\\ klatek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 11 exits -> 14",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "room 14 (TEN POKOJ JEST CALY )",
-      "expect": "TEN POKÓJ JEST CAŁY OBRYZGANY KRWIĄ NA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ten\\ pokój\\ jest\\ cały\\ obryzgany\\ krwią\\ na[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 14 exits -> 11",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "room 11 (JESTES W POKOJU PROW)",
-      "expect": "JESTEŚ W POKOJU PROWADZĄCYM DO KLATEK[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ pokoju\\ prowadzącym\\ do\\ klatek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 11 exits -> 15",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "room 15 (TEN POKOJ JEST CALY )",
-      "expect": "TEN POKÓJ JEST CAŁY OBRYZGANY KRWIĄ NA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ten\\ pokój\\ jest\\ cały\\ obryzgany\\ krwią\\ na[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 15 exits -> 11",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "room 11 (JESTES W POKOJU PROW)",
-      "expect": "JESTEŚ W POKOJU PROWADZĄCYM DO KLATEK[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ pokoju\\ prowadzącym\\ do\\ klatek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 11 exits -> 13",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "room 13 (TEN POKOJ JEST CALY )",
-      "expect": "TEN POKÓJ JEST CAŁY OBRYZGANY KRWIĄ NA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ten\\ pokój\\ jest\\ cały\\ obryzgany\\ krwią\\ na[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 13 exits -> 11",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "room 11 (JESTES W POKOJU PROW)",
-      "expect": "JESTEŚ W POKOJU PROWADZĄCYM DO KLATEK[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ pokoju\\ prowadzącym\\ do\\ klatek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 11 exits -> 17",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "DOL"
     },
     {
       "label": "room 17 (JESTES W POKOJU W KT)",
-      "expect": "JESTEŚ W POKOJU W KTÓRYM JEST !PLAKA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ pokoju\\ w\\ którym\\ jest\\ !PLAKA[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 17 exits -> 18",
-      "expect": "DOSTĘPNE WYJŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "DOL"
     },
     {
       "label": "room 1 (JESTES W OKROGLYM SA)",
-      "expect": "JESTEŚ W OKRĄGŁYM SALONIE WYPEŁNIONYM [\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie\\ wypełnionym\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     }
   ]

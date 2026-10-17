@@ -2,46 +2,46 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWĄ RASĘ",
+      "expect": "Napisz\\ swą\\ rasę",
       "send": "POL-ELF"
     },
     {
       "label": "first room",
-      "expect": "TU ZACZYNA SIĘ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Tu\\ zaczyna\\ się\\ grę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "round salon",
-      "expect": "JESTEŚ W OKRĄGŁYM SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "city centre",
-      "expect": "JESTEŚ W CENTRUM MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ centrum\\ miasta[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "dark street",
-      "expect": "JESTEŚ NA ULICY CIEMNEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ ciemnej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "bluszcz",
-      "expect": "ZNALAZŁEŚ SIĘ WŚRÓD BLUSZCZU[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Znalazłeś\\ się\\ wśród\\ bluszczu[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "flower thicket",
-      "expect": "CHOĆ TO MAŁO PRAWDOPODOBNE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Choć\\ to\\ mało\\ prawdopodobne[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
@@ -51,32 +51,32 @@
     },
     {
       "label": "cave entrance",
-      "expect": "TO CIEKAWE ŻE WCZEŚNIEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "To\\ ciekawe\\ że\\ wcześniej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "cave hall",
-      "expect": "MLASK, MLASK KTÓŚ RZECZYWIŚCIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Mlask,\\ mlask\\ któś\\ rzeczywiście[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "cave exit",
-      "expect": "MÓJ BOŻE, COŻ TO JEST, NA TRONIE SIEDZI[\\s\\S]*?TAK lub NIE >",
+      "expect": "Mój\\ boże,\\ coż\\ to\\ jest,\\ na\\ tronie\\ siedzi[\\s\\S]*?Tak\\ lub\\ nie\\ >",
       "send": "TAK"
     },
     {
       "label": "the twenty-times-bigger POKRZYWA cannot be beaten",
-      "expect": "NO TO GIN!!![\\s\\S]*?ZOSTAŁEŚ ZABITY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "No\\ to\\ gin!!![\\s\\S]*?Zostałeś\\ zabity[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": ""
     },
     {
       "label": "death handler runs on the next pass",
-      "expect": "POJAWISZ SIĘ W CENTRUM MIASTA",
+      "expect": "Pojawisz\\ się\\ w\\ centrum\\ miasta",
       "send": ""
     },
     {
       "label": "resurrected in the city centre",
-      "expect": "JESTEŚ W CENTRUM MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ centrum\\ miasta[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WYJSCIE"
     }
   ]

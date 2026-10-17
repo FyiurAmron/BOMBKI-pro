@@ -2,21 +2,21 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWĄ RASĘ",
+      "expect": "Napisz\\ swą\\ rasę",
       "send": "OLBRZYM"
     },
     {
       "label": "first room",
-      "expect": "TU ZACZYNA SIĘ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Tu\\ zaczyna\\ się\\ grę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -51,52 +51,52 @@
     },
     {
       "label": "city centre",
-      "expect": "JESTEŚ\\ W\\ CENTRUM\\ MIAST[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ centrum\\ miast[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "shopping street, the owczarek is here",
-      "expect": "JESTEŚ\\ NA\\ ULICY\\ NA\\ ULI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ na\\ uli[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZABIJ OWCZAREK"
     },
     {
       "label": "owczarek down",
-      "expect": "WYCIĄGASZ [0-9]+ MONET Z CIAŁA PSA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "wyciągasz\\ [0-9]+\\ monet\\ z\\ ciała\\ psa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "street continues, piesek and spaniel here",
-      "expect": "CIĄGNIE\\ SIĘ\\ TEDY\\ ULICA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ciągnie\\ się\\ tedy\\ ulica[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZABIJ PIESEK"
     },
     {
       "label": "piesek down",
-      "expect": "WYCIĄGASZ [0-9]+ MONET Z CIAŁA PSA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "wyciągasz\\ [0-9]+\\ monet\\ z\\ ciała\\ psa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZABIJ SPANIEL"
     },
     {
       "label": "spaniel down",
-      "expect": "WYCIĄGASZ [0-9]+ MONET Z CIAŁA PSA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "wyciągasz\\ [0-9]+\\ monet\\ z\\ ciała\\ psa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "multi-branch shop, jamnik and pudel here",
-      "expect": "WCHODZISZ\\ DO\\ SKLEPU\\ AL[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Wchodzisz\\ do\\ sklepu\\ al[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZABIJ JAMNIK"
     },
     {
       "label": "jamnik down",
-      "expect": "WYCIĄGASZ [0-9]+ MONET Z CIAŁA PSA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "wyciągasz\\ [0-9]+\\ monet\\ z\\ ciała\\ psa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZABIJ PUDEL"
     },
     {
       "label": "pudel down",
-      "expect": "WYCIĄGASZ [0-9]+ MONET Z CIAŁA PSA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "wyciągasz\\ [0-9]+\\ monet\\ z\\ ciała\\ psa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "back on the street continues",
-      "expect": "CIĄGNIE\\ SIĘ\\ TEDY\\ ULICA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ciągnie\\ się\\ tedy\\ ulica[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     }
   ]

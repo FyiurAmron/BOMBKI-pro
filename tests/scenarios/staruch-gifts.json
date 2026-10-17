@@ -2,21 +2,21 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWĄ RASĘ",
+      "expect": "Napisz\\ swą\\ rasę",
       "send": "OLBRZYM"
     },
     {
       "label": "first room",
-      "expect": "TU ZACZYNA SIĘ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Tu\\ zaczyna\\ się\\ grę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -31,62 +31,62 @@
     },
     {
       "label": "city centre",
-      "expect": "JESTEŚ\\ W\\ CENTRUM\\ MIAST[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ centrum\\ miast[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "shopping street",
-      "expect": "JESTEŚ\\ NA\\ ULICY\\ NA\\ ULI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ na\\ uli[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "bakery, buy the first weka",
-      "expect": "JESTEŚ\\ W\\ PIEKARNI,\\ SK[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ piekarni,\\ sk[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "KUP WEKA"
     },
     {
       "label": "second weka",
-      "expect": "KUPUJESZ WEKĘ ZA 29 MONET[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Kupujesz\\ WEKĘ\\ za\\ 29\\ monet[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "KUP WEKA"
     },
     {
       "label": "third weka",
-      "expect": "KUPUJESZ WEKĘ ZA 29 MONET[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Kupujesz\\ WEKĘ\\ za\\ 29\\ monet[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "KUP WEKA"
     },
     {
       "label": "fourth weka",
-      "expect": "KUPUJESZ WEKĘ ZA 29 MONET[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Kupujesz\\ WEKĘ\\ za\\ 29\\ monet[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "KUP WEKA"
     },
     {
       "label": "bakery, back to the street",
-      "expect": "KUPUJESZ WEKĘ ZA 29 MONET[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Kupujesz\\ WEKĘ\\ za\\ 29\\ monet[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "shopping street, back to the centre",
-      "expect": "JESTEŚ\\ NA\\ ULICY\\ NA\\ ULI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ na\\ uli[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "city centre, take the dark street",
-      "expect": "JESTEŚ\\ W\\ CENTRUM\\ MIAST[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ centrum\\ miast[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "dark street",
-      "expect": "JESTEŚ\\ NA\\ ULICY\\ CIEMNE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ ciemne[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "bluszcz",
-      "expect": "ZNALAZŁEŚ\\ SIĘ\\ WŚRÓD\\ BL[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Znalazłeś\\ się\\ wśród\\ bl[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "flower thicket",
-      "expect": "CHOĆ\\ TO\\ MAŁO\\ PRAWDOPOD[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Choć\\ to\\ mało\\ prawdopod[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
@@ -96,7 +96,7 @@
     },
     {
       "label": "cave entrance",
-      "expect": "TO\\ CIEKAWE\\ ŻE\\ WCZEŚNIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "To\\ ciekawe\\ że\\ wcześnie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -121,12 +121,12 @@
     },
     {
       "label": "DRZWI down, slip through",
-      "expect": "[\\s\\S]*?ZABIŁEŚ GO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[\\s\\S]*?Zabiłeś\\ go[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "staruch's den",
-      "expect": "DOBRA JESTEŚ W ŚRODKU BRAK OŚWIETLENIA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dobra\\ jesteś\\ w\\ środku\\ brak\\ oświetlenia[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ROZMAWIAJ STARUCH"
     },
     {
@@ -136,7 +136,7 @@
     },
     {
       "label": "the sheet counts the gift beer",
-      "expect": "ORZEŹWIAJĄCE PIWSKO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Orzeźwiające\\ piwsko[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "UZYJ PIWO"
     },
     {
@@ -151,7 +151,7 @@
     },
     {
       "label": "back in the city centre",
-      "expect": "JESTEŚ\\ W\\ CENTRUM\\ MIAST[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ centrum\\ miast[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     }
   ]

@@ -2,86 +2,86 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWĄ RASĘ",
+      "expect": "Napisz\\ swą\\ rasę",
       "send": "POL-ELF"
     },
     {
       "label": "starting room",
-      "expect": "TU ZACZYNA SIĘ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Tu\\ zaczyna\\ się\\ grę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "context 1",
-      "expect": "JESTEŚ W OKRĄGŁYM SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "context 20",
-      "expect": "JESTEŚ W CENTRUM MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ centrum\\ miasta[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "context 75",
-      "expect": "JESTEŚ NA ULICY CIEMNEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ ciemnej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "context 77 to 79",
-      "expect": "ZNALAZŁEŚ SIĘ WŚRÓD BLUSZCZU[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Znalazłeś\\ się\\ wśród\\ bluszczu[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "context 79",
-      "expect": "SŁYSZYSZ POKRZYWĘ KTÓRĄ POŻERA BEZBRONNY SZCZAW[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Słyszysz\\ POKRZYWĘ\\ którą\\ pożera\\ bezbronny\\ SZCZAW[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "context 77 to 78",
-      "expect": "ZNALAZŁEŚ SIĘ WŚRÓD BLUSZCZU[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Znalazłeś\\ się\\ wśród\\ bluszczu[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "context 78",
-      "expect": "WSZEDŁEŚ W GĄSZCZ ROŚLIN I KWIATÓW[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Wszedłeś\\ w\\ gąszcz\\ roślin\\ i\\ kwiatów[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "backward transition to context 77 again",
-      "expect": "ZNALAZŁEŚ SIĘ WŚRÓD BLUSZCZU[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Znalazłeś\\ się\\ wśród\\ bluszczu[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "forward transition to context 80 and 81",
-      "expect": "CHOĆ TO MAŁO PRAWDOPODOBNE TUTAJ JEST JESZCZE CIEMNIEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Choć\\ to\\ mało\\ prawdopodobne\\ tutaj\\ jest\\ jeszcze\\ ciemniej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "context 81",
-      "expect": "PRZEDZIERASZ SIĘ PRZEZ CAŁY TEN SYF[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Przedzierasz\\ się\\ przez\\ cały\\ ten\\ SYF[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "context 80 to 82",
-      "expect": "CHOĆ TO MAŁO PRAWDOPODOBNE TUTAJ JEST JESZCZE CIEMNIEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Choć\\ to\\ mało\\ prawdopodobne\\ tutaj\\ jest\\ jeszcze\\ ciemniej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "context 82",
-      "expect": "W TEJ KOMNACIE JEST ZNACZNIE JAŚNIEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "W\\ tej\\ komnacie\\ jest\\ znacznie\\ jaśniej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "context 80 to 83",
-      "expect": "CHOĆ TO MAŁO PRAWDOPODOBNE TUTAJ JEST JESZCZE CIEMNIEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Choć\\ to\\ mało\\ prawdopodobne\\ tutaj\\ jest\\ jeszcze\\ ciemniej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {

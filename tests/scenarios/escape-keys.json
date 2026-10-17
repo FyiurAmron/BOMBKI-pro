@@ -2,31 +2,31 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWĄ RASĘ",
+      "expect": "Napisz\\ swą\\ rasę",
       "send": "P\u001b[A\u001b[A\u001b[D\u001b[C\u001b[3~OL-ELF"
     },
     {
       "label": "starting room",
-      "expect": "TU ZACZYNA SIĘ GRĘ",
+      "expect": "Tu\\ zaczyna\\ się\\ grę",
       "send": "POLNOC"
     },
     {
       "label": "room 1 prompt",
-      "expect": "JESTEŚ W OKRĄGŁYM SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "exit list still works after ignored keys",
-      "expect": "DOSTĘPNE WYJŚCIA"
+      "expect": "Dostępne\\ WYJŚCIA"
     }
   ]
 }

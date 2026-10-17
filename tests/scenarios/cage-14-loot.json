@@ -2,41 +2,41 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWĄ RASĘ",
+      "expect": "Napisz\\ swą\\ rasę",
       "send": "CZLOWIEK"
     },
     {
       "label": "starting room",
-      "expect": "TU\\ ZACZYNA\\ SIĘ\\ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Tu\\ zaczyna\\ się\\ grę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "the salon",
-      "expect": "JESTEŚ\\ W\\ OKRĄGŁYM\\ SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "the school hall",
-      "expect": "JESTEŚ\\ W\\ HALLU\\ MUD\\ SZKOŁY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ hallu\\ mud\\ szkoły[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "the shock room",
-      "expect": "SZOK!!!\\ AAA\\ UPSI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Szok!!!\\ Aaa\\ upsi[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "GORA"
     },
     {
       "label": "the small room",
-      "expect": "JESTEŚ\\ W\\ MALUTKIM\\ POKOJU[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ malutkim\\ pokoju[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "GORA"
     },
     {
@@ -66,7 +66,7 @@
     },
     {
       "label": "cage 14",
-      "expect": "TEN\\ POKÓJ\\ JEST\\ CAŁY\\ OBRYZGANY\\ KRWI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ten\\ pokój\\ jest\\ cały\\ obryzgany\\ krwi[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZABIJ POTWOR"
     },
     {

@@ -2,36 +2,36 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWĄ RASĘ",
+      "expect": "Napisz\\ swą\\ rasę",
       "send": "POL-ELF"
     },
     {
       "label": "starting room",
-      "expect": "TU ZACZYNA SIĘ GRĘ",
+      "expect": "Tu\\ zaczyna\\ się\\ grę",
       "send": "POLNOC"
     },
     {
       "label": "room 1 to underground training room",
-      "expect": "JESTEŚ W OKRĄGŁYM SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "DOL"
     },
     {
       "label": "underground training room",
-      "expect": "ZSZEDŁEŚ NA DÓŁ GDZIE TRENUJE SIĘ MEDYTUJĄC[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Zszedłeś\\ na\\ DÓŁ\\ gdzie\\ trenuje\\ się\\ medytując[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "PATRZ PLAKAT"
     },
     {
       "label": "training-room poster output",
-      "expect": "NA PLAKACIE PISZE:[\\s\\S]*?KOMENDA ZDOLNOŚCI SPRAWDZI TWE ZDOLNOŚCI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>"
+      "expect": "Na\\ plakacie\\ pisze:[\\s\\S]*?Komenda\\ ZDOLNOŚCI\\ sprawdzi\\ twe\\ ZDOLNOŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>"
     }
   ]
 }

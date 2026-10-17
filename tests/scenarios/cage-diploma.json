@@ -2,51 +2,51 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWĄ RASĘ",
+      "expect": "Napisz\\ swą\\ rasę",
       "send": "OLBRZYM"
     },
     {
       "label": "starting room",
-      "expect": "TU\\ ZACZYNA\\ SIĘ\\ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Tu\\ zaczyna\\ się\\ grę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "the salon",
-      "expect": "JESTEŚ\\ W\\ OKRĄGŁYM\\ SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "the city centre",
-      "expect": "JESTEŚ\\ W\\ CENTRUM\\ MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ centrum\\ miasta[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "the salon again",
-      "expect": "JESTEŚ\\ W\\ OKRĄGŁYM\\ SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "the school hall",
-      "expect": "JESTEŚ\\ W\\ HALLU\\ MUD\\ SZKOŁY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ hallu\\ mud\\ szkoły[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "the shock room",
-      "expect": "SZOK!!!\\ AAA\\ UPSI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Szok!!!\\ Aaa\\ upsi[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "GORA"
     },
     {
       "label": "the small room",
-      "expect": "JESTEŚ\\ W\\ MALUTKIM\\ POKOJU[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ malutkim\\ pokoju[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "GORA"
     },
     {
@@ -76,7 +76,7 @@
     },
     {
       "label": "kill the monster in cage 12",
-      "expect": "TEN\\ POKÓJ\\ JEST\\ CAŁY\\ OBRYZGANY\\ KRWI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ten\\ pokój\\ jest\\ cały\\ obryzgany\\ krwi[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZABIJ POTWOR"
     },
     {
@@ -116,7 +116,7 @@
     },
     {
       "label": "kill the monster in cage 13",
-      "expect": "TEN\\ POKÓJ\\ JEST\\ CAŁY\\ OBRYZGANY\\ KRWI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ten\\ pokój\\ jest\\ cały\\ obryzgany\\ krwi[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZABIJ POTWOR"
     },
     {
@@ -156,7 +156,7 @@
     },
     {
       "label": "kill the monster in cage 14",
-      "expect": "TEN\\ POKÓJ\\ JEST\\ CAŁY\\ OBRYZGANY\\ KRWI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ten\\ pokój\\ jest\\ cały\\ obryzgany\\ krwi[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZABIJ POTWOR"
     },
     {
@@ -196,7 +196,7 @@
     },
     {
       "label": "kill the monster in cage 15",
-      "expect": "TEN\\ POKÓJ\\ JEST\\ CAŁY\\ OBRYZGANY\\ KRWI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ten\\ pokój\\ jest\\ cały\\ obryzgany\\ krwi[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZABIJ POTWOR"
     },
     {
@@ -251,7 +251,7 @@
     },
     {
       "label": "read the poster",
-      "expect": "JESTEŚ\\ W\\ POKOJU\\ W\\ KTÓRYM[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ pokoju\\ w\\ którym[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "PATRZ PLAKAT"
     },
     {
@@ -261,7 +261,7 @@
     },
     {
       "label": "the teleport room",
-      "expect": "PODNOSISZ DYPLOM[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Podnosisz\\ DYPLOM[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "DOL"
     },
     {
@@ -271,7 +271,7 @@
     },
     {
       "label": "the salon once more",
-      "expect": "JESTEŚ\\ W\\ OKRĄGŁYM\\ SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {

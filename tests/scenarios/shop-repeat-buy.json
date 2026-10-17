@@ -2,21 +2,21 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWĄ RASĘ",
+      "expect": "Napisz\\ swą\\ rasę",
       "send": "POL-ELF"
     },
     {
       "label": "first room",
-      "expect": "TU ZACZYNA SIĘ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Tu\\ zaczyna\\ się\\ grę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -31,22 +31,22 @@
     },
     {
       "label": "city centre",
-      "expect": "JESTEŚ W CENTRUM MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ centrum\\ miasta[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "shopping street south",
-      "expect": "JESTEŚ NA ULICY NA ULICY SKLEPIKOWEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ na\\ ulicy\\ sklepikowej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "bakery",
-      "expect": "JESTEŚ W PIEKARNI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ piekarni[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "KUP PACZEK"
     },
     {
       "label": "buy the first paczek",
-      "expect": "KUPUJESZ PACZEK ZA 8 MONET[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Kupujesz\\ PACZEK\\ za\\ 8\\ monet[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "KUP PACZEK"
     },
     {
@@ -56,7 +56,7 @@
     },
     {
       "label": "sheet shows the second purchase stacked (-20)",
-      "expect": "SMACZNY POLANY LIKIEREM PĄCZEK\\s+-20",
+      "expect": "Smaczny\\ polany\\ likierem\\ PĄCZEK\\s+-20",
       "send": "WYJSCIE"
     }
   ]

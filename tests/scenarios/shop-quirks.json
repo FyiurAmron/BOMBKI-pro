@@ -2,76 +2,76 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWĄ RASĘ",
+      "expect": "Napisz\\ swą\\ rasę",
       "send": "CZLOWIEK"
     },
     {
       "label": "first room",
-      "expect": "TU ZACZYNA SIĘ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Tu\\ zaczyna\\ się\\ grę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "round salon",
-      "expect": "JESTEŚ W OKRĄGŁYM SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "city centre",
-      "expect": "JESTEŚ W CENTRUM MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ centrum\\ miasta[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "shopping street south",
-      "expect": "JESTEŚ NA ULICY NA ULICY SKLEPIKOWEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ na\\ ulicy\\ sklepikowej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "armoury",
-      "expect": "JESTEŚ W ZBROJOWNI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ zbrojowni[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "SPRZEDAJ MALA"
     },
     {
       "label": "unconditional shield sale pays 8 with nothing sold",
-      "expect": "TA TARCZA JEST BAJER, FRAJER KUPIĘ JĄ OD CIEBIE ZA 8 MONET[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ta\\ tarcza\\ jest\\ bajer,\\ frajer\\ kupię\\ ją\\ od\\ ciebie\\ za\\ 8\\ monet[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "SPRZEDAJ MALA"
     },
     {
       "label": "the unconditional sale repeats",
-      "expect": "TA TARCZA JEST BAJER[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ta\\ tarcza\\ jest\\ bajer[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "armoury exits",
-      "expect": "DOSTĘPNE WYJŚCIA:[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCIA:[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "back on the south street",
-      "expect": "JESTEŚ NA ULICY NA ULICY SKLEPIKOWEJ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ na\\ ulicy\\ sklepikowej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "shopping street north",
-      "expect": "CIĄGNIE SIĘ TEDY ULICA SKLEPIKOWA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ciągnie\\ się\\ tedy\\ ulica\\ sklepikowa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "magic shop",
-      "expect": "WCHODZISZ DO SKLEPU ALE NICZEGO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Wchodzisz\\ do\\ sklepu\\ ale\\ niczego[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "KUP MALA BUTELKA MANY"
     },
     {
       "label": "gate 15 charges 20: sale succeeds at 16 coins",
-      "expect": "KUPUJESZ MAŁĄ BUTELKĘ MANY ZA 20 MONET \\(AHHHH TA INFLACJA\\)[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Kupujesz\\ MAŁĄ\\ butelkę\\ MANY\\ za\\ 20\\ monet\\ \\(ahhhh\\ ta\\ inflacja\\)[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "SPRZEDAJ PIGULKA TRANSPORTUJACA"
     },
     {
@@ -81,15 +81,15 @@
     },
     {
       "label": "sheet: the bottle is carried",
-      "expect": "MAŁĄ BUTELKĘ MANY-10"
+      "expect": "MAŁĄ\\ butelkę\\ MANY\\-10"
     },
     {
       "label": "sheet: PRZED went negative from the empty sales",
-      "expect": "W SUMIE MASZ -2/10 PRZEDMIOTÓW"
+      "expect": "W\\ sumie\\ masz\\ \\-2/10\\ przedmiotów"
     },
     {
       "label": "sheet: 16 - 20 + 170 = 166 coins",
-      "expect": "MASZ 166 MONET I 10 PRAKTYK",
+      "expect": "Masz\\ 166\\ monet\\ i\\ 10\\ praktyk",
       "send": "WYJSCIE"
     }
   ]

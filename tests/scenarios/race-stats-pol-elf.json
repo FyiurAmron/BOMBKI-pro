@@ -2,26 +2,26 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWĄ RASĘ",
+      "expect": "Napisz\\ swą\\ rasę",
       "send": "GADZIETO"
     },
     {
       "label": "unknown race re-prompts",
-      "expect": "NAPISZ SWĄ RASĘ",
+      "expect": "Napisz\\ swą\\ rasę",
       "send": "pol-elf"
     },
     {
       "label": "first room",
-      "expect": "TU ZACZYNA SIĘ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Tu\\ zaczyna\\ się\\ grę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -31,27 +31,27 @@
     },
     {
       "label": "item limit for the starting ZRE",
-      "expect": "W SUMIE MASZ 0/13 PRZEDMIOTÓW"
+      "expect": "W\\ sumie\\ masz\\ 0/13\\ przedmiotów"
     },
     {
       "label": "starting money and practices",
-      "expect": "MASZ 30 MONET I 10 PRAKTYK"
+      "expect": "Masz\\ 30\\ monet\\ i\\ 10\\ praktyk"
     },
     {
       "label": "first level gap at zero KUNSZT",
-      "expect": "JESTEŚ NA PIERWSZYM LEVELU A DO NASTĘPNEGO BRAKUJE CI 700 KUNSZTU"
+      "expect": "Jesteś\\ na\\ pierwszym\\ levelu\\ a\\ do\\ następnego\\ brakuje\\ ci\\ 700\\ kunsztu"
     },
     {
       "label": "starting attributes",
-      "expect": "TWOJE PARAMETRY: SIŁA - 6/10 ZRĘCZNOŚĆ - 16/24 MĄDROŚĆ - 8/12"
+      "expect": "Twoje\\ parametry:\\ SIŁA\\ \\-\\ 6/10\\ ZRĘCZNOŚĆ\\ \\-\\ 16/24\\ MĄDROŚĆ\\ \\-\\ 8/12"
     },
     {
       "label": "starting mana",
-      "expect": "MASZ 80/80 MANY"
+      "expect": "Masz\\ 80/80\\ MANY"
     },
     {
       "label": "starting energy",
-      "expect": "MASZ 50/45 ENERGII",
+      "expect": "Masz\\ 50/45\\ energii",
       "send": "WYJSCIE"
     }
   ]

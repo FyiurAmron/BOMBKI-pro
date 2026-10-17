@@ -2,51 +2,51 @@
   "steps": [
     {
       "label": "intro prompt",
-      "expect": "DUŻO POPRAWEK WIĘC SIĘ CIESZ I GRAJ"
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
     },
     {
       "label": "player-name prompt",
-      "expect": "A TWOJE IMIĘ TO",
+      "expect": "A\\ twoje\\ imię\\ to",
       "send": "TESTER"
     },
     {
       "label": "race prompt",
-      "expect": "NAPISZ SWĄ RASĘ",
+      "expect": "Napisz\\ swą\\ rasę",
       "send": "CZLOWIEK"
     },
     {
       "label": "starting room",
-      "expect": "TU\\ ZACZYNA\\ SIĘ\\ GRĘ[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Tu\\ zaczyna\\ się\\ grę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "the salon",
-      "expect": "JESTEŚ\\ W\\ OKRĄGŁYM\\ SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "the city centre",
-      "expect": "JESTEŚ\\ W\\ CENTRUM\\ MIASTA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ centrum\\ miasta[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "the salon again",
-      "expect": "JESTEŚ\\ W\\ OKRĄGŁYM\\ SALONIE[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "the school hall",
-      "expect": "JESTEŚ\\ W\\ HALLU\\ MUD\\ SZKOŁY[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ hallu\\ mud\\ szkoły[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "the shock room",
-      "expect": "SZOK!!!\\ AAA\\ UPSI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Szok!!!\\ Aaa\\ upsi[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "GORA"
     },
     {
       "label": "the small room",
-      "expect": "JESTEŚ\\ W\\ MALUTKIM\\ POKOJU[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ malutkim\\ pokoju[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "GORA"
     },
     {
@@ -76,7 +76,7 @@
     },
     {
       "label": "cage 12: kill",
-      "expect": "TEN POKÓJ JEST CAŁY OBRYZGANY KRWI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ten\\ pokój\\ jest\\ cały\\ obryzgany\\ krwi[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZABIJ POTWOR"
     },
     {
@@ -116,7 +116,7 @@
     },
     {
       "label": "cage 13: kill",
-      "expect": "TEN POKÓJ JEST CAŁY OBRYZGANY KRWI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ten\\ pokój\\ jest\\ cały\\ obryzgany\\ krwi[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZABIJ POTWOR"
     },
     {
@@ -156,7 +156,7 @@
     },
     {
       "label": "cage 14: kill",
-      "expect": "TEN POKÓJ JEST CAŁY OBRYZGANY KRWI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ten\\ pokój\\ jest\\ cały\\ obryzgany\\ krwi[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZABIJ POTWOR"
     },
     {
@@ -196,7 +196,7 @@
     },
     {
       "label": "cage 15: kill",
-      "expect": "TEN POKÓJ JEST CAŁY OBRYZGANY KRWI[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Ten\\ pokój\\ jest\\ cały\\ obryzgany\\ krwi[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZABIJ POTWOR"
     },
     {
@@ -216,7 +216,7 @@
     },
     {
       "label": "the teleport room",
-      "expect": "JESTEŚ W POKOJU W KTÓRYM",
+      "expect": "Jesteś\\ w\\ pokoju\\ w\\ którym",
       "send": "DOL"
     },
     {
@@ -226,27 +226,27 @@
     },
     {
       "label": "salon after teleport",
-      "expect": "JESTEŚ W OKRĄGŁYM SALONIE",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie",
       "send": "POLNOC"
     },
     {
       "label": "city centre",
-      "expect": "JESTEŚ W CENTRUM MIASTA",
+      "expect": "Jesteś\\ w\\ centrum\\ miasta",
       "send": "ZACHOD"
     },
     {
       "label": "ulica dluga (30)",
-      "expect": "ULICA DŁUGA CIĄGNIE SIĘ W NIESKOŃCZONOŚĆ",
+      "expect": "Ulica\\ długa\\ ciągnie\\ się\\ w\\ nieskończoność",
       "send": "ZACHOD"
     },
     {
       "label": "ulica dluga (31)",
-      "expect": "IDĄC ULICĄ DŁUGĄ NA PÓŁNOC SPOSTRZEGASZ DOLINĘ ROZRYWEK",
+      "expect": "Idąc\\ ulicą\\ długą\\ na\\ PÓŁNOC\\ spostrzegasz\\ dolinę\\ rozrywek",
       "send": "POLNOC"
     },
     {
       "label": "dolina rozrywek (60)",
-      "expect": "JESTEŚ W DOLINIE ROZRYWEK",
+      "expect": "Jesteś\\ w\\ dolinie\\ rozrywek",
       "send": "WSCHOD"
     },
     {
@@ -276,17 +276,17 @@
     },
     {
       "label": "GORYL fight end",
-      "expect": "[\\s\\S]*?ZABIŁEŚ GO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[\\s\\S]*?Zabiłeś\\ go[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZABIJ FAN"
     },
     {
       "label": "FAN fight end",
-      "expect": "[\\s\\S]*?ZABIŁEŚ GO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[\\s\\S]*?Zabiłeś\\ go[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "tlum (63)",
-      "expect": "NA BRZEGACH TŁUM JEST RZADSZY",
+      "expect": "Na\\ brzegach\\ tłum\\ jest\\ rzadszy",
       "send": "POLNOC"
     },
     {
@@ -321,12 +321,12 @@
     },
     {
       "label": "MINI-BARMAN fight end",
-      "expect": "[\\s\\S]*?ZABIŁEŚ GO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[\\s\\S]*?Zabiłeś\\ go[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZABIJ GRUBAS"
     },
     {
       "label": "GRUBAS fight end",
-      "expect": "[\\s\\S]*?ZABIŁEŚ GO[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "[\\s\\S]*?Zabiłeś\\ go[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
