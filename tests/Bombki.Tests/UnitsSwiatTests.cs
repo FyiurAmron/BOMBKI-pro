@@ -41,37 +41,8 @@ public class UnitsSwiatTests {
 
     static void PokojAt(string cmds, short room) {
         Session.Room = room;
-        using (FeedStdin(cmds)) {
-            switch (room) {
-                case 4:
-                    Rooms.Room4();
-                    break;
-                case 11:
-                    Rooms.Room11();
-                    break;
-                case 13:
-                    Rooms.Room13();
-                    break;
-                case 30:
-                    Rooms.Room30();
-                    break;
-                case 60:
-                    Rooms.Room60();
-                    break;
-                case 75:
-                    Rooms.Room75();
-                    break;
-                case 83:
-                    Rooms.Room83();
-                    break;
-                case 100:
-                    Rooms.Room100();
-                    break;
-                default:
-                    Rooms.PlainRooms();
-                    break;
-            }
-        }
+        using (FeedStdin(cmds))
+            Rooms.DispatchRoom();
     }
 
     [Fact]
@@ -79,7 +50,7 @@ public class UnitsSwiatTests {
         RoomSetup();
         Session.Room = 5;
         using (FeedStdin("EXIT|PATRZ PLAKAT|WYJSCIE"))
-            Rooms.Room5();
+            Rooms.DispatchRoom();
         Assert.Equal(5, Session.Room);
     }
 
@@ -88,7 +59,7 @@ public class UnitsSwiatTests {
         RoomSetup();
         Session.Room = 1;
         using (FeedStdin("EXIT|PATRZ PLAKAT|WYJSCIE"))
-            Rooms.Room1();
+            Rooms.DispatchRoom();
         Assert.Equal(1, Session.Room);
     }
 

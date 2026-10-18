@@ -96,121 +96,112 @@ public static class Rooms {
     public const int RoomForest = 104;
     public const int RoomQuit = 193;
 
-    public static void Room0() {
-        Out.WriteLine(TxtRoom0_01);
-        do {
-            ReadCommand();
-            if (Verb == CmdExit) Out.WriteLine(TxtRoom0_02);
-            if (MoveWhenOrExit([Go(CmdPolnoc, RoomSalon)])) return;
-        } while (!(Session.Room != RoomStart));
+    public class TRoomPoster {
+        public string cmd = "";
+        public List<string> lines = [];
+        public TRoomPoster(string cmd, List<string> lines) {
+            this.cmd = cmd;
+            this.lines = lines;
+        }
     }
 
-    public static void Room1() {
-        BasicRoomPoster(RoomSalon,
-                  [ TxtYouAreIn + TxtRoom1_01, TxtRoom1Lines1[1], TxtRoom1Lines1[2],
-                   TxtRoom1Lines1[3], ],
-                  [ TxtShared_03,
-                   TxtExitPolodnie, TxtPlaceTamGdzieZaczynaszGre,
-                   TxtExitPolnoc, TxtPlaceMiasto,
-                   TxtExitWschod, TxtPlacePokojTreningowy1,
-                   TxtExitZachod, TxtPlaceMudSzkola,
-                   TxtExitDol, TxtPlacePoddziemnyPokojTreningowy2, ],
-                  [ Go(CmdPolodnie, RoomStart),
-                   Go(CmdWschod, RoomTraining),
-                   Go(CmdDol, RoomMeditation),
-                   Go(CmdZachod, RoomSchoolHall),
-                   Go(CmdPolnoc, RoomCityCentre), ],
-                  TxtRoom1Lines2.Skip(1).ToList());
+    public class TRoom {
+        public short number;
+        public List<string> intro = [];
+        public List<string> exits = [];
+        public List<TMovement> moves = [];
+        public List<TRoomPoster> posters = [];
+        public bool quit = false;
+        public bool expand = false;
+        public short teleport = RoomAny;
+        public Action<bool>? turn = null;
     }
 
-    public static void Room2() {
-        WriteLines([TxtYouAreIn + TxtRoom2_01, TxtRoom2_02, TxtShared_04]);
-        do {
-            ReadCommand();
-            if (Verb == CmdExit)
-                WriteExits([ TxtShared_03,
-                            TxtExitZachod, TxtPlacePok224JCentralny, ]);
-            if (MoveWhenOrExit([Go(CmdZachod, RoomSalon)])) return;
-            if (Verb == CmdPatrz && Rest == CmdPlakat)
-                WriteLines(TxtRoom2Lines1.Skip(1).ToList());
-            HandleTrain();
-        } while (!(Session.Room != RoomTraining));
+    static void StreetTurn(bool entering) {
+        if (entering)
+            DescribeStreet();
+        else
+            StreetFights();
     }
 
-    public static void Room3() {
-        WriteLines(TxtRoom3Lines1.Skip(1).ToList());
-        do {
-            ReadCommand();
-            if (Verb == CmdExit)
-                Out.WriteLine(TxtRoom3_04);
-            if (MoveWhenOrExit([Go(CmdGora, RoomSalon)])) return;
-            Training();
-        } while (!(Session.Room != RoomMeditation));
+    static void PlantTurn(bool entering) {
+        if (entering)
+            DescribePlants();
+        else
+            PlantFights();
     }
 
-    public static void Room4() {
-        BasicRoomGeneric(RoomSchoolHall,
-                  [TxtYouAreIn + TxtRoom4_01, TxtRoom4_02],
-                  [ TxtShared_03,
-                   TxtExitWschod, TxtPlacePokojCentralny,
-                   TxtExitZachod, TxtPlaceMudSzkola2, ],
-                  [Go(CmdWschod, RoomSalon), Go(CmdZachod, RoomLost)],
-                  CmdPatrz + CmdAfisz,
-                  TxtRoom4Lines1.Skip(1).ToList());
+    static void CrowdTurn(bool entering) {
+        if (entering)
+            DescribeCrowd();
+        else
+            ConcertFights();
     }
 
-    public static void Room5() {
-        BasicRoomPoster(RoomLost,
-                  TxtRoom5Lines1.Skip(1).ToList(),
-                  [ TxtShared_03,
-                   TxtExitWschod, TxtPlaceMudSzkola,
-                   TxtExitZachod, TxtPlacePokoj,
-                   TxtExitPolnoc, TxtPlacePokoj,
-                   TxtExitPolodnie, TxtPlacePokoj,
-                   TxtExitGora, TxtPlacePokoj,
-                   TxtExitDol, TxtPlacePokoj, ],
-                  [ Go(CmdWschod, RoomSchoolHall),
-                   Go(CmdZachod, RoomSchoolSide1),
-                   Go(CmdPolnoc, RoomSchoolSide2),
-                   Go(CmdPolodnie, RoomSchoolSide3),
-                   Go(CmdGora, RoomSchoolLanding),
-                   Go(CmdDol, RoomSchoolSide4), ],
-                  [TxtRoom5_10, TxtRoom5_11]);
+    static void StageTurn(bool entering) {
+        if (entering)
+            DescribeStage();
+        else
+            StageFights();
     }
 
-    public static void Room9() {
-        BasicRoomSimple(RoomSchoolLanding,
-                  [TxtYouAreIn + TxtRoom9_01, TxtRoom9_02],
-                  [ TxtShared_03,
-                   TxtExitDol, TxtPlaceMudSzkola2,
-                   TxtExitGora, TxtPlaceKlatkiPelneGajdy, ],
-                  [Go(CmdDol, RoomLost), Go(CmdGora, RoomCageCorridor)]);
-    }
-
-    public static void Room11() {
-        Out.WriteLine(TxtYouAreIn + TxtRoom11_01);
-        WriteLines(TxtRoom11Lines1.Skip(1).ToList());
-        do {
-            ReadCommand();
-            ExpandAbbrev();
-            if (Verb == CmdExit)
-                WriteExits([ TxtShared_03,
-                            TxtExitWschod, TxtPlaceKlatkaCieniasa,
-                            TxtExitZachod, TxtPlaceKlatkaSilnego,
-                            TxtExitPolnoc, TxtPlaceKlatkaZrecznego,
-                            TxtExitPolodnie, TxtPlaceKlatkaOdpornego,
-                            TxtExitGora, TxtPlaceKlatkaSilnegoOdpornegoIZrecznego,
-                            TxtExitDol, TxtPlaceJedynaDrogaNieProwadzacaDoKlatek, ]);
-            if (MoveWhenOrExit([ Go(CmdWschod, RoomCageWeakling),
-                      Go(CmdZachod, RoomCageStrong),
-                      Go(CmdPolnoc, RoomCageAgile),
-                      Go(CmdPolodnie, RoomCageTough),
-                      Go(CmdGora, RoomCageHuge),
-                      Go(CmdDol, RoomCageReward), ]))
-                return;
-            if (Verb == CmdPatrz && Rest == CmdPlakat)
-                WriteLines(TxtRoom11Lines2.Skip(1).ToList());
-        } while (!(Session.Room != RoomCageCorridor));
+    static void ArenaTurn(bool entering) {
+        if (entering) {
+            Session.InArena = 1;
+            DescribeBeasts();
+            return;
+        }
+        if (Verb == CmdWyjscie)
+            return;
+        switch (Verb) {
+            case CmdZabij:
+                switch (Rest) {
+                    case CmdBakteria:
+                        if (Session.Room == World.Monsters[(int)TMonster.Bacterium]) {
+                            Fight(TFoe.WeakEnemy);
+                            World.Monsters[(int)TMonster.Bacterium] = 0;
+                            Out.WriteLine(TxtArenaMaze_02);
+                        }
+                        break;
+                    case CmdWilczur:
+                        if (Session.Room == World.Monsters[(int)TMonster.Mongrel]) {
+                            Out.WriteLine(TxtArenaMaze_03);
+                            Fight(TFoe.WeakishEnemy);
+                            World.Monsters[(int)TMonster.Mongrel] = 0;
+                        }
+                        break;
+                }
+                break;
+        }
+        for (int bi = 1; bi < BeastKills.Count; bi++) {
+            TBeastKill b = BeastKills[bi];
+            if (b.unlessFled)
+                KillBeastUnlessFled(b.cmd, IntSlot.Into(World.Monsters, (int)b.beast), b.foe);
+            else
+                KillBeast(b.cmd, IntSlot.Into(World.Monsters, (int)b.beast), b.foe);
+        }
+        for (int ai = 1; ai < ArenaKills.Count; ai++) {
+            TArenaKill a = ArenaKills[ai];
+            ArenaKill(a.cmd, a.monster, a.pills);
+        }
+        switch (Verb) {
+            case CmdPolodnie:
+                MazeMove(TMazeDir.mdPolodnie);
+                break;
+            case CmdPolnoc:
+                MazeMove(TMazeDir.mdPolnoc);
+                Session.MoveGuard = 1;
+                break;
+            case CmdWschod:
+                MazeMove(TMazeDir.mdWschod);
+                Session.MoveGuard = 1;
+                break;
+            case CmdZachod:
+                MazeMove(TMazeDir.mdZachod);
+                Session.MoveGuard = 1;
+                break;
+        }
+        Session.MoveGuard = 0;
     }
 
     public static void CageMonsterFight(IntSlot monster, short room, short energy, short dexterity, short strength, short lootRand, short lootThreshold) {
@@ -234,615 +225,6 @@ public static class Rooms {
         Out.WriteLine(TxtShared_06);
         if (World.Monsters[(int)monster] == room) Out.WriteLine(aliveLine);
         else if (World.Monsters[(int)monster] == 0) Out.WriteLine(deadLine);
-    }
-
-    public static void Room12() {
-        DescribeCage(CageWeakling, RoomCageWeakling, TxtRoom12_01, TxtShared_07);
-        do {
-            ReadCommand();
-            if (Verb == CmdExit)
-                WriteExits([ TxtShared_03,
-                            TxtExitZachod, TxtPlaceKlatkiPelneGajdy, ]);
-            if (MoveWhenOrExit([Go(CmdZachod, RoomCageCorridor)])) return;
-            CageMonsterFight(IntSlot.Into(World.Monsters, (int)CageWeakling), RoomCageWeakling, 20, 3, 3, 10, 4);
-        } while (!(Session.Room != RoomCageWeakling));
-    }
-
-    public static void Room13() {
-        DescribeCage(CageStrong, RoomCageStrong, TxtRoom13_01, TxtShared_07);
-        do {
-            ReadCommand();
-            if (Verb == CmdExit)
-                WriteExits([ TxtShared_03,
-                            TxtExitWschod, TxtPlaceKlatkiPelneGajdy, ]);
-            if (MoveWhenOrExit([Go(CmdWschod, RoomCageCorridor)])) return;
-            CageMonsterFight(IntSlot.Into(World.Monsters, (int)CageStrong), RoomCageStrong, 20, 3, 10, 15, 7);
-        } while (!(Session.Room != RoomCageStrong));
-    }
-
-    public static void Room14() {
-        DescribeCage(CageAgile, RoomCageAgile, TxtRoom14_01, TxtRoom14_02);
-        do {
-            ReadCommand();
-            if (Verb == CmdExit)
-                WriteExits([ TxtShared_03,
-                            TxtExitPolodnie, TxtPlaceKlatkiPelneGajdy, ]);
-            if (MoveWhenOrQuit([Go(CmdPolodnie, RoomCageCorridor)])) return;
-            CageMonsterFight(IntSlot.Into(World.Monsters, (int)CageAgile), RoomCageAgile, 20, 30, 3, 15, 7);
-        } while (!(Session.Room != RoomCageAgile));
-    }
-
-    public static void Room15() {
-        DescribeCage(CageTough, RoomCageTough, TxtRoom15_01, TxtShared_07);
-        do {
-            ReadCommand();
-            if (Verb == CmdExit)
-                WriteExits([ TxtShared_03,
-                            TxtExitPolnoc, TxtPlaceKlatkiPelneGajdy, ]);
-            if (MoveWhenOrQuit([Go(CmdPolnoc, RoomCageCorridor)])) return;
-            CageMonsterFight(IntSlot.Into(World.Monsters, (int)CageTough), RoomCageTough, 40, 3, 3, 15, 7);
-        } while (!(Session.Room != RoomCageTough));
-    }
-
-    public static void Room16() {
-        DescribeCage(CageHuge, RoomCageHuge, TxtRoom16_01, TxtShared_07);
-        do {
-            if (World.Monsters[(int)CageHuge] == RoomCageHuge) {
-                Combat.EnemyEnergy = 40;
-                Combat.EnemyDexterity = 11;
-                Combat.EnemyStrength = 10;
-                DoFight();
-                if (Combat.Fled != 0) {
-                    Combat.Fled = 0;
-                    MoveTo(RoomCageCorridor);
-                } else {
-                    World.Monsters[(int)CageHuge] = 0;
-                    Combat.Loot = Roll(30);
-                    Out.WriteLine(TxtShared_08 + Combat.Loot + TxtShared_09);
-                    Player.Money = Player.Money + Combat.Loot;
-                    TryCageLoot(10);
-                }
-            }
-            ReadCommand();
-            if (Verb == CmdExit)
-                WriteExits([ TxtShared_03,
-                            TxtExitDol, TxtPlaceKlatkiPelneGajdy, ]);
-            if (MoveWhenOrQuit([Go(CmdDol, RoomCageCorridor)])) return;
-        } while (!(Session.Room != RoomCageHuge));
-    }
-
-    public static void Room17() {
-        Out.WriteLine(TxtYouAreIn + TxtRoom17_01);
-        do {
-            ReadCommand();
-            if (Verb == CmdExit)
-                WriteExits([ TxtShared_03,
-                            TxtExitGora, TxtPlaceKlatkiPelneGajdy,
-                            TxtExitDol, TxtPlaceTeleport, ]);
-            if (Verb == CmdPatrz && Rest == CmdPlakat) {
-                WriteLines(TxtRoom17Lines1.Skip(1).ToList());
-                if ((World.Monsters[(int)CageWeakling] == 0) && (World.Monsters[(int)CageAgile] == 0) &&
-                (World.Monsters[(int)CageStrong] == 0) && (World.Monsters[(int)CageTough] == 0) &&
-                (World.Monsters[(int)CageHuge] == 0) && (Bag.Items[(int)TBagItem.Diploma] == 0))
-                    Bag.Items[(int)TBagItem.Diploma] = RoomCageReward;
-            }
-            if (MoveWhenOrQuit([Go(CmdGora, RoomCageCorridor), Go(CmdDol, RoomTeleport)])) return;
-        } while (!(Session.Room != RoomCageReward));
-    }
-
-    public static void Room18() {
-        WriteLines(TxtRoom18Lines1.Skip(1).ToList());
-        MoveTo(RoomSalon);
-    }
-
-    public static void Room20() {
-        Out.WriteLine(TxtYouAreIn + TxtRoom20_01);
-        DescribeStreet();
-        do {
-            ReadCommand();
-            if (Verb == CmdPatrz && Rest == CmdPlakat)
-                Out.WriteLine(TxtRoom20_02);
-            if (Verb == CmdExit)
-                WriteExits([ TxtShared_03,
-                            TxtExitPolodnie, TxtPlacePokojCentralny,
-                            TxtExitPolnoc, TxtPlaceUlSklepikowa,
-                            TxtExitWschod, TxtPlaceUlCiemna,
-                            TxtExitZachod, TxtPlaceUlDluga, ]);
-            if (Verb == CmdWyjscie) {
-                Session.ExitRequested = true;
-                return;
-            }
-            MoveWhen([ Go(CmdPolodnie, RoomSalon),
-                      Go(CmdPolnoc, RoomShopStreet),
-                      Go(CmdZachod, RoomLongStreet),
-                      Go(CmdWschod, RoomDarkStreet), ]);
-            StreetFights();
-        } while (!(Session.Room != RoomCityCentre));
-    }
-
-    public static void Room21() {
-        Out.WriteLine(TxtRoom21_01);
-        Out.WriteLine(TxtRoom21_02);
-        DescribeStreet();
-        do {
-            ReadCommand();
-            if (Verb == CmdExit)
-                WriteExits([ TxtShared_03,
-                            TxtExitPolodnie, TxtPlaceCentrumMiasta,
-                            TxtExitPolnoc, TxtPlaceUlSklepikowa,
-                            TxtExitWschod, TxtPlacePiekarnia,
-                            TxtExitZachod, TxtPlaceZbrojownia, ]);
-            if (MoveWhenOrQuit([ Go(CmdPolodnie, RoomCityCentre),
-                      Go(CmdPolnoc, RoomShopStreet2),
-                      Go(CmdWschod, RoomBakery),
-                      Go(CmdZachod, RoomArmoury), ]))
-                return;
-            StreetFights();
-        } while (!(Session.Room != RoomShopStreet));
-    }
-
-    public static void Room22() {
-        Out.WriteLine(TxtRoom22_01);
-        Out.WriteLine(TxtRoom22_02);
-        DescribeStreet();
-        do {
-            ReadCommand();
-            if (Verb == CmdExit)
-                WriteExits([ TxtShared_03,
-                            TxtExitPolodnie, TxtPlaceUlSklepikowa,
-                            TxtExitPolnoc, TxtPlaceRozjazd,
-                            TxtExitWschod, TxtPlaceSklepWielobranzowy,
-                            TxtExitZachod, TxtPlaceSklepMagiczny, ]);
-            if (MoveWhenOrQuit([ Go(CmdPolodnie, RoomShopStreet),
-                      Go(CmdWschod, RoomGeneralStore),
-                      Go(CmdZachod, RoomMagicShop),
-                      Go(CmdPolnoc, RoomQuestMaster), ]))
-                return;
-            StreetFights();
-        } while (!(Session.Room != RoomShopStreet2));
-    }
-
-    public static void Room23() {
-        WriteLines([TxtYouAreIn + TxtRoom23_01, TxtRoom23_02, TxtRoom23_03]);
-        DescribeStreet();
-        do {
-            ReadCommand();
-            if (Verb == CmdPatrz && Rest == CmdPlakat) {
-                Out.WriteLine(TxtRoom23_04);
-                Out.WriteLine(TxtRoom23_05);
-            }
-            if (Verb == CmdExit)
-                WriteExits([ TxtShared_03,
-                            TxtExitZachod, TxtPlaceUlicaSklepikowa, ]);
-            if (MoveWhenOrQuit([Go(CmdZachod, RoomShopStreet)])) return;
-            BakeryShop();
-        } while (!(Session.Room != RoomBakery));
-    }
-
-    public static void Room24() {
-        WriteLines([TxtYouAreIn + TxtRoom24_01, TxtRoom24_02, TxtRoom24_03]);
-        DescribeStreet();
-        do {
-            ReadCommand();
-            ArmouryShop();
-            if (Verb == CmdExit)
-                WriteExits([ TxtShared_03,
-                            TxtExitWschod, TxtPlaceUlicaSklepikowa, ]);
-            if (MoveWhenOrQuit([Go(CmdWschod, RoomShopStreet)])) return;
-            if (Verb == CmdPatrz && Rest == CmdPlakat)
-                Out.WriteLine(TxtRoom24_04);
-            StreetFights();
-        } while (!(Session.Room != RoomArmoury));
-    }
-
-    public static void Room25() {
-        WriteLines([TxtRoom25_01, TxtRoom25_02]);
-        DescribeStreet();
-        do {
-            ReadCommand();
-            if (Verb == CmdExit)
-                WriteExits([ TxtShared_03,
-                            TxtExitZachod, TxtPlaceUlicaSklepikowa, ]);
-            if (MoveWhenOrQuit([Go(CmdZachod, RoomShopStreet2)])) return;
-            if (Verb == CmdPatrz && Rest == CmdWywieszka)
-                Out.WriteLine(TxtRoom25_03);
-            StreetFights();
-            GeneralStoreShop();
-        } while (!(Session.Room != RoomGeneralStore));
-    }
-
-    public static void Room26() {
-        Out.WriteLine(TxtRoom26_01);
-        DescribeStreet();
-        do {
-            ReadCommand();
-            if (Verb == CmdExit)
-                WriteExits([ TxtShared_03,
-                            TxtExitWschod, TxtPlaceUlicaSklepikowa, ]);
-            if (MoveWhenOrQuit([Go(CmdWschod, RoomShopStreet2)])) return;
-            if (Verb == CmdPatrz && Rest == CmdPlakat)
-                Out.WriteLine(TxtRoom26_02);
-            MagicShop();
-            StreetFights();
-        } while (!(Session.Room != RoomMagicShop));
-    }
-
-    public static void Room30() {
-        BasicRoomSimple(RoomLongStreet,
-                  [TxtRoom30_01, TxtRoom30_02],
-                  [ TxtShared_03,
-                   TxtExitWschod, TxtPlaceCentrumMiasta,
-                   TxtExitZachod, TxtPlaceUlicaDluga,
-                   TxtExitPolnoc, TxtPlaceWejscieNaArene, ],
-                  [ Go(CmdWschod, RoomCityCentre),
-                   Go(CmdZachod, RoomLongStreet2),
-                   Go(CmdPolnoc, RoomArenaEntrance), ]);
-    }
-
-    public static void Room31() {
-        BasicRoomQuit(RoomLongStreet2,
-                  [TxtRoom31_01, TxtRoom31_02],
-                  [ TxtShared_03,
-                   TxtExitWschod, TxtPlaceUlicaDluga,
-                   TxtExitPolnoc, TxtPlaceDolinaRozrywek, ],
-                  [Go(CmdWschod, RoomLongStreet), Go(CmdPolnoc, RoomValley)]);
-    }
-
-    public static void Room32() {
-        BasicRoomQuitPoster(RoomArenaEntrance,
-                  [TxtRoom32_01, TxtRoom32_02],
-                  [ TxtShared_03,
-                   TxtExitPolodnie, TxtPlaceUlicaDluga,
-                   TxtExitPolnoc, TxtPlaceArena, ],
-                  [Go(CmdPolodnie, RoomLongStreet), Go(CmdPolnoc, RoomArena33)],
-                  [TxtRoom32_03, TxtRoom32_04]);
-    }
-
-    public static void Room60() {
-        BasicRoomSimple(RoomValley,
-                  [TxtYouAreIn + TxtRoom60_01, TxtRoom60_02, TxtRoom60_03],
-                  [ TxtShared_03,
-                   TxtExitPolodnie, TxtPlaceUlicaDluga,
-                   TxtExitWschod, TxtPlaceBudowlaPelnaHalasu, ],
-                  [Go(CmdPolodnie, RoomLongStreet2), Go(CmdWschod, RoomCrowd1)]);
-    }
-
-    public static void Room75() {
-        BasicRoomSimple(RoomDarkStreet,
-                  TxtRoom75Lines1.Skip(1).ToList(),
-                  [ TxtShared_03,
-                   TxtExitZachod, TxtPlaceCentrumMiasta,
-                   TxtExitPolnoc, TxtPlaceBarPodDwomaPedalami,
-                   TxtExitPolodnie, TxtPlaceBluszcz, ],
-                  [ Go(CmdZachod, RoomCityCentre), Go(CmdPolnoc, RoomBar),
-                   Go(CmdPolodnie, RoomIvy1), ]);
-    }
-
-    public static void Room76() {
-        Out.WriteLine(TxtYouAreIn + TxtRoom76_01);
-        WriteLines(TxtRoom76Lines1.Skip(1).ToList());
-        if (World.Monsters[(int)Maciek] == 76)
-            Out.WriteLine(TxtRoom76_05);
-        if (World.Monsters[(int)Pedal] == 76)
-            Out.WriteLine(TxtRoom76_06);
-        if (World.Monsters[(int)Couple] == 76)
-            Out.WriteLine(TxtRoom76_07);
-        do {
-            ReadCommand();
-            if (Verb == CmdExit)
-                WriteExits([ TxtShared_03,
-                            TxtExitPolodnie, TxtPlaceUlicaCiemna, ]);
-            if (MoveWhenOrQuit([Go(CmdPolodnie, RoomDarkStreet)])) return;
-            switch (Verb) {
-                case CmdLista:
-                    WriteLines(TxtRoom76Lines2.Skip(1).ToList());
-                    break;
-                case CmdZabij:
-                    switch (Rest) {
-                        case CmdPedal:
-                            Fight(EasyEnemy);
-                            World.Monsters[(int)Pedal] = 0;
-                            PillGain();
-                            break;
-                        case CmdPara:
-                            Fight(VeryHardEnemy);
-                            World.Monsters[(int)Couple] = 0;
-                            Fight(VeryHardEnemy);
-                            break;
-                        case CmdMaciek:
-                            Fight(EasyEnemy);
-                            World.Monsters[(int)Maciek] = 0;
-                            break;
-                    }
-                    break;
-                case CmdMam:
-                    if (Rest == Cmd18Lat)
-                        Out.WriteLine(TxtRoom76_13);
-                    break;
-            }
-        } while (!(Session.Room != RoomBar));
-    }
-
-    public static void Room77() {
-        WriteLines([TxtRoom77_01, TxtRoom77_02]);
-        DescribePlants();
-        do {
-            ReadCommand();
-            ExpandAbbrev();
-            PlantFights();
-            if (Verb == CmdExit)
-                WriteExits([ TxtShared_03,
-                            TxtExitPolnoc, TxtPlaceUlCiemna,
-                            TxtExitWschod, TxtPlaceBluszcz,
-                            TxtExitZachod, TxtPlaceBluszcz,
-                            TxtExitPolodnie, TxtPlaceBluszcz, ]);
-            if (MoveWhenOrQuit([ Go(CmdPolnoc, RoomDarkStreet),
-                      Go(CmdWschod, RoomIvy2),
-                      Go(CmdZachod, RoomIvy3),
-                      Go(CmdPolodnie, RoomIvy4), ]))
-                return;
-        } while (!(Session.Room != RoomIvy1));
-    }
-
-    public static void Room78() {
-        WriteLines([TxtRoom78_01, TxtRoom78_02]);
-        DescribePlants();
-        do {
-            ReadCommand();
-            ExpandAbbrev();
-            PlantFights();
-            if (Verb == CmdExit)
-                WriteExits([ TxtShared_03,
-                            TxtExitZachod, TxtPlaceBluszcz, ]);
-            if (MoveWhenOrQuit([Go(CmdZachod, RoomIvy1)])) return;
-        } while (!(Session.Room != RoomIvy2));
-    }
-
-    public static void Room79() {
-        WriteLines([TxtRoom79_01, TxtRoom79_02]);
-        DescribePlants();
-        do {
-            ReadCommand();
-            ExpandAbbrev();
-            PlantFights();
-            if (Verb == CmdExit)
-                WriteExits([ TxtShared_03,
-                            TxtExitWschod, TxtPlaceBluszcz, ]);
-            if (MoveWhenOrQuit([Go(CmdWschod, RoomIvy1)])) return;
-        } while (!(Session.Room != RoomIvy3));
-    }
-
-    public static void Room80() {
-        WriteLines(TxtRoom80Lines1.Skip(1).ToList());
-        DescribePlants();
-        do {
-            ReadCommand();
-            ExpandAbbrev();
-            PlantFights();
-            if (Verb == CmdExit)
-                WriteExits([ TxtShared_03,
-                            TxtExitPolnoc, TxtPlaceBluszcz,
-                            TxtExitWschod, TxtPlaceBluszcz,
-                            TxtExitZachod, TxtPlaceBluszcz,
-                            TxtExitPolodnie, TxtPlaceBluszcz, ]);
-            if (MoveWhenOrQuit([ Go(CmdPolnoc, RoomIvy1),
-                      Go(CmdZachod, RoomIvy5),
-                      Go(CmdWschod, RoomIvy6),
-                      Go(CmdPolodnie, RoomClearing), ]))
-                return;
-            switch (Verb) {
-                case CmdPatrz:
-                    switch (Rest) {
-                        case CmdNapis:
-                            Out.WriteLine(TxtRoom80_04);
-                            break;
-                        case CmdStudnia:
-                            Combat.Roll = (short)(Roll(3) + 1);
-                            Out.WriteLine(TxtRoom80_05 + Combat.Roll + TxtShared_23);
-                            Player.Money = Player.Money + Combat.Roll;
-                            Combat.Roll = Roll(100);
-                            if (Combat.Roll < 10) {
-                                Out.WriteLine(TxtRoom80_06);
-                                Player.Energy = (short)(Player.Energy - 40);
-                                Out.WriteLine(TxtRoom80_07);
-                                Player.Money = Player.Money - 100;
-                                if (Player.Money < 0) Player.Money = 0;
-                            }
-                            break;
-                    }
-                    break;
-            }
-        } while (!(Session.Room != RoomIvy4));
-    }
-
-    public static void Room81() {
-        WriteLines([TxtRoom81_01, TxtRoom81_02]);
-        DescribePlants();
-        do {
-            ReadCommand();
-            ExpandAbbrev();
-            PlantFights();
-            if (Verb == CmdExit)
-                WriteExits([ TxtShared_03,
-                            TxtExitWschod, TxtPlaceBluszcz, ]);
-            if (MoveWhenOrQuit([Go(CmdWschod, RoomIvy4)])) return;
-        } while (!(Session.Room != RoomIvy5));
-    }
-
-    public static void Room82() {
-        WriteLines([TxtRoom82_01, TxtRoom82_02]);
-        DescribePlants();
-        do {
-            ReadCommand();
-            ExpandAbbrev();
-            PlantFights();
-            if (Verb == CmdExit)
-                WriteExits([ TxtShared_03,
-                            TxtExitZachod, TxtPlaceBluszcz, ]);
-            if (MoveWhenOrQuit([Go(CmdZachod, RoomIvy4)])) return;
-        } while (!(Session.Room != RoomIvy6));
-    }
-
-    public static void Room83() {
-        WriteLines(TxtRoom83Lines1.Skip(1).ToList());
-        DescribePlants();
-        do {
-            ReadCommand();
-            ExpandAbbrev();
-            PlantFights();
-            if (Verb == CmdExit)
-                WriteExits([ TxtShared_03,
-                            TxtExitPolnoc, TxtPlaceBluszcz,
-                            TxtExitZachod, TxtPlacePodejrzaneKrzaki, ]);
-            if (MoveWhenOrExit([Go(CmdPolnoc, RoomIvy4), Go(CmdZachod, RoomCavePath)])) return;
-        } while (!(Session.Room != RoomClearing));
-    }
-
-    public static void Room84() {
-        WriteLines(TxtRoom84Lines1.Skip(1).ToList());
-        DescribePlants();
-        do {
-            ReadCommand();
-            ExpandAbbrev();
-            PlantFights();
-            if (Verb == CmdExit)
-                WriteExits([ TxtShared_03,
-                            TxtExitWschod, TxtPlaceBluszcz,
-                            TxtExitZachod, TxtPlaceBudynek,
-                            TxtExitPolodnie, TxtPlaceWejscieDoGroty, ]);
-            if (MoveWhenOrQuit([Go(CmdWschod, RoomClearing), Go(CmdZachod, RoomLivingDoor), Go(CmdPolodnie, RoomCaveMouth)])) return;
-        } while (!(Session.Room != RoomCavePath));
-    }
-
-    public static void Room85() {
-        WriteLines([TxtRoom85_01, TxtRoom85_02]);
-        if (World.Door != 0)
-            Out.WriteLine(TxtRoom85_03);
-        do {
-            ReadCommand();
-            ExpandAbbrev();
-            if (Verb == CmdZabij && Rest == CmdDrzwi) {
-                if (World.Door != 0) {
-                    Fight(NotEasyEnemy);
-                    if (Player.Energy > 0) World.Door = 0;
-                }
-            }
-            if (Verb == CmdExit) {
-                WriteExits([ TxtShared_03,
-                            TxtExitWschod, TxtPlacePodejrzaneKrzaki, ]);
-                if (World.Door != 0)
-                    Out.WriteLine(TxtExitZachod + TxtPlaceGdybyNieTeCholerneDrzwi);
-                else
-                    Out.WriteLine(TxtExitZachod + TxtPlaceWejscieDoDomku);
-            }
-            if (MoveWhenOrQuit([Go(CmdWschod, RoomCavePath)])) return;
-            if (Verb == CmdZachod)
-                if (World.Door == 0) MoveTo(RoomHut);
-                else Out.WriteLine(TxtRoom85_07);
-        } while (!(Session.Room != RoomLivingDoor));
-    }
-
-    public static void Room86() {
-        Out.WriteLine(TxtRoom86_01);
-        if (World.OldElf != 0)
-            Out.WriteLine(TxtRoom86_02);
-        if (World.OldElf == 0)
-            Out.WriteLine(TxtRoom86_03);
-        do {
-            ReadCommand();
-            ExpandAbbrev();
-            switch (Verb) {
-                case CmdPatrz:
-                    if (Rest == CmdGarnki)
-                        Out.WriteLine(TxtRoom86_04);
-                    break;
-                case CmdRozmawiaj:
-                    if (Rest == CmdStaruch) {
-                        if ((Bag.Items[(int)TBagItem.Sausage] > -30) && (Player.Money < 200) && (Bag.Items[(int)TBagItem.ReturnScroll] == 0))
-                            WriteLines(TxtRoom86Lines1.Skip(1).ToList());
-                        if ((Bag.Items[(int)TBagItem.Sausage] < -30) && (Player.Money > 199)) {
-                            WriteLines(TxtRoom86Lines2.Skip(1).ToList());
-                            MoveTo(RoomCityCentre);
-                            Bag.Items[(int)TBagItem.Beer] = (short)(Bag.Items[(int)TBagItem.Beer] - ItemUnit);
-                            Bag.Items[(int)TBagItem.Sausage] = (short)(Bag.Items[(int)TBagItem.Sausage] + 40);
-                            Player.Money = Player.Money - 200;
-                            Bag.Items[(int)TBagItem.ReturnScroll] = (short)(Bag.Items[(int)TBagItem.ReturnScroll] - ItemUnit);
-                            Player.Experience = (short)(Player.Experience + 50);
-                            Bag.Count = (short)(Bag.Count - 2);
-                        }
-                        if (Bag.Items[(int)TBagItem.ReturnScroll] < 0) {
-                            Out.WriteLine(TxtRoom86_13);
-                            MoveTo(RoomCageHuge);
-                        }
-                    }
-                    break;
-                case CmdZabij:
-                    if (Rest == CmdStaruch) {
-                        if (World.OldElf != 0) {
-                            Fight(WeakEnemy);
-                            World.OldElf = 0;
-                            Out.WriteLine(TxtRoom86_14);
-                            Out.WriteLine(TxtRoom86_15);
-                            Player.Level = (sbyte)(Player.Level - 1);
-                        }
-                    }
-                    break;
-            }
-            if (Verb == CmdExit)
-                WriteExits([ TxtShared_03,
-                            TxtExitWschod, TxtPlaceBudynek, ]);
-            if (MoveWhenOrQuit([Go(CmdWschod, RoomLivingDoor)])) return;
-        } while (!(Session.Room != RoomHut));
-    }
-
-    public static void Room87() {
-        Out.WriteLine(TxtRoom87_01);
-        Out.WriteLine(TxtRoom87_02);
-        Combat.Roll = Roll(100);
-        if (Combat.Roll < 40) {
-            Out.WriteLine(TxtRoom87_03 + (25 - Player.Stats[(int)TStat.Dexterity]) + TxtShared_26);
-            Player.Energy = (short)(Player.Energy - 25 + Player.Stats[(int)TStat.Dexterity]);
-        }
-        do {
-            ReadCommand();
-            ExpandAbbrev();
-            if (Verb == CmdExit)
-                WriteExits([ TxtShared_03,
-                            TxtExitPolodnie, TxtPlaceGrota,
-                            TxtExitPolnoc, TxtPlacePodejrzaneKrzaki, ]);
-            if (MoveWhenOrQuit([Go(CmdPolnoc, RoomCavePath), Go(CmdPolodnie, RoomNettleThrone)])) return;
-        } while (!(Session.Room != RoomCaveMouth));
-    }
-
-    public static void Room88() {
-        WriteLines(TxtRoom88Lines1.Skip(1).ToList());
-        Out.Write(TxtRoom88_05);
-        Command = Crt.ReadLn();
-        Out.WriteLine(TxtRoom88_06);
-        do {
-            Combat.EnemyEnergy = 200;
-            Combat.EnemyDexterity = 15;
-            Combat.EnemyStrength = 18;
-            Combat.FireballCharges = 5;
-            Combat.PoisonCharges = 1;
-            DoFight();
-            if (Combat.EnemyEnergy < 0) {
-                LeafGain();
-                PillGain();
-                ScrollGain();
-                if (World.DuncanQuest != 0) World.DuncanQuest = (sbyte)(World.DuncanQuest - 50);
-            }
-            if (Player.Energy > 0) {
-                Out.WriteLine(TxtRoom88_07);
-                MoveTo(RoomCaveMouth);
-            }
-            ReadCommand();
-            ExpandAbbrev();
-            if (Verb == CmdExit)
-                WriteExits([ TxtShared_03,
-                            TxtExitPolodnie, TxtPlaceWejscieDoGroty2, ]);
-            if (MoveWhenOrQuit([Go(CmdPolodnie, RoomCaveMouth)])) return;
-        } while (!(Session.Room != RoomNettleThrone));
     }
 
     public static void GrantQuestReward(short quest, short exp) {
@@ -869,205 +251,567 @@ public static class Rooms {
         }
     }
 
-    public static void Room100() {
-        WriteLines([TxtRoom100_01, TxtRoom100_02]);
-        DescribeStreet();
-        do {
-            ReadCommand();
-            if (Verb == CmdExit) {
-                WriteExits([ TxtShared_03,
-                            TxtExitPolodnie, TxtPlaceUlSklepikowa,
-                            TxtExitWschod, TxtPlaceDrogaOKtorejMozeszPomarzycBoJestWProdukcji, ]);
-                if (Bag.Permit == 0) Out.WriteLine(TxtExitZachod + TxtPlaceDrogaZablokowanaPrzezQuestMastera);
-                if (Bag.Permit < 0) Out.WriteLine(TxtExitZachod + TxtPlaceDroga);
-            }
-            if (Verb == CmdLista)
-                WriteLines(TxtRoom100Lines1.Skip(1).ToList());
-            for (int i = 1; i < QuestOffers.Count; i++) {
-                TQuestOffer q = QuestOffers[i];
-                BuyQuest(q.cmd, q.line, q.quest, q.kills, q.price);
-            }
-            if ((Verb == CmdSprzedaj && Rest == CmdQuest) && (World.Quest > 0)) {
-                switch (World.Quest) {
-                    case 1:
-                        if (World.QuestKills < 1) GrantQuestReward(1, 100);
-                        break;
-                    case 2:
-                        if ((World.QuestKills < 1) && (Bag.Items[(int)TBagItem.Diploma] <= -ItemUnit)) GrantQuestReward(2, 250);
-                        break;
-                    case 3:
-                        if ((World.QuestKills < 1) && (Bag.Items[(int)TBagItem.Pipe] <= -ItemUnit) && (Player.Practice > 0)) GrantQuestReward(3, 425);
-                        break;
-                }
-            }
-            if (MoveWhenOrExit([Go(CmdPolodnie, RoomShopStreet2)])) return;
-            switch (Verb) {
-                case CmdZachod:
-                    if (Bag.Permit <= -ItemUnit) Session.Room = RoomRoad1;
-                    if (Bag.Permit == 0) Out.WriteLine(TxtRoom100_16);
-                    break;
-                case CmdZabij:
-                    if (Rest == CmdQuestMaster) {
-                        Combat.PoisonCharges = 10;
-                        Combat.FireballCharges = 20;
-                        Combat.EnemyStrength = 10;
-                        Combat.EnemyDexterity = 26;
-                        Combat.EnemyEnergy = 188;
-                        DoFight();
-                        if (Combat.EnemyEnergy < 1) Bag.Permit = Bag.Permit - ItemUnit;
+    static TRoom SideRoom(short number, short dest, string direction, string exitDesc) =>
+        new() {
+            number = number,
+            intro = [TxtYouAreIn + TxtSimpleRoom_01],
+            exits = [TxtShared_03, direction + TxtSimpleRoom_02, exitDesc],
+            moves = [Go(direction, dest)],
+        };
+
+    static TRoom ArenaRoom(short number, List<string> exits) =>
+        new() {
+            number = number,
+            intro = [TxtArenaMaze_01],
+            exits = exits,
+            turn = ArenaTurn,
+            expand = true,
+        };
+
+    public static readonly List<TRoom> RoomDefs = [
+        new() {
+            number = RoomStart,
+            intro = [TxtRoom0_01],
+            exits = [TxtRoom0_02],
+            moves = [Go(CmdPolnoc, RoomSalon)],
+        },
+        new() {
+            number = RoomSalon,
+            intro = [TxtYouAreIn + TxtRoom1_01, TxtRoom1Lines1[1], TxtRoom1Lines1[2], TxtRoom1Lines1[3]],
+            exits = [TxtShared_03,
+                     TxtExitPolodnie, TxtPlaceTamGdzieZaczynaszGre,
+                     TxtExitPolnoc, TxtPlaceMiasto,
+                     TxtExitWschod, TxtPlacePokojTreningowy1,
+                     TxtExitZachod, TxtPlaceMudSzkola,
+                     TxtExitDol, TxtPlacePoddziemnyPokojTreningowy2, ],
+            moves = [Go(CmdPolodnie, RoomStart),
+                     Go(CmdWschod, RoomTraining),
+                     Go(CmdDol, RoomMeditation),
+                     Go(CmdZachod, RoomSchoolHall),
+                     Go(CmdPolnoc, RoomCityCentre), ],
+            posters = [new(CmdPatrz + CmdPlakat, [..TxtRoom1Lines2.Skip(1)])],
+        },
+        new() {
+            number = RoomTraining,
+            intro = [TxtYouAreIn + TxtRoom2_01, TxtRoom2_02, TxtShared_04],
+            exits = [TxtShared_03,
+                     TxtExitZachod, TxtPlacePok224JCentralny, ],
+            moves = [Go(CmdZachod, RoomSalon)],
+            posters = [new(CmdPatrz + CmdPlakat, [..TxtRoom2Lines1.Skip(1)])],
+            turn = entering => {
+                if (!entering)
+                    HandleTrain();
+            },
+        },
+        new() {
+            number = RoomMeditation,
+            intro = [..TxtRoom3Lines1.Skip(1)],
+            exits = [TxtRoom3_04],
+            moves = [Go(CmdGora, RoomSalon)],
+            turn = entering => {
+                if (!entering)
+                    Training();
+            },
+        },
+        new() {
+            number = RoomSchoolHall,
+            intro = [TxtYouAreIn + TxtRoom4_01, TxtRoom4_02],
+            exits = [TxtShared_03,
+                     TxtExitWschod, TxtPlacePokojCentralny,
+                     TxtExitZachod, TxtPlaceMudSzkola2, ],
+            moves = [Go(CmdWschod, RoomSalon), Go(CmdZachod, RoomLost)],
+            posters = [new(CmdPatrz + CmdAfisz, [..TxtRoom4Lines1.Skip(1)])],
+        },
+        new() {
+            number = RoomLost,
+            intro = [..TxtRoom5Lines1.Skip(1)],
+            exits = [TxtShared_03,
+                     TxtExitWschod, TxtPlaceMudSzkola,
+                     TxtExitZachod, TxtPlacePokoj,
+                     TxtExitPolnoc, TxtPlacePokoj,
+                     TxtExitPolodnie, TxtPlacePokoj,
+                     TxtExitGora, TxtPlacePokoj,
+                     TxtExitDol, TxtPlacePokoj, ],
+            moves = [Go(CmdWschod, RoomSchoolHall),
+                     Go(CmdZachod, RoomSchoolSide1),
+                     Go(CmdPolnoc, RoomSchoolSide2),
+                     Go(CmdPolodnie, RoomSchoolSide3),
+                     Go(CmdGora, RoomSchoolLanding),
+                     Go(CmdDol, RoomSchoolSide4), ],
+            posters = [new(CmdPatrz + CmdPlakat, [TxtRoom5_10, TxtRoom5_11])],
+        },
+        SideRoom(RoomSchoolSide1, RoomLost, CmdWschod, CmdMudSzkola2),
+        SideRoom(RoomSchoolSide3, RoomLost, CmdPolnoc, CmdMudSzkola2),
+        SideRoom(RoomSchoolSide2, RoomLost, CmdPolodnie, CmdMudSzkola2),
+        SideRoom(RoomSchoolSide4, RoomLost, CmdGora, CmdMudSzkola2),
+        new() {
+            number = RoomSchoolLanding,
+            intro = [TxtYouAreIn + TxtRoom9_01, TxtRoom9_02],
+            exits = [TxtShared_03,
+                     TxtExitDol, TxtPlaceMudSzkola2,
+                     TxtExitGora, TxtPlaceKlatkiPelneGajdy, ],
+            moves = [Go(CmdDol, RoomLost), Go(CmdGora, RoomCageCorridor)],
+        },
+        new() {
+            number = RoomCageCorridor,
+            intro = [TxtYouAreIn + TxtRoom11_01, ..TxtRoom11Lines1.Skip(1)],
+            exits = [TxtShared_03,
+                     TxtExitWschod, TxtPlaceKlatkaCieniasa,
+                     TxtExitZachod, TxtPlaceKlatkaSilnego,
+                     TxtExitPolnoc, TxtPlaceKlatkaZrecznego,
+                     TxtExitPolodnie, TxtPlaceKlatkaOdpornego,
+                     TxtExitGora, TxtPlaceKlatkaSilnegoOdpornegoIZrecznego,
+                     TxtExitDol, TxtPlaceJedynaDrogaNieProwadzacaDoKlatek, ],
+            moves = [Go(CmdWschod, RoomCageWeakling),
+                     Go(CmdZachod, RoomCageStrong),
+                     Go(CmdPolnoc, RoomCageAgile),
+                     Go(CmdPolodnie, RoomCageTough),
+                     Go(CmdGora, RoomCageHuge),
+                     Go(CmdDol, RoomCageReward), ],
+            posters = [new(CmdPatrz + CmdPlakat, [..TxtRoom11Lines2.Skip(1)])],
+            expand = true,
+        },
+        new() {
+            number = RoomCageWeakling,
+            exits = [TxtShared_03,
+                     TxtExitZachod, TxtPlaceKlatkiPelneGajdy, ],
+            moves = [Go(CmdZachod, RoomCageCorridor)],
+            turn = entering => {
+                if (entering)
+                    DescribeCage(CageWeakling, RoomCageWeakling, TxtRoom12_01, TxtShared_07);
+                else
+                    CageMonsterFight(IntSlot.Into(World.Monsters, (int)CageWeakling), RoomCageWeakling, 20, 3, 3, 10, 4);
+            },
+        },
+        new() {
+            number = RoomCageStrong,
+            exits = [TxtShared_03,
+                     TxtExitWschod, TxtPlaceKlatkiPelneGajdy, ],
+            moves = [Go(CmdWschod, RoomCageCorridor)],
+            turn = entering => {
+                if (entering)
+                    DescribeCage(CageStrong, RoomCageStrong, TxtRoom13_01, TxtShared_07);
+                else
+                    CageMonsterFight(IntSlot.Into(World.Monsters, (int)CageStrong), RoomCageStrong, 20, 3, 10, 15, 7);
+            },
+        },
+        new() {
+            number = RoomCageAgile,
+            exits = [TxtShared_03,
+                     TxtExitPolodnie, TxtPlaceKlatkiPelneGajdy, ],
+            moves = [Go(CmdPolodnie, RoomCageCorridor)],
+            turn = entering => {
+                if (entering)
+                    DescribeCage(CageAgile, RoomCageAgile, TxtRoom14_01, TxtRoom14_02);
+                else
+                    CageMonsterFight(IntSlot.Into(World.Monsters, (int)CageAgile), RoomCageAgile, 20, 30, 3, 15, 7);
+            },
+            quit = true,
+        },
+        new() {
+            number = RoomCageTough,
+            exits = [TxtShared_03,
+                     TxtExitPolnoc, TxtPlaceKlatkiPelneGajdy, ],
+            moves = [Go(CmdPolnoc, RoomCageCorridor)],
+            turn = entering => {
+                if (entering)
+                    DescribeCage(CageTough, RoomCageTough, TxtRoom15_01, TxtShared_07);
+                else
+                    CageMonsterFight(IntSlot.Into(World.Monsters, (int)CageTough), RoomCageTough, 40, 3, 3, 15, 7);
+            },
+            quit = true,
+        },
+        new() {
+            number = RoomCageHuge,
+            exits = [TxtShared_03,
+                     TxtExitDol, TxtPlaceKlatkiPelneGajdy, ],
+            moves = [Go(CmdDol, RoomCageCorridor)],
+            turn = entering => {
+                if (entering)
+                    DescribeCage(CageHuge, RoomCageHuge, TxtRoom16_01, TxtShared_07);
+                if (World.Monsters[(int)CageHuge] == RoomCageHuge) {
+                    Combat.EnemyEnergy = 40;
+                    Combat.EnemyDexterity = 11;
+                    Combat.EnemyStrength = 10;
+                    DoFight();
+                    if (Combat.Fled != 0) {
+                        Combat.Fled = 0;
+                        MoveTo(RoomCageCorridor);
+                    } else {
+                        World.Monsters[(int)CageHuge] = 0;
+                        Combat.Loot = Roll(30);
+                        Out.WriteLine(TxtShared_08 + Combat.Loot + TxtShared_09);
+                        Player.Money = Player.Money + Combat.Loot;
+                        TryCageLoot(10);
                     }
-                    break;
-            }
-        } while (!(Session.Room != RoomQuestMaster));
-    }
-
-    public static void Room101() {
-        BasicRoomQuitGeneric(RoomRoad1,
-                  TxtRoom101Lines1.Skip(1).ToList(),
-                  [ TxtShared_03,
-                   TxtExitWschod, TxtPlaceRozjazd,
-                   TxtExitZachod, TxtPlaceDroga,
-                   TxtExitPolnoc, TxtPlaceLas,
-                   TxtExitPolodnie, TxtPlaceLas, ],
-                  [ Go(CmdWschod, RoomQuestMaster), Go(CmdZachod, RoomRoad2),
-                   Go(CmdPolnoc, RoomForest), ],
-                  CmdPatrz + CmdDrogowskaz,
-                  [TxtRoom101_05]);
-    }
-
-    public static void Room102() {
-        BasicRoomQuit(RoomRoad2,
-                  [TxtRoom102_01, TxtRoom102_02],
-                  [ TxtShared_03,
-                   TxtExitWschod, TxtPlaceDroga,
-                   TxtExitZachod, TxtPlaceDroga,
-                   TxtExitPolnoc, TxtPlaceLas,
-                   TxtExitPolodnie, TxtPlaceLas, ],
-                  [Go(CmdWschod, RoomRoad1), Go(CmdZachod, RoomRoad3)]);
-    }
-
-    public static void Room103() {
-        BasicRoomQuit(RoomRoad3,
-                  TxtRoom103Lines1.Skip(1).ToList(),
-                  [ TxtShared_03,
-                   TxtExitWschod, TxtPlaceDroga,
-                   TxtExitPolnoc, TxtPlaceLas,
-                   TxtExitPolodnie, TxtPlaceLas, ],
-                  [Go(CmdWschod, RoomRoad2)]);
-    }
-
-    public static void ConcertRooms() {
-        if (Session.Room == RoomCrowd1) {
-            WriteLines(TxtConcertRoomsLines1.Skip(1).ToList());
-            DescribeCrowd();
-            do {
-                ReadCommand();
-                if (Verb == CmdExit)
-                    WriteExits([ TxtShared_03,
-                                TxtExitZachod, TxtPlaceDolinaRozrywek,
-                                TxtExitPolnoc, TxtPlaceTlum,
-                                TxtExitPolodnie, TxtPlaceTlum, ]);
-                ConcertFights();
-                if (MoveWhenOrExit([ Go(CmdZachod, RoomValley),
-                          Go(CmdPolnoc, RoomCrowd3),
-                          Go(CmdPolodnie, RoomCrowd2),
-                          Go(CmdWschod, RoomCrowd4), ]))
+                }
+            },
+            quit = true,
+        },
+        new() {
+            number = RoomCageReward,
+            intro = [TxtYouAreIn + TxtRoom17_01],
+            exits = [TxtShared_03,
+                     TxtExitGora, TxtPlaceKlatkiPelneGajdy,
+                     TxtExitDol, TxtPlaceTeleport, ],
+            moves = [Go(CmdGora, RoomCageCorridor), Go(CmdDol, RoomTeleport)],
+            turn = entering => {
+                if (entering)
                     return;
                 if (Verb == CmdPatrz && Rest == CmdPlakat) {
-                    Out.WriteLine(TxtConcertRooms_07);
-                    Out.WriteLine(TxtConcertRooms_08);
+                    WriteLines(TxtRoom17Lines1.Skip(1).ToList());
+                    if ((World.Monsters[(int)CageWeakling] == 0) && (World.Monsters[(int)CageAgile] == 0) &&
+                    (World.Monsters[(int)CageStrong] == 0) && (World.Monsters[(int)CageTough] == 0) &&
+                    (World.Monsters[(int)CageHuge] == 0) && (Bag.Items[(int)TBagItem.Diploma] == 0))
+                        Bag.Items[(int)TBagItem.Diploma] = RoomCageReward;
                 }
-            } while (!(Session.Room != RoomCrowd1));
-        }
-        if (Session.Room == RoomCrowd2) {
-            Out.WriteLine(TxtConcertRooms_09);
-            DescribeCrowd();
-            do {
-                ReadCommand();
-                ExpandAbbrev();
-                if (Verb == CmdExit)
-                    WriteExits([ TxtShared_03,
-                                TxtExitPolnoc, TxtPlaceTlum,
-                                TxtExitWschod, TxtPlaceTlum, ]);
-                ConcertFights();
-                if (MoveWhenOrExit([Go(CmdPolnoc, RoomCrowd1), Go(CmdWschod, RoomCrowd5)])) return;
-            } while (!(Session.Room != RoomCrowd2));
-        }
-        if (Session.Room == RoomCrowd3) {
-            Out.WriteLine(TxtConcertRooms_11);
-            DescribeCrowd();
-            do {
-                ReadCommand();
-                ExpandAbbrev();
-                if (Verb == CmdExit)
-                    WriteExits([ TxtShared_03,
-                                TxtExitPolodnie, TxtPlaceTlum,
-                                TxtExitWschod, TxtPlaceTlum,
-                                TxtExitPolnoc, TxtPlacePiwiarnia, ]);
-                ConcertFights();
-                if (MoveWhenOrExit([Go(CmdPolodnie, RoomCrowd1), Go(CmdWschod, RoomCrowd6), Go(CmdPolnoc, RoomPub)])) return;
-            } while (!(Session.Room != RoomCrowd3));
-        }
-        if (Session.Room == RoomCrowd4) {
-            Out.WriteLine(TxtYouAreIn + TxtConcertRooms_13);
-            Out.WriteLine(TxtConcertRooms_14);
-            DescribeCrowd();
-            do {
-                ReadCommand();
-                ExpandAbbrev();
-                if (Verb == CmdExit)
-                    WriteExits([ TxtShared_03,
-                                TxtExitZachod, TxtPlaceTlum,
-                                TxtExitPolnoc, TxtPlaceTlum,
-                                TxtExitPolodnie, TxtPlaceTlum, ]);
-                ConcertFights();
-                if (MoveWhenOrExit([Go(CmdPolnoc, RoomCrowd6), Go(CmdZachod, RoomCrowd1), Go(CmdPolodnie, RoomCrowd5)])) return;
-            } while (!(Session.Room != RoomCrowd4));
-        }
-        if (Session.Room == RoomCrowd5) {
-            Out.WriteLine(TxtConcertRooms_16);
-            Out.WriteLine(TxtConcertRooms_14);
-            DescribeCrowd();
-            do {
-                ReadCommand();
-                ExpandAbbrev();
-                if (Verb == CmdExit)
-                    WriteExits([ TxtShared_03,
-                                TxtExitZachod, TxtPlaceTlum,
-                                TxtExitPolnoc, TxtPlaceTlum, ]);
-                ConcertFights();
-                if (MoveWhenOrExit([Go(CmdPolnoc, RoomCrowd4), Go(CmdZachod, RoomCrowd2)])) return;
-            } while (!(Session.Room != RoomCrowd5));
-        }
-        if (Session.Room == RoomCrowd6) {
-            Out.WriteLine(TxtConcertRooms_17);
-            DescribeCrowd();
-            do {
-                ReadCommand();
-                ExpandAbbrev();
-                if (Verb == CmdExit)
-                    WriteExits([ TxtShared_03,
-                                TxtExitZachod, TxtPlaceTlum,
-                                TxtExitPolodnie, TxtPlaceTlum, ]);
-                ConcertFights();
-                if (MoveWhenOrExit([Go(CmdPolodnie, RoomCrowd4), Go(CmdZachod, RoomCrowd3)])) return;
-            } while (!(Session.Room != RoomCrowd6));
-        }
-        if (Session.Room == RoomPub) {
-            Out.WriteLine(TxtYouAreIn + TxtConcertRooms_18);
-            Out.WriteLine(TxtConcertRooms_19);
-            if (World.Monsters[(int)Minibarman] == 67)
-                Out.WriteLine(TxtConcertRooms_20);
-            if (World.Monsters[(int)Fatso] == 67)
-                Out.WriteLine(TxtConcertRooms_21);
-            DescribeCrowd();
-            do {
-                ReadCommand();
-                ExpandAbbrev();
-                if (Verb == CmdExit)
-                    WriteExits([ TxtShared_03,
-                                TxtExitWschod, TxtPlaceWejscieNaEstrade,
-                                TxtExitPolodnie, TxtPlaceTlum, ]);
+            },
+            quit = true,
+        },
+        new() {
+            number = RoomTeleport,
+            intro = [..TxtRoom18Lines1.Skip(1)],
+            teleport = RoomSalon,
+        },
+        new() {
+            number = RoomCityCentre,
+            intro = [TxtYouAreIn + TxtRoom20_01],
+            exits = [TxtShared_03,
+                     TxtExitPolodnie, TxtPlacePokojCentralny,
+                     TxtExitPolnoc, TxtPlaceUlSklepikowa,
+                     TxtExitWschod, TxtPlaceUlCiemna,
+                     TxtExitZachod, TxtPlaceUlDluga, ],
+            moves = [Go(CmdPolodnie, RoomSalon),
+                     Go(CmdPolnoc, RoomShopStreet),
+                     Go(CmdZachod, RoomLongStreet),
+                     Go(CmdWschod, RoomDarkStreet), ],
+            posters = [new(CmdPatrz + CmdPlakat, [TxtRoom20_02])],
+            turn = StreetTurn,
+            quit = true,
+        },
+        new() {
+            number = RoomShopStreet,
+            intro = [TxtRoom21_01, TxtRoom21_02],
+            exits = [TxtShared_03,
+                     TxtExitPolodnie, TxtPlaceCentrumMiasta,
+                     TxtExitPolnoc, TxtPlaceUlSklepikowa,
+                     TxtExitWschod, TxtPlacePiekarnia,
+                     TxtExitZachod, TxtPlaceZbrojownia, ],
+            moves = [Go(CmdPolodnie, RoomCityCentre),
+                     Go(CmdPolnoc, RoomShopStreet2),
+                     Go(CmdWschod, RoomBakery),
+                     Go(CmdZachod, RoomArmoury), ],
+            turn = StreetTurn,
+            quit = true,
+        },
+        new() {
+            number = RoomShopStreet2,
+            intro = [TxtRoom22_01, TxtRoom22_02],
+            exits = [TxtShared_03,
+                     TxtExitPolodnie, TxtPlaceUlSklepikowa,
+                     TxtExitPolnoc, TxtPlaceRozjazd,
+                     TxtExitWschod, TxtPlaceSklepWielobranzowy,
+                     TxtExitZachod, TxtPlaceSklepMagiczny, ],
+            moves = [Go(CmdPolodnie, RoomShopStreet),
+                     Go(CmdWschod, RoomGeneralStore),
+                     Go(CmdZachod, RoomMagicShop),
+                     Go(CmdPolnoc, RoomQuestMaster), ],
+            turn = StreetTurn,
+            quit = true,
+        },
+        new() {
+            number = RoomBakery,
+            intro = [TxtYouAreIn + TxtRoom23_01, TxtRoom23_02, TxtRoom23_03],
+            exits = [TxtShared_03,
+                     TxtExitZachod, TxtPlaceUlicaSklepikowa, ],
+            moves = [Go(CmdZachod, RoomShopStreet)],
+            posters = [new(CmdPatrz + CmdPlakat, [TxtRoom23_04, TxtRoom23_05])],
+            turn = entering => {
+                if (entering)
+                    DescribeStreet();
+                else
+                    BakeryShop();
+            },
+            quit = true,
+        },
+        new() {
+            number = RoomArmoury,
+            intro = [TxtYouAreIn + TxtRoom24_01, TxtRoom24_02, TxtRoom24_03],
+            exits = [TxtShared_03,
+                     TxtExitWschod, TxtPlaceUlicaSklepikowa, ],
+            moves = [Go(CmdWschod, RoomShopStreet)],
+            posters = [new(CmdPatrz + CmdPlakat, [TxtRoom24_04])],
+            turn = entering => {
+                if (entering)
+                    DescribeStreet();
+                else {
+                    ArmouryShop();
+                    StreetFights();
+                }
+            },
+            quit = true,
+        },
+        new() {
+            number = RoomGeneralStore,
+            intro = [TxtRoom25_01, TxtRoom25_02],
+            exits = [TxtShared_03,
+                     TxtExitZachod, TxtPlaceUlicaSklepikowa, ],
+            moves = [Go(CmdZachod, RoomShopStreet2)],
+            posters = [new(CmdPatrz + CmdWywieszka, [TxtRoom25_03]),
+                       new(CmdPatrz + CmdPoster, [TxtGeneralStoreShop_06]), ],
+            turn = entering => {
+                if (entering)
+                    DescribeStreet();
+                else {
+                    StreetFights();
+                    GeneralStoreShop();
+                }
+            },
+            quit = true,
+        },
+        new() {
+            number = RoomMagicShop,
+            intro = [TxtRoom26_01],
+            exits = [TxtShared_03,
+                     TxtExitWschod, TxtPlaceUlicaSklepikowa, ],
+            moves = [Go(CmdWschod, RoomShopStreet2)],
+            posters = [new(CmdPatrz + CmdPlakat, [TxtRoom26_02])],
+            turn = entering => {
+                if (entering)
+                    DescribeStreet();
+                else {
+                    MagicShop();
+                    StreetFights();
+                }
+            },
+            quit = true,
+        },
+        new() {
+            number = RoomLongStreet,
+            intro = [TxtRoom30_01, TxtRoom30_02],
+            exits = [TxtShared_03,
+                     TxtExitWschod, TxtPlaceCentrumMiasta,
+                     TxtExitZachod, TxtPlaceUlicaDluga,
+                     TxtExitPolnoc, TxtPlaceWejscieNaArene, ],
+            moves = [Go(CmdWschod, RoomCityCentre),
+                     Go(CmdZachod, RoomLongStreet2),
+                     Go(CmdPolnoc, RoomArenaEntrance), ],
+        },
+        new() {
+            number = RoomLongStreet2,
+            intro = [TxtRoom31_01, TxtRoom31_02],
+            exits = [TxtShared_03,
+                     TxtExitWschod, TxtPlaceUlicaDluga,
+                     TxtExitPolnoc, TxtPlaceDolinaRozrywek, ],
+            moves = [Go(CmdWschod, RoomLongStreet), Go(CmdPolnoc, RoomValley)],
+            quit = true,
+        },
+        new() {
+            number = RoomArenaEntrance,
+            intro = [TxtRoom32_01, TxtRoom32_02],
+            exits = [TxtShared_03,
+                     TxtExitPolodnie, TxtPlaceUlicaDluga,
+                     TxtExitPolnoc, TxtPlaceArena, ],
+            moves = [Go(CmdPolodnie, RoomLongStreet), Go(CmdPolnoc, RoomArena33)],
+            posters = [new(CmdPatrz + CmdPlakat, [TxtRoom32_03, TxtRoom32_04])],
+            quit = true,
+        },
+        ArenaRoom(RoomArena33, [TxtShared_03,
+                                TxtExitPolodnie, TxtPlaceWejscieNaArene,
+                                TxtExitPolnoc, TxtPlaceArena,
+                                TxtExitWschod, TxtPlaceArena,
+                                TxtExitZachod, TxtPlaceArena, ]),
+        ArenaRoom(RoomArena34, [TxtShared_03,
+                                TxtExitPolodnie, TxtPlaceArena,
+                                TxtExitPolnoc, TxtPlaceArena,
+                                TxtExitWschod, TxtPlaceArena,
+                                TxtExitZachod, TxtPlaceArena, ]),
+        ArenaRoom(RoomArena35, [TxtShared_03,
+                                TxtExitPolnoc, TxtPlaceArena,
+                                TxtExitWschod, TxtPlaceArena,
+                                TxtExitZachod, TxtPlaceArena, ]),
+        ArenaRoom(RoomArena36, [TxtShared_03,
+                                TxtExitPolnoc, TxtPlaceArena,
+                                TxtExitWschod, TxtPlaceArena,
+                                TxtExitZachod, TxtPlaceArena, ]),
+        ArenaRoom(RoomArena37, [TxtShared_03,
+                                TxtExitPolodnie, TxtPlaceArena,
+                                TxtExitPolnoc, TxtPlaceArena,
+                                TxtExitWschod, TxtPlaceArena,
+                                TxtExitZachod, TxtPlaceArena, ]),
+        ArenaRoom(RoomArena38, [TxtShared_03,
+                                TxtExitPolodnie, TxtPlaceArena,
+                                TxtExitPolnoc, TxtPlaceArena,
+                                TxtExitWschod, TxtPlaceArena,
+                                TxtExitZachod, TxtPlaceArena, ]),
+        ArenaRoom(RoomArena39, [TxtShared_03,
+                                TxtExitPolodnie, TxtPlaceArena,
+                                TxtExitPolnoc, TxtPlaceArena,
+                                TxtExitWschod, TxtPlaceArena,
+                                TxtExitZachod, TxtPlaceArena, ]),
+        ArenaRoom(RoomArena40, [TxtShared_03,
+                                TxtExitPolnoc, TxtPlaceArena,
+                                TxtExitZachod, TxtPlaceArena, ]),
+        ArenaRoom(RoomArena41, [TxtShared_03,
+                                TxtExitPolnoc, TxtPlaceArena,
+                                TxtExitWschod, TxtPlaceArena, ]),
+        ArenaRoom(RoomArena42, [TxtShared_03,
+                                TxtExitPolodnie, TxtPlaceArena,
+                                TxtExitPolnoc, TxtPlaceArena,
+                                TxtExitWschod, TxtPlaceArena,
+                                TxtExitZachod, TxtPlaceArena, ]),
+        ArenaRoom(RoomArena43, [TxtShared_03,
+                                TxtExitPolodnie, TxtPlaceArena,
+                                TxtExitPolnoc, TxtPlaceArena,
+                                TxtExitWschod, TxtPlaceArena,
+                                TxtExitZachod, TxtPlaceArena, ]),
+        ArenaRoom(RoomArena44, [TxtShared_03,
+                                TxtExitPolodnie, TxtPlaceArena,
+                                TxtExitPolnoc, TxtPlaceArena,
+                                TxtExitWschod, TxtPlaceArena,
+                                TxtExitZachod, TxtPlaceArena, ]),
+        ArenaRoom(RoomArena45, [TxtArenaMaze_08,
+                                TxtExitPolnoc, TxtPlaceArena,
+                                TxtExitPolodnie, TxtPlaceArena,
+                                TxtExitZachod, TxtPlaceArena, ]),
+        ArenaRoom(RoomArena46, [TxtArenaMaze_08,
+                                TxtExitPolnoc, TxtPlaceArena,
+                                TxtExitPolodnie, TxtPlaceArena,
+                                TxtExitWschod, TxtPlaceArena, ]),
+        ArenaRoom(RoomArena47, [TxtArenaMaze_09,
+                                TxtExitPolodnie, TxtPlaceArena,
+                                TxtExitWschod, TxtPlaceArena,
+                                TxtExitZachod, TxtPlaceArena, ]),
+        ArenaRoom(RoomArena48, [TxtShared_03,
+                                TxtExitPolodnie, TxtPlaceArena,
+                                TxtExitPolnoc, TxtPlaceArena,
+                                TxtExitWschod, TxtPlaceArena,
+                                TxtExitZachod, TxtPlaceArena, ]),
+        ArenaRoom(RoomArena49, [TxtShared_03,
+                                TxtExitPolodnie, TxtPlaceArena,
+                                TxtExitPolnoc, TxtPlaceArena,
+                                TxtExitWschod, TxtPlaceArena,
+                                TxtExitZachod, TxtPlaceArena, ]),
+        ArenaRoom(RoomArena50, [TxtArenaMaze_08,
+                                TxtExitPolnoc, TxtPlaceArena,
+                                TxtExitPolodnie, TxtPlaceArena,
+                                TxtExitZachod, TxtPlaceArena, ]),
+        ArenaRoom(RoomArena51, [TxtArenaMaze_08,
+                                TxtExitPolnoc, TxtPlaceArena,
+                                TxtExitPolodnie, TxtPlaceArena,
+                                TxtExitWschod, TxtPlaceArena, ]),
+        ArenaRoom(RoomArena52, [TxtArenaMaze_09,
+                                TxtExitPolodnie, TxtPlaceArena,
+                                TxtExitWschod, TxtPlaceArena,
+                                TxtExitZachod, TxtPlaceArena, ]),
+        ArenaRoom(RoomArena53, [TxtArenaMaze_09,
+                                TxtExitPolodnie, TxtPlaceArena,
+                                TxtExitWschod, TxtPlaceArena,
+                                TxtExitZachod, TxtPlaceArena, ]),
+        ArenaRoom(RoomArena54, [TxtArenaMaze_08,
+                                TxtExitPolnoc, TxtPlaceArena,
+                                TxtExitPolodnie, TxtPlaceArena,
+                                TxtExitZachod, TxtPlaceArena, ]),
+        ArenaRoom(RoomArena55, [TxtArenaMaze_08,
+                                TxtExitPolnoc, TxtPlaceArena,
+                                TxtExitPolodnie, TxtPlaceArena,
+                                TxtExitWschod, TxtPlaceArena, ]),
+        ArenaRoom(RoomArena56, [TxtArenaMaze_10,
+                                TxtExitPolodnie, TxtPlaceArena,
+                                TxtExitZachod, TxtPlaceArena, ]),
+        ArenaRoom(RoomArena57, [TxtArenaMaze_10,
+                                TxtExitPolodnie, TxtPlaceArena,
+                                TxtExitWschod, TxtPlaceArena, ]),
+        new() {
+            number = RoomValley,
+            intro = [TxtYouAreIn + TxtRoom60_01, TxtRoom60_02, TxtRoom60_03],
+            exits = [TxtShared_03,
+                     TxtExitPolodnie, TxtPlaceUlicaDluga,
+                     TxtExitWschod, TxtPlaceBudowlaPelnaHalasu, ],
+            moves = [Go(CmdPolodnie, RoomLongStreet2), Go(CmdWschod, RoomCrowd1)],
+        },
+        new() {
+            number = RoomCrowd1,
+            intro = [..TxtConcertRoomsLines1.Skip(1)],
+            exits = [TxtShared_03,
+                     TxtExitZachod, TxtPlaceDolinaRozrywek,
+                     TxtExitPolnoc, TxtPlaceTlum,
+                     TxtExitPolodnie, TxtPlaceTlum, ],
+            moves = [Go(CmdZachod, RoomValley),
+                     Go(CmdPolnoc, RoomCrowd3),
+                     Go(CmdPolodnie, RoomCrowd2),
+                     Go(CmdWschod, RoomCrowd4), ],
+            posters = [new(CmdPatrz + CmdPlakat, [TxtConcertRooms_07, TxtConcertRooms_08])],
+            turn = CrowdTurn,
+        },
+        new() {
+            number = RoomCrowd2,
+            intro = [TxtConcertRooms_09],
+            exits = [TxtShared_03,
+                     TxtExitPolnoc, TxtPlaceTlum,
+                     TxtExitWschod, TxtPlaceTlum, ],
+            moves = [Go(CmdPolnoc, RoomCrowd1), Go(CmdWschod, RoomCrowd5)],
+            turn = CrowdTurn,
+            expand = true,
+        },
+        new() {
+            number = RoomCrowd3,
+            intro = [TxtConcertRooms_11],
+            exits = [TxtShared_03,
+                     TxtExitPolodnie, TxtPlaceTlum,
+                     TxtExitWschod, TxtPlaceTlum,
+                     TxtExitPolnoc, TxtPlacePiwiarnia, ],
+            moves = [Go(CmdPolodnie, RoomCrowd1), Go(CmdWschod, RoomCrowd6), Go(CmdPolnoc, RoomPub)],
+            turn = CrowdTurn,
+            expand = true,
+        },
+        new() {
+            number = RoomCrowd4,
+            intro = [TxtYouAreIn + TxtConcertRooms_13, TxtConcertRooms_14],
+            exits = [TxtShared_03,
+                     TxtExitZachod, TxtPlaceTlum,
+                     TxtExitPolnoc, TxtPlaceTlum,
+                     TxtExitPolodnie, TxtPlaceTlum, ],
+            moves = [Go(CmdPolnoc, RoomCrowd6), Go(CmdZachod, RoomCrowd1), Go(CmdPolodnie, RoomCrowd5)],
+            turn = CrowdTurn,
+            expand = true,
+        },
+        new() {
+            number = RoomCrowd5,
+            intro = [TxtConcertRooms_16, TxtConcertRooms_14],
+            exits = [TxtShared_03,
+                     TxtExitZachod, TxtPlaceTlum,
+                     TxtExitPolnoc, TxtPlaceTlum, ],
+            moves = [Go(CmdPolnoc, RoomCrowd4), Go(CmdZachod, RoomCrowd2)],
+            turn = CrowdTurn,
+            expand = true,
+        },
+        new() {
+            number = RoomCrowd6,
+            intro = [TxtConcertRooms_17],
+            exits = [TxtShared_03,
+                     TxtExitZachod, TxtPlaceTlum,
+                     TxtExitPolodnie, TxtPlaceTlum, ],
+            moves = [Go(CmdPolodnie, RoomCrowd4), Go(CmdZachod, RoomCrowd3)],
+            turn = CrowdTurn,
+            expand = true,
+        },
+        new() {
+            number = RoomPub,
+            intro = [TxtYouAreIn + TxtConcertRooms_18, TxtConcertRooms_19],
+            exits = [TxtShared_03,
+                     TxtExitWschod, TxtPlaceWejscieNaEstrade,
+                     TxtExitPolodnie, TxtPlaceTlum, ],
+            moves = [Go(CmdPolodnie, RoomCrowd3), Go(CmdWschod, RoomStageEntrance)],
+            turn = entering => {
+                if (entering) {
+                    if (World.Monsters[(int)Minibarman] == 67)
+                        Out.WriteLine(TxtConcertRooms_20);
+                    if (World.Monsters[(int)Fatso] == 67)
+                        Out.WriteLine(TxtConcertRooms_21);
+                    DescribeCrowd();
+                    return;
+                }
                 ConcertFights();
                 switch (Verb) {
                     case CmdZabij:
@@ -1104,39 +848,41 @@ public static class Rooms {
                         }
                         break;
                 }
-                if (MoveWhenOrExit([Go(CmdPolodnie, RoomCrowd3), Go(CmdWschod, RoomStageEntrance)])) return;
-            } while (!(Session.Room != RoomPub));
-        }
-        if (Session.Room == RoomStageEntrance) {
-            Out.WriteLine(TxtConcertRooms_27);
-            Out.WriteLine(TxtConcertRooms_28);
-            DescribeCrowd();
-            do {
-                ReadCommand();
-                ExpandAbbrev();
-                if (Verb == CmdExit) {
-                    WriteExits([ TxtShared_03,
-                                TxtExitZachod, TxtPlacePiwiarnia,
-                                TxtExitWschod, TxtPlaceScena, ]);
-                    Out.WriteLine(TxtConcertRooms_31);
+            },
+            expand = true,
+        },
+        new() {
+            number = RoomStageEntrance,
+            intro = [TxtConcertRooms_27, TxtConcertRooms_28],
+            exits = [TxtShared_03,
+                     TxtExitZachod, TxtPlacePiwiarnia,
+                     TxtExitWschod, TxtPlaceScena, ],
+            moves = [Go(CmdZachod, RoomPub), Go(CmdWschod, RoomBackstage)],
+            posters = [new(CmdPatrz + CmdTabliczka, [TxtConcertRooms_32])],
+            turn = entering => {
+                if (entering) {
+                    DescribeCrowd();
+                    return;
                 }
-                ConcertFights();
-                if (MoveWhenOrExit([Go(CmdZachod, RoomPub), Go(CmdWschod, RoomBackstage)])) return;
-                if (Verb == CmdPatrz && Rest == CmdTabliczka)
-                    Out.WriteLine(TxtConcertRooms_32);
-            } while (!(Session.Room != RoomStageEntrance));
-        }
-        if (Session.Room == RoomBackstage) {
-            Out.WriteLine(TxtConcertRooms_33);
-            Out.WriteLine(TxtConcertRooms_34);
-            if (World.Monsters[(int)DJ] == 69)
-                Out.WriteLine(TxtConcertRooms_35);
-            do {
-                ReadCommand();
                 if (Verb == CmdExit)
-                    WriteExits([ TxtShared_03,
-                                TxtExitZachod, TxtPlaceWejscieNaScene,
-                                TxtExitPolodnie, TxtPlaceScena, ]);
+                    Out.WriteLine(TxtConcertRooms_31);
+                ConcertFights();
+            },
+            expand = true,
+        },
+        new() {
+            number = RoomBackstage,
+            intro = [TxtConcertRooms_33, TxtConcertRooms_34],
+            exits = [TxtShared_03,
+                     TxtExitZachod, TxtPlaceWejscieNaScene,
+                     TxtExitPolodnie, TxtPlaceScena, ],
+            moves = [Go(CmdZachod, RoomStageEntrance), Go(CmdPolodnie, RoomStage1)],
+            turn = entering => {
+                if (entering) {
+                    if (World.Monsters[(int)DJ] == 69)
+                        Out.WriteLine(TxtConcertRooms_35);
+                    return;
+                }
                 if (Verb == CmdZabij && Rest == CmdDJ) {
                     if (World.Monsters[(int)DJ] == 69) {
                         Fight(VeryHardEnemy);
@@ -1160,183 +906,464 @@ public static class Rooms {
                         }
                     }
                 }
-                if (MoveWhenOrExit([Go(CmdZachod, RoomStageEntrance), Go(CmdPolodnie, RoomStage1)])) return;
-            } while (!(Session.Room != RoomBackstage));
-        }
-        if (Session.Room == RoomStage1) {
-            WriteLines(TxtConcertRoomsLines2.Skip(1).ToList());
-            DescribeStage();
-            do {
-                ReadCommand();
-                if (Verb == CmdExit)
-                    WriteExits([ TxtShared_03,
-                                TxtExitPolnoc, TxtPlaceScena,
-                                TxtExitPolodnie, TxtPlaceSrodekSceny, ]);
-                if (MoveWhenOrExit([Go(CmdPolnoc, RoomBackstage), Go(CmdPolodnie, RoomStage2)])) return;
-                StageFights();
-            } while (!(Session.Room != RoomStage1));
-        }
-        if (Session.Room == RoomStage2) {
-            Out.WriteLine(TxtConcertRooms_46);
-            Out.WriteLine(TxtConcertRooms_47);
-            DescribeStage();
-            do {
-                ReadCommand();
-                if (Verb == CmdExit)
-                    WriteExits([ TxtShared_03,
-                                TxtExitPolnoc, TxtPlaceScena,
-                                TxtExitPolodnie, TxtPlaceScena, ]);
-                if (MoveWhenOrExit([Go(CmdPolnoc, RoomStage1), Go(CmdPolodnie, RoomStage3)])) return;
-                StageFights();
-            } while (!(Session.Room != RoomStage2));
-        }
-        if (Session.Room == RoomStage3) {
-            Out.WriteLine(TxtConcertRooms_48);
-            Out.WriteLine(TxtConcertRooms_49);
-            DescribeStage();
-            do {
-                ReadCommand();
-                if (Verb == CmdExit)
-                    WriteExits([ TxtShared_03,
-                                TxtExitPolnoc, TxtPlaceSrodekSceny, ]);
-                if (MoveWhenOrExit([Go(CmdPolnoc, RoomStage2)])) return;
-                StageFights();
-            } while (!(Session.Room != RoomStage3));
-        }
-    }
-
-    public static void PlainRooms() {
-        for (int i = 1; i < SideRooms.Count; i++) {
-            TSideRoom s = SideRooms[i];
-            SimpleRoom(s.room, s.dest, s.direction, s.exitDesc);
-        }
-    }
-
-    public static void BasicRoomGeneric(short RoomNo, List<string> intro, List<string> exits,
-        List<TMovement> moves, string posterCmd, List<string> poster) {
-        if (Session.Room != RoomNo) return;
-        WriteLines(intro);
-        do {
-            ReadCommand();
-            if (Verb == CmdExit)
-                WriteExits(exits);
-            if (MoveWhenOrExit(moves)) return;
-            if (poster.Any() && (Matches(posterCmd)))
-                WriteLines(poster);
-        } while (!(Session.Room != RoomNo));
-    }
-
-    public static void BasicRoomPoster(short RoomNo, List<string> intro, List<string> exits,
-        List<TMovement> moves, List<string> poster) {
-        BasicRoomGeneric(RoomNo, intro, exits, moves, CmdPatrz + CmdPlakat, poster);
-    }
-
-    public static void BasicRoomQuit(short RoomNo, List<string> intro, List<string> exits,
-        List<TMovement> moves) {
-        BasicRoomQuitGeneric(RoomNo, intro, exits, moves, "", []);
-    }
-
-    public static void BasicRoomQuitGeneric(short RoomNo, List<string> intro, List<string> exits,
-        List<TMovement> moves, string posterCmd, List<string> poster) {
-        if (Session.Room != RoomNo) return;
-        WriteLines(intro);
-        do {
-            ReadCommand();
-            if (Verb == CmdExit)
-                WriteExits(exits);
-            if (MoveWhenOrQuit(moves)) return;
-            if (poster.Any() && (Matches(posterCmd)))
-                WriteLines(poster);
-        } while (!(Session.Room != RoomNo));
-    }
-
-    public static void BasicRoomQuitPoster(short RoomNo, List<string> intro, List<string> exits,
-        List<TMovement> moves, List<string> poster) {
-        BasicRoomQuitGeneric(RoomNo, intro, exits, moves, CmdPatrz + CmdPlakat, poster);
-    }
-
-    public static void BasicRoomSimple(short RoomNo, List<string> intro, List<string> exits,
-        List<TMovement> moves) {
-        BasicRoomGeneric(RoomNo, intro, exits, moves, "", []);
-    }
-
-    public static void SimpleRoom(short RoomNo, short DestRoom, string Direction, string ExitDesc) {
-        if (Session.Room == RoomNo) {
-            Out.WriteLine(TxtYouAreIn + TxtSimpleRoom_01);
-            do {
-                ReadCommand();
-                if (Verb == CmdExit) {
-                    Out.WriteLine(TxtShared_03);
-                    Out.WriteLine(Direction + TxtSimpleRoom_02 + ExitDesc);
+            },
+        },
+        new() {
+            number = RoomStage1,
+            intro = [..TxtConcertRoomsLines2.Skip(1)],
+            exits = [TxtShared_03,
+                     TxtExitPolnoc, TxtPlaceScena,
+                     TxtExitPolodnie, TxtPlaceSrodekSceny, ],
+            moves = [Go(CmdPolnoc, RoomBackstage), Go(CmdPolodnie, RoomStage2)],
+            turn = StageTurn,
+        },
+        new() {
+            number = RoomStage2,
+            intro = [TxtConcertRooms_46, TxtConcertRooms_47],
+            exits = [TxtShared_03,
+                     TxtExitPolnoc, TxtPlaceScena,
+                     TxtExitPolodnie, TxtPlaceScena, ],
+            moves = [Go(CmdPolnoc, RoomStage1), Go(CmdPolodnie, RoomStage3)],
+            turn = StageTurn,
+        },
+        new() {
+            number = RoomStage3,
+            intro = [TxtConcertRooms_48, TxtConcertRooms_49],
+            exits = [TxtShared_03,
+                     TxtExitPolnoc, TxtPlaceSrodekSceny, ],
+            moves = [Go(CmdPolnoc, RoomStage2)],
+            turn = StageTurn,
+        },
+        new() {
+            number = RoomDarkStreet,
+            intro = [..TxtRoom75Lines1.Skip(1)],
+            exits = [TxtShared_03,
+                     TxtExitZachod, TxtPlaceCentrumMiasta,
+                     TxtExitPolnoc, TxtPlaceBarPodDwomaPedalami,
+                     TxtExitPolodnie, TxtPlaceBluszcz, ],
+            moves = [Go(CmdZachod, RoomCityCentre), Go(CmdPolnoc, RoomBar), Go(CmdPolodnie, RoomIvy1)],
+        },
+        new() {
+            number = RoomBar,
+            intro = [TxtYouAreIn + TxtRoom76_01, ..TxtRoom76Lines1.Skip(1)],
+            exits = [TxtShared_03,
+                     TxtExitPolodnie, TxtPlaceUlicaCiemna, ],
+            moves = [Go(CmdPolodnie, RoomDarkStreet)],
+            turn = entering => {
+                if (entering) {
+                    if (World.Monsters[(int)Maciek] == 76)
+                        Out.WriteLine(TxtRoom76_05);
+                    if (World.Monsters[(int)Pedal] == 76)
+                        Out.WriteLine(TxtRoom76_06);
+                    if (World.Monsters[(int)Couple] == 76)
+                        Out.WriteLine(TxtRoom76_07);
+                    return;
                 }
-                if (MoveWhenOrExit([Go(Direction, DestRoom)])) return;
-            } while (!(Session.Room != RoomNo));
-        }
-    }
-
-    public class TRoomEntry {
-        public short id;
-        public Action run;
-        public TRoomEntry(short id, Action run) {
-            this.id = id;
-            this.run = run;
-        }
-    }
-
-    public static readonly List<TRoomEntry> RoomDispatch = [ null!,
-        new(RoomStart, Room0),
-        new(RoomSalon, Room1),
-        new(RoomTraining, Room2),
-        new(RoomMeditation, Room3),
-        new(RoomSchoolHall, Room4),
-        new(RoomLost, Room5),
-        new(RoomAny, PlainRooms),
-        new(RoomSchoolLanding, Room9),
-        new(RoomCageCorridor, Room11),
-        new(RoomCageWeakling, Room12),
-        new(RoomCageStrong, Room13),
-        new(RoomCageAgile, Room14),
-        new(RoomCageTough, Room15),
-        new(RoomCageHuge, Room16),
-        new(RoomCageReward, Room17),
-        new(RoomTeleport, Room18),
-        new(RoomCityCentre, Room20),
-        new(RoomDarkStreet, Room75),
-        new(RoomLongStreet, Room30),
-        new(RoomBar, Room76),
-        new(RoomIvy1, Room77),
-        new(RoomIvy2, Room78),
-        new(RoomIvy3, Room79),
-        new(RoomIvy4, Room80),
-        new(RoomIvy5, Room81),
-        new(RoomIvy6, Room82),
-        new(RoomClearing, Room83),
-        new(RoomCavePath, Room84),
-        new(RoomCaveMouth, Room87),
-        new(RoomNettleThrone, Room88),
-        new(RoomLivingDoor, Room85),
-        new(RoomHut, Room86),
-        new(RoomShopStreet, Room21),
-        new(RoomShopStreet2, Room22),
-        new(RoomRoad1, Room101),
-        new(RoomRoad2, Room102),
-        new(RoomRoad3, Room103),
-        new(RoomQuestMaster, Room100),
-        new(RoomBakery, Room23),
-        new(RoomArmoury, Room24),
-        new(RoomGeneralStore, Room25),
-        new(RoomMagicShop, Room26),
-        new(RoomLongStreet2, Room31),
-        new(RoomValley, Room60),
-        new(RoomAny, ConcertRooms),
-        new(RoomArenaEntrance, Room32),
+                switch (Verb) {
+                    case CmdLista:
+                        WriteLines(TxtRoom76Lines2.Skip(1).ToList());
+                        break;
+                    case CmdZabij:
+                        switch (Rest) {
+                            case CmdPedal:
+                                Fight(EasyEnemy);
+                                World.Monsters[(int)Pedal] = 0;
+                                PillGain();
+                                break;
+                            case CmdPara:
+                                Fight(VeryHardEnemy);
+                                World.Monsters[(int)Couple] = 0;
+                                Fight(VeryHardEnemy);
+                                break;
+                            case CmdMaciek:
+                                Fight(EasyEnemy);
+                                World.Monsters[(int)Maciek] = 0;
+                                break;
+                        }
+                        break;
+                    case CmdMam:
+                        if (Rest == Cmd18Lat)
+                            Out.WriteLine(TxtRoom76_13);
+                        break;
+                }
+            },
+            quit = true,
+        },
+        new() {
+            number = RoomIvy1,
+            intro = [TxtRoom77_01, TxtRoom77_02],
+            exits = [TxtShared_03,
+                     TxtExitPolnoc, TxtPlaceUlCiemna,
+                     TxtExitWschod, TxtPlaceBluszcz,
+                     TxtExitZachod, TxtPlaceBluszcz,
+                     TxtExitPolodnie, TxtPlaceBluszcz, ],
+            moves = [Go(CmdPolnoc, RoomDarkStreet),
+                     Go(CmdWschod, RoomIvy2),
+                     Go(CmdZachod, RoomIvy3),
+                     Go(CmdPolodnie, RoomIvy4), ],
+            turn = PlantTurn,
+            expand = true,
+            quit = true,
+        },
+        new() {
+            number = RoomIvy2,
+            intro = [TxtRoom78_01, TxtRoom78_02],
+            exits = [TxtShared_03,
+                     TxtExitZachod, TxtPlaceBluszcz, ],
+            moves = [Go(CmdZachod, RoomIvy1)],
+            turn = PlantTurn,
+            expand = true,
+            quit = true,
+        },
+        new() {
+            number = RoomIvy3,
+            intro = [TxtRoom79_01, TxtRoom79_02],
+            exits = [TxtShared_03,
+                     TxtExitWschod, TxtPlaceBluszcz, ],
+            moves = [Go(CmdWschod, RoomIvy1)],
+            turn = PlantTurn,
+            expand = true,
+            quit = true,
+        },
+        new() {
+            number = RoomIvy4,
+            intro = [..TxtRoom80Lines1.Skip(1)],
+            exits = [TxtShared_03,
+                     TxtExitPolnoc, TxtPlaceBluszcz,
+                     TxtExitWschod, TxtPlaceBluszcz,
+                     TxtExitZachod, TxtPlaceBluszcz,
+                     TxtExitPolodnie, TxtPlaceBluszcz, ],
+            moves = [Go(CmdPolnoc, RoomIvy1),
+                     Go(CmdZachod, RoomIvy5),
+                     Go(CmdWschod, RoomIvy6),
+                     Go(CmdPolodnie, RoomClearing), ],
+            posters = [new(CmdPatrz + CmdNapis, [TxtRoom80_04])],
+            turn = entering => {
+                if (entering) {
+                    DescribePlants();
+                    return;
+                }
+                PlantFights();
+                if (Verb == CmdPatrz && Rest == CmdStudnia) {
+                    Combat.Roll = (short)(Roll(3) + 1);
+                    Out.WriteLine(TxtRoom80_05 + Combat.Roll + TxtShared_23);
+                    Player.Money = Player.Money + Combat.Roll;
+                    Combat.Roll = Roll(100);
+                    if (Combat.Roll < 10) {
+                        Out.WriteLine(TxtRoom80_06);
+                        Player.Energy = (short)(Player.Energy - 40);
+                        Out.WriteLine(TxtRoom80_07);
+                        Player.Money = Player.Money - 100;
+                        if (Player.Money < 0) Player.Money = 0;
+                    }
+                }
+            },
+            expand = true,
+            quit = true,
+        },
+        new() {
+            number = RoomIvy5,
+            intro = [TxtRoom81_01, TxtRoom81_02],
+            exits = [TxtShared_03,
+                     TxtExitWschod, TxtPlaceBluszcz, ],
+            moves = [Go(CmdWschod, RoomIvy4)],
+            turn = PlantTurn,
+            expand = true,
+            quit = true,
+        },
+        new() {
+            number = RoomIvy6,
+            intro = [TxtRoom82_01, TxtRoom82_02],
+            exits = [TxtShared_03,
+                     TxtExitZachod, TxtPlaceBluszcz, ],
+            moves = [Go(CmdZachod, RoomIvy4)],
+            turn = PlantTurn,
+            expand = true,
+            quit = true,
+        },
+        new() {
+            number = RoomClearing,
+            intro = [..TxtRoom83Lines1.Skip(1)],
+            exits = [TxtShared_03,
+                     TxtExitPolnoc, TxtPlaceBluszcz,
+                     TxtExitZachod, TxtPlacePodejrzaneKrzaki, ],
+            moves = [Go(CmdPolnoc, RoomIvy4), Go(CmdZachod, RoomCavePath)],
+            turn = PlantTurn,
+            expand = true,
+        },
+        new() {
+            number = RoomCavePath,
+            intro = [..TxtRoom84Lines1.Skip(1)],
+            exits = [TxtShared_03,
+                     TxtExitWschod, TxtPlaceBluszcz,
+                     TxtExitZachod, TxtPlaceBudynek,
+                     TxtExitPolodnie, TxtPlaceWejscieDoGroty, ],
+            moves = [Go(CmdWschod, RoomClearing), Go(CmdZachod, RoomLivingDoor), Go(CmdPolodnie, RoomCaveMouth)],
+            turn = PlantTurn,
+            expand = true,
+            quit = true,
+        },
+        new() {
+            number = RoomLivingDoor,
+            intro = [TxtRoom85_01, TxtRoom85_02],
+            moves = [Go(CmdWschod, RoomCavePath)],
+            turn = entering => {
+                if (entering) {
+                    if (World.Door != 0)
+                        Out.WriteLine(TxtRoom85_03);
+                    return;
+                }
+                if (Verb == CmdZabij && Rest == CmdDrzwi) {
+                    if (World.Door != 0) {
+                        Fight(NotEasyEnemy);
+                        if (Player.Energy > 0) World.Door = 0;
+                    }
+                }
+                if (Verb == CmdExit) {
+                    WriteExits([TxtShared_03,
+                                TxtExitWschod, TxtPlacePodejrzaneKrzaki, ]);
+                    if (World.Door != 0)
+                        Out.WriteLine(TxtExitZachod + TxtPlaceGdybyNieTeCholerneDrzwi);
+                    else
+                        Out.WriteLine(TxtExitZachod + TxtPlaceWejscieDoDomku);
+                }
+                if (Verb == CmdZachod)
+                    if (World.Door == 0) MoveTo(RoomHut);
+                    else Out.WriteLine(TxtRoom85_07);
+            },
+            expand = true,
+            quit = true,
+        },
+        new() {
+            number = RoomHut,
+            intro = [TxtRoom86_01],
+            exits = [TxtShared_03,
+                     TxtExitWschod, TxtPlaceBudynek, ],
+            moves = [Go(CmdWschod, RoomLivingDoor)],
+            turn = entering => {
+                if (entering) {
+                    if (World.OldElf != 0)
+                        Out.WriteLine(TxtRoom86_02);
+                    if (World.OldElf == 0)
+                        Out.WriteLine(TxtRoom86_03);
+                    return;
+                }
+                switch (Verb) {
+                    case CmdPatrz:
+                        if (Rest == CmdGarnki)
+                            Out.WriteLine(TxtRoom86_04);
+                        break;
+                    case CmdRozmawiaj:
+                        if (Rest == CmdStaruch) {
+                            if ((Bag.Items[(int)TBagItem.Sausage] > -30) && (Player.Money < 200) && (Bag.Items[(int)TBagItem.ReturnScroll] == 0))
+                                WriteLines(TxtRoom86Lines1.Skip(1).ToList());
+                            if ((Bag.Items[(int)TBagItem.Sausage] < -30) && (Player.Money > 199)) {
+                                WriteLines(TxtRoom86Lines2.Skip(1).ToList());
+                                MoveTo(RoomCityCentre);
+                                Bag.Items[(int)TBagItem.Beer] = (short)(Bag.Items[(int)TBagItem.Beer] - ItemUnit);
+                                Bag.Items[(int)TBagItem.Sausage] = (short)(Bag.Items[(int)TBagItem.Sausage] + 40);
+                                Player.Money = Player.Money - 200;
+                                Bag.Items[(int)TBagItem.ReturnScroll] = (short)(Bag.Items[(int)TBagItem.ReturnScroll] - ItemUnit);
+                                Player.Experience = (short)(Player.Experience + 50);
+                                Bag.Count = (short)(Bag.Count - 2);
+                            }
+                            if (Bag.Items[(int)TBagItem.ReturnScroll] < 0) {
+                                Out.WriteLine(TxtRoom86_13);
+                                MoveTo(RoomCageHuge);
+                            }
+                        }
+                        break;
+                    case CmdZabij:
+                        if (Rest == CmdStaruch) {
+                            if (World.OldElf != 0) {
+                                Fight(WeakEnemy);
+                                World.OldElf = 0;
+                                Out.WriteLine(TxtRoom86_14);
+                                Out.WriteLine(TxtRoom86_15);
+                                Player.Level = (sbyte)(Player.Level - 1);
+                            }
+                        }
+                        break;
+                }
+            },
+            expand = true,
+            quit = true,
+        },
+        new() {
+            number = RoomCaveMouth,
+            intro = [TxtRoom87_01, TxtRoom87_02],
+            exits = [TxtShared_03,
+                     TxtExitPolodnie, TxtPlaceGrota,
+                     TxtExitPolnoc, TxtPlacePodejrzaneKrzaki, ],
+            moves = [Go(CmdPolnoc, RoomCavePath), Go(CmdPolodnie, RoomNettleThrone)],
+            turn = entering => {
+                if (!entering)
+                    return;
+                Combat.Roll = Roll(100);
+                if (Combat.Roll < 40) {
+                    Out.WriteLine(TxtRoom87_03 + (25 - Player.Stats[(int)TStat.Dexterity]) + TxtShared_26);
+                    Player.Energy = (short)(Player.Energy - 25 + Player.Stats[(int)TStat.Dexterity]);
+                }
+            },
+            expand = true,
+            quit = true,
+        },
+        new() {
+            number = RoomNettleThrone,
+            intro = [..TxtRoom88Lines1.Skip(1)],
+            exits = [TxtShared_03,
+                     TxtExitPolodnie, TxtPlaceWejscieDoGroty2, ],
+            moves = [Go(CmdPolodnie, RoomCaveMouth)],
+            turn = entering => {
+                if (!entering)
+                    return;
+                Out.Write(TxtRoom88_05);
+                Command = Crt.ReadLn();
+                Out.WriteLine(TxtRoom88_06);
+                Combat.EnemyEnergy = 200;
+                Combat.EnemyDexterity = 15;
+                Combat.EnemyStrength = 18;
+                Combat.FireballCharges = 5;
+                Combat.PoisonCharges = 1;
+                DoFight();
+                if (Combat.EnemyEnergy < 0) {
+                    LeafGain();
+                    PillGain();
+                    ScrollGain();
+                    if (World.DuncanQuest != 0) World.DuncanQuest = (sbyte)(World.DuncanQuest - 50);
+                }
+                if (Player.Energy > 0) {
+                    Out.WriteLine(TxtRoom88_07);
+                    MoveTo(RoomCaveMouth);
+                }
+            },
+            expand = true,
+            quit = true,
+        },
+        new() {
+            number = RoomQuestMaster,
+            intro = [TxtRoom100_01, TxtRoom100_02],
+            moves = [Go(CmdPolodnie, RoomShopStreet2)],
+            turn = entering => {
+                if (entering)
+                    DescribeStreet();
+                else {
+                    if (Verb == CmdExit) {
+                        WriteExits([TxtShared_03,
+                                    TxtExitPolodnie, TxtPlaceUlSklepikowa,
+                                    TxtExitWschod, TxtPlaceDrogaOKtorejMozeszPomarzycBoJestWProdukcji, ]);
+                        if (Bag.Permit == 0) Out.WriteLine(TxtExitZachod + TxtPlaceDrogaZablokowanaPrzezQuestMastera);
+                        if (Bag.Permit < 0) Out.WriteLine(TxtExitZachod + TxtPlaceDroga);
+                    }
+                    if (Verb == CmdLista)
+                        WriteLines(TxtRoom100Lines1.Skip(1).ToList());
+                    for (int i = 1; i < QuestOffers.Count; i++) {
+                        TQuestOffer q = QuestOffers[i];
+                        BuyQuest(q.cmd, q.line, q.quest, q.kills, q.price);
+                    }
+                    if ((Verb == CmdSprzedaj && Rest == CmdQuest) && (World.Quest > 0)) {
+                        switch (World.Quest) {
+                            case 1:
+                                if (World.QuestKills < 1) GrantQuestReward(1, 100);
+                                break;
+                            case 2:
+                                if ((World.QuestKills < 1) && (Bag.Items[(int)TBagItem.Diploma] <= -ItemUnit)) GrantQuestReward(2, 250);
+                                break;
+                            case 3:
+                                if ((World.QuestKills < 1) && (Bag.Items[(int)TBagItem.Pipe] <= -ItemUnit) && (Player.Practice > 0)) GrantQuestReward(3, 425);
+                                break;
+                        }
+                    }
+                    switch (Verb) {
+                        case CmdZachod:
+                            if (Bag.Permit <= -ItemUnit) Session.Room = RoomRoad1;
+                            if (Bag.Permit == 0) Out.WriteLine(TxtRoom100_16);
+                            break;
+                        case CmdZabij:
+                            if (Rest == CmdQuestMaster) {
+                                Combat.PoisonCharges = 10;
+                                Combat.FireballCharges = 20;
+                                Combat.EnemyStrength = 10;
+                                Combat.EnemyDexterity = 26;
+                                Combat.EnemyEnergy = 188;
+                                DoFight();
+                                if (Combat.EnemyEnergy < 1) Bag.Permit = Bag.Permit - ItemUnit;
+                            }
+                            break;
+                    }
+                }
+            },
+        },
+        new() {
+            number = RoomRoad1,
+            intro = [..TxtRoom101Lines1.Skip(1)],
+            exits = [TxtShared_03,
+                     TxtExitWschod, TxtPlaceRozjazd,
+                     TxtExitZachod, TxtPlaceDroga,
+                     TxtExitPolnoc, TxtPlaceLas,
+                     TxtExitPolodnie, TxtPlaceLas, ],
+            moves = [Go(CmdWschod, RoomQuestMaster), Go(CmdZachod, RoomRoad2),
+                     Go(CmdPolnoc, RoomForest), ],
+            posters = [new(CmdPatrz + CmdDrogowskaz, [TxtRoom101_05])],
+            quit = true,
+        },
+        new() {
+            number = RoomRoad2,
+            intro = [TxtRoom102_01, TxtRoom102_02],
+            exits = [TxtShared_03,
+                     TxtExitWschod, TxtPlaceDroga,
+                     TxtExitZachod, TxtPlaceDroga,
+                     TxtExitPolnoc, TxtPlaceLas,
+                     TxtExitPolodnie, TxtPlaceLas, ],
+            moves = [Go(CmdWschod, RoomRoad1), Go(CmdZachod, RoomRoad3)],
+            quit = true,
+        },
+        new() {
+            number = RoomRoad3,
+            intro = [..TxtRoom103Lines1.Skip(1)],
+            exits = [TxtShared_03,
+                     TxtExitWschod, TxtPlaceDroga,
+                     TxtExitPolnoc, TxtPlaceLas,
+                     TxtExitPolodnie, TxtPlaceLas, ],
+            moves = [Go(CmdWschod, RoomRoad2)],
+            quit = true,
+        },
     ];
 
+    static readonly Dictionary<short, TRoom> RoomIndex = BuildRoomIndex();
+
+    static Dictionary<short, TRoom> BuildRoomIndex() {
+        Dictionary<short, TRoom> index = [];
+        for (int i = 0; i < RoomDefs.Count; i++)
+            index.Add(RoomDefs[i].number, RoomDefs[i]);
+        return index;
+    }
+
     public static void DispatchRoom() {
-        for (int ri = 1; ri < RoomDispatch.Count; ri++)
-            if ((RoomDispatch[ri].id == -1) || (Session.Room == RoomDispatch[ri].id)) {
-                RoomDispatch[ri].run();
-                if (Session.ExitRequested) return;
-            }
+        if (RoomIndex.TryGetValue(Session.Room, out TRoom? room))
+            RunRoom(room);
+    }
+
+    static void RunRoom(TRoom room) {
+        WriteLines(room.intro);
+        room.turn?.Invoke(true);
+        if (room.teleport != RoomAny) {
+            MoveTo(room.teleport);
+            return;
+        }
+        do {
+            ReadCommand();
+            if (room.expand)
+                ExpandAbbrev();
+            if (room.exits.Any() && (Verb == CmdExit))
+                WriteExits(room.exits);
+            if (Session.Room == room.number)
+                room.turn?.Invoke(false);
+            if (room.quit ? MoveWhenOrQuit(room.moves) : MoveWhenOrExit(room.moves))
+                return;
+            for (int pi = 0; pi < room.posters.Count; pi++)
+                if (Matches(room.posters[pi].cmd))
+                    WriteLines(room.posters[pi].lines);
+        } while (Session.Room == room.number);
     }
 }

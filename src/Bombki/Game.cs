@@ -101,17 +101,6 @@ public static class Game {
         public SaveFile SaveFile = new();
     }
 
-    public class TSideRoom {
-        public short room, dest;
-        public string direction = "", exitDesc = "";
-        public TSideRoom(short room, short dest, string direction, string exitDesc) {
-            this.room = room;
-            this.dest = dest;
-            this.direction = direction;
-            this.exitDesc = exitDesc;
-        }
-    }
-
     public class TQuestOffer {
         public string cmd = "", line = "";
         public short quest, kills, price;
@@ -308,14 +297,6 @@ public static class Game {
     public const short SaveStrengthBias = 24;
     public const short SaveDexterityBias = 12;
     public const int SaveStatScale = 4;
-
-    public static readonly List<TSideRoom> SideRooms = [
-        null!,
-        new(RoomSchoolSide1, RoomLost, CmdWschod, CmdMudSzkola2),
-        new(RoomSchoolSide3, RoomLost, CmdPolnoc, CmdMudSzkola2),
-        new(RoomSchoolSide2, RoomLost, CmdPolodnie, CmdMudSzkola2),
-        new(RoomSchoolSide4, RoomLost, CmdGora, CmdMudSzkola2),
-    ];
 
     public static readonly List<TQuestOffer> QuestOffers = [
         null!,
@@ -1644,146 +1625,6 @@ public static class Game {
         }
     }
 
-    public static void ArenaMaze() {
-        if ((Session.Room >= RoomArena33) && (Session.Room <= RoomArena57)) {
-            Session.InArena = 1;
-            Out.WriteLine(TxtArenaMaze_01);
-            DescribeBeasts();
-            do {
-                ReadCommand();
-                ExpandAbbrev();
-                switch (Verb) {
-                    case CmdZabij:
-                        switch (Rest) {
-                            case CmdBakteria:
-                                if (Session.Room == World.Monsters[(int)TMonster.Bacterium]) {
-                                    Fight(TFoe.WeakEnemy);
-                                    World.Monsters[(int)TMonster.Bacterium] = 0;
-                                    Out.WriteLine(TxtArenaMaze_02);
-                                }
-                                break;
-                            case CmdWilczur:
-                                if (Session.Room == World.Monsters[(int)TMonster.Mongrel]) {
-                                    Out.WriteLine(TxtArenaMaze_03);
-                                    Fight(TFoe.WeakishEnemy);
-                                    World.Monsters[(int)TMonster.Mongrel] = 0;
-                                }
-                                break;
-                        }
-                        break;
-                }
-                for (int bi = 1; bi < BeastKills.Count; bi++) {
-                    TBeastKill b = BeastKills[bi];
-                    if (b.unlessFled)
-                        KillBeastUnlessFled(b.cmd, IntSlot.Into(World.Monsters, (int)b.beast), b.foe);
-                    else
-                        KillBeast(b.cmd, IntSlot.Into(World.Monsters, (int)b.beast), b.foe);
-                }
-
-                for (int ai = 1; ai < ArenaKills.Count; ai++) {
-                    TArenaKill a = ArenaKills[ai];
-                    ArenaKill(a.cmd, a.monster, a.pills);
-                }
-                if (Verb == CmdExit)
-                    switch (Session.Room) {
-                        case RoomArena33:
-                            WriteExits([ TxtShared_03,
-                                TxtExitPolodnie, TxtPlaceWejscieNaArene,
-                                TxtExitPolnoc, TxtPlaceArena,
-                                TxtExitWschod, TxtPlaceArena,
-                                TxtExitZachod, TxtPlaceArena, ]);
-                            break;
-                        case RoomArena34:
-                        case RoomArena37:
-                        case RoomArena38:
-                        case RoomArena39:
-                        case RoomArena42:
-                        case RoomArena43:
-                        case RoomArena44:
-                        case RoomArena48:
-                        case RoomArena49:
-                            WriteExits([ TxtShared_03,
-                                TxtExitPolodnie, TxtPlaceArena,
-                                TxtExitPolnoc, TxtPlaceArena,
-                                TxtExitWschod, TxtPlaceArena,
-                                TxtExitZachod, TxtPlaceArena, ]);
-                            break;
-                        case RoomArena35:
-                        case RoomArena36:
-                            WriteExits([ TxtShared_03,
-                                TxtExitPolnoc, TxtPlaceArena,
-                                TxtExitWschod, TxtPlaceArena,
-                                TxtExitZachod, TxtPlaceArena, ]);
-                            break;
-                        case RoomArena40:
-                            WriteExits([ TxtShared_03,
-                                TxtExitPolnoc, TxtPlaceArena,
-                                TxtExitZachod, TxtPlaceArena, ]);
-                            break;
-                        case RoomArena41:
-                            WriteExits([ TxtShared_03,
-                                TxtExitPolnoc, TxtPlaceArena,
-                                TxtExitWschod, TxtPlaceArena, ]);
-                            break;
-                        case RoomArena45:
-                        case RoomArena50:
-                        case RoomArena54:
-                            WriteExits([ TxtArenaMaze_08,
-                                TxtExitPolnoc, TxtPlaceArena,
-                                TxtExitPolodnie, TxtPlaceArena,
-                                TxtExitZachod, TxtPlaceArena, ]);
-                            break;
-                        case RoomArena46:
-                        case RoomArena51:
-                        case RoomArena55:
-                            WriteExits([ TxtArenaMaze_08,
-                                TxtExitPolnoc, TxtPlaceArena,
-                                TxtExitPolodnie, TxtPlaceArena,
-                                TxtExitWschod, TxtPlaceArena, ]);
-                            break;
-                        case RoomArena47:
-                        case RoomArena52:
-                        case RoomArena53:
-                            WriteExits([ TxtArenaMaze_09,
-                                TxtExitPolodnie, TxtPlaceArena,
-                                TxtExitWschod, TxtPlaceArena,
-                                TxtExitZachod, TxtPlaceArena, ]);
-                            break;
-                        case RoomArena56:
-                            WriteExits([ TxtArenaMaze_10,
-                                TxtExitPolodnie, TxtPlaceArena,
-                                TxtExitZachod, TxtPlaceArena, ]);
-                            break;
-                        case RoomArena57:
-                            WriteExits([ TxtArenaMaze_10,
-                                TxtExitPolodnie, TxtPlaceArena,
-                                TxtExitWschod, TxtPlaceArena, ]);
-                            break;
-                    }
-                switch (Verb) {
-                    case CmdWyjscie:
-                        return;
-                    case CmdPolodnie:
-                        MazeMove(TMazeDir.mdPolodnie);
-                        break;
-                    case CmdPolnoc:
-                        MazeMove(TMazeDir.mdPolnoc);
-                        Session.MoveGuard = 1;
-                        break;
-                    case CmdWschod:
-                        MazeMove(TMazeDir.mdWschod);
-                        Session.MoveGuard = 1;
-                        break;
-                    case CmdZachod:
-                        MazeMove(TMazeDir.mdZachod);
-                        Session.MoveGuard = 1;
-                        break;
-                }
-                Session.MoveGuard = 0;
-            } while (!(Session.InArena == 0));
-        }
-    }
-
     public static void StageFights() {
         switch (Verb) {
             case CmdZabij:
@@ -2911,8 +2752,6 @@ public static class Game {
             for (int si2 = 1; si2 < GeneralStoreStock.Count; si2++)
                 ShowStock(GeneralStoreStock[si2].item, GeneralStoreStock[si2].lines.Skip(1).ToList());
         }
-        if (Verb == CmdPatrz && Rest == CmdPoster)
-            Out.WriteLine(TxtGeneralStoreShop_06);
         RunShopRules(GeneralStoreRules);
     }
 
@@ -3359,7 +3198,6 @@ public static class Game {
             DispatchRooms();
             if (Session.ExitRequested) return;
 
-            ArenaMaze();
             if (Session.Room == DeadRoom) Death();
 
             Combat.Fled = 0;

@@ -161,34 +161,34 @@ public class UnitsArenaTests {
     public void MiniarenaSlabo() {
         MiniarenaSetup();
         using (FeedStdin("ZABIJ BAKTERIA|ZABIJ SLIMAK|ZABIJ KORNIK|ZABIJ MUCHA|ZABIJ ZUK|ZABIJ KARALUCH|ZABIJ MROWKA|ZABIJ PAJAK|WYJSCIE"))
-            ArenaMaze();
+            Rooms.DispatchRoom();
     }
 
     [Fact]
     public void MiniarenaMniejslabo() {
         MiniarenaSetup();
         using (FeedStdin("ZABIJ DZIK|ZABIJ WILCZUR|ZABIJ SZCZUR|ZABIJ LIS|ZABIJ KUROPATWA|ZABIJ ZAJAC|ZABIJ ORZEL|ZABIJ SARNA|WYJSCIE"))
-            ArenaMaze();
+            Rooms.DispatchRoom();
     }
 
     [Fact]
     public void MiniarenaSrednio() {
         MiniarenaSetup();
         using (FeedStdin("ZABIJ SLON|ZABIJ LEW|ZABIJ ZYRAFA|ZABIJ WILK|ZABIJ WIELBLAD|ZABIJ STRUS|ZABIJ BOA|ZABIJ BIZON|ZABIJ PANTERA|WYJSCIE"))
-            ArenaMaze();
+            Rooms.DispatchRoom();
     }
 
     [Fact]
     public void MiniarenaTrudno() {
         MiniarenaSetup();
         using (FeedStdin("ZABIJ GLADIATOR|ZABIJ WOJOWNIK|ZABIJ TRENER|WYJSCIE"))
-            ArenaMaze();
+            Rooms.DispatchRoom();
     }
 
     static void MiniarenaAt(string cmd, short room) {
         Session.Room = room;
         using (FeedStdin(cmd))
-            ArenaMaze();
+            Rooms.DispatchRoom();
     }
 
     [Fact]
