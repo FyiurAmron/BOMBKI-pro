@@ -7,6 +7,7 @@ public class UnitsSwiatTests {
         TestStdin.Feed(lines);
 
     static void RoomSetup() {
+        Session.ExitRequested = false;
         UnitsSeed.Reseed();
         Player.Energy = 30000;
         Player.Experience = 100;
@@ -40,6 +41,7 @@ public class UnitsSwiatTests {
     }
 
     static void PokojAt(string cmds, short room) {
+        Session.ExitRequested = false;
         Session.Room = room;
         using (FeedStdin(cmds))
             Rooms.DispatchRoom();

@@ -121,6 +121,7 @@ public class UnitsArenaTests {
     }
 
     static void MiniarenaSetup() {
+        Session.ExitRequested = false;
         UnitsSeed.Reseed();
         World.Monsters[(int)TMonster.Bacterium] = 33;
         World.Monsters[(int)TMonster.Snail] = 33;
@@ -186,6 +187,7 @@ public class UnitsArenaTests {
     }
 
     static void MiniarenaAt(string cmd, short room) {
+        Session.ExitRequested = false;
         Session.Room = room;
         using (FeedStdin(cmd))
             Rooms.DispatchRoom();
