@@ -203,7 +203,36 @@ public static class Game {
     public static TCombat Combat = new();
     public static TWorld World = new();
     public static TSession Session = new();
-    public static string Command = "";
+    public static string Command {
+        get => _command;
+        set {
+            _command = value;
+            int split = value.IndexOf(' ');
+            Verb = split < 0 ? value : value[..(split + 1)];
+            Rest = split < 0 ? TxtEmpty : value[(split + 1)..];
+        }
+    }
+
+    static string _command = "";
+
+    public static string Verb = "";
+    public static string Rest = "";
+
+    static readonly Dictionary<string, (string verb, string rest)> SplitCache = [];
+
+    public static (string verb, string rest) Split(string cmd) {
+        if (SplitCache.TryGetValue(cmd, out var parts))
+            return parts;
+        int split = cmd.IndexOf(' ');
+        parts = split < 0 ? (cmd, TxtEmpty) : (cmd[..(split + 1)], cmd[(split + 1)..]);
+        SplitCache[cmd] = parts;
+        return parts;
+    }
+
+    public static bool Matches(string cmd) {
+        var (verb, rest) = Split(cmd);
+        return Verb == verb && Rest == rest;
+    }
 
     public static Action DispatchRooms = () => { };
 
@@ -334,12 +363,12 @@ public static class Game {
 
     public static void MoveWhen(List<TMovement> moves) {
         for (int i = 0; i < moves.Count; i++)
-            if (Command == moves[i].cmd)
+            if (Matches(moves[i].cmd))
                 MoveTo(moves[i].dest);
     }
 
     public static bool MoveWhenOrExit(List<TMovement> moves) {
-        if (Command == CmdWyjscie)
+        if (Verb == CmdWyjscie)
             return true;
         MoveWhen(moves);
         return false;
@@ -407,7 +436,7 @@ public static class Game {
     }
 
     public static void BuyQuest(string cmd, string line, short quest, short kills, short price) {
-        if ((Command == cmd) && (Player.Money >= price)) {
+        if ((Matches(cmd)) && (Player.Money >= price)) {
             Out.WriteLine(line);
             World.Quest = quest;
             World.QuestKills = kills;
@@ -718,11 +747,11 @@ public static class Game {
     ];
 
     public static void HandleTrain() {
-        if (Command == CmdTrenuj)
+        if (Verb == CmdTrenuj)
             Out.WriteLine(TxtHandleTrain_01);
         for (int ti = 1; ti < Trainables.Count; ti++) {
             TTrainable t = Trainables[ti];
-            if (Command == t.cmd)
+            if (Matches(t.cmd))
                 TrainAttribute(IntSlot.Into(Player.Stats, (int)t.stat), IntSlot.Into(Player.Stats, (int)t.maxStat), t.minPractice, t.cost, t.cmdForm, t.nounForm);
         }
     }
@@ -746,7 +775,7 @@ public static class Game {
             Out.WriteLine(TxtShared_08 + Combat.Loot + TxtCompositeFight_01);
             Player.Money = Player.Money + Combat.Loot;
             if (AntDoughnut) {
-                if (Command == CmdZabij + CmdMrowka) {
+                if (Verb == CmdZabij && Rest == CmdMrowka) {
                     Combat.Roll = Roll(10);
                     if ((Combat.Roll < 7) && (Bag.Items[(int)TBagItem.Doughnut] != -ItemUnit)) {
                         Out.WriteLine(TxtShared_08 + TxtCompositeFight_02);
@@ -806,14 +835,14 @@ public static class Game {
     }
 
     public static void KillBeast(string cmd, IntSlot beast, TFoe foe) {
-        if ((Command == cmd) && (Session.Room == beast.Get())) {
+        if ((Matches(cmd)) && (Session.Room == beast.Get())) {
             Fight(foe);
             beast.Set(0);
         }
     }
 
     public static void KillBeastUnlessFled(string cmd, IntSlot beast, TFoe foe) {
-        if ((Command == cmd) && (Session.Room == beast.Get())) {
+        if ((Matches(cmd)) && (Session.Room == beast.Get())) {
             Fight(foe);
             if (Combat.Fled == 0)
                 beast.Set(0);
@@ -908,41 +937,95 @@ public static class Game {
             Out.WriteLine(TxtCompareFoe_01);
             Command = Crt.ReadLn();
             Session.Overall = (short)(Player.Level + Player.Stats[(int)TStat.Strength] + DexterityBonus(Player.Stats[(int)TStat.Dexterity]) + ParryBonus(Skills.Values[(int)TSkill.Parry]) + KickBonus(Skills.Values[(int)TSkill.Kick]));
-            if ((Command == CmdDzik) || (Command == CmdSzczur) || (Command == CmdLis) ||
-                (Command == CmdKuropatwa) || (Command == CmdZajac) || (Command == CmdWilczur) ||
-                (Command == CmdOrzel) || (Command == CmdSarna) || (Command == CmdDziecko) || (Command == CmdDziadek))
-                CompareFoeRules(BeastCompareRules.Skip(1).ToList());
-            if ((Command == CmdSlon) || (Command == CmdLew) || (Command == CmdZyrafa) || (Command == CmdWielblad) ||
-                (Command == CmdStrus) || (Command == CmdBoa) || (Command == CmdWilk) || (Command == CmdBizon) ||
-                (Command == CmdPantera) || (Command == CmdWariat) || (Command == CmdSluchacz) || (Command == CmdFan) ||
-                (Command == CmdCzlowiek) || (Command == CmdReporter))
-                CompareFoeRules(BigBeastCompareRules.Skip(1).ToList());
-            if ((Command == CmdGladiator) || (Command == CmdWojownik) || (Command == CmdTrener) ||
-                (Command == CmdPolicjant) || (Command == CmdGoryl) || (Command == CmdOchroniarz))
-                CompareFoeRules(FighterCompareRules.Skip(1).ToList());
-            if ((Command == CmdMiniBarman) || (Command == CmdGrubas) || (Command == CmdDJ))
-                CompareFoeRules(DrunkCompareRules.Skip(1).ToList());
-            if ((Command == CmdTaksowkarz) || (Command == CmdSprzedawca) || (Command == CmdGitarzysta) || (Command == CmdPerkusista) ||
-                (Command == CmdOrganista) || (Command == CmdZebrak) || (Command == CmdPijak) || (Command == CmdZamiatacz) || (Command == CmdSzczaw) ||
-                (Command == CmdStokrotka) || (Command == CmdKoniczynka) || (Command == CmdMlecz) || (Command == CmdDmuchawiec))
-                CompareFoeRules(MusicianCompareRules.Skip(1).ToList());
-            if ((Command == CmdPedal) || (Command == CmdPara) || (Command == CmdMaciek) || (Command == CmdRoza) ||
-                (Command == CmdMalina) || (Command == CmdTrawa) || (Command == CmdAgrest) || (Command == CmdJezyna))
-                CompareFoeRules(IvyCompareRules.Skip(1).ToList());
-            if (Command == CmdLiroy)
-                CompareFoeRules(LiroyCompareRules.Skip(1).ToList());
-            if (Command == CmdPokrzywa)
-                CompareFoeRules(PokrzywaCompareRules.Skip(1).ToList());
-            if ((Command == CmdSpaniel) || (Command == CmdOwczarek) || (Command == CmdPiesek) || (Command == CmdJamnik) || (Command == CmdPudel))
-                Out.WriteLine(TxtCompareFoe_34);
+            switch (Verb) {
+                case CmdDzik:
+                case CmdSzczur:
+                case CmdLis:
+                case CmdKuropatwa:
+                case CmdZajac:
+                case CmdWilczur:
+                case CmdOrzel:
+                case CmdSarna:
+                case CmdDziecko:
+                case CmdDziadek:
+                    CompareFoeRules(BeastCompareRules.Skip(1).ToList());
+                    break;
+                case CmdSlon:
+                case CmdLew:
+                case CmdZyrafa:
+                case CmdWielblad:
+                case CmdStrus:
+                case CmdBoa:
+                case CmdWilk:
+                case CmdBizon:
+                case CmdPantera:
+                case CmdWariat:
+                case CmdSluchacz:
+                case CmdFan:
+                case CmdCzlowiek:
+                case CmdReporter:
+                    CompareFoeRules(BigBeastCompareRules.Skip(1).ToList());
+                    break;
+                case CmdGladiator:
+                case CmdWojownik:
+                case CmdTrener:
+                case CmdPolicjant:
+                case CmdGoryl:
+                case CmdOchroniarz:
+                    CompareFoeRules(FighterCompareRules.Skip(1).ToList());
+                    break;
+                case CmdMiniBarman:
+                case CmdGrubas:
+                case CmdDJ:
+                    CompareFoeRules(DrunkCompareRules.Skip(1).ToList());
+                    break;
+                case CmdTaksowkarz:
+                case CmdSprzedawca:
+                case CmdGitarzysta:
+                case CmdPerkusista:
+                case CmdOrganista:
+                case CmdZebrak:
+                case CmdPijak:
+                case CmdZamiatacz:
+                case CmdSzczaw:
+                case CmdStokrotka:
+                case CmdKoniczynka:
+                case CmdMlecz:
+                case CmdDmuchawiec:
+                    CompareFoeRules(MusicianCompareRules.Skip(1).ToList());
+                    break;
+                case CmdPedal:
+                case CmdPara:
+                case CmdMaciek:
+                case CmdRoza:
+                case CmdMalina:
+                case CmdTrawa:
+                case CmdAgrest:
+                case CmdJezyna:
+                    CompareFoeRules(IvyCompareRules.Skip(1).ToList());
+                    break;
+                case CmdLiroy:
+                    CompareFoeRules(LiroyCompareRules.Skip(1).ToList());
+                    break;
+                case CmdPokrzywa:
+                    CompareFoeRules(PokrzywaCompareRules.Skip(1).ToList());
+                    break;
+                case CmdSpaniel:
+                case CmdOwczarek:
+                case CmdPiesek:
+                case CmdJamnik:
+                case CmdPudel:
+                    Out.WriteLine(TxtCompareFoe_34);
+                    break;
+                case CmdBakteria:
+                    Out.WriteLine(TxtCompareFoe_36);
+                    Player.Mana = (short)(Player.Mana + 5);
+                    break;
+            }
             if ((Combat.Roll < 3) && (Skills.Values[(int)TSkill.Comparing] < 100)) {
                 Out.WriteLine(TxtFightStars17 + TxtLearnVerb + TxtCompareFoe_35);
                 Skills.Values[(int)TSkill.Comparing]++;
                 Player.Experience = (short)(Player.Experience + 5);
-            }
-            if (Command == CmdBakteria) {
-                Out.WriteLine(TxtCompareFoe_36);
-                Player.Mana = (short)(Player.Mana + 5);
             }
         }
     }
@@ -1225,7 +1308,7 @@ public static class Game {
     ];
 
     public static void TakeItem(string cmd, TBagItem item, string verb, string line, TTakeEffect effect) {
-        if ((Command == cmd) && (Bag.Items[(int)item] == Session.OuterRoom)) {
+        if ((Matches(cmd)) && (Bag.Items[(int)item] == Session.OuterRoom)) {
             Out.WriteLine(verb + line);
             Bag.Items[(int)item] = -ItemUnit;
             Bag.Count = (short)(Bag.Count + 1);
@@ -1242,7 +1325,7 @@ public static class Game {
     }
 
     public static void DropItem(string cmd, TBagItem item, string verb, string line, TTakeEffect effect) {
-        if ((Command == cmd) && (Bag.Items[(int)item] == -ItemUnit)) {
+        if ((Matches(cmd)) && (Bag.Items[(int)item] == -ItemUnit)) {
             Out.WriteLine(verb + line);
             Bag.Items[(int)item] = Session.OuterRoom;
             Bag.Count = (short)(Bag.Count - 1);
@@ -1322,7 +1405,7 @@ public static class Game {
     }
 
     public static void EatFood(string cmd, TBagItem item, string verb, string line, short gain, IntSlot stat, IntSlot cap) {
-        if ((Command == cmd) && (Bag.Items[(int)item] <= -ItemUnit)) {
+        if ((Matches(cmd)) && (Bag.Items[(int)item] <= -ItemUnit)) {
             Bag.Count = (short)(Bag.Count - 1);
             Bag.Items[(int)item] = (short)(Bag.Items[(int)item] + ItemUnit);
             Out.WriteLine(verb + line);
@@ -1334,93 +1417,132 @@ public static class Game {
     }
 
     public static void UseItems() {
-        if ((Command == CmdUzyj + CmdFajka) && (Bag.Items[(int)TBagItem.Pipe] == -ItemUnit))
-            Out.WriteLine(TxtUseItems_01);
-        if ((Command == CmdUzyj + CmdSerce) && (Bag.Items[(int)TBagItem.Heart] == -ItemUnit)) {
-            Bag.Items[(int)TBagItem.Heart] = 0;
-            Out.WriteLine(TxtEatVerb + TxtUseItems_02);
-            Player.Energy = (short)(Player.Energy + 5);
-            short tmpEnergy = Player.Energy;
-            ClampStat(ref tmpEnergy, Player.MaxEnergy);
-            Player.Energy = tmpEnergy;
-            Bag.Count = (short)(Bag.Count - 1);
-        }
-        if ((Command == CmdUzyj + CmdDyplom) && (Bag.Items[(int)TBagItem.Diploma] == -ItemUnit))
-            WriteLines(TxtUseItemsLines1.Skip(1).ToList());
         for (int fi = 1; fi < FoodItems.Count; fi++) {
             TFoodItem f = FoodItems[fi];
             EatFood(f.cmd, f.item, f.verb, f.line, f.gain, f.stat, f.cap);
         }
-        if ((Command == CmdZniszcz + CmdPrzepustka) && (Bag.Permit <= -ItemUnit)) {
-            Out.WriteLine(TxtUseItems_16);
-            Bag.Permit = Bag.Permit + ItemUnit;
-            Bag.Count = (short)(Bag.Count + 1);
-        }
-        if ((Command == CmdPatrz + CmdPrzepustka) && (Bag.Permit <= -ItemUnit))
-            WriteLines(TxtUseItemsLines2.Skip(1).ToList());
-        if (Command == CmdUzyj + CmdKaseta)
-            Out.WriteLine(TxtUseItems_24);
-        if ((Command == CmdUzyj + CmdKomplet) && (Bag.Items[(int)TBagItem.Tracksuit] <= -ItemUnit) && (Gear.WornGarment == TxtEmpty)) {
-            Out.WriteLine(TxtUseItems_28);
-            Gear.Values[(int)TGearItem.Armor] = (short)(Gear.Values[(int)TGearItem.Armor] + 7);
-            Gear.Values[(int)TGearItem.Wearing] = 1;
-            Gear.WornGarment = TxtWornSyf;
-        }
-        if ((Command == CmdOdloz + CmdKomplet) && (Bag.Items[(int)TBagItem.Tracksuit] <= -ItemUnit) && (Gear.WornGarment == TxtWornSyf)) {
-            Out.WriteLine(TxtUseItems_29);
-            Gear.Values[(int)TGearItem.Wearing] = 0;
-            Gear.Values[(int)TGearItem.Armor] = (short)(Gear.Values[(int)TGearItem.Armor] - 7);
-            Gear.WornGarment = TxtEmpty;
-        }
-        if ((Command == CmdUzyj + CmdListek) && (Bag.Items[(int)TBagItem.LuckyLeaf] <= -ItemUnit))
-            Out.WriteLine(TxtUseItems_30);
-        if ((Command == CmdUzyj + TxtWornGarnitur) && (Bag.Items[(int)TBagItem.SpikedSuit] <= -ItemUnit) && (Gear.WornGarment == TxtEmpty)) {
-            Out.WriteLine(TxtUseItems_31);
-            Gear.Values[(int)TGearItem.Wearing] = 1;
-            Gear.Values[(int)TGearItem.WornCount] = (short)(Gear.Values[(int)TGearItem.WornCount] + 1);
-            Gear.Values[(int)TGearItem.Armor] = (short)(Gear.Values[(int)TGearItem.Armor] + 10);
-            Gear.Values[(int)TGearItem.LuckRoll] = (short)(Gear.Values[(int)TGearItem.LuckRoll] + 15);
-            Gear.WornGarment = TxtWornGarnitur;
-        }
-        if ((Command == CmdUzyj + CmdPigulka) && (Bag.Items[(int)TBagItem.TeleportPill] <= -ItemUnit)) {
-            Out.WriteLine(TxtUseItems_32);
-            Bag.Items[(int)TBagItem.TeleportPill] = (short)(Bag.Items[(int)TBagItem.TeleportPill] + ItemUnit);
-            SpawnMonsters();
-            if (Player.Stats[(int)TStat.Wisdom] < 10) {
-                Out.WriteLine(TxtUseItems_33);
-                Out.WriteLine(TxtUseItems_34);
-                Player.MaxEnergy = (short)(Player.MaxEnergy - 1);
-                Player.Energy = 1;
-                Player.Experience = (short)(Player.Experience - 50);
-            } else if (Player.Stats[(int)TStat.Wisdom] < 16) {
-                Out.WriteLine(TxtUseItems_35);
-                Out.WriteLine(TxtUseItems_36);
-                Player.Energy = (short)(Player.Energy - 40);
-                if (Player.Energy < 1) Player.Energy = 1;
-                Player.Experience = (short)(Player.Experience - 30);
-            } else
-                Out.WriteLine(TxtUseItems_37);
-        }
-        if ((Command == CmdOdloz + TxtWornGarnitur) && (Bag.Items[(int)TBagItem.SpikedSuit] <= -ItemUnit) && (Gear.WornGarment == TxtWornGarnitur)) {
-            Out.WriteLine(TxtUseItems_38);
-            Gear.Values[(int)TGearItem.Wearing] = 0;
-            Gear.Values[(int)TGearItem.WornCount] = (short)(Gear.Values[(int)TGearItem.WornCount] - 1);
-            Gear.Values[(int)TGearItem.Armor] = (short)(Gear.Values[(int)TGearItem.Armor] - 10);
-            Gear.Values[(int)TGearItem.LuckRoll] = (short)(Gear.Values[(int)TGearItem.LuckRoll] - 15);
-            Gear.WornGarment = TxtEmpty;
+        switch (Verb) {
+            case CmdUzyj:
+                switch (Rest) {
+                    case CmdFajka:
+                        if (Bag.Items[(int)TBagItem.Pipe] == -ItemUnit)
+                            Out.WriteLine(TxtUseItems_01);
+                        break;
+                    case CmdSerce:
+                        if (Bag.Items[(int)TBagItem.Heart] == -ItemUnit) {
+                            Bag.Items[(int)TBagItem.Heart] = 0;
+                            Out.WriteLine(TxtEatVerb + TxtUseItems_02);
+                            Player.Energy = (short)(Player.Energy + 5);
+                            short tmpEnergy = Player.Energy;
+                            ClampStat(ref tmpEnergy, Player.MaxEnergy);
+                            Player.Energy = tmpEnergy;
+                            Bag.Count = (short)(Bag.Count - 1);
+                        }
+                        break;
+                    case CmdDyplom:
+                        if (Bag.Items[(int)TBagItem.Diploma] == -ItemUnit)
+                            WriteLines(TxtUseItemsLines1.Skip(1).ToList());
+                        break;
+                    case CmdKaseta:
+                        Out.WriteLine(TxtUseItems_24);
+                        break;
+                    case CmdKomplet:
+                        if ((Bag.Items[(int)TBagItem.Tracksuit] <= -ItemUnit) && (Gear.WornGarment == TxtEmpty)) {
+                            Out.WriteLine(TxtUseItems_28);
+                            Gear.Values[(int)TGearItem.Armor] = (short)(Gear.Values[(int)TGearItem.Armor] + 7);
+                            Gear.Values[(int)TGearItem.Wearing] = 1;
+                            Gear.WornGarment = TxtWornSyf;
+                        }
+                        break;
+                    case CmdListek:
+                        if (Bag.Items[(int)TBagItem.LuckyLeaf] <= -ItemUnit)
+                            Out.WriteLine(TxtUseItems_30);
+                        break;
+                    case TxtWornGarnitur:
+                        if ((Bag.Items[(int)TBagItem.SpikedSuit] <= -ItemUnit) && (Gear.WornGarment == TxtEmpty)) {
+                            Out.WriteLine(TxtUseItems_31);
+                            Gear.Values[(int)TGearItem.Wearing] = 1;
+                            Gear.Values[(int)TGearItem.WornCount] = (short)(Gear.Values[(int)TGearItem.WornCount] + 1);
+                            Gear.Values[(int)TGearItem.Armor] = (short)(Gear.Values[(int)TGearItem.Armor] + 10);
+                            Gear.Values[(int)TGearItem.LuckRoll] = (short)(Gear.Values[(int)TGearItem.LuckRoll] + 15);
+                            Gear.WornGarment = TxtWornGarnitur;
+                        }
+                        break;
+                    case CmdPigulka:
+                        if (Bag.Items[(int)TBagItem.TeleportPill] <= -ItemUnit) {
+                            Out.WriteLine(TxtUseItems_32);
+                            Bag.Items[(int)TBagItem.TeleportPill] = (short)(Bag.Items[(int)TBagItem.TeleportPill] + ItemUnit);
+                            SpawnMonsters();
+                            if (Player.Stats[(int)TStat.Wisdom] < 10) {
+                                Out.WriteLine(TxtUseItems_33);
+                                Out.WriteLine(TxtUseItems_34);
+                                Player.MaxEnergy = (short)(Player.MaxEnergy - 1);
+                                Player.Energy = 1;
+                                Player.Experience = (short)(Player.Experience - 50);
+                            } else if (Player.Stats[(int)TStat.Wisdom] < 16) {
+                                Out.WriteLine(TxtUseItems_35);
+                                Out.WriteLine(TxtUseItems_36);
+                                Player.Energy = (short)(Player.Energy - 40);
+                                if (Player.Energy < 1) Player.Energy = 1;
+                                Player.Experience = (short)(Player.Experience - 30);
+                            } else
+                                Out.WriteLine(TxtUseItems_37);
+                        }
+                        break;
+                }
+                break;
+            case CmdZniszcz:
+                if ((Rest == CmdPrzepustka) && (Bag.Permit <= -ItemUnit)) {
+                    Out.WriteLine(TxtUseItems_16);
+                    Bag.Permit = Bag.Permit + ItemUnit;
+                    Bag.Count = (short)(Bag.Count + 1);
+                }
+                break;
+            case CmdPatrz:
+                if ((Rest == CmdPrzepustka) && (Bag.Permit <= -ItemUnit))
+                    WriteLines(TxtUseItemsLines2.Skip(1).ToList());
+                break;
+            case CmdOdloz:
+                switch (Rest) {
+                    case CmdKomplet:
+                        if ((Bag.Items[(int)TBagItem.Tracksuit] <= -ItemUnit) && (Gear.WornGarment == TxtWornSyf)) {
+                            Out.WriteLine(TxtUseItems_29);
+                            Gear.Values[(int)TGearItem.Wearing] = 0;
+                            Gear.Values[(int)TGearItem.Armor] = (short)(Gear.Values[(int)TGearItem.Armor] - 7);
+                            Gear.WornGarment = TxtEmpty;
+                        }
+                        break;
+                    case TxtWornGarnitur:
+                        if ((Bag.Items[(int)TBagItem.SpikedSuit] <= -ItemUnit) && (Gear.WornGarment == TxtWornGarnitur)) {
+                            Out.WriteLine(TxtUseItems_38);
+                            Gear.Values[(int)TGearItem.Wearing] = 0;
+                            Gear.Values[(int)TGearItem.WornCount] = (short)(Gear.Values[(int)TGearItem.WornCount] - 1);
+                            Gear.Values[(int)TGearItem.Armor] = (short)(Gear.Values[(int)TGearItem.Armor] - 10);
+                            Gear.Values[(int)TGearItem.LuckRoll] = (short)(Gear.Values[(int)TGearItem.LuckRoll] - 15);
+                            Gear.WornGarment = TxtEmpty;
+                        }
+                        break;
+                }
+                break;
         }
     }
 
     public static void DisplayPrefs() {
-        if (Command == CmdZmien + CmdKolor) {
-            Out.WriteLine(TxtDisplayPrefs_01);
-            Combat.Roll = Crt.ReadShort();
-            Crt.TextColor(Combat.Roll);
-        }
-        if (Command == CmdZmien + CmdTlo) {
-            Out.WriteLine(TxtDisplayPrefs_02);
-            Combat.Roll = Crt.ReadShort();
-            Crt.TextBackground(Combat.Roll);
+        switch (Verb) {
+            case CmdZmien:
+                switch (Rest) {
+                    case CmdKolor:
+                        Out.WriteLine(TxtDisplayPrefs_01);
+                        Combat.Roll = Crt.ReadShort();
+                        Crt.TextColor(Combat.Roll);
+                        break;
+                    case CmdTlo:
+                        Out.WriteLine(TxtDisplayPrefs_02);
+                        Combat.Roll = Crt.ReadShort();
+                        Crt.TextBackground(Combat.Roll);
+                        break;
+                }
+                break;
         }
     }
 
@@ -1470,7 +1592,7 @@ public static class Game {
     ];
 
     public static void ArenaKill(string cmd, TMonster monster, bool pills) {
-        if ((Command == cmd) && (Session.Room == World.Monsters[(int)monster])) {
+        if ((Matches(cmd)) && (Session.Room == World.Monsters[(int)monster])) {
             Fight(TFoe.HardEnemy);
             World.Monsters[(int)monster] = 0;
             if (pills) PillGain(); else SuitGain();
@@ -1530,10 +1652,25 @@ public static class Game {
             do {
                 ReadCommand();
                 ExpandAbbrev();
-                if ((Command == CmdZabij + CmdBakteria) && (Session.Room == World.Monsters[(int)TMonster.Bacterium])) {
-                    Fight(TFoe.WeakEnemy);
-                    World.Monsters[(int)TMonster.Bacterium] = 0;
-                    Out.WriteLine(TxtArenaMaze_02);
+                switch (Verb) {
+                    case CmdZabij:
+                        switch (Rest) {
+                            case CmdBakteria:
+                                if (Session.Room == World.Monsters[(int)TMonster.Bacterium]) {
+                                    Fight(TFoe.WeakEnemy);
+                                    World.Monsters[(int)TMonster.Bacterium] = 0;
+                                    Out.WriteLine(TxtArenaMaze_02);
+                                }
+                                break;
+                            case CmdWilczur:
+                                if (Session.Room == World.Monsters[(int)TMonster.Mongrel]) {
+                                    Out.WriteLine(TxtArenaMaze_03);
+                                    Fight(TFoe.WeakishEnemy);
+                                    World.Monsters[(int)TMonster.Mongrel] = 0;
+                                }
+                                break;
+                        }
+                        break;
                 }
                 for (int bi = 1; bi < BeastKills.Count; bi++) {
                     TBeastKill b = BeastKills[bi];
@@ -1542,17 +1679,12 @@ public static class Game {
                     else
                         KillBeast(b.cmd, IntSlot.Into(World.Monsters, (int)b.beast), b.foe);
                 }
-                if ((Command == CmdZabij + CmdWilczur) && (Session.Room == World.Monsters[(int)TMonster.Mongrel])) {
-                    Out.WriteLine(TxtArenaMaze_03);
-                    Fight(TFoe.WeakishEnemy);
-                    World.Monsters[(int)TMonster.Mongrel] = 0;
-                }
 
                 for (int ai = 1; ai < ArenaKills.Count; ai++) {
                     TArenaKill a = ArenaKills[ai];
                     ArenaKill(a.cmd, a.monster, a.pills);
                 }
-                if (Command == CmdExit)
+                if (Verb == CmdExit)
                     switch (Session.Room) {
                         case RoomArena33:
                             WriteExits([ TxtShared_03,
@@ -1628,20 +1760,24 @@ public static class Game {
                                 TxtExitWschod, TxtPlaceArena, ]);
                             break;
                     }
-                if (Command == CmdWyjscie) return;
-                if (Command == CmdPolodnie)
-                    MazeMove(TMazeDir.mdPolodnie);
-                if (Command == CmdPolnoc) {
-                    MazeMove(TMazeDir.mdPolnoc);
-                    Session.MoveGuard = 1;
-                }
-                if (Command == CmdWschod) {
-                    MazeMove(TMazeDir.mdWschod);
-                    Session.MoveGuard = 1;
-                }
-                if (Command == CmdZachod) {
-                    MazeMove(TMazeDir.mdZachod);
-                    Session.MoveGuard = 1;
+                switch (Verb) {
+                    case CmdWyjscie:
+                        return;
+                    case CmdPolodnie:
+                        MazeMove(TMazeDir.mdPolodnie);
+                        break;
+                    case CmdPolnoc:
+                        MazeMove(TMazeDir.mdPolnoc);
+                        Session.MoveGuard = 1;
+                        break;
+                    case CmdWschod:
+                        MazeMove(TMazeDir.mdWschod);
+                        Session.MoveGuard = 1;
+                        break;
+                    case CmdZachod:
+                        MazeMove(TMazeDir.mdZachod);
+                        Session.MoveGuard = 1;
+                        break;
                 }
                 Session.MoveGuard = 0;
             } while (!(Session.InArena == 0));
@@ -1649,49 +1785,63 @@ public static class Game {
     }
 
     public static void StageFights() {
-        if ((Command == CmdZabij + CmdPerkusista) && (World.Monsters[(int)TMonster.Drummer] == Session.Room)) {
-            Fight(TFoe.VeryEasyEnemy);
-            World.Monsters[(int)TMonster.Drummer] = 0;
-            CassetteGain();
-        }
-        if ((Command == CmdZabij + CmdGitarzysta) && (World.Monsters[(int)TMonster.Guitarist] == Session.Room)) {
-            Fight(TFoe.VeryEasyEnemy);
-            World.Monsters[(int)TMonster.Guitarist] = 0;
-            CassetteGain();
-        }
-        if ((Command == CmdZabij + CmdLiroy) && (World.Monsters[(int)TMonster.Liroy] == Session.Room)) {
-            Fight(TFoe.NotEasyEnemy);
-            if ((Session.Room != DeadRoom) && (Player.Energy > 0) && (Combat.Fled == 0)) {
-                Out.WriteLine(TxtStageFights_01);
-                Player.Money = Player.Money + 30;
-                CassetteGain();
-                if (World.Quest > 1) World.QuestKills = (short)(World.QuestKills - 150);
-                World.Monsters[(int)TMonster.Liroy] = 0;
-            }
-        }
-        if ((Command == CmdZabij + CmdOrganista) && (World.Monsters[(int)TMonster.Keyboardist] == Session.Room)) {
-            Fight(TFoe.VeryEasyEnemy);
-            World.Monsters[(int)TMonster.Keyboardist] = 0;
-            CassetteGain();
+        switch (Verb) {
+            case CmdZabij:
+                switch (Rest) {
+                    case CmdPerkusista:
+                        if (World.Monsters[(int)TMonster.Drummer] == Session.Room) {
+                            Fight(TFoe.VeryEasyEnemy);
+                            World.Monsters[(int)TMonster.Drummer] = 0;
+                            CassetteGain();
+                        }
+                        break;
+                    case CmdGitarzysta:
+                        if (World.Monsters[(int)TMonster.Guitarist] == Session.Room) {
+                            Fight(TFoe.VeryEasyEnemy);
+                            World.Monsters[(int)TMonster.Guitarist] = 0;
+                            CassetteGain();
+                        }
+                        break;
+                    case CmdLiroy:
+                        if (World.Monsters[(int)TMonster.Liroy] == Session.Room) {
+                            Fight(TFoe.NotEasyEnemy);
+                            if ((Session.Room != DeadRoom) && (Player.Energy > 0) && (Combat.Fled == 0)) {
+                                Out.WriteLine(TxtStageFights_01);
+                                Player.Money = Player.Money + 30;
+                                CassetteGain();
+                                if (World.Quest > 1) World.QuestKills = (short)(World.QuestKills - 150);
+                                World.Monsters[(int)TMonster.Liroy] = 0;
+                            }
+                        }
+                        break;
+                    case CmdOrganista:
+                        if (World.Monsters[(int)TMonster.Keyboardist] == Session.Room) {
+                            Fight(TFoe.VeryEasyEnemy);
+                            World.Monsters[(int)TMonster.Keyboardist] = 0;
+                            CassetteGain();
+                        }
+                        break;
+                }
+                break;
         }
     }
 
     public static void KillPlant(string cmd, IntSlot Plant) {
-        if ((Command == cmd) && (Plant.Get() == Session.Room)) {
+        if ((Matches(cmd)) && (Plant.Get() == Session.Room)) {
             Fight(TFoe.VeryEasyEnemy);
             Plant.Set(0);
         }
     }
 
     public static void KillPlantIfAlive(string cmd, IntSlot Plant) {
-        if ((Command == cmd) && (Plant.Get() == Session.Room)) {
+        if ((Matches(cmd)) && (Plant.Get() == Session.Room)) {
             Fight(TFoe.VeryEasyEnemy);
             if (Player.Energy > 0) Plant.Set(0);
         }
     }
 
     public static void KillPlantEasyIfAlive(string cmd, IntSlot Plant) {
-        if ((Command == cmd) && (Plant.Get() == Session.Room)) {
+        if ((Matches(cmd)) && (Plant.Get() == Session.Room)) {
             Fight(TFoe.EasyEnemy);
             if (Player.Energy > 0) Plant.Set(0);
         }
@@ -1718,43 +1868,69 @@ public static class Game {
     ];
 
     public static void PlantFights() {
-        if ((Command == CmdZabij + CmdDuncan) && (World.Monsters[(int)TMonster.Duncan] == Session.Room)) {
-            Fight(TFoe.EasyEnemy);
-            if (Combat.EnemyEnergy < 1) World.Monsters[(int)TMonster.Duncan] = 0;
-        }
-        if ((Command == CmdSecret + CmdLista) && (World.Monsters[(int)TMonster.Duncan] == Session.Room))
-            WriteLines(TxtPlantFightsLines1.Skip(1).ToList());
-        if (Command == CmdKup + CmdDokument) {
-            if (Player.Money > 399) {
-                Out.WriteLine(TxtPlantFights_05);
-                Bag.Permit = Bag.Permit - ItemUnit;
-                Player.Money = Player.Money - 400;
-                Bag.Count = (short)(Bag.Count + 1);
-            }
-        }
-        if ((Command == CmdKup + CmdPlecak) && (World.Monsters[(int)TMonster.Duncan] == Session.Room)) {
-            if (Player.Money > 4799) {
-                Out.WriteLine(TxtPlantFights_06);
-                Player.Money = Player.Money - 4800;
-                Bag.Items[(int)TBagItem.Backpack] = (short)(Bag.Items[(int)TBagItem.Backpack] - ItemUnit);
-                Bag.Count = (short)(Bag.Count + 1);
-            }
-        }
-        if ((Command == CmdRozmawiaj + CmdDuncan) && (World.Monsters[(int)TMonster.Duncan] == Session.Room)) {
-            if (World.DuncanQuest == 0) {
-                WriteLines(TxtPlantFightsLines2.Skip(1).ToList());
-                World.DuncanQuest = 75;
-            }
-            if (World.DuncanQuest != 0)
-                Out.WriteLine(TxtPlantFights_13);
+        switch (Verb) {
+            case CmdZabij:
+                switch (Rest) {
+                    case CmdDuncan:
+                        if (World.Monsters[(int)TMonster.Duncan] == Session.Room) {
+                            Fight(TFoe.EasyEnemy);
+                            if (Combat.EnemyEnergy < 1) World.Monsters[(int)TMonster.Duncan] = 0;
+                        }
+                        break;
+                    case CmdTrawa:
+                        if (World.Monsters[(int)TMonster.Grass] == Session.Room) {
+                            Out.WriteLine(TxtPlantFights_17);
+                            Fight(TFoe.HardEnemy);
+                            for (int i = 2; i <= 4; i++)
+                                if (Player.Energy > 0) Fight(TFoe.HardEnemy);
+                            if ((Player.Energy > 0) && (Combat.Fled == 0))
+                                Out.WriteLine(TxtPlantFights_18);
+                        }
+                        break;
+                }
+                break;
+            case CmdSecret:
+                if ((Rest == CmdLista) && (World.Monsters[(int)TMonster.Duncan] == Session.Room))
+                    WriteLines(TxtPlantFightsLines1.Skip(1).ToList());
+                break;
+            case CmdKup:
+                switch (Rest) {
+                    case CmdDokument:
+                        if (Player.Money > 399) {
+                            Out.WriteLine(TxtPlantFights_05);
+                            Bag.Permit = Bag.Permit - ItemUnit;
+                            Player.Money = Player.Money - 400;
+                            Bag.Count = (short)(Bag.Count + 1);
+                        }
+                        break;
+                    case CmdPlecak:
+                        if ((World.Monsters[(int)TMonster.Duncan] == Session.Room) && (Player.Money > 4799)) {
+                            Out.WriteLine(TxtPlantFights_06);
+                            Player.Money = Player.Money - 4800;
+                            Bag.Items[(int)TBagItem.Backpack] = (short)(Bag.Items[(int)TBagItem.Backpack] - ItemUnit);
+                            Bag.Count = (short)(Bag.Count + 1);
+                        }
+                        break;
+                }
+                break;
+            case CmdRozmawiaj:
+                if ((Rest == CmdDuncan) && (World.Monsters[(int)TMonster.Duncan] == Session.Room)) {
+                    if (World.DuncanQuest == 0) {
+                        WriteLines(TxtPlantFightsLines2.Skip(1).ToList());
+                        World.DuncanQuest = 75;
+                    }
+                    if (World.DuncanQuest != 0)
+                        Out.WriteLine(TxtPlantFights_13);
 
-            if (World.DuncanQuest == -125) {
-                Out.WriteLine(TxtPlantFights_14);
-                Out.WriteLine(TxtPlantFights_15);
-                World.DuncanQuest = 0;
-                Player.Experience = (short)(Player.Experience + 125);
-                Out.WriteLine(TxtPlantFights_16);
-            }
+                    if (World.DuncanQuest == -125) {
+                        Out.WriteLine(TxtPlantFights_14);
+                        Out.WriteLine(TxtPlantFights_15);
+                        World.DuncanQuest = 0;
+                        Player.Experience = (short)(Player.Experience + 125);
+                        Out.WriteLine(TxtPlantFights_16);
+                    }
+                }
+                break;
         }
 
         for (int i = 1; i < PlantKills.Count; i++)
@@ -1764,29 +1940,45 @@ public static class Game {
 
         for (int i = 1; i < EasyPlantKills.Count; i++)
             KillPlantEasyIfAlive(EasyPlantKills[i].cmd, IntSlot.Into(World.Monsters, (int)EasyPlantKills[i].plant));
-
-        if ((Command == CmdZabij + CmdTrawa) && (World.Monsters[(int)TMonster.Grass] == Session.Room)) {
-            Out.WriteLine(TxtPlantFights_17);
-            Fight(TFoe.HardEnemy);
-            for (int i = 2; i <= 4; i++)
-                if (Player.Energy > 0) Fight(TFoe.HardEnemy);
-            if ((Player.Energy > 0) && (Combat.Fled == 0))
-                Out.WriteLine(TxtPlantFights_18);
-        }
     }
 
     public static void ReadCommand() {
         Out.Write(Player.Energy + TxtShared_01 + Player.Experience + TxtShared_02);
         Command = Crt.ReadLn();
-        if (Command == CmdMode || Command == CmdM) Out.WriteLine(TxtModeEgg);
-        if (Command == CmdUnmode || Command == CmdUm) Out.WriteLine(TxtUnmodeEgg);
+        switch (Verb) {
+            case CmdMode:
+            case CmdM:
+                Out.WriteLine(TxtModeEgg);
+                break;
+            case CmdUnmode:
+            case CmdUm:
+                Out.WriteLine(TxtUnmodeEgg);
+                break;
+        }
         RefuseCheats();
         HandleGround();
     }
 
     public static void RefuseCheats() {
-        bool dawaj = Command == CmdDawaj + CmdEn || Command == CmdDawaj + CmdKase || Command == CmdDawaj + CmdKunszt;
-        bool other = Command == CmdZabieraj + CmdKase || Command == CmdUstaw + CmdSz || Command == CmdZdejmuj || Command == CmdJestem + CmdSpeede2;
+        bool dawaj = false;
+        bool other = false;
+        switch (Verb) {
+            case CmdDawaj:
+                dawaj = Rest == CmdEn || Rest == CmdKase || Rest == CmdKunszt;
+                break;
+            case CmdZabieraj:
+                other = Rest == CmdKase;
+                break;
+            case CmdUstaw:
+                other = Rest == CmdSz;
+                break;
+            case CmdZdejmuj:
+                other = true;
+                break;
+            case CmdJestem:
+                other = Rest == CmdSpeede2;
+                break;
+        }
         if (!dawaj && !other)
             return;
         if (!Crt.DebugEnabled()) {
@@ -1799,7 +1991,7 @@ public static class Game {
 
     public static void HandleGround() {
         for (int gi = 0; gi < GroundCommands.Count; gi++)
-            if ((GroundCommands[gi].cmd == TxtEmpty) || (Command == GroundCommands[gi].cmd)) {
+            if ((GroundCommands[gi].cmd == TxtEmpty) || (Matches(GroundCommands[gi].cmd))) {
                 GroundCommands[gi].run();
                 if (Session.ExitRequested) return;
             }
@@ -1809,7 +2001,7 @@ public static class Game {
         List<string> AbbrevFrom = ["", CmdPn, CmdPd, CmdW, CmdZ, CmdG, CmdD, CmdE, CmdM];
         List<string> AbbrevTo = ["", CmdPolnoc, CmdPolodnie, CmdWschod, CmdZachod, CmdGora, CmdDol, CmdExit, CmdMode];
         for (int i = 1; i <= 8; i++)
-            if (Command == AbbrevFrom[i]) {
+            if (Matches(AbbrevFrom[i])) {
                 Command = AbbrevTo[i];
                 return;
             }
@@ -2033,7 +2225,7 @@ public static class Game {
     }
 
     public static void KillStreetFoe(string cmd, IntSlot target, bool extra, TStreetKind kind) {
-        if ((Command == cmd) && (target.Get() == Session.Room)) {
+        if ((Matches(cmd)) && (target.Get() == Session.Room)) {
             switch (kind) {
                 case TStreetKind.skDog:
                     FightDog();
@@ -2056,7 +2248,7 @@ public static class Game {
     }
 
     public static void KillSweeper() {
-        if ((Command == CmdZabij + CmdZamiatacz) && (World.Monsters[(int)TMonster.Sweeper] == Session.Room)) {
+        if ((Verb == CmdZabij && Rest == CmdZamiatacz) && (World.Monsters[(int)TMonster.Sweeper] == Session.Room)) {
             Fight(TFoe.VeryEasyEnemy);
             World.Monsters[(int)TMonster.Sweeper] = 0;
             Combat.Roll = Roll(100);
@@ -2068,7 +2260,7 @@ public static class Game {
     }
 
     public static void KillSickMan() {
-        if ((Command == CmdZabij + CmdZebrak) && (World.Monsters[(int)TMonster.SickMan] == Session.Room)) {
+        if ((Verb == CmdZabij && Rest == CmdZebrak) && (World.Monsters[(int)TMonster.SickMan] == Session.Room)) {
             Fight(TFoe.VeryEasyEnemy);
             if (Player.Energy > 0) {
                 Combat.Roll = Roll(10);
@@ -2149,61 +2341,68 @@ public static class Game {
     }
 
     public static void Training() {
-        if (Command == CmdPatrz + CmdPlakat) {
-            Out.WriteLine(TxtShared_13);
-            Out.WriteLine(TxtTraining_01);
-            if (Player.Stats[(int)TStat.Wisdom] < 11) Out.WriteLine(TxtTraining_02);
-            for (int i = 1; i < TrainingLines.Count; i++)
-                if (GatesMet(TrainingLines[i].wisdom, TrainingLines[i].strength, TrainingLines[i].dexterity))
-                    Out.WriteLine(TrainingLines[i].text1);
-            Out.WriteLine(TxtTraining_27);
+        switch (Verb) {
+            case CmdPatrz:
+                if (Rest == CmdPlakat) {
+                    Out.WriteLine(TxtShared_13);
+                    Out.WriteLine(TxtTraining_01);
+                    if (Player.Stats[(int)TStat.Wisdom] < 11) Out.WriteLine(TxtTraining_02);
+                    for (int i = 1; i < TrainingLines.Count; i++)
+                        if (GatesMet(TrainingLines[i].wisdom, TrainingLines[i].strength, TrainingLines[i].dexterity))
+                            Out.WriteLine(TrainingLines[i].text1);
+                    Out.WriteLine(TxtTraining_27);
+                }
+                break;
+            case CmdCwicz:
+                switch (Rest) {
+                    case CmdKopac:
+                        if ((Player.Stats[(int)TStat.Wisdom] > 10) && (Player.Stats[(int)TStat.Strength] > 11) && (Player.Practice > 0)) {
+                            Skills.Values[(int)TSkill.Kick] = (short)(Skills.Values[(int)TSkill.Kick] + Player.Stats[(int)TStat.Wisdom]);
+                            Player.Practice = (short)(Player.Practice - 1);
+                            WriteTrainingGain(TxtTrainingDigging, Skills.Values[(int)TSkill.Kick]);
+                        }
+                        break;
+                    case CmdUciekac:
+                        if (Player.Stats[(int)TStat.Wisdom] > 10)
+                            if (Player.Stats[(int)TStat.Dexterity] > 10)
+                                if ((Player.Practice > 0) && (Skills.Values[(int)TSkill.Fleeing] < 85)) {
+                                    Skills.Values[(int)TSkill.Fleeing] = (short)(Skills.Values[(int)TSkill.Fleeing] + Player.Stats[(int)TStat.Wisdom] + Player.Stats[(int)TStat.Dexterity] - 5);
+                                    Player.Practice = (short)(Player.Practice - 1);
+                                    WriteTrainingGain(TxtTrainingFleeing, Skills.Values[(int)TSkill.Fleeing]);
+                                } else
+                                    Out.WriteLine(TxtTraining_31);
+                        break;
+                    case CmdPowrot:
+                        if ((Player.Stats[(int)TStat.Wisdom] > 17) && (Skills.Values[(int)TSkill.Returning] < 90) && (Player.Practice > 0)) {
+                            Skills.Values[(int)TSkill.Returning] = (short)(Skills.Values[(int)TSkill.Returning] + 2 * Player.Stats[(int)TStat.Wisdom] - 3);
+                            Player.Practice = (short)(Player.Practice - 1);
+                            WriteTrainingGain(TxtTrainingReturning, Skills.Values[(int)TSkill.Returning]);
+                        }
+                        break;
+                    case TxtTrainingParrying:
+                        if ((Player.Stats[(int)TStat.Wisdom] > 15) && (Player.Stats[(int)TStat.Dexterity] > 11) && (Skills.Values[(int)TSkill.Parry] < 90) && (Player.Practice > 0)) {
+                            Skills.Values[(int)TSkill.Parry] = (short)(Skills.Values[(int)TSkill.Parry] + Player.Stats[(int)TStat.Wisdom] + Player.Stats[(int)TStat.Dexterity] - 14);
+                            Player.Practice = (short)(Player.Practice - 1);
+                            WriteTrainingGain(TxtTrainingParrying, Skills.Values[(int)TSkill.Parry]);
+                        }
+                        break;
+                    case CmdPorownanie:
+                        if ((Player.Stats[(int)TStat.Wisdom] > 11) && (Skills.Values[(int)TSkill.Comparing] < 90) && (Player.Practice > 0)) {
+                            Skills.Values[(int)TSkill.Comparing] = (short)(Skills.Values[(int)TSkill.Comparing] + 3 * Player.Stats[(int)TStat.Wisdom] - 9);
+                            Player.Practice = (short)(Player.Practice - 1);
+                            WriteTrainingGain(TxtTrainingComparing, Skills.Values[(int)TSkill.Comparing]);
+                        }
+                        break;
+                    case TxtTrainingCooking:
+                        if ((Player.Stats[(int)TStat.Wisdom] > 18) && (Skills.Values[(int)TSkill.Cooking] < 90) && (Player.Practice > 0)) {
+                            Skills.Values[(int)TSkill.Cooking] = (short)(Skills.Values[(int)TSkill.Cooking] + Player.Stats[(int)TStat.Wisdom] + 1);
+                            Player.Practice = (short)(Player.Practice - 1);
+                            WriteTrainingGain(TxtTrainingCooking, Skills.Values[(int)TSkill.Cooking]);
+                        }
+                        break;
+                }
+                break;
         }
-
-        if (Command == CmdCwicz + CmdKopac)
-            if ((Player.Stats[(int)TStat.Wisdom] > 10) && (Player.Stats[(int)TStat.Strength] > 11) && (Player.Practice > 0)) {
-                Skills.Values[(int)TSkill.Kick] = (short)(Skills.Values[(int)TSkill.Kick] + Player.Stats[(int)TStat.Wisdom]);
-                Player.Practice = (short)(Player.Practice - 1);
-                WriteTrainingGain(TxtTrainingDigging, Skills.Values[(int)TSkill.Kick]);
-            }
-
-        if (Command == CmdCwicz + CmdUciekac) {
-            if (Player.Stats[(int)TStat.Wisdom] > 10)
-                if (Player.Stats[(int)TStat.Dexterity] > 10)
-                    if ((Player.Practice > 0) && (Skills.Values[(int)TSkill.Fleeing] < 85)) {
-                        Skills.Values[(int)TSkill.Fleeing] = (short)(Skills.Values[(int)TSkill.Fleeing] + Player.Stats[(int)TStat.Wisdom] + Player.Stats[(int)TStat.Dexterity] - 5);
-                        Player.Practice = (short)(Player.Practice - 1);
-                        WriteTrainingGain(TxtTrainingFleeing, Skills.Values[(int)TSkill.Fleeing]);
-                    } else
-                        Out.WriteLine(TxtTraining_31);
-        }
-
-        if (Command == CmdCwicz + CmdPowrot)
-            if ((Player.Stats[(int)TStat.Wisdom] > 17) && (Skills.Values[(int)TSkill.Returning] < 90) && (Player.Practice > 0)) {
-                Skills.Values[(int)TSkill.Returning] = (short)(Skills.Values[(int)TSkill.Returning] + 2 * Player.Stats[(int)TStat.Wisdom] - 3);
-                Player.Practice = (short)(Player.Practice - 1);
-                WriteTrainingGain(TxtTrainingReturning, Skills.Values[(int)TSkill.Returning]);
-            }
-
-        if (Command == CmdCwicz + TxtTrainingParrying)
-            if ((Player.Stats[(int)TStat.Wisdom] > 15) && (Player.Stats[(int)TStat.Dexterity] > 11) && (Skills.Values[(int)TSkill.Parry] < 90) && (Player.Practice > 0)) {
-                Skills.Values[(int)TSkill.Parry] = (short)(Skills.Values[(int)TSkill.Parry] + Player.Stats[(int)TStat.Wisdom] + Player.Stats[(int)TStat.Dexterity] - 14);
-                Player.Practice = (short)(Player.Practice - 1);
-                WriteTrainingGain(TxtTrainingParrying, Skills.Values[(int)TSkill.Parry]);
-            }
-
-        if (Command == CmdCwicz + CmdPorownanie)
-            if ((Player.Stats[(int)TStat.Wisdom] > 11) && (Skills.Values[(int)TSkill.Comparing] < 90) && (Player.Practice > 0)) {
-                Skills.Values[(int)TSkill.Comparing] = (short)(Skills.Values[(int)TSkill.Comparing] + 3 * Player.Stats[(int)TStat.Wisdom] - 9);
-                Player.Practice = (short)(Player.Practice - 1);
-                WriteTrainingGain(TxtTrainingComparing, Skills.Values[(int)TSkill.Comparing]);
-            }
-
-        if (Command == CmdCwicz + TxtTrainingCooking)
-            if ((Player.Stats[(int)TStat.Wisdom] > 18) && (Skills.Values[(int)TSkill.Cooking] < 90) && (Player.Practice > 0)) {
-                Skills.Values[(int)TSkill.Cooking] = (short)(Skills.Values[(int)TSkill.Cooking] + Player.Stats[(int)TStat.Wisdom] + 1);
-                Player.Practice = (short)(Player.Practice - 1);
-                WriteTrainingGain(TxtTrainingCooking, Skills.Values[(int)TSkill.Cooking]);
-            }
     }
 
     public class SaveFile {
@@ -2412,7 +2611,7 @@ public static class Game {
     }
 
     public static void BuyItem(string cmd, IntSlot Item, short price, string itemName, bool available) {
-        if ((Command == cmd) && available && (Player.Money >= price)) {
+        if ((Matches(cmd)) && available && (Player.Money >= price)) {
             Bag.Count = (short)(Bag.Count + 1);
             Item.Set((short)(Item.Get() - ItemUnit));
             Player.Money = Player.Money - price;
@@ -2437,7 +2636,7 @@ public static class Game {
     ];
 
     public static void BakeryShop() {
-        if (Command == CmdLista)
+        if (Verb == CmdLista)
             WriteLines(TxtBakeryShopLines1.Skip(1).ToList());
         StreetFights();
         for (int bi2 = 1; bi2 < BakeryItems.Count; bi2++) {
@@ -2455,7 +2654,7 @@ public static class Game {
 
     public static void RunShopRules(List<TShopRule> rules) {
         for (int i = 0; i < rules.Count; i++)
-            if (Command == rules[i].cmd) {
+            if (Matches(rules[i].cmd)) {
                 if (rules[i].allowed())
                     rules[i].act();
                 break;
@@ -2696,7 +2895,7 @@ public static class Game {
     }
 
     public static void ArmouryShop() {
-        if (Command == CmdLista) {
+        if (Verb == CmdLista) {
             Out.WriteLine(TxtShared_24);
             for (int si2 = 1; si2 < ArmouryStock.Count; si2++)
                 ShowStock(ArmouryStock[si2].item, ArmouryStock[si2].lines.Skip(1).ToList());
@@ -2707,18 +2906,18 @@ public static class Game {
     }
 
     public static void GeneralStoreShop() {
-        if (Command == CmdLista) {
+        if (Verb == CmdLista) {
             Out.WriteLine(TxtGeneralStoreShop_01);
             for (int si2 = 1; si2 < GeneralStoreStock.Count; si2++)
                 ShowStock(GeneralStoreStock[si2].item, GeneralStoreStock[si2].lines.Skip(1).ToList());
         }
-        if (Command == CmdPatrz + CmdPoster)
+        if (Verb == CmdPatrz && Rest == CmdPoster)
             Out.WriteLine(TxtGeneralStoreShop_06);
         RunShopRules(GeneralStoreRules);
     }
 
     public static void MagicShop() {
-        if (Command == CmdLista)
+        if (Verb == CmdLista)
             WriteLines(TxtMagicShopLines1.Skip(1).ToList());
         RunShopRules(MagicShopRules);
     }
@@ -2746,7 +2945,7 @@ public static class Game {
     ];
 
     public static void ConcertKill(string cmd, TMonster monster, TFoe foe, TConcertBonus bonus) {
-        if ((Command == cmd) && (Session.Room == World.Monsters[(int)monster])) {
+        if ((Matches(cmd)) && (Session.Room == World.Monsters[(int)monster])) {
             Fight(foe);
             if (Combat.EnemyEnergy < 1) {
                 World.Monsters[(int)monster] = 0;
@@ -3019,17 +3218,25 @@ public static class Game {
 
     public static void CmdRefuseFoodDrop() {
         for (int i = 1; i < RefusedFood.Count; i++)
-            if (Command == RefusedFood[i]) {
+            if (Matches(RefusedFood[i])) {
                 Out.WriteLine(TxtCmdRefuseFoodDrop_01);
                 break;
             }
     }
 
     public static void CmdOpenPortal() {
-        if (((Command == CmdPowrot) && (Skills.Values[(int)TSkill.Returning] > 0)) ||
-            ((Command == CmdUzyj + CmdScrollPowrot) && (Bag.Items[(int)TBagItem.ReturnScroll] < 0))) {
+        bool portal = false;
+        switch (Verb) {
+            case CmdPowrot:
+                portal = Skills.Values[(int)TSkill.Returning] > 0;
+                break;
+            case CmdUzyj:
+                portal = Rest == CmdScrollPowrot && Bag.Items[(int)TBagItem.ReturnScroll] < 0;
+                break;
+        }
+        if (portal) {
             Combat.Roll = Roll(100);
-            if (Command == CmdUzyj + CmdScrollPowrot) {
+            if (Rest == CmdScrollPowrot) {
                 Combat.Roll = Roll(1);
                 Bag.Items[(int)TBagItem.ReturnScroll] = (short)(Bag.Items[(int)TBagItem.ReturnScroll] + ItemUnit);
                 Bag.Count = (short)(Bag.Count - 1);
