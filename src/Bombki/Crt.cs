@@ -14,8 +14,8 @@ public static class Crt {
     [StructLayout(LayoutKind.Sequential)]
     struct PollFd {
         public int fd;
-        public short events;
-        public short revents;
+        public int events;
+        public int revents;
     }
 
     [DllImport("libc", SetLastError = true)]
@@ -123,9 +123,9 @@ public static class Crt {
             Out.Write($"\x1b[0;4{bits % 8}m");
     }
 
-    public static short ReadShort() {
+    public static int ReadInt() {
         string line = ReadLn().Trim();
-        if (short.TryParse(line, out short value))
+        if (int.TryParse(line, out int value))
             return value;
         return 0;
     }

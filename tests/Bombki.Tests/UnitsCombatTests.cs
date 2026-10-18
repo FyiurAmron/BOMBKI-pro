@@ -7,8 +7,8 @@ public class UnitsCombatTests {
         int zre, int wrogZre, int par, int kop) {
         UnitsSeed.Reseed();
         Player.Energy = 100;
-        Skills.Values[(int)TSkill.Parry] = (short)par;
-        Skills.Values[(int)TSkill.Kick] = (short)kop;
+        Skills.Values[(int)TSkill.Parry] = par;
+        Skills.Values[(int)TSkill.Kick] = kop;
         Skills.Values[(int)TSkill.KickMinMana] = 0;
         Skills.Values[(int)TSkill.KickMaxEnergy] = 0;
         Player.Mana = 0;
@@ -17,17 +17,17 @@ public class UnitsCombatTests {
         Combat.PoisonRounds = 0;
         Skills.Values[(int)TSkill.Fleeing] = 0;
         Skills.Values[(int)TSkill.FleeEnergy] = 0;
-        Combat.Fled = 0;
+        Combat.Fled = false;
         Player.Experience = 0;
         Gear.Values[(int)TGearItem.LuckRoll] = 0;
         Gear.Values[(int)TGearItem.Armor] = 0;
         Gear.Values[(int)TGearItem.WornCount] = 0;
-        Player.MaxEnergy = (short)maxE;
-        Combat.EnemyEnergy = (short)wrogE;
-        Player.Stats[(int)TStat.Strength] = (short)sil;
-        Combat.EnemyStrength = (short)wrogSil;
-        Player.Stats[(int)TStat.Dexterity] = (short)zre;
-        Combat.EnemyDexterity = (short)wrogZre;
+        Player.MaxEnergy = maxE;
+        Combat.EnemyEnergy = wrogE;
+        Player.Stats[(int)TStat.Strength] = sil;
+        Combat.EnemyStrength = wrogSil;
+        Player.Stats[(int)TStat.Dexterity] = zre;
+        Combat.EnemyDexterity = wrogZre;
     }
 
     static void RunWalka(int maxE, int wrogE, int sil, int wrogSil,
@@ -211,7 +211,7 @@ public class UnitsCombatTests {
         Player.Energy = 50;
         Player.Mana = 100;
         DoFight();
-        Assert.True(Combat.Fled == 1);
+        Assert.True(Combat.Fled);
     }
 
     [Fact]

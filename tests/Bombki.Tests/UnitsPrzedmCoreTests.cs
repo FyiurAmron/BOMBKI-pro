@@ -131,8 +131,8 @@ public class UnitsPrzedmCoreTests {
         Assert.Equal(76, World.Monsters[(int)TMonster.Pedal]);
         Assert.Equal(76, World.Monsters[(int)TMonster.Couple]);
         Assert.Equal(76, World.Monsters[(int)TMonster.Maciek]);
-        Assert.Equal(1, World.Door);
-        Assert.Equal(1, World.OldElf);
+        Assert.True(World.Door);
+        Assert.True(World.OldElf);
         List<TMonster> dogs = [
             TMonster.Dachshund, TMonster.Shepherd, TMonster.Pooch,
             TMonster.Spaniel, TMonster.Poodle, TMonster.Cabman,

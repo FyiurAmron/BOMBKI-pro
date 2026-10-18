@@ -52,59 +52,62 @@ public static class Game {
     public enum TStreetKind { skDog, skFolk }
 
     public class TPlayer {
-        public List<short> Stats = Enumerable.Repeat((short)0, (int)TStat.MaxWisdom + 1).ToList();
-        public short Energy, MaxEnergy;
-        public short Mana, MaxMana;
-        public short Practice;
-        public sbyte Level;
-        public short Experience;
+        public List<int> Stats = Enumerable.Repeat(0, (int)TStat.MaxWisdom + 1).ToList();
+        public int Energy, MaxEnergy;
+        public int Mana, MaxMana;
+        public int Practice;
+        public int Level;
+        public int Experience;
         public int Money;
         public string Name = "";
     }
 
     public class TSkills {
-        public List<short> Values = Enumerable.Repeat((short)0, (int)TSkill.Returning + 1).ToList();
+        public List<int> Values = Enumerable.Repeat(0, (int)TSkill.Returning + 1).ToList();
     }
 
     public class TGear {
-        public List<short> Values = Enumerable.Repeat((short)0, (int)TGearItem.ShieldKind + 1).ToList();
+        public List<int> Values = Enumerable.Repeat(0, (int)TGearItem.ShieldKind + 1).ToList();
         public string WornGarment = "";
     }
 
     public class TBag {
-        public short Count;
-        public short Limit;
+        public int Count;
+        public int Limit;
         public int Permit;
-        public List<short> Items = Enumerable.Repeat((short)0, (int)TBagItem.Beer + 1).ToList();
+        public List<int> Items = Enumerable.Repeat(0, (int)TBagItem.Beer + 1).ToList();
     }
 
     public class TCombat {
-        public short EnemyEnergy, EnemyDexterity, EnemyStrength;
-        public short EnemyDodged, PlayerDodged;
-        public short DodgeChance, Damage;
-        public short Fled;
-        public short FightExperience;
-        public sbyte FireballCharges, PoisonCharges, PoisonRounds;
-        public short Loot, Roll;
+        public int EnemyEnergy, EnemyDexterity, EnemyStrength;
+        public bool EnemyDodged, PlayerDodged;
+        public int DodgeChance, Damage;
+        public bool Fled;
+        public int FightExperience;
+        public int FireballCharges, PoisonCharges, PoisonRounds;
+        public int Loot, Roll;
     }
 
     public class TWorld {
-        public List<short> Monsters = Enumerable.Repeat((short)0, (int)TMonster.Duncan + 1).ToList();
-        public short Door, OldElf, Quest, QuestKills;
-        public sbyte DuncanQuest;
+        public List<int> Monsters = Enumerable.Repeat(0, (int)TMonster.Duncan + 1).ToList();
+        public bool Door, OldElf;
+        public int Quest, QuestKills;
+        public int DuncanQuest;
     }
 
     public class TSession {
-        public short Room, OuterRoom, InArena, MoveGuard;
-        public short CheckpointStage, SavedFlag, SleepHours, Overall;
+        public int Room, OuterRoom, InArena, MoveGuard;
+        public int CheckpointStage;
+        public bool SavedFlag;
+        public int SleepHours, Overall;
         public bool ExitRequested;
         public SaveFile SaveFile = new();
     }
 
     public class TQuestOffer {
         public string cmd = "", line = "";
-        public short quest, kills, price;
-        public TQuestOffer(string cmd, string line, short quest, short kills, short price) {
+        public int quest, kills, price;
+        public TQuestOffer(string cmd, string line, int quest, int kills, int price) {
             this.cmd = cmd;
             this.line = line;
             this.quest = quest;
@@ -115,12 +118,12 @@ public static class Game {
 
     public class TMovement {
         public string cmd = "";
-        public short dest;
+        public int dest;
     }
 
     public class TBand {
-        public short lo, hi, Base, perUnit;
-        public TBand(short lo, short hi, short Base, short perUnit) {
+        public int lo, hi, Base, perUnit;
+        public TBand(int lo, int hi, int Base, int perUnit) {
             this.lo = lo;
             this.hi = hi;
             this.Base = Base;
@@ -129,13 +132,13 @@ public static class Game {
     }
 
     public class IntSlot {
-        public Func<short> Get;
-        public Action<short> Set;
-        public IntSlot(Func<short> get, Action<short> set) {
+        public Func<int> Get;
+        public Action<int> Set;
+        public IntSlot(Func<int> get, Action<int> set) {
             Get = get;
             Set = set;
         }
-        public static IntSlot Into(List<short> array, int index) =>
+        public static IntSlot Into(List<int> array, int index) =>
             new(() =>
                 array[index], v => array[index] = v);
     }
@@ -151,16 +154,16 @@ public static class Game {
 
     public class TSpawnedAt {
         public TMonster monster;
-        public short room;
-        public TSpawnedAt(TMonster monster, short room) {
+        public int room;
+        public TSpawnedAt(TMonster monster, int room) {
             this.monster = monster;
             this.room = room;
         }
     }
 
     public class TCheckpoint {
-        public short exp, stage, next, loStr, hiStr;
-        public TCheckpoint(short exp, short stage, short next, short loStr, short hiStr) {
+        public int exp, stage, next, loStr, hiStr;
+        public TCheckpoint(int exp, int stage, int next, int loStr, int hiStr) {
             this.exp = exp;
             this.stage = stage;
             this.next = next;
@@ -172,7 +175,7 @@ public static class Game {
     public class TTrainable {
         public string cmd = "";
         public TStat stat, maxStat;
-        public short minPractice, cost;
+        public int minPractice, cost;
         public string cmdForm = "", nounForm = "";
     }
 
@@ -284,18 +287,18 @@ public static class Game {
         return (uint)(((x * XorshiftMult) >> 32) % bound);
     }
 
-    public static short Roll(int spread) {
+    public static int Roll(int spread) {
         if (spread <= 0)
             return 0;
-        return (short)NextBelow((uint)spread);
+        return (int)NextBelow((uint)spread);
     }
 
     public const int MaxInt = 32767;
     public const int ItemUnit = 10;
     public const int SaveLevelBias = 0x17;
     public const int SaveEnergyBias = 0x28;
-    public const short SaveStrengthBias = 24;
-    public const short SaveDexterityBias = 12;
+    public const int SaveStrengthBias = 24;
+    public const int SaveDexterityBias = 12;
     public const int SaveStatScale = 4;
 
     public static readonly List<TQuestOffer> QuestOffers = [
@@ -322,14 +325,14 @@ public static class Game {
         }
     }
 
-    public static TMovement Go(string cmd, short dest) {
+    public static TMovement Go(string cmd, int dest) {
         TMovement result = new();
         result.cmd = cmd;
         result.dest = dest;
         return result;
     }
 
-    public static void MoveTo(short room) {
+    public static void MoveTo(int room) {
         Session.Room = room;
         Session.OuterRoom = room;
         GroundItemLines();
@@ -362,7 +365,7 @@ public static class Game {
             Out.WriteLine(lines[i]);
     }
 
-    public static void TryLoot(IntSlot slot, short threshold, string foundMsg) {
+    public static void TryLoot(IntSlot slot, int threshold, string foundMsg) {
         if (slot.Get() == 0) {
             Combat.Roll = Roll(20);
             if (Combat.Roll < threshold) {
@@ -372,13 +375,13 @@ public static class Game {
         }
     }
 
-    public static void TryCageLoot(short threshold) {
+    public static void TryCageLoot(int threshold) {
         TryLoot(IntSlot.Into(Bag.Items, (int)TBagItem.OldSword), threshold, TxtShared_10);
         TryLoot(IntSlot.Into(Bag.Items, (int)TBagItem.SmallShield), threshold, TxtShared_11);
         TryLoot(IntSlot.Into(Bag.Items, (int)TBagItem.Heart), 6, TxtShared_12);
     }
 
-    public static void GroundItemLine(short itemRoom, string line) {
+    public static void GroundItemLine(int itemRoom, string line) {
         if (itemRoom == Session.OuterRoom)
             Out.WriteLine(line);
     }
@@ -411,7 +414,7 @@ public static class Game {
         Out.Write("\x1b[m");
     }
 
-    public static void BuyQuest(string cmd, string line, short quest, short kills, short price) {
+    public static void BuyQuest(string cmd, string line, int quest, int kills, int price) {
         if ((Matches(cmd)) && (Player.Money >= price)) {
             Out.WriteLine(line);
             World.Quest = quest;
@@ -434,54 +437,54 @@ public static class Game {
         new(21, MaxInt, 21, 0),
     ];
 
-    public static short BandAmount(List<TBand> bands, short v) {
+    public static int BandAmount(List<TBand> bands, int v) {
         for (int bi = 0; bi < bands.Count; bi++) {
             TBand band = bands[bi];
             if ((v >= band.lo) && (v <= band.hi))
-                return (short)(band.Base + band.perUnit * v);
+                return (band.Base + band.perUnit * v);
         }
         return 0;
     }
 
-    public static short FightExpForEnergy(short diff) {
+    public static int FightExpForEnergy(int diff) {
         if (diff > 0)
             return BandAmount(PosExpBands.Skip(1).ToList(), diff);
         else if (diff < 0)
-            return BandAmount(NegExpBands.Skip(1).ToList(), (short)(-diff));
+            return BandAmount(NegExpBands.Skip(1).ToList(), (-diff));
         else
             return 11;
     }
 
-    public static short FightExpForStrength(short diff) {
+    public static int FightExpForStrength(int diff) {
         if (diff > 0) {
             if (diff >= 10) return 1;
-            else return (short)(11 - diff);
+            else return (11 - diff);
         } else if (diff < 0) {
-            diff = (short)(-diff);
+            diff = (-diff);
             if (diff >= 10) return 21;
-            else return (short)(11 + diff);
+            else return (11 + diff);
         } else
             return 11;
     }
 
-    public static short FightExpForDexterity(short diff) {
-        short step;
+    public static int FightExpForDexterity(int diff) {
+        int step;
         if (diff > 0) {
-            step = (short)((diff + 1) / 2);
+            step = ((diff + 1) / 2);
             if (step >= 10) return 1;
-            else return (short)(11 - step);
+            else return (11 - step);
         } else if (diff < 0) {
-            diff = (short)(-diff);
-            step = (short)((diff + 1) / 2);
+            diff = (-diff);
+            step = ((diff + 1) / 2);
             if (step >= 10) return 21;
-            else return (short)(11 + step);
+            else return (11 + step);
         } else
             return 11;
     }
 
     public class TDodgeBound {
-        public short limit, player, enemy;
-        public TDodgeBound(short limit, short player, short enemy) {
+        public int limit, player, enemy;
+        public TDodgeBound(int limit, int player, int enemy) {
             this.limit = limit;
             this.player = player;
             this.enemy = enemy;
@@ -495,32 +498,32 @@ public static class Game {
         new(4, 21, 40), new(2, 22, 38), new(0, 23, 35),
     ];
 
-    public static TDodgeBound DodgeBoundRow(short chance) {
+    public static TDodgeBound DodgeBoundRow(int chance) {
         int i = 1;
         while ((i < DodgeBounds.Count - 1) && (chance <= DodgeBounds[i].limit))
             i++;
         return DodgeBounds[i];
     }
 
-    public static short DodgeBound(short chance) =>
+    public static int DodgeBound(int chance) =>
         DodgeBoundRow(chance).player;
-    public static short EnemyDodgeBound(short chance) =>
+    public static int EnemyDodgeBound(int chance) =>
         DodgeBoundRow(chance).enemy;
 
-    public static short DexterityBonus(short value) {
-        if (value >= 8) return (short)(value / 2);
+    public static int DexterityBonus(int value) {
+        if (value >= 8) return (value / 2);
         else return 0;
     }
 
-    public static short ParryBonus(short value) {
-        short bonus = 0;
+    public static int ParryBonus(int value) {
+        int bonus = 0;
         if (value > 75) bonus++;
         if (value > 50) bonus++;
         return bonus;
     }
 
-    public static short KickBonus(short value) {
-        short bonus = 0;
+    public static int KickBonus(int value) {
+        int bonus = 0;
         if (value > 70) bonus += 2;
         if (value > 10) bonus += 2;
         return bonus;
@@ -646,12 +649,12 @@ public static class Game {
             World.Monsters[(int)placements[si].monster] = placements[si].room;
     }
 
-    public static void SpawnGroup(List<int> targets, short spread, short Base) {
+    public static void SpawnGroup(List<int> targets, int spread, int Base) {
         for (int i = 0; i < targets.Count; i++)
-            World.Monsters[targets[i]] = (short)(Roll(spread) + Base);
+            World.Monsters[targets[i]] = (Roll(spread) + Base);
     }
 
-    public static bool PastLimit(List<int> targets, short limit) {
+    public static bool PastLimit(List<int> targets, int limit) {
         for (int li = 0; li < targets.Count; li++)
             if (World.Monsters[targets[li]] <= limit)
                 return false;
@@ -695,8 +698,8 @@ public static class Game {
         } while (!PastLimit(MonstersOf(TMonster.Policeman, TMonster.Bouncer, TMonster.Gorilla, TMonster.OldMan, TMonster.Reporter), RoomValley));
         SpawnGroup(MonstersOf(TMonster.Guitarist, TMonster.Drummer, TMonster.Keyboardist, TMonster.Liroy), 3, RoomStage1);
         SpawnAt(PubSpawns.Skip(1).ToList());
-        World.Door = 1;
-        World.OldElf = 1;
+        World.Door = true;
+        World.OldElf = true;
         do {
             SpawnGroup(MonstersOf(TMonster.Sorrel, TMonster.Clover, TMonster.Daisy, TMonster.SowThistle, TMonster.Dandelion,
                 TMonster.Rose, TMonster.Thistle, TMonster.Raspberry, TMonster.Gooseberry, TMonster.Blackberry,
@@ -708,10 +711,10 @@ public static class Game {
             && (World.Monsters[(int)TMonster.Thistle] < RoomCavePath) && (World.Monsters[(int)TMonster.Raspberry] < RoomCavePath)));
     }
 
-    public static void TrainAttribute(IntSlot Attribute, IntSlot MaxAttribute, short MinPractice, short PracticeCost, string cmdForm, string nounForm) {
+    public static void TrainAttribute(IntSlot Attribute, IntSlot MaxAttribute, int MinPractice, int PracticeCost, string cmdForm, string nounForm) {
         if ((Player.Practice > MinPractice) && (Attribute.Get() < MaxAttribute.Get())) {
-            Attribute.Set((short)(Attribute.Get() + 1));
-            Player.Practice = (short)(Player.Practice - PracticeCost);
+            Attribute.Set((Attribute.Get() + 1));
+            Player.Practice = (Player.Practice - PracticeCost);
             Out.WriteLine(TxtTrainAttribute_01 + cmdForm + TxtTrainAttribute_02 + Attribute.Get() + TxtTrainAttribute_03 + nounForm + TxtTrainAttribute_04 + Player.Practice + TxtShared_19);
         }
     }
@@ -740,14 +743,14 @@ public static class Game {
             Out.WriteLine(TxtDescribePlants_12);
     }
 
-    public static void CompositeFight(short EnemyEnergyBase, short EnemyEnergyRand, short EnemyDexterityBase, short EnemyDexterityRand, short EnemyStrengthBase, short EnemyStrengthRand,
-        short LootBase, short LootRand, short HeartChance, bool RequireEnergy, bool AntDoughnut) {
-        if (EnemyEnergyRand > 0) Combat.EnemyEnergy = (short)(Roll(EnemyEnergyRand) + EnemyEnergyBase); else Combat.EnemyEnergy = EnemyEnergyBase;
-        if (EnemyDexterityRand > 0) Combat.EnemyDexterity = (short)(Roll(EnemyDexterityRand) + EnemyDexterityBase); else Combat.EnemyDexterity = EnemyDexterityBase;
-        if (EnemyStrengthRand > 0) Combat.EnemyStrength = (short)(Roll(EnemyStrengthRand) + EnemyStrengthBase); else Combat.EnemyStrength = EnemyStrengthBase;
+    public static void CompositeFight(int EnemyEnergyBase, int EnemyEnergyRand, int EnemyDexterityBase, int EnemyDexterityRand, int EnemyStrengthBase, int EnemyStrengthRand,
+        int LootBase, int LootRand, int HeartChance, bool RequireEnergy, bool AntDoughnut) {
+        if (EnemyEnergyRand > 0) Combat.EnemyEnergy = (Roll(EnemyEnergyRand) + EnemyEnergyBase); else Combat.EnemyEnergy = EnemyEnergyBase;
+        if (EnemyDexterityRand > 0) Combat.EnemyDexterity = (Roll(EnemyDexterityRand) + EnemyDexterityBase); else Combat.EnemyDexterity = EnemyDexterityBase;
+        if (EnemyStrengthRand > 0) Combat.EnemyStrength = (Roll(EnemyStrengthRand) + EnemyStrengthBase); else Combat.EnemyStrength = EnemyStrengthBase;
         DoFight();
-        if ((Combat.Fled == 0) && (!RequireEnergy || (Player.Energy > 0))) {
-            Combat.Loot = (short)(Roll(LootRand) + LootBase);
+        if (!Combat.Fled && (!RequireEnergy || (Player.Energy > 0))) {
+            Combat.Loot = (Roll(LootRand) + LootBase);
             Out.WriteLine(TxtShared_08 + Combat.Loot + TxtCompositeFight_01);
             Player.Money = Player.Money + Combat.Loot;
             if (AntDoughnut) {
@@ -756,7 +759,7 @@ public static class Game {
                     if ((Combat.Roll < 7) && (Bag.Items[(int)TBagItem.Doughnut] != -ItemUnit)) {
                         Out.WriteLine(TxtShared_08 + TxtCompositeFight_02);
                         Bag.Items[(int)TBagItem.Doughnut] = -ItemUnit;
-                        Bag.Count = (short)(Bag.Count + 1);
+                        Bag.Count = (Bag.Count + 1);
                     }
                 }
             } else if ((HeartChance > 0) && (Bag.Items[(int)TBagItem.Heart] == 0)) {
@@ -764,15 +767,15 @@ public static class Game {
                 if ((Combat.Roll < HeartChance) && (Bag.Items[(int)TBagItem.Heart] != -ItemUnit)) {
                     Out.WriteLine(TxtShared_08 + TxtCompositeFight_03);
                     Bag.Items[(int)TBagItem.Heart] = -ItemUnit;
-                    Bag.Count = (short)(Bag.Count + 1);
+                    Bag.Count = (Bag.Count + 1);
                 }
             }
         }
     }
 
     public class TFoeStats {
-        public short energyBase, energyRand, dexterityBase, dexterityRand;
-        public short strengthBase, strengthRand, lootBase, lootRand, heartChance;
+        public int energyBase, energyRand, dexterityBase, dexterityRand;
+        public int strengthBase, strengthRand, lootBase, lootRand, heartChance;
         public bool requireEnergy, antDoughnut;
     }
 
@@ -820,16 +823,16 @@ public static class Game {
     public static void KillBeastUnlessFled(string cmd, IntSlot beast, TFoe foe) {
         if ((Matches(cmd)) && (Session.Room == beast.Get())) {
             Fight(foe);
-            if (Combat.Fled == 0)
+            if (!Combat.Fled)
                 beast.Set(0);
         }
     }
 
     public class TCompareFoeRule {
         public IntSlot stat;
-        public short lo, hi;
+        public int lo, hi;
         public string line = "";
-        public TCompareFoeRule(IntSlot stat, short lo, short hi, string line) {
+        public TCompareFoeRule(IntSlot stat, int lo, int hi, string line) {
             this.stat = stat;
             this.lo = lo;
             this.hi = hi;
@@ -912,7 +915,7 @@ public static class Game {
             Combat.Roll = Roll(100);
             Out.WriteLine(TxtCompareFoe_01);
             Command = Crt.ReadLn();
-            Session.Overall = (short)(Player.Level + Player.Stats[(int)TStat.Strength] + DexterityBonus(Player.Stats[(int)TStat.Dexterity]) + ParryBonus(Skills.Values[(int)TSkill.Parry]) + KickBonus(Skills.Values[(int)TSkill.Kick]));
+            Session.Overall = (Player.Level + Player.Stats[(int)TStat.Strength] + DexterityBonus(Player.Stats[(int)TStat.Dexterity]) + ParryBonus(Skills.Values[(int)TSkill.Parry]) + KickBonus(Skills.Values[(int)TSkill.Kick]));
             switch (Verb) {
                 case CmdDzik:
                 case CmdSzczur:
@@ -995,13 +998,13 @@ public static class Game {
                     break;
                 case CmdBakteria:
                     Out.WriteLine(TxtCompareFoe_36);
-                    Player.Mana = (short)(Player.Mana + 5);
+                    Player.Mana = (Player.Mana + 5);
                     break;
             }
             if ((Combat.Roll < 3) && (Skills.Values[(int)TSkill.Comparing] < 100)) {
                 Out.WriteLine(TxtFightStars17 + TxtLearnVerb + TxtCompareFoe_35);
                 Skills.Values[(int)TSkill.Comparing]++;
-                Player.Experience = (short)(Player.Experience + 5);
+                Player.Experience = (Player.Experience + 5);
             }
         }
     }
@@ -1012,33 +1015,33 @@ public static class Game {
                 Out.WriteLine(StreetSpots[i].text);
     }
 
-    public static void GainLoot1000(short threshold, string line1, string line2, TBagItem item) {
+    public static void GainLoot1000(int threshold, string line1, string line2, TBagItem item) {
         Combat.Roll = Roll(1000);
         if (Combat.Roll <= threshold) {
             Out.WriteLine(line1);
             if (line2 != "") Out.WriteLine(TxtUniqeItem + line2);
-            Bag.Items[(int)item] = (short)(Bag.Items[(int)item] - ItemUnit);
-            Bag.Count = (short)(Bag.Count + 1);
+            Bag.Items[(int)item] = (Bag.Items[(int)item] - ItemUnit);
+            Bag.Count = (Bag.Count + 1);
         }
     }
 
-    public static void GainLoot100(short threshold, string line1, string line2, TBagItem item, TGainBonus bonus) {
+    public static void GainLoot100(int threshold, string line1, string line2, TBagItem item, TGainBonus bonus) {
         Combat.Roll = Roll(100);
         if ((Combat.Roll < threshold) && (Session.Room != DeadRoom)) {
             Out.WriteLine(TxtShared_08 + line1);
             if (line2 != "") Out.WriteLine(TxtBang + TxtUniqeItem + line2);
-            Bag.Items[(int)item] = (short)(Bag.Items[(int)item] - ItemUnit);
+            Bag.Items[(int)item] = (Bag.Items[(int)item] - ItemUnit);
             switch (bonus) {
                 case TGainBonus.gbMana:
-                    Player.MaxMana = (short)(Player.MaxMana + 40);
+                    Player.MaxMana = (Player.MaxMana + 40);
                     break;
                 case TGainBonus.gbCassette:
-                    Player.MaxEnergy = (short)(Player.MaxEnergy + 5);
-                    Gear.Values[(int)TGearItem.Armor] = (short)(Gear.Values[(int)TGearItem.Armor] - 8);
-                    Player.Stats[(int)TStat.Dexterity] = (short)(Player.Stats[(int)TStat.Dexterity] + 1);
+                    Player.MaxEnergy = (Player.MaxEnergy + 5);
+                    Gear.Values[(int)TGearItem.Armor] = (Gear.Values[(int)TGearItem.Armor] - 8);
+                    Player.Stats[(int)TStat.Dexterity] = (Player.Stats[(int)TStat.Dexterity] + 1);
                     break;
             }
-            Bag.Count = (short)(Bag.Count + 1);
+            Bag.Count = (Bag.Count + 1);
         }
     }
 
@@ -1074,7 +1077,7 @@ public static class Game {
     public static void ShieldBlock() {
         Combat.Roll = Roll(100);
         if (Combat.Roll <= Gear.Values[(int)TGearItem.Armor]) {
-            Combat.Damage = (short)(Combat.Damage - Gear.Values[(int)TGearItem.WornCount]);
+            Combat.Damage = (Combat.Damage - Gear.Values[(int)TGearItem.WornCount]);
             if (Combat.Damage < 0) Combat.Damage = 0;
             Out.WriteLine(TxtShieldBlock_01 + Combat.Damage + TxtShared_20);
         }
@@ -1083,40 +1086,40 @@ public static class Game {
     public static void DoFight() {
         for (int i = 1; i < FightExpStats.Count; i++) {
             TFightExpStat s = FightExpStats[i];
-            Combat.FightExperience = (short)(Combat.FightExperience + s.expFor((short)(s.playerStat.Get() - s.enemyStat.Get())));
+            Combat.FightExperience = (Combat.FightExperience + s.expFor((s.playerStat.Get() - s.enemyStat.Get())));
         }
 
         do {
-            Combat.EnemyDodged = 0;
-            Combat.PlayerDodged = 0;
+            Combat.EnemyDodged = false;
+            Combat.PlayerDodged = false;
             Out.WriteLine(TxtFightEngagedEnemy + Combat.EnemyEnergy + TxtFightEngagedYou + Player.Energy + TxtFightEngagedEnd);
             if (Player.Stats[(int)TStat.Dexterity] > Combat.EnemyDexterity) {
-                Combat.DodgeChance = (short)(Player.Stats[(int)TStat.Dexterity] - Combat.EnemyDexterity);
+                Combat.DodgeChance = (Player.Stats[(int)TStat.Dexterity] - Combat.EnemyDexterity);
                 Combat.Roll = Roll(DodgeBound(Combat.DodgeChance));
                 if (Combat.Roll < 10) {
                     Out.WriteLine(TxtFightYouDodgeMocking);
-                    Combat.PlayerDodged = 1;
+                    Combat.PlayerDodged = true;
                 }
                 Combat.Roll = Roll(EnemyDodgeBound(Combat.DodgeChance));
                 if (Combat.Roll < 10) {
                     Out.WriteLine(TxtEnemy + TxtFightEnemyDodgesLamersAttack);
-                    Combat.EnemyDodged = 1;
+                    Combat.EnemyDodged = true;
                 }
             }
             if (Combat.EnemyDexterity > Player.Stats[(int)TStat.Dexterity]) {
-                Combat.DodgeChance = (short)(Combat.EnemyDexterity - Player.Stats[(int)TStat.Dexterity]);
+                Combat.DodgeChance = (Combat.EnemyDexterity - Player.Stats[(int)TStat.Dexterity]);
                 Combat.Roll = Roll(DodgeBound(Combat.DodgeChance));
                 if (Combat.Roll < 10) {
                     Out.WriteLine(TxtEnemy + TxtFightEnemyDodgesWithGrace);
-                    Combat.EnemyDodged = 1;
+                    Combat.EnemyDodged = true;
                 }
                 Combat.Roll = Roll(EnemyDodgeBound(Combat.DodgeChance));
                 if (Combat.Roll < 10) {
                     Out.WriteLine(TxtFightYouDodgeWithoutPardon);
-                    Combat.PlayerDodged = 1;
+                    Combat.PlayerDodged = true;
                 }
             }
-            if (Combat.PlayerDodged == 0) {
+            if (!Combat.PlayerDodged) {
                 Combat.Damage = Roll(Combat.EnemyStrength);
                 switch (Combat.Damage) {
                     case >= 0 and <= 5:
@@ -1132,7 +1135,7 @@ public static class Game {
                         Out.WriteLine(TxtEnemy + TxtFightGougedYouLabel + Combat.Damage + TxtFightTailEnergii);
                         break;
                 }
-                Combat.FightExperience = (short)(Combat.FightExperience + 1);
+                Combat.FightExperience = (Combat.FightExperience + 1);
                 ShieldBlock();
                 if ((Skills.Values[(int)TSkill.Parry] > 0) && (Combat.Damage > 0)) {
                     Combat.Roll = Roll(140);
@@ -1143,30 +1146,30 @@ public static class Game {
                                 Combat.Damage = 0;
                                 break;
                             case >= 3 and <= 9:
-                                Combat.Damage = (short)(Combat.Damage - 2);
+                                Combat.Damage = (Combat.Damage - 2);
                                 Out.WriteLine(TxtFightParryLabel + Combat.Damage + TxtFightTailEnergi);
                                 break;
                             default:
-                                Combat.Damage = (short)(Combat.Damage - 3);
+                                Combat.Damage = (Combat.Damage - 3);
                                 Out.WriteLine(TxtFightParryLabel + Combat.Damage + TxtFightTailEnergi);
                                 break;
                         }
                         if ((Combat.Roll < 1) && (Skills.Values[(int)TSkill.Parry] < 100)) {
                             Out.WriteLine(TxtFightStars15 + TxtLearnVerb + TxtFightParryLearn);
                             Skills.Values[(int)TSkill.Parry]++;
-                            Combat.FightExperience = (short)(Combat.FightExperience + 5);
+                            Combat.FightExperience = (Combat.FightExperience + 5);
                         }
                     }
                 }
-                Player.Energy = (short)(Player.Energy - Combat.Damage);
+                Player.Energy = (Player.Energy - Combat.Damage);
                 if (Combat.FireballCharges > 0) {
                     Combat.Roll = Roll(100);
                     if (Combat.Roll < 10) {
                         Crt.TextColor(14);
                         Combat.Roll = Roll(20);
                         Out.WriteLine(TxtEnemy + TxtFightFireballLabel + Combat.Roll + TxtFightTailEnergii);
-                        Player.Energy = (short)(Player.Energy - Combat.Roll);
-                        Combat.FireballCharges = (sbyte)(Combat.FireballCharges - 1);
+                        Player.Energy = (Player.Energy - Combat.Roll);
+                        Combat.FireballCharges = (Combat.FireballCharges - 1);
                         Crt.TextColor(15);
                     }
                 }
@@ -1175,19 +1178,19 @@ public static class Game {
                     if (Combat.Roll < 10) {
                         Crt.TextColor(4);
                         Out.WriteLine(TxtEnemy + TxtFightCastsPoison);
-                        Combat.PoisonCharges = (sbyte)(Combat.PoisonCharges - 1);
+                        Combat.PoisonCharges = (Combat.PoisonCharges - 1);
                         Crt.TextColor(15);
-                        Combat.PoisonRounds = (sbyte)(Combat.PoisonRounds + 10);
+                        Combat.PoisonRounds = (Combat.PoisonRounds + 10);
                     }
                 }
                 if (Combat.PoisonRounds > 0) {
                     Combat.Roll = Roll(5);
                     Out.WriteLine(TxtFightPoisonedLabel + Combat.Roll + TxtFightTailEnergi);
-                    Player.Energy = (short)(Player.Energy - Combat.Roll);
-                    Combat.PoisonRounds = (sbyte)(Combat.PoisonRounds - 1);
+                    Player.Energy = (Player.Energy - Combat.Roll);
+                    Combat.PoisonRounds = (Combat.PoisonRounds - 1);
                 }
             }
-            if (Combat.EnemyDodged == 0) {
+            if (!Combat.EnemyDodged) {
                 Combat.Damage = Roll(Player.Stats[(int)TStat.Strength]);
                 if (Combat.Damage * 10 < Gear.Values[(int)TGearItem.LuckRoll]) {
                     do {
@@ -1195,7 +1198,7 @@ public static class Game {
                         Out.WriteLine(TxtFightLuckRoll);
                     } while (!((Combat.Damage * 10) > Gear.Values[(int)TGearItem.LuckRoll]));
                 }
-                Combat.EnemyEnergy = (short)(Combat.EnemyEnergy - Combat.Damage);
+                Combat.EnemyEnergy = (Combat.EnemyEnergy - Combat.Damage);
                 switch (Combat.Damage) {
                     case >= 0 and <= 5:
                         Out.WriteLine(TxtFightPushedLabel + Combat.Damage + TxtFightTailEnergii);
@@ -1215,50 +1218,50 @@ public static class Game {
             if ((Skills.Values[(int)TSkill.Kick] > 0) && (Player.Mana > Skills.Values[(int)TSkill.KickMinMana]) && (Player.Energy < Skills.Values[(int)TSkill.KickMaxEnergy])) {
                 Combat.Roll = Roll(100);
                 if (Combat.Roll <= Skills.Values[(int)TSkill.Kick] - 10) {
-                    Combat.Roll = (short)(Roll(10) + Roll(Player.Level));
+                    Combat.Roll = (Roll(10) + Roll(Player.Level));
                     Crt.TextColor(14);
                     Out.WriteLine(TxtFightKickVerb + TxtFightSuperKickLabel + Combat.Roll + TxtFightTailEnergi);
                     Crt.TextColor(15);
-                    Player.Mana = (short)(Player.Mana - Roll(3) - 3);
-                    Combat.EnemyEnergy = (short)(Combat.EnemyEnergy - Combat.Roll);
+                    Player.Mana = (Player.Mana - Roll(3) - 3);
+                    Combat.EnemyEnergy = (Combat.EnemyEnergy - Combat.Roll);
                 } else Out.WriteLine(TxtFightKickVerb + TxtFightSuperKickMiss);
-                Player.Mana = (short)(Player.Mana - Roll(2) - 2);
+                Player.Mana = (Player.Mana - Roll(2) - 2);
             }
             if ((Skills.Values[(int)TSkill.Fleeing] > 0) && (Player.Energy < Skills.Values[(int)TSkill.FleeEnergy]) && (Player.Mana > 14)) {
-                Player.Mana = (short)(Player.Mana - 15);
+                Player.Mana = (Player.Mana - 15);
                 Combat.Roll = Roll(100);
                 if (Combat.Roll <= Skills.Values[(int)TSkill.Fleeing]) {
-                    Combat.Fled = 1;
+                    Combat.Fled = true;
                     Out.WriteLine(TxtFightFled);
-                    Player.Experience = (short)(Player.Experience - 20);
+                    Player.Experience = (Player.Experience - 20);
                 } else Out.WriteLine(TxtFightFleeFailed);
             }
-        } while (!((Player.Energy < 1) || (Combat.EnemyEnergy < 1) || (Combat.Fled == 1)));
+        } while (!((Player.Energy < 1) || (Combat.EnemyEnergy < 1) || Combat.Fled));
         if ((Combat.EnemyEnergy < 1) && (Player.Energy > 0)) {
-            if (Player.MaxEnergy > 75) Combat.FightExperience = (short)(Combat.FightExperience - 2);
-            if (Player.MaxEnergy > 115) Combat.FightExperience = (short)(Combat.FightExperience - 3);
-            if (Skills.Values[(int)TSkill.Parry] > 50) Combat.FightExperience = (short)(Combat.FightExperience - 2);
-            if (Skills.Values[(int)TSkill.Parry] > 75) Combat.FightExperience = (short)(Combat.FightExperience - 2);
-            if (Skills.Values[(int)TSkill.Parry] > 95) Combat.FightExperience = (short)(Combat.FightExperience - 1);
-            if (Skills.Values[(int)TSkill.Kick] > 50) Combat.FightExperience = (short)(Combat.FightExperience - 5);
-            if (Skills.Values[(int)TSkill.Kick] > 95) Combat.FightExperience = (short)(Combat.FightExperience - 2);
+            if (Player.MaxEnergy > 75) Combat.FightExperience = (Combat.FightExperience - 2);
+            if (Player.MaxEnergy > 115) Combat.FightExperience = (Combat.FightExperience - 3);
+            if (Skills.Values[(int)TSkill.Parry] > 50) Combat.FightExperience = (Combat.FightExperience - 2);
+            if (Skills.Values[(int)TSkill.Parry] > 75) Combat.FightExperience = (Combat.FightExperience - 2);
+            if (Skills.Values[(int)TSkill.Parry] > 95) Combat.FightExperience = (Combat.FightExperience - 1);
+            if (Skills.Values[(int)TSkill.Kick] > 50) Combat.FightExperience = (Combat.FightExperience - 5);
+            if (Skills.Values[(int)TSkill.Kick] > 95) Combat.FightExperience = (Combat.FightExperience - 2);
             if (Combat.FightExperience < 0) Combat.FightExperience = 0;
             Out.WriteLine(TxtFightVictoryLabel + Combat.FightExperience + TxtFightVictoryTail);
-            Player.Experience = (short)(Combat.FightExperience + Player.Experience);
+            Player.Experience = (Combat.FightExperience + Player.Experience);
             Combat.FireballCharges = 0;
             Combat.PoisonCharges = 0;
 
-            if (World.Quest > 0) World.QuestKills = (short)(World.QuestKills - 1);
+            if (World.Quest > 0) World.QuestKills = (World.QuestKills - 1);
             if (Skills.Values[(int)TSkill.Cooking] > 0) {
                 Combat.Roll = Roll(100);
                 if (Skills.Values[(int)TSkill.Cooking] > Combat.Roll) {
                     Out.WriteLine(TxtFightMadeBigos);
-                    Bag.Items[(int)TBagItem.Bigos] = (short)(Bag.Items[(int)TBagItem.Bigos] - ItemUnit);
-                    Bag.Count = (short)(Bag.Count + 1);
+                    Bag.Items[(int)TBagItem.Bigos] = (Bag.Items[(int)TBagItem.Bigos] - ItemUnit);
+                    Bag.Count = (Bag.Count + 1);
                     if ((Combat.Roll < 1) && (Skills.Values[(int)TSkill.Cooking] < 100)) {
                         Out.WriteLine(TxtFightCookingLearn);
                         Skills.Values[(int)TSkill.Cooking]++;
-                        Player.Experience = (short)(Player.Experience + 10);
+                        Player.Experience = (Player.Experience + 10);
                     }
                 }
             }
@@ -1273,7 +1276,7 @@ public static class Game {
 
     public class TFightExpStat {
         public IntSlot playerStat = null!, enemyStat = null!;
-        public Func<short, short> expFor = _ =>
+        public Func<int, int> expFor = _ =>
             0;
     }
 
@@ -1287,10 +1290,10 @@ public static class Game {
         if ((Matches(cmd)) && (Bag.Items[(int)item] == Session.OuterRoom)) {
             Out.WriteLine(verb + line);
             Bag.Items[(int)item] = -ItemUnit;
-            Bag.Count = (short)(Bag.Count + 1);
+            Bag.Count = (Bag.Count + 1);
             switch (effect) {
                 case TTakeEffect.teDiploma:
-                    Player.MaxEnergy = (short)(Player.MaxEnergy + 5);
+                    Player.MaxEnergy = (Player.MaxEnergy + 5);
                     break;
                 case TTakeEffect.tePipe:
                     if (Player.Stats[(int)TStat.Wisdom] < Player.Stats[(int)TStat.MaxWisdom])
@@ -1304,10 +1307,10 @@ public static class Game {
         if ((Matches(cmd)) && (Bag.Items[(int)item] == -ItemUnit)) {
             Out.WriteLine(verb + line);
             Bag.Items[(int)item] = Session.OuterRoom;
-            Bag.Count = (short)(Bag.Count - 1);
+            Bag.Count = (Bag.Count - 1);
             switch (effect) {
                 case TTakeEffect.teDiploma:
-                    Player.MaxEnergy = (short)(Player.MaxEnergy - 5);
+                    Player.MaxEnergy = (Player.MaxEnergy - 5);
                     break;
                 case TTakeEffect.tePipe:
                     Player.Stats[(int)TStat.Wisdom]--;
@@ -1352,7 +1355,7 @@ public static class Game {
     public class TFoodItem {
         public string cmd = "", verb = "", line = "";
         public TBagItem item;
-        public short gain;
+        public int gain;
         public IntSlot stat = null!, cap = null!;
     }
 
@@ -1376,17 +1379,17 @@ public static class Game {
         new() { cmd = CmdUzyj + CmdBigos, item = TBagItem.Bigos, verb = TxtEatVerb, line = TxtUseItems_27, gain = 20, stat = PlayerEnergy(), cap = PlayerMaxEnergy() },
     ];
 
-    public static void ClampStat(ref short stat, short cap) {
+    public static void ClampStat(ref int stat, int cap) {
         if (stat > cap) stat = cap;
     }
 
-    public static void EatFood(string cmd, TBagItem item, string verb, string line, short gain, IntSlot stat, IntSlot cap) {
+    public static void EatFood(string cmd, TBagItem item, string verb, string line, int gain, IntSlot stat, IntSlot cap) {
         if ((Matches(cmd)) && (Bag.Items[(int)item] <= -ItemUnit)) {
-            Bag.Count = (short)(Bag.Count - 1);
-            Bag.Items[(int)item] = (short)(Bag.Items[(int)item] + ItemUnit);
+            Bag.Count = (Bag.Count - 1);
+            Bag.Items[(int)item] = (Bag.Items[(int)item] + ItemUnit);
             Out.WriteLine(verb + line);
-            stat.Set((short)(stat.Get() + gain));
-            short tmp = stat.Get();
+            stat.Set((stat.Get() + gain));
+            int tmp = stat.Get();
             ClampStat(ref tmp, cap.Get());
             stat.Set(tmp);
         }
@@ -1408,11 +1411,11 @@ public static class Game {
                         if (Bag.Items[(int)TBagItem.Heart] == -ItemUnit) {
                             Bag.Items[(int)TBagItem.Heart] = 0;
                             Out.WriteLine(TxtEatVerb + TxtUseItems_02);
-                            Player.Energy = (short)(Player.Energy + 5);
-                            short tmpEnergy = Player.Energy;
+                            Player.Energy = (Player.Energy + 5);
+                            int tmpEnergy = Player.Energy;
                             ClampStat(ref tmpEnergy, Player.MaxEnergy);
                             Player.Energy = tmpEnergy;
-                            Bag.Count = (short)(Bag.Count - 1);
+                            Bag.Count = (Bag.Count - 1);
                         }
                         break;
                     case CmdDyplom:
@@ -1425,7 +1428,7 @@ public static class Game {
                     case CmdKomplet:
                         if ((Bag.Items[(int)TBagItem.Tracksuit] <= -ItemUnit) && (Gear.WornGarment == TxtEmpty)) {
                             Out.WriteLine(TxtUseItems_28);
-                            Gear.Values[(int)TGearItem.Armor] = (short)(Gear.Values[(int)TGearItem.Armor] + 7);
+                            Gear.Values[(int)TGearItem.Armor] = (Gear.Values[(int)TGearItem.Armor] + 7);
                             Gear.Values[(int)TGearItem.Wearing] = 1;
                             Gear.WornGarment = TxtWornSyf;
                         }
@@ -1438,29 +1441,29 @@ public static class Game {
                         if ((Bag.Items[(int)TBagItem.SpikedSuit] <= -ItemUnit) && (Gear.WornGarment == TxtEmpty)) {
                             Out.WriteLine(TxtUseItems_31);
                             Gear.Values[(int)TGearItem.Wearing] = 1;
-                            Gear.Values[(int)TGearItem.WornCount] = (short)(Gear.Values[(int)TGearItem.WornCount] + 1);
-                            Gear.Values[(int)TGearItem.Armor] = (short)(Gear.Values[(int)TGearItem.Armor] + 10);
-                            Gear.Values[(int)TGearItem.LuckRoll] = (short)(Gear.Values[(int)TGearItem.LuckRoll] + 15);
+                            Gear.Values[(int)TGearItem.WornCount] = (Gear.Values[(int)TGearItem.WornCount] + 1);
+                            Gear.Values[(int)TGearItem.Armor] = (Gear.Values[(int)TGearItem.Armor] + 10);
+                            Gear.Values[(int)TGearItem.LuckRoll] = (Gear.Values[(int)TGearItem.LuckRoll] + 15);
                             Gear.WornGarment = TxtWornGarnitur;
                         }
                         break;
                     case CmdPigulka:
                         if (Bag.Items[(int)TBagItem.TeleportPill] <= -ItemUnit) {
                             Out.WriteLine(TxtUseItems_32);
-                            Bag.Items[(int)TBagItem.TeleportPill] = (short)(Bag.Items[(int)TBagItem.TeleportPill] + ItemUnit);
+                            Bag.Items[(int)TBagItem.TeleportPill] = (Bag.Items[(int)TBagItem.TeleportPill] + ItemUnit);
                             SpawnMonsters();
                             if (Player.Stats[(int)TStat.Wisdom] < 10) {
                                 Out.WriteLine(TxtUseItems_33);
                                 Out.WriteLine(TxtUseItems_34);
-                                Player.MaxEnergy = (short)(Player.MaxEnergy - 1);
+                                Player.MaxEnergy = (Player.MaxEnergy - 1);
                                 Player.Energy = 1;
-                                Player.Experience = (short)(Player.Experience - 50);
+                                Player.Experience = (Player.Experience - 50);
                             } else if (Player.Stats[(int)TStat.Wisdom] < 16) {
                                 Out.WriteLine(TxtUseItems_35);
                                 Out.WriteLine(TxtUseItems_36);
-                                Player.Energy = (short)(Player.Energy - 40);
+                                Player.Energy = (Player.Energy - 40);
                                 if (Player.Energy < 1) Player.Energy = 1;
-                                Player.Experience = (short)(Player.Experience - 30);
+                                Player.Experience = (Player.Experience - 30);
                             } else
                                 Out.WriteLine(TxtUseItems_37);
                         }
@@ -1471,7 +1474,7 @@ public static class Game {
                 if ((Rest == CmdPrzepustka) && (Bag.Permit <= -ItemUnit)) {
                     Out.WriteLine(TxtUseItems_16);
                     Bag.Permit = Bag.Permit + ItemUnit;
-                    Bag.Count = (short)(Bag.Count + 1);
+                    Bag.Count = (Bag.Count + 1);
                 }
                 break;
             case CmdPatrz:
@@ -1484,7 +1487,7 @@ public static class Game {
                         if ((Bag.Items[(int)TBagItem.Tracksuit] <= -ItemUnit) && (Gear.WornGarment == TxtWornSyf)) {
                             Out.WriteLine(TxtUseItems_29);
                             Gear.Values[(int)TGearItem.Wearing] = 0;
-                            Gear.Values[(int)TGearItem.Armor] = (short)(Gear.Values[(int)TGearItem.Armor] - 7);
+                            Gear.Values[(int)TGearItem.Armor] = (Gear.Values[(int)TGearItem.Armor] - 7);
                             Gear.WornGarment = TxtEmpty;
                         }
                         break;
@@ -1492,9 +1495,9 @@ public static class Game {
                         if ((Bag.Items[(int)TBagItem.SpikedSuit] <= -ItemUnit) && (Gear.WornGarment == TxtWornGarnitur)) {
                             Out.WriteLine(TxtUseItems_38);
                             Gear.Values[(int)TGearItem.Wearing] = 0;
-                            Gear.Values[(int)TGearItem.WornCount] = (short)(Gear.Values[(int)TGearItem.WornCount] - 1);
-                            Gear.Values[(int)TGearItem.Armor] = (short)(Gear.Values[(int)TGearItem.Armor] - 10);
-                            Gear.Values[(int)TGearItem.LuckRoll] = (short)(Gear.Values[(int)TGearItem.LuckRoll] - 15);
+                            Gear.Values[(int)TGearItem.WornCount] = (Gear.Values[(int)TGearItem.WornCount] - 1);
+                            Gear.Values[(int)TGearItem.Armor] = (Gear.Values[(int)TGearItem.Armor] - 10);
+                            Gear.Values[(int)TGearItem.LuckRoll] = (Gear.Values[(int)TGearItem.LuckRoll] - 15);
                             Gear.WornGarment = TxtEmpty;
                         }
                         break;
@@ -1509,12 +1512,12 @@ public static class Game {
                 switch (Rest) {
                     case CmdKolor:
                         Out.WriteLine(TxtDisplayPrefs_01);
-                        Combat.Roll = Crt.ReadShort();
+                        Combat.Roll = Crt.ReadInt();
                         Crt.TextColor(Combat.Roll);
                         break;
                     case CmdTlo:
                         Out.WriteLine(TxtDisplayPrefs_02);
-                        Combat.Roll = Crt.ReadShort();
+                        Combat.Roll = Crt.ReadInt();
                         Crt.TextBackground(Combat.Roll);
                         break;
                 }
@@ -1576,8 +1579,8 @@ public static class Game {
     }
 
     public class TMazeMove {
-        public short room;
-        public List<short> dest = Enumerable.Repeat((short)0, 4).ToList();
+        public int room;
+        public List<int> dest = Enumerable.Repeat(0, 4).ToList();
     }
 
     public static readonly List<TMazeMove> MazeMoves = [null!,
@@ -1641,11 +1644,11 @@ public static class Game {
                     case CmdLiroy:
                         if (World.Monsters[(int)TMonster.Liroy] == Session.Room) {
                             Fight(TFoe.NotEasyEnemy);
-                            if ((Session.Room != DeadRoom) && (Player.Energy > 0) && (Combat.Fled == 0)) {
+                            if ((Session.Room != DeadRoom) && (Player.Energy > 0) && !Combat.Fled) {
                                 Out.WriteLine(TxtStageFights_01);
                                 Player.Money = Player.Money + 30;
                                 CassetteGain();
-                                if (World.Quest > 1) World.QuestKills = (short)(World.QuestKills - 150);
+                                if (World.Quest > 1) World.QuestKills = (World.QuestKills - 150);
                                 World.Monsters[(int)TMonster.Liroy] = 0;
                             }
                         }
@@ -1719,7 +1722,7 @@ public static class Game {
                             Fight(TFoe.HardEnemy);
                             for (int i = 2; i <= 4; i++)
                                 if (Player.Energy > 0) Fight(TFoe.HardEnemy);
-                            if ((Player.Energy > 0) && (Combat.Fled == 0))
+                            if ((Player.Energy > 0) && !Combat.Fled)
                                 Out.WriteLine(TxtPlantFights_18);
                         }
                         break;
@@ -1736,15 +1739,15 @@ public static class Game {
                             Out.WriteLine(TxtPlantFights_05);
                             Bag.Permit = Bag.Permit - ItemUnit;
                             Player.Money = Player.Money - 400;
-                            Bag.Count = (short)(Bag.Count + 1);
+                            Bag.Count = (Bag.Count + 1);
                         }
                         break;
                     case CmdPlecak:
                         if ((World.Monsters[(int)TMonster.Duncan] == Session.Room) && (Player.Money > 4799)) {
                             Out.WriteLine(TxtPlantFights_06);
                             Player.Money = Player.Money - 4800;
-                            Bag.Items[(int)TBagItem.Backpack] = (short)(Bag.Items[(int)TBagItem.Backpack] - ItemUnit);
-                            Bag.Count = (short)(Bag.Count + 1);
+                            Bag.Items[(int)TBagItem.Backpack] = (Bag.Items[(int)TBagItem.Backpack] - ItemUnit);
+                            Bag.Count = (Bag.Count + 1);
                         }
                         break;
                 }
@@ -1762,7 +1765,7 @@ public static class Game {
                         Out.WriteLine(TxtPlantFights_14);
                         Out.WriteLine(TxtPlantFights_15);
                         World.DuncanQuest = 0;
-                        Player.Experience = (short)(Player.Experience + 125);
+                        Player.Experience = (Player.Experience + 125);
                         Out.WriteLine(TxtPlantFights_16);
                     }
                 }
@@ -1845,8 +1848,8 @@ public static class Game {
 
     public class TRace {
         public string name = "";
-        public List<short> baseStats = Enumerable.Repeat((short)0, 6).ToList();
-        public short MaxManaBonus, MoneyBonus, MaxEnergyBonus, EnergyBonus;
+        public List<int> baseStats = Enumerable.Repeat(0, 6).ToList();
+        public int MaxManaBonus, MoneyBonus, MaxEnergyBonus, EnergyBonus;
     }
 
     public static readonly List<TRace> Races = [null!,
@@ -1865,7 +1868,7 @@ public static class Game {
     ];
 
     public class TDexterityLimit {
-        public short gate, limit;
+        public int gate, limit;
     }
 
     public static readonly List<TDexterityLimit> DexterityItemLimits = [null!,
@@ -1875,13 +1878,13 @@ public static class Game {
         new() { gate = 25, limit = 16 },
     ];
 
-    public const short Lvl1_Threshold = 700;
-    public const short Lvl2_Threshold = 725;
-    public const short Lvl3_Threshold = 730;
-    public const short Lvl4_Base = 735;
-    public const short Lvl9_Base = 735;
+    public const int Lvl1_Threshold = 700;
+    public const int Lvl2_Threshold = 725;
+    public const int Lvl3_Threshold = 730;
+    public const int Lvl4_Base = 735;
+    public const int Lvl9_Base = 735;
 
-    public static string LevelName(short lvl) {
+    public static string LevelName(int lvl) {
         if ((lvl >= 4) && (lvl <= 13)) return LevelNames[lvl];
         else return TxtEmpty;
     }
@@ -1898,13 +1901,13 @@ public static class Game {
         new(9, MaxInt, Lvl9_Base, 2),
     ];
 
-    public static short LevelThreshold(short lvl) =>
+    public static int LevelThreshold(int lvl) =>
         BandAmount(LvlThresholds.Skip(1).ToList(), lvl);
 
     public class TSheetItem {
         public IntSlot item = null!;
         public string desc = "";
-        public short width;
+        public int width;
         public TSheetKind kind;
     }
 
@@ -1928,12 +1931,12 @@ public static class Game {
         new() { item = IntSlot.Into(Bag.Items, (int)TBagItem.LuckyLeaf), desc = CmdDelikatnyChocSzorstkiListek, width = 0, kind = TSheetKind.ikPlain },
         new() { item = IntSlot.Into(Bag.Items, (int)TBagItem.Cassette), desc = CmdKasetaLiroyaLJakLiroy, width = 0, kind = TSheetKind.ikPlain },
         new() { item = IntSlot.Into(Bag.Items, (int)TBagItem.TeleportPill), desc = CmdPigulkaTransportujacaMG, width = 0, kind = TSheetKind.ikPlain },
-        new() { item = new IntSlot(() => (short)Bag.Permit, v => Bag.Permit = v), desc = CmdPrzepustkaWlasnoreczniePodpisanaPrzezQuestMastera, width = 0, kind = TSheetKind.ikPlain },
+        new() { item = new IntSlot(() => Bag.Permit, v => Bag.Permit = v), desc = CmdPrzepustkaWlasnoreczniePodpisanaPrzezQuestMastera, width = 0, kind = TSheetKind.ikPlain },
         new() { item = IntSlot.Into(Bag.Items, (int)TBagItem.CompareScroll), desc = CmdScrollZCzaremPorownywanie, width = 0, kind = TSheetKind.ikPlain },
         new() { item = IntSlot.Into(Bag.Items, (int)TBagItem.ReturnScroll), desc = CmdScrollZCzaremPowrot, width = 0, kind = TSheetKind.ikPlain },
     ];
 
-    public static void ShowSheetItem(TSheetKind kind, short val, string desc, short width) {
+    public static void ShowSheetItem(TSheetKind kind, int val, string desc, int width) {
         if (val <= -ItemUnit)
             switch (kind) {
                 case TSheetKind.ikShown:
@@ -1955,7 +1958,7 @@ public static class Game {
                 Bag.Limit = DexterityItemLimits[i].limit;
                 break;
             }
-        if (Bag.Items[(int)TBagItem.Backpack] < 0) Bag.Limit = (short)(Bag.Limit + 4);
+        if (Bag.Items[(int)TBagItem.Backpack] < 0) Bag.Limit = (Bag.Limit + 4);
         Out.WriteLine($"{TxtShowCharacter_30}{Player.Name}");
         Out.WriteLine(TxtShowCharacter_01);
         for (int si = 1; si < SheetItems.Count; si++) {
@@ -1974,7 +1977,7 @@ public static class Game {
             Out.WriteLine(TxtShowCharacter_11);
         Out.WriteLine(TxtShowCharacter_12 + Player.Money + TxtShowCharacter_13 + Player.Practice + TxtShared_19);
 
-        short gap = (short)(LevelThreshold(Player.Level) - Player.Experience);
+        int gap = (LevelThreshold(Player.Level) - Player.Experience);
         switch (Player.Level) {
             case 1:
                 Out.WriteLine(TxtShowCharacter_18 + TxtLevelFirst + TxtShowCharacter_19 + gap + TxtShared_22);
@@ -1995,7 +1998,7 @@ public static class Game {
         Out.WriteLine(TxtShowCharacter_21 + Player.Stats[(int)TStat.Strength] + TxtShowCharacter_03 + Player.Stats[(int)TStat.MaxStrength]
             + TxtShowCharacter_22 + Player.Stats[(int)TStat.Dexterity] + TxtShowCharacter_03 + Player.Stats[(int)TStat.MaxDexterity]
             + TxtShowCharacter_23 + Player.Stats[(int)TStat.Wisdom] + TxtShowCharacter_03 + Player.Stats[(int)TStat.MaxWisdom]);
-        Gear.Values[(int)TGearItem.ArmorRating] = (short)(10 * Gear.Values[(int)TGearItem.WornCount] + Gear.Values[(int)TGearItem.Armor]);
+        Gear.Values[(int)TGearItem.ArmorRating] = (10 * Gear.Values[(int)TGearItem.WornCount] + Gear.Values[(int)TGearItem.Armor]);
         Out.WriteLine(TxtShowCharacter_24 + Gear.Values[(int)TGearItem.ArmorRating]
             + TxtShowCharacter_25 + Gear.Values[(int)TGearItem.LuckRoll]);
         Out.WriteLine(TxtShowCharacter_12 + Player.Mana + TxtShowCharacter_03 + Player.MaxMana + TxtShowCharacter_26);
@@ -2005,10 +2008,10 @@ public static class Game {
         if (World.DuncanQuest != 0) Out.WriteLine(TxtShowCharacter_29);
     }
 
-    public static short FindRace(string name) {
+    public static int FindRace(string name) {
         for (int i = 1; i < Races.Count; i++)
             if (name == Races[i].name)
-                return (short)i;
+                return i;
         return 0;
     }
 
@@ -2016,7 +2019,7 @@ public static class Game {
         (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == ' ';
 
     public static void ChooseRace() {
-        short chosen;
+        int chosen;
         ShowIntro();
         Out.WriteLine(TxtChooseRace_02);
         while (true) {
@@ -2034,7 +2037,7 @@ public static class Game {
         if (File.Exists(SaveFileName())) {
             LoadGame();
             Session.Room = Session.OuterRoom;
-            Session.SavedFlag = 0;
+            Session.SavedFlag = false;
             return;
         }
         do {
@@ -2044,17 +2047,17 @@ public static class Game {
             if (chosen > 0) {
                 for (int si = 0; si <= (int)TStat.MaxWisdom; si++)
                     Player.Stats[si] = Races[chosen].baseStats[si];
-                Player.MaxMana = (short)(Player.MaxMana + Races[chosen].MaxManaBonus);
+                Player.MaxMana = (Player.MaxMana + Races[chosen].MaxManaBonus);
                 Player.Money = Player.Money + Races[chosen].MoneyBonus;
-                Player.MaxEnergy = (short)(Player.MaxEnergy + Races[chosen].MaxEnergyBonus);
-                Player.Energy = (short)(Player.Energy + Races[chosen].EnergyBonus);
+                Player.MaxEnergy = (Player.MaxEnergy + Races[chosen].MaxEnergyBonus);
+                Player.Energy = (Player.Energy + Races[chosen].EnergyBonus);
             }
         } while (!(chosen > 0));
         Player.Energy = 50;
         Player.Practice = 10;
         SpawnAt(CageInits.Skip(1).ToList());
         Player.Level = 1;
-        Player.MaxMana = (short)(Player.MaxMana + 100);
+        Player.MaxMana = (Player.MaxMana + 100);
         Player.Mana = Player.MaxMana;
         SpawnMonsters();
         WriteLines(TxtChooseRaceLines1.Skip(1).ToList());
@@ -2090,7 +2093,7 @@ public static class Game {
             Combat.Roll = Roll(100);
             if ((Combat.Roll < 35) && (Bag.Items[(int)TBagItem.Tracksuit] == 0)) {
                 Out.WriteLine(TxtKillSweeper_01);
-                Bag.Items[(int)TBagItem.Tracksuit] = (short)(Bag.Items[(int)TBagItem.Tracksuit] - ItemUnit);
+                Bag.Items[(int)TBagItem.Tracksuit] = (Bag.Items[(int)TBagItem.Tracksuit] - ItemUnit);
             }
         }
     }
@@ -2135,7 +2138,7 @@ public static class Game {
     }
 
     public class TTrainingLine {
-        public short wisdom, strength, dexterity;
+        public int wisdom, strength, dexterity;
         public string text1 = "";
     }
 
@@ -2166,12 +2169,12 @@ public static class Game {
         new() { wisdom = 23, strength = -1, dexterity = 12, text1 = TxtTraining_26 },
     ];
 
-    public static bool GatesMet(short reqWisdom, short reqStrength, short reqDexterity) =>
+    public static bool GatesMet(int reqWisdom, int reqStrength, int reqDexterity) =>
         ((reqWisdom == -1) || (Player.Stats[(int)TStat.Wisdom] > reqWisdom)) &&
         ((reqStrength == -1) || (Player.Stats[(int)TStat.Strength] > reqStrength)) &&
         ((reqDexterity == -1) || (Player.Stats[(int)TStat.Dexterity] > reqDexterity));
 
-    public static void WriteTrainingGain(string skillName, short value) {
+    public static void WriteTrainingGain(string skillName, int value) {
         Out.WriteLine(TxtTrainingVerb + skillName + TxtTrainingThreshold + value
             + TxtTraining_29 + Player.Practice + TxtShared_19);
     }
@@ -2193,8 +2196,8 @@ public static class Game {
                 switch (Rest) {
                     case CmdKopac:
                         if ((Player.Stats[(int)TStat.Wisdom] > 10) && (Player.Stats[(int)TStat.Strength] > 11) && (Player.Practice > 0)) {
-                            Skills.Values[(int)TSkill.Kick] = (short)(Skills.Values[(int)TSkill.Kick] + Player.Stats[(int)TStat.Wisdom]);
-                            Player.Practice = (short)(Player.Practice - 1);
+                            Skills.Values[(int)TSkill.Kick] = (Skills.Values[(int)TSkill.Kick] + Player.Stats[(int)TStat.Wisdom]);
+                            Player.Practice = (Player.Practice - 1);
                             WriteTrainingGain(TxtTrainingDigging, Skills.Values[(int)TSkill.Kick]);
                         }
                         break;
@@ -2202,37 +2205,37 @@ public static class Game {
                         if (Player.Stats[(int)TStat.Wisdom] > 10)
                             if (Player.Stats[(int)TStat.Dexterity] > 10)
                                 if ((Player.Practice > 0) && (Skills.Values[(int)TSkill.Fleeing] < 85)) {
-                                    Skills.Values[(int)TSkill.Fleeing] = (short)(Skills.Values[(int)TSkill.Fleeing] + Player.Stats[(int)TStat.Wisdom] + Player.Stats[(int)TStat.Dexterity] - 5);
-                                    Player.Practice = (short)(Player.Practice - 1);
+                                    Skills.Values[(int)TSkill.Fleeing] = (Skills.Values[(int)TSkill.Fleeing] + Player.Stats[(int)TStat.Wisdom] + Player.Stats[(int)TStat.Dexterity] - 5);
+                                    Player.Practice = (Player.Practice - 1);
                                     WriteTrainingGain(TxtTrainingFleeing, Skills.Values[(int)TSkill.Fleeing]);
                                 } else
                                     Out.WriteLine(TxtTraining_31);
                         break;
                     case CmdPowrot:
                         if ((Player.Stats[(int)TStat.Wisdom] > 17) && (Skills.Values[(int)TSkill.Returning] < 90) && (Player.Practice > 0)) {
-                            Skills.Values[(int)TSkill.Returning] = (short)(Skills.Values[(int)TSkill.Returning] + 2 * Player.Stats[(int)TStat.Wisdom] - 3);
-                            Player.Practice = (short)(Player.Practice - 1);
+                            Skills.Values[(int)TSkill.Returning] = (Skills.Values[(int)TSkill.Returning] + 2 * Player.Stats[(int)TStat.Wisdom] - 3);
+                            Player.Practice = (Player.Practice - 1);
                             WriteTrainingGain(TxtTrainingReturning, Skills.Values[(int)TSkill.Returning]);
                         }
                         break;
                     case TxtTrainingParrying:
                         if ((Player.Stats[(int)TStat.Wisdom] > 15) && (Player.Stats[(int)TStat.Dexterity] > 11) && (Skills.Values[(int)TSkill.Parry] < 90) && (Player.Practice > 0)) {
-                            Skills.Values[(int)TSkill.Parry] = (short)(Skills.Values[(int)TSkill.Parry] + Player.Stats[(int)TStat.Wisdom] + Player.Stats[(int)TStat.Dexterity] - 14);
-                            Player.Practice = (short)(Player.Practice - 1);
+                            Skills.Values[(int)TSkill.Parry] = (Skills.Values[(int)TSkill.Parry] + Player.Stats[(int)TStat.Wisdom] + Player.Stats[(int)TStat.Dexterity] - 14);
+                            Player.Practice = (Player.Practice - 1);
                             WriteTrainingGain(TxtTrainingParrying, Skills.Values[(int)TSkill.Parry]);
                         }
                         break;
                     case CmdPorownanie:
                         if ((Player.Stats[(int)TStat.Wisdom] > 11) && (Skills.Values[(int)TSkill.Comparing] < 90) && (Player.Practice > 0)) {
-                            Skills.Values[(int)TSkill.Comparing] = (short)(Skills.Values[(int)TSkill.Comparing] + 3 * Player.Stats[(int)TStat.Wisdom] - 9);
-                            Player.Practice = (short)(Player.Practice - 1);
+                            Skills.Values[(int)TSkill.Comparing] = (Skills.Values[(int)TSkill.Comparing] + 3 * Player.Stats[(int)TStat.Wisdom] - 9);
+                            Player.Practice = (Player.Practice - 1);
                             WriteTrainingGain(TxtTrainingComparing, Skills.Values[(int)TSkill.Comparing]);
                         }
                         break;
                     case TxtTrainingCooking:
                         if ((Player.Stats[(int)TStat.Wisdom] > 18) && (Skills.Values[(int)TSkill.Cooking] < 90) && (Player.Practice > 0)) {
-                            Skills.Values[(int)TSkill.Cooking] = (short)(Skills.Values[(int)TSkill.Cooking] + Player.Stats[(int)TStat.Wisdom] + 1);
-                            Player.Practice = (short)(Player.Practice - 1);
+                            Skills.Values[(int)TSkill.Cooking] = (Skills.Values[(int)TSkill.Cooking] + Player.Stats[(int)TStat.Wisdom] + 1);
+                            Player.Practice = (Player.Practice - 1);
                             WriteTrainingGain(TxtTrainingCooking, Skills.Values[(int)TSkill.Cooking]);
                         }
                         break;
@@ -2330,9 +2333,9 @@ public static class Game {
     public static void SaveSlotText(string value) =>
         Session.SaveFile.WriteLine(value);
     public static void LoadSlot(IntSlot value) =>
-        value.Set(unchecked((short)Session.SaveFile.ReadNumber()));
-    public static void LoadSlotShort(ref sbyte value) =>
-        value = unchecked((sbyte)Session.SaveFile.ReadNumber());
+        value.Set(unchecked((int)Session.SaveFile.ReadNumber()));
+    public static void LoadSlotShort(ref int value) =>
+        value = unchecked((int)Session.SaveFile.ReadNumber());
     public static void LoadSlotLong(ref int value) =>
         value = unchecked((int)Session.SaveFile.ReadNumber());
     public static void LoadSlotText(ref string value) =>
@@ -2343,7 +2346,7 @@ public static class Game {
 
     public static void SaveCharacter() {
         Command = CmdJa;
-        Session.SavedFlag = 1;
+        Session.SavedFlag = true;
         Out.WriteLine(TxtSaveCharacter_01);
         Crt.ClrScr();
         Assign(Session.SaveFile, SaveFileName());
@@ -2380,7 +2383,7 @@ public static class Game {
         SaveSlot(Gear.Values[(int)TGearItem.WeaponKind]);
         SaveSlot(Gear.Values[(int)TGearItem.Wearing]);
         SaveSlot(Session.Overall);
-        SaveSlot(Session.SavedFlag);
+        SaveSlot(Session.SavedFlag ? 1 : 0);
         SaveSlot(World.Monsters[(int)TMonster.CageWeakling]);
         SaveSlot(World.Monsters[(int)TMonster.CageStrong]);
         SaveSlot(World.Monsters[(int)TMonster.CageAgile]);
@@ -2407,7 +2410,7 @@ public static class Game {
         SaveSlot(Skills.Values[(int)TSkill.KickMaxEnergy]);
         SaveSlot(Skills.Values[(int)TSkill.Fleeing]);
         SaveSlot(Skills.Values[(int)TSkill.FleeEnergy]);
-        SaveSlot(Combat.Fled);
+        SaveSlot(Combat.Fled ? 1 : 0);
         SaveSlot(Session.InArena);
         SaveSlot(Bag.Items[(int)TBagItem.Tracksuit]);
         SaveSlot(Bag.Items[(int)TBagItem.Cassette]);
@@ -2424,7 +2427,7 @@ public static class Game {
         SaveSlot(Bag.Items[(int)TBagItem.Beer]);
         SaveSlot(Bag.Items[(int)TBagItem.CompareScroll]);
         SaveSlot(Bag.Items[(int)TBagItem.ReturnScroll]);
-        SaveSlot(World.OldElf);
+        SaveSlot(World.OldElf ? 1 : 0);
         SaveSlot(World.DuncanQuest);
         SaveSlot(Bag.Items[(int)TBagItem.Backpack]);
         SaveSlot(World.Monsters[(int)TMonster.Duncan]);
@@ -2438,7 +2441,7 @@ public static class Game {
         if (World.Quest == 1) World.QuestKills = 50;
         if (World.Quest > 1) World.QuestKills = 200;
         Player.Energy = Player.MaxEnergy;
-        Player.Experience = (short)(Player.Experience - 250 + Roll(50) - (5 * Player.Level));
+        Player.Experience = (Player.Experience - 250 + Roll(50) - (5 * Player.Level));
         MoveTo(RoomCityCentre);
         SpawnMonsters();
         Command = CmdPamietaj;
@@ -2446,10 +2449,10 @@ public static class Game {
         SaveCharacter();
     }
 
-    public static void BuyItem(string cmd, IntSlot Item, short price, string itemName, bool available) {
+    public static void BuyItem(string cmd, IntSlot Item, int price, string itemName, bool available) {
         if ((Matches(cmd)) && available && (Player.Money >= price)) {
-            Bag.Count = (short)(Bag.Count + 1);
-            Item.Set((short)(Item.Get() - ItemUnit));
+            Bag.Count = (Bag.Count + 1);
+            Item.Set((Item.Get() - ItemUnit));
             Player.Money = Player.Money - price;
             Out.WriteLine(TxtShopVerb + itemName + TxtSpaceZa + price + TxtSpaceMonet);
         }
@@ -2458,7 +2461,7 @@ public static class Game {
     public class TBakeryItem {
         public string cmd = "";
         public TBagItem item;
-        public short price;
+        public int price;
         public string desc = "";
     }
 
@@ -2503,11 +2506,11 @@ public static class Game {
     public static bool CanBuyOldSword() =>
         (Bag.Items[(int)TBagItem.OldSword] == 0) && (Player.Money >= 70);
 
-    public static void SellItem(IntSlot Item, short price, string itemName) {
+    public static void SellItem(IntSlot Item, int price, string itemName) {
         Out.WriteLine(TxtSellVerb + itemName);
         Player.Money = Player.Money + price;
-        Item.Set((short)(Item.Get() + ItemUnit));
-        Bag.Count = (short)(Bag.Count - 1);
+        Item.Set((Item.Get() + ItemUnit));
+        Bag.Count = (Bag.Count - 1);
     }
 
     public static void BuyOldSword() =>
@@ -2521,7 +2524,7 @@ public static class Game {
         Out.WriteLine(TxtSellOldSword_02);
         Player.Money = Player.Money + 30;
         Bag.Items[(int)TBagItem.OldSword] = 0;
-        Bag.Count = (short)(Bag.Count - 1);
+        Bag.Count = (Bag.Count - 1);
     }
 
     public static bool CanBuySmallShield() =>
@@ -2534,7 +2537,7 @@ public static class Game {
         Out.WriteLine(TxtSellSmallShield_01);
         Player.Money = Player.Money + 8;
         Bag.Items[(int)TBagItem.SmallShield] = 0;
-        Bag.Count = (short)(Bag.Count - 1);
+        Bag.Count = (Bag.Count - 1);
     }
 
     public static readonly List<TShopRule> ArmouryRules = [
@@ -2550,8 +2553,8 @@ public static class Game {
     public static void BuyPipe() {
         Out.WriteLine(TxtShopVerb + TxtBuyPipe_01 + TxtSpaceZa + 480 + TxtSpaceMonet);
         Player.Money = Player.Money - 480;
-        Bag.Items[(int)TBagItem.Pipe] = (short)(Bag.Items[(int)TBagItem.Pipe] - ItemUnit);
-        Bag.Count = (short)(Bag.Count + 1);
+        Bag.Items[(int)TBagItem.Pipe] = (Bag.Items[(int)TBagItem.Pipe] - ItemUnit);
+        Bag.Count = (Bag.Count + 1);
         Player.Stats[(int)TStat.Wisdom]++;
     }
 
@@ -2573,8 +2576,8 @@ public static class Game {
     public static void SellPipe() {
         Out.WriteLine(TxtSellVerb + TxtSellPipe_01);
         Player.Money = Player.Money + 120;
-        Bag.Items[(int)TBagItem.Pipe] = (short)(Bag.Items[(int)TBagItem.Pipe] + ItemUnit);
-        Bag.Count = (short)(Bag.Count - 1);
+        Bag.Items[(int)TBagItem.Pipe] = (Bag.Items[(int)TBagItem.Pipe] + ItemUnit);
+        Bag.Count = (Bag.Count - 1);
         Player.Stats[(int)TStat.Wisdom]--;
     }
 
@@ -2584,11 +2587,11 @@ public static class Game {
     public static void BuyCassette() {
         Out.WriteLine(TxtShopVerb + TxtBuyCassette_01 + TxtSpaceZa + 1999 + TxtSpaceMonet);
         Player.Money = Player.Money - 1999;
-        Bag.Items[(int)TBagItem.Cassette] = (short)(Bag.Items[(int)TBagItem.Cassette] - ItemUnit);
-        Gear.Values[(int)TGearItem.Armor] = (short)(Gear.Values[(int)TGearItem.Armor] - 8);
-        Player.MaxEnergy = (short)(Player.MaxEnergy + 5);
+        Bag.Items[(int)TBagItem.Cassette] = (Bag.Items[(int)TBagItem.Cassette] - ItemUnit);
+        Gear.Values[(int)TGearItem.Armor] = (Gear.Values[(int)TGearItem.Armor] - 8);
+        Player.MaxEnergy = (Player.MaxEnergy + 5);
         Player.Stats[(int)TStat.Dexterity]++;
-        Bag.Count = (short)(Bag.Count + 1);
+        Bag.Count = (Bag.Count + 1);
     }
 
     public static bool CanBuySpikedSuit() =>
@@ -2597,8 +2600,8 @@ public static class Game {
     public static void BuySpikedSuit() {
         Out.WriteLine(TxtBuySpikedSuit_01);
         Player.Money = Player.Money - 1000;
-        Bag.Items[(int)TBagItem.SpikedSuit] = (short)(Bag.Items[(int)TBagItem.SpikedSuit] - ItemUnit);
-        Bag.Count = (short)(Bag.Count + 1);
+        Bag.Items[(int)TBagItem.SpikedSuit] = (Bag.Items[(int)TBagItem.SpikedSuit] - ItemUnit);
+        Bag.Count = (Bag.Count + 1);
     }
 
     public static bool CanSellSpikedSuit() =>
@@ -2613,11 +2616,11 @@ public static class Game {
     public static void SellCassette() {
         Out.WriteLine(TxtSellVerb + TxtSellCassette_01);
         Player.Money = Player.Money + 1000;
-        Bag.Items[(int)TBagItem.Cassette] = (short)(Bag.Items[(int)TBagItem.Cassette] + ItemUnit);
-        Gear.Values[(int)TGearItem.Armor] = (short)(Gear.Values[(int)TGearItem.Armor] + 8);
-        Player.MaxEnergy = (short)(Player.MaxEnergy - 5);
+        Bag.Items[(int)TBagItem.Cassette] = (Bag.Items[(int)TBagItem.Cassette] + ItemUnit);
+        Gear.Values[(int)TGearItem.Armor] = (Gear.Values[(int)TGearItem.Armor] + 8);
+        Player.MaxEnergy = (Player.MaxEnergy - 5);
         Player.Stats[(int)TStat.Dexterity]--;
-        Bag.Count = (short)(Bag.Count - 1);
+        Bag.Count = (Bag.Count - 1);
     }
 
     public static readonly List<TShopRule> GeneralStoreRules = [
@@ -2637,8 +2640,8 @@ public static class Game {
     public static void BuyManaBottle() {
         Out.WriteLine(TxtBuyManaBottle_01);
         Player.Money = Player.Money - 20;
-        Bag.Items[(int)TBagItem.ManaBottle] = (short)(Bag.Items[(int)TBagItem.ManaBottle] - ItemUnit);
-        Bag.Count = (short)(Bag.Count + 1);
+        Bag.Items[(int)TBagItem.ManaBottle] = (Bag.Items[(int)TBagItem.ManaBottle] - ItemUnit);
+        Bag.Count = (Bag.Count + 1);
     }
 
     public static bool CanBuyLuckyLeaf() =>
@@ -2647,9 +2650,9 @@ public static class Game {
     public static void BuyLuckyLeaf() {
         Out.WriteLine(TxtBuyLuckyLeaf_01);
         Player.Money = Player.Money - 830;
-        Bag.Items[(int)TBagItem.LuckyLeaf] = (short)(Bag.Items[(int)TBagItem.LuckyLeaf] - ItemUnit);
-        Bag.Count = (short)(Bag.Count + 1);
-        Player.MaxMana = (short)(Player.MaxMana + 40);
+        Bag.Items[(int)TBagItem.LuckyLeaf] = (Bag.Items[(int)TBagItem.LuckyLeaf] - ItemUnit);
+        Bag.Count = (Bag.Count + 1);
+        Player.MaxMana = (Player.MaxMana + 40);
     }
 
     public static bool CanSellLuckyLeaf() =>
@@ -2658,9 +2661,9 @@ public static class Game {
     public static void SellLuckyLeaf() {
         Out.WriteLine(TxtSellVerb + TxtSellLuckyLeaf_01);
         Player.Money = Player.Money + 400;
-        Bag.Items[(int)TBagItem.LuckyLeaf] = (short)(Bag.Items[(int)TBagItem.LuckyLeaf] + ItemUnit);
-        Bag.Count = (short)(Bag.Count - 1);
-        Player.MaxMana = (short)(Player.MaxMana - 40);
+        Bag.Items[(int)TBagItem.LuckyLeaf] = (Bag.Items[(int)TBagItem.LuckyLeaf] + ItemUnit);
+        Bag.Count = (Bag.Count - 1);
+        Player.MaxMana = (Player.MaxMana - 40);
     }
 
     public static bool CanBuyTeleportPill() =>
@@ -2675,8 +2678,8 @@ public static class Game {
     public static void SellTeleportPill() {
         Out.WriteLine(TxtSellTeleportPill_01);
         Player.Money = Player.Money + 170;
-        Bag.Items[(int)TBagItem.TeleportPill] = (short)(Bag.Items[(int)TBagItem.TeleportPill] + ItemUnit);
-        Bag.Count = (short)(Bag.Count - 1);
+        Bag.Items[(int)TBagItem.TeleportPill] = (Bag.Items[(int)TBagItem.TeleportPill] + ItemUnit);
+        Bag.Count = (Bag.Count - 1);
     }
 
     public static bool CanBuyCompareScroll() =>
@@ -2685,8 +2688,8 @@ public static class Game {
     public static void BuyCompareScroll() {
         Out.WriteLine(TxtBuyCompareScroll_01);
         Player.Money = Player.Money - 40;
-        Bag.Items[(int)TBagItem.CompareScroll] = (short)(Bag.Items[(int)TBagItem.CompareScroll] - ItemUnit);
-        Bag.Count = (short)(Bag.Count + 1);
+        Bag.Items[(int)TBagItem.CompareScroll] = (Bag.Items[(int)TBagItem.CompareScroll] - ItemUnit);
+        Bag.Count = (Bag.Count + 1);
     }
 
     public static bool CanSellCompareScroll() =>
@@ -2695,8 +2698,8 @@ public static class Game {
     public static void SellCompareScroll() {
         Out.WriteLine(TxtSellCompareScroll_01);
         Player.Money = Player.Money + 18;
-        Bag.Items[(int)TBagItem.CompareScroll] = (short)(Bag.Items[(int)TBagItem.CompareScroll] + ItemUnit);
-        Bag.Count = (short)(Bag.Count - 1);
+        Bag.Items[(int)TBagItem.CompareScroll] = (Bag.Items[(int)TBagItem.CompareScroll] + ItemUnit);
+        Bag.Count = (Bag.Count - 1);
     }
 
     public static readonly List<TShopRule> MagicShopRules = [
@@ -2788,7 +2791,7 @@ public static class Game {
                     if ((Combat.Roll < 5) && (Bag.Items[(int)TBagItem.Pipe] == 0)) {
                         Out.WriteLine(TxtShared_08 + TxtConcertFights_01);
                         Out.WriteLine(TxtConcertFights_02);
-                        Bag.Items[(int)TBagItem.Pipe] = (short)(Bag.Items[(int)TBagItem.Pipe] - ItemUnit);
+                        Bag.Items[(int)TBagItem.Pipe] = (Bag.Items[(int)TBagItem.Pipe] - ItemUnit);
                         Player.Stats[(int)TStat.Wisdom]++;
                     }
                 }
@@ -2805,15 +2808,15 @@ public static class Game {
     }
 
     public static readonly List<TCheckpoint> CheckpointRules = [null!,
-        new(400, 0, 1, (short)(-MaxInt - 1), 19),
-        new(180, 0, 1, (short)(-MaxInt - 1), 7),
-        new(360, 1, 2, (short)(-MaxInt - 1), 7),
-        new(540, 2, 3, (short)(-MaxInt - 1), 7),
+        new(400, 0, 1, (-MaxInt - 1), 19),
+        new(180, 0, 1, (-MaxInt - 1), 7),
+        new(360, 1, 2, (-MaxInt - 1), 7),
+        new(540, 2, 3, (-MaxInt - 1), 7),
         new(300, 0, 1, 8, 12),
         new(500, 1, 2, 8, 12),
     ];
 
-    public static void ReachCheckpoint(short exp, short stage, short next, short loStr, short hiStr) {
+    public static void ReachCheckpoint(int exp, int stage, int next, int loStr, int hiStr) {
         if ((Player.Experience >= exp) && (Session.CheckpointStage == stage)
             && (Player.Stats[(int)TStat.Strength] >= loStr) && (Player.Stats[(int)TStat.Strength] <= hiStr)) {
             Out.WriteLine(TxtCheckpoints_01);
@@ -2830,7 +2833,7 @@ public static class Game {
     }
 
     public class TEnergyBonus {
-        public short dexLo, strLo, bonus;
+        public int dexLo, strLo, bonus;
     }
 
     public static readonly List<TBand> LevelCosts = [null!,
@@ -2845,60 +2848,60 @@ public static class Game {
         new(-128, 10, 3, 0),
         new(11, 15, 4, 0),
         new(16, 22, 5, 0),
-        new((short)(-MaxInt - 1), MaxInt, 6, 0),
+        new((-MaxInt - 1), MaxInt, 6, 0),
     ];
 
     public static readonly List<TEnergyBonus> MaxEnergyGains = [null!,
-        new() { dexLo = 12, strLo = (short)(-MaxInt - 1), bonus = 1 },
-        new() { dexLo = 16, strLo = (short)(-MaxInt - 1), bonus = 1 },
-        new() { dexLo = 21, strLo = (short)(-MaxInt - 1), bonus = 1 },
+        new() { dexLo = 12, strLo = (-MaxInt - 1), bonus = 1 },
+        new() { dexLo = 16, strLo = (-MaxInt - 1), bonus = 1 },
+        new() { dexLo = 21, strLo = (-MaxInt - 1), bonus = 1 },
         new() { dexLo = 26, strLo = 20, bonus = 1 },
     ];
 
     public static void CheckLevelUp() {
-        short threshold;
+        int threshold;
         if (Player.Level < 1) return;
         threshold = LevelThreshold(Player.Level);
         if (Player.Experience < threshold) return;
 
         WriteLines(TxtCheckLevelUpLines1.Skip(1).ToList());
 
-        Player.Experience = (short)(Player.Experience - BandAmount(LevelCosts.Skip(1).ToList(), Player.Level));
-        Player.Practice = (short)(Player.Practice + BandAmount(PracticeGains.Skip(1).ToList(), Player.Stats[(int)TStat.Wisdom]));
+        Player.Experience = (Player.Experience - BandAmount(LevelCosts.Skip(1).ToList(), Player.Level));
+        Player.Practice = (Player.Practice + BandAmount(PracticeGains.Skip(1).ToList(), Player.Stats[(int)TStat.Wisdom]));
         Out.WriteLine(TxtCheckLevelUp_02 + Player.Practice + TxtCheckLevelUp_03);
-        Player.MaxEnergy = (short)(Player.MaxEnergy + 10);
+        Player.MaxEnergy = (Player.MaxEnergy + 10);
         for (int ei = 1; ei < MaxEnergyGains.Count; ei++) {
             TEnergyBonus e = MaxEnergyGains[ei];
             if ((Player.Stats[(int)TStat.Dexterity] > e.dexLo) && (Player.Stats[(int)TStat.Strength] > e.strLo))
-                Player.MaxEnergy = (short)(Player.MaxEnergy + e.bonus);
+                Player.MaxEnergy = (Player.MaxEnergy + e.bonus);
         }
         Out.WriteLine(TxtCheckLevelUp_02 + Player.MaxEnergy + TxtCheckLevelUp_04);
-        Player.MaxMana = (short)(Player.MaxMana + Player.Stats[(int)TStat.Wisdom] + 2);
+        Player.MaxMana = (Player.MaxMana + Player.Stats[(int)TStat.Wisdom] + 2);
         Out.WriteLine(TxtCheckLevelUp_05 + (Player.Stats[(int)TStat.Wisdom] + 2) + TxtCheckLevelUp_06);
-        Player.Level = (sbyte)(Player.Level + 1);
+        Player.Level = (Player.Level + 1);
         Session.CheckpointStage = 0;
         if (Player.Level == 12) {
             Out.WriteLine(TxtCheckLevelUp_07);
-            if (Player.Stats[(int)TStat.Strength] >= Player.Stats[(int)TStat.MaxStrength]) Player.Stats[(int)TStat.MaxStrength] = (short)(Player.Stats[(int)TStat.MaxStrength] + 3);
-            if (Player.Stats[(int)TStat.Dexterity] >= Player.Stats[(int)TStat.MaxDexterity]) Player.Stats[(int)TStat.MaxDexterity] = (short)(Player.Stats[(int)TStat.MaxDexterity] + 3);
-            if (Player.Stats[(int)TStat.Wisdom] >= Player.Stats[(int)TStat.MaxWisdom]) Player.Stats[(int)TStat.MaxWisdom] = (short)(Player.Stats[(int)TStat.MaxWisdom] + 3);
-            if (Player.Stats[(int)TStat.Strength] < Player.Stats[(int)TStat.MaxStrength]) Player.Stats[(int)TStat.MaxStrength] = (short)(Player.Stats[(int)TStat.MaxStrength] + 2);
-            if (Player.Stats[(int)TStat.Dexterity] < Player.Stats[(int)TStat.MaxDexterity]) Player.Stats[(int)TStat.MaxDexterity] = (short)(Player.Stats[(int)TStat.MaxDexterity] + 2);
-            if (Player.Stats[(int)TStat.Wisdom] < Player.Stats[(int)TStat.MaxWisdom]) Player.Stats[(int)TStat.MaxWisdom] = (short)(Player.Stats[(int)TStat.MaxWisdom] + 2);
+            if (Player.Stats[(int)TStat.Strength] >= Player.Stats[(int)TStat.MaxStrength]) Player.Stats[(int)TStat.MaxStrength] = (Player.Stats[(int)TStat.MaxStrength] + 3);
+            if (Player.Stats[(int)TStat.Dexterity] >= Player.Stats[(int)TStat.MaxDexterity]) Player.Stats[(int)TStat.MaxDexterity] = (Player.Stats[(int)TStat.MaxDexterity] + 3);
+            if (Player.Stats[(int)TStat.Wisdom] >= Player.Stats[(int)TStat.MaxWisdom]) Player.Stats[(int)TStat.MaxWisdom] = (Player.Stats[(int)TStat.MaxWisdom] + 3);
+            if (Player.Stats[(int)TStat.Strength] < Player.Stats[(int)TStat.MaxStrength]) Player.Stats[(int)TStat.MaxStrength] = (Player.Stats[(int)TStat.MaxStrength] + 2);
+            if (Player.Stats[(int)TStat.Dexterity] < Player.Stats[(int)TStat.MaxDexterity]) Player.Stats[(int)TStat.MaxDexterity] = (Player.Stats[(int)TStat.MaxDexterity] + 2);
+            if (Player.Stats[(int)TStat.Wisdom] < Player.Stats[(int)TStat.MaxWisdom]) Player.Stats[(int)TStat.MaxWisdom] = (Player.Stats[(int)TStat.MaxWisdom] + 2);
             if ((Player.Stats[(int)TStat.MaxWisdom] > Player.Stats[(int)TStat.MaxStrength]) && (Player.Stats[(int)TStat.MaxWisdom] > Player.Stats[(int)TStat.MaxDexterity]))
-                Player.Stats[(int)TStat.MaxWisdom] = (short)(Player.Stats[(int)TStat.MaxWisdom] + 3);
+                Player.Stats[(int)TStat.MaxWisdom] = (Player.Stats[(int)TStat.MaxWisdom] + 3);
             if ((Player.Stats[(int)TStat.MaxStrength] > Player.Stats[(int)TStat.MaxWisdom]) && (Player.Stats[(int)TStat.MaxStrength] > Player.Stats[(int)TStat.MaxDexterity]))
-                Player.Stats[(int)TStat.MaxStrength] = (short)(Player.Stats[(int)TStat.MaxStrength] + 3);
+                Player.Stats[(int)TStat.MaxStrength] = (Player.Stats[(int)TStat.MaxStrength] + 3);
             if ((Player.Stats[(int)TStat.MaxDexterity] > Player.Stats[(int)TStat.MaxStrength]) && (Player.Stats[(int)TStat.MaxDexterity] > Player.Stats[(int)TStat.MaxWisdom]))
-                Player.Stats[(int)TStat.MaxDexterity] = (short)(Player.Stats[(int)TStat.MaxDexterity] + 3);
+                Player.Stats[(int)TStat.MaxDexterity] = (Player.Stats[(int)TStat.MaxDexterity] + 3);
             if ((Player.Stats[(int)TStat.MaxDexterity] == Player.Stats[(int)TStat.MaxStrength]) && (Player.Stats[(int)TStat.MaxStrength] == Player.Stats[(int)TStat.MaxWisdom])) {
-                Player.Stats[(int)TStat.MaxDexterity] = (short)(Player.Stats[(int)TStat.MaxDexterity] + 1);
-                Player.Stats[(int)TStat.MaxWisdom] = (short)(Player.Stats[(int)TStat.MaxWisdom] + 1);
-                Player.Stats[(int)TStat.MaxStrength] = (short)(Player.Stats[(int)TStat.MaxStrength] + 1);
+                Player.Stats[(int)TStat.MaxDexterity] = (Player.Stats[(int)TStat.MaxDexterity] + 1);
+                Player.Stats[(int)TStat.MaxWisdom] = (Player.Stats[(int)TStat.MaxWisdom] + 1);
+                Player.Stats[(int)TStat.MaxStrength] = (Player.Stats[(int)TStat.MaxStrength] + 1);
             }
             if ((Player.Stats[(int)TStat.MaxDexterity] > Player.Stats[(int)TStat.MaxWisdom]) && (Player.Stats[(int)TStat.MaxDexterity] == Player.Stats[(int)TStat.MaxStrength])) {
-                Player.Stats[(int)TStat.MaxStrength] = (short)(Player.Stats[(int)TStat.MaxStrength] + 2);
-                Player.Stats[(int)TStat.MaxDexterity] = (short)(Player.Stats[(int)TStat.MaxDexterity] + 1);
+                Player.Stats[(int)TStat.MaxStrength] = (Player.Stats[(int)TStat.MaxStrength] + 2);
+                Player.Stats[(int)TStat.MaxDexterity] = (Player.Stats[(int)TStat.MaxDexterity] + 1);
             }
             Out.WriteLine(TxtCheckLevelUp_08 + Player.Stats[(int)TStat.MaxStrength]
                 + TxtMaxymalnie + TxtCheckLevelUp_09);
@@ -2915,10 +2918,10 @@ public static class Game {
         Crt.ClrScr();
 
     public static void CmdGiveEnergy() =>
-        Player.Energy = (short)(Player.Energy + 200);
+        Player.Energy = (Player.Energy + 200);
 
     public static void CmdGiveKunszt() =>
-        Player.Experience = (short)(Player.Experience + 500);
+        Player.Experience = (Player.Experience + 500);
     public static void CmdTakeMoney() =>
         Player.Money = Player.Money - 100;
 
@@ -2939,20 +2942,20 @@ public static class Game {
     }
 
     public static void CmdJustSaved() {
-        if (Session.SavedFlag == 1) {
+        if (Session.SavedFlag) {
             Command = CmdZdolnosci;
-            Session.SavedFlag = 0;
+            Session.SavedFlag = false;
             Out.WriteLine(Session.OuterRoom + TxtCmdJustSaved_01);
         }
     }
 
     public static void CmdDrinkBeer() {
         if (Bag.Items[(int)TBagItem.Beer] <= -ItemUnit) {
-            Bag.Items[(int)TBagItem.Beer] = (short)(Bag.Items[(int)TBagItem.Beer] + ItemUnit);
+            Bag.Items[(int)TBagItem.Beer] = (Bag.Items[(int)TBagItem.Beer] + ItemUnit);
             Out.WriteLine(TxtCmdDrinkBeer_01);
-            Bag.Count = (short)(Bag.Count - 1);
-            Player.Energy = (short)(Player.Energy + 10);
-            Player.Mana = (short)(Player.Mana + 10);
+            Bag.Count = (Bag.Count - 1);
+            Player.Energy = (Player.Energy + 10);
+            Player.Mana = (Player.Mana + 10);
         }
     }
 
@@ -2962,7 +2965,7 @@ public static class Game {
             Gear.Values[(int)TGearItem.WeaponKind] = 1;
             Out.WriteLine(TxtCmdWieldOldSword_01);
             Player.Stats[(int)TStat.Strength]++;
-            Gear.Values[(int)TGearItem.LuckRoll] = (short)(Gear.Values[(int)TGearItem.LuckRoll] + 3);
+            Gear.Values[(int)TGearItem.LuckRoll] = (Gear.Values[(int)TGearItem.LuckRoll] + 3);
         }
     }
 
@@ -2972,15 +2975,15 @@ public static class Game {
             Gear.Values[(int)TGearItem.WeaponKind] = 0;
             Out.WriteLine(TxtCmdUnwieldOldSword_01);
             Player.Stats[(int)TStat.Strength]--;
-            Gear.Values[(int)TGearItem.LuckRoll] = (short)(Gear.Values[(int)TGearItem.LuckRoll] - 3);
+            Gear.Values[(int)TGearItem.LuckRoll] = (Gear.Values[(int)TGearItem.LuckRoll] - 3);
         }
     }
 
     public static void CmdWieldSmallShield() {
         if ((Gear.Values[(int)TGearItem.ShieldKind] == 0) && (Bag.Items[(int)TBagItem.SmallShield] == -ItemUnit)) {
             Gear.Values[(int)TGearItem.ShieldKind] = 1;
-            Gear.Values[(int)TGearItem.Armor] = (short)(Gear.Values[(int)TGearItem.Armor] + 15);
-            Gear.Values[(int)TGearItem.WornCount] = (short)(Gear.Values[(int)TGearItem.WornCount] + 1);
+            Gear.Values[(int)TGearItem.Armor] = (Gear.Values[(int)TGearItem.Armor] + 15);
+            Gear.Values[(int)TGearItem.WornCount] = (Gear.Values[(int)TGearItem.WornCount] + 1);
             Bag.Items[(int)TBagItem.SmallShield] = -100;
             Out.WriteLine(TxtCmdWieldSmallShield_01);
         }
@@ -2989,8 +2992,8 @@ public static class Game {
     public static void CmdUnwieldSmallShield() {
         if ((Gear.Values[(int)TGearItem.ShieldKind] == 1) && (Bag.Items[(int)TBagItem.SmallShield] == -100)) {
             Gear.Values[(int)TGearItem.ShieldKind] = 0;
-            Gear.Values[(int)TGearItem.Armor] = (short)(Gear.Values[(int)TGearItem.Armor] - 15);
-            Gear.Values[(int)TGearItem.WornCount] = (short)(Gear.Values[(int)TGearItem.WornCount] - 1);
+            Gear.Values[(int)TGearItem.Armor] = (Gear.Values[(int)TGearItem.Armor] - 15);
+            Gear.Values[(int)TGearItem.WornCount] = (Gear.Values[(int)TGearItem.WornCount] - 1);
             Bag.Items[(int)TBagItem.SmallShield] = -ItemUnit;
             Out.WriteLine(TxtCmdUnwieldSmallShield_01);
         }
@@ -2999,31 +3002,31 @@ public static class Game {
     public static void CmdSetFleeEnergy() {
         if (Skills.Values[(int)TSkill.Fleeing] > 0) {
             Out.WriteLine(TxtCmdSetFleeEnergy_01);
-            Skills.Values[(int)TSkill.FleeEnergy] = Crt.ReadShort();
+            Skills.Values[(int)TSkill.FleeEnergy] = Crt.ReadInt();
         }
     }
 
     public static void CmdSleep() {
         Session.SleepHours = 0;
         do {
-            Session.SleepHours = (short)(Session.SleepHours + 1);
+            Session.SleepHours = (Session.SleepHours + 1);
             Crt.Delay(5000);
             Out.WriteLine(TxtCmdSleep_01 + Session.SleepHours + TxtCmdSleep_02);
-            Player.Experience = (short)(Player.Experience - 20);
-            Player.Energy = (short)(Player.Energy + 10);
+            Player.Experience = (Player.Experience - 20);
+            Player.Energy = (Player.Energy + 10);
         } while (!Crt.KeyPressed());
         Out.WriteLine(TxtCmdSleep_03 + (Session.SleepHours * 10)
             + TxtCmdSleep_04 + ((20 * Session.SleepHours) - Roll(2 * Session.SleepHours)) + TxtShared_22);
-        Player.Experience = (short)(Player.Experience + Roll(2 * Session.SleepHours));
+        Player.Experience = (Player.Experience + Roll(2 * Session.SleepHours));
         if (Session.SleepHours > 4) {
             Out.WriteLine(TxtCmdSleep_05 + Player.Stats[(int)TStat.Wisdom] + TxtCmdSleep_06);
-            Player.Energy = (short)(Player.Energy + Player.Stats[(int)TStat.Wisdom]);
+            Player.Energy = (Player.Energy + Player.Stats[(int)TStat.Wisdom]);
         }
         if (Session.SleepHours > 8) {
             Out.WriteLine(TxtCmdSleep_07 + (Player.Stats[(int)TStat.Wisdom] * 2) + TxtShared_19);
-            Player.Energy = (short)(Player.Energy + (Player.Stats[(int)TStat.Wisdom] * 2));
+            Player.Energy = (Player.Energy + (Player.Stats[(int)TStat.Wisdom] * 2));
         }
-        short tmpEnergy = Player.Energy;
+        int tmpEnergy = Player.Energy;
         ClampStat(ref tmpEnergy, Player.MaxEnergy);
         Player.Energy = tmpEnergy;
     }
@@ -3033,10 +3036,10 @@ public static class Game {
             Combat.Roll = Roll(100);
             if (Skills.Values[(int)TSkill.Comparing] > Combat.Roll) {
                 CompareFoe();
-                Player.Mana = (short)(Player.Mana - 10);
+                Player.Mana = (Player.Mana - 10);
             } else {
                 Out.WriteLine(TxtCmdCompare_01);
-                Player.Mana = (short)(Player.Mana - 5);
+                Player.Mana = (Player.Mana - 5);
             }
         }
     }
@@ -3072,22 +3075,22 @@ public static class Game {
             Combat.Roll = Roll(100);
             if (Rest == CmdScrollPowrot) {
                 Combat.Roll = Roll(1);
-                Bag.Items[(int)TBagItem.ReturnScroll] = (short)(Bag.Items[(int)TBagItem.ReturnScroll] + ItemUnit);
-                Bag.Count = (short)(Bag.Count - 1);
+                Bag.Items[(int)TBagItem.ReturnScroll] = (Bag.Items[(int)TBagItem.ReturnScroll] + ItemUnit);
+                Bag.Count = (Bag.Count - 1);
             }
             if (Combat.Roll <= Skills.Values[(int)TSkill.Returning]) {
                 Out.WriteLine(TxtCmdOpenPortal_01);
-                Player.Mana = (short)(Player.Mana - 15);
+                Player.Mana = (Player.Mana - 15);
                 MoveTo(RoomCityCentre);
             }
             if ((Combat.Roll > Skills.Values[(int)TSkill.Returning]) && (Skills.Values[(int)TSkill.Returning] + 30 > Combat.Roll)) {
                 Out.WriteLine(TxtCmdOpenPortal_02);
-                Player.Mana = (short)(Player.Mana - 5);
+                Player.Mana = (Player.Mana - 5);
             }
             if (Skills.Values[(int)TSkill.Returning] + 29 < Combat.Roll) {
                 Out.WriteLine(TxtCmdOpenPortal_03);
-                Player.Mana = (short)(Player.Mana - 10);
-                MoveTo((short)(Roll(100) + 1));
+                Player.Mana = (Player.Mana - 10);
+                MoveTo((Roll(100) + 1));
             }
         }
     }
@@ -3095,9 +3098,9 @@ public static class Game {
     public static void CmdUseCompareScroll() {
         if (Bag.Items[(int)TBagItem.CompareScroll] < 0) {
             CompareFoe();
-            Player.Mana = (short)(Player.Mana - 10);
-            Bag.Items[(int)TBagItem.CompareScroll] = (short)(Bag.Items[(int)TBagItem.CompareScroll] + ItemUnit);
-            Bag.Count = (short)(Bag.Count - 1);
+            Player.Mana = (Player.Mana - 10);
+            Bag.Items[(int)TBagItem.CompareScroll] = (Bag.Items[(int)TBagItem.CompareScroll] + ItemUnit);
+            Bag.Count = (Bag.Count - 1);
         }
     }
 
@@ -3105,9 +3108,9 @@ public static class Game {
         if (Skills.Values[(int)TSkill.Kick] > 0) {
             Out.WriteLine(TxtCmdSetKickThresholds_01);
             Out.WriteLine(TxtCmdSetKickThresholds_02);
-            Skills.Values[(int)TSkill.KickMaxEnergy] = Crt.ReadShort();
+            Skills.Values[(int)TSkill.KickMaxEnergy] = Crt.ReadInt();
             Out.WriteLine(TxtCmdSetKickThresholds_03);
-            Skills.Values[(int)TSkill.KickMinMana] = Crt.ReadShort();
+            Skills.Values[(int)TSkill.KickMinMana] = Crt.ReadInt();
         }
     }
 
@@ -3115,7 +3118,7 @@ public static class Game {
         Bag.Permit = Bag.Permit - ItemUnit;
 
     public class TSkillLine {
-        public short wisdom, strength, dexterity;
+        public int wisdom, strength, dexterity;
         public string text1 = "";
         public TSkill skill;
         public string text2 = "";
@@ -3180,13 +3183,13 @@ public static class Game {
             if (Bag.Count > Bag.Limit) {
                 Out.WriteLine(TxtStart_01 + (Bag.Count - Bag.Limit) + TxtStart_02);
                 Out.WriteLine(TxtStart_03 + ((Bag.Count - Bag.Limit) * 10) + TxtStart_04);
-                Player.Energy = (short)(Player.Energy - ((Bag.Count - Bag.Limit) * 10));
+                Player.Energy = (Player.Energy - ((Bag.Count - Bag.Limit) * 10));
             }
 
             if (Combat.PoisonRounds > 0) {
                 Combat.Roll = Roll(5);
                 Out.WriteLine(TxtStart_05 + Combat.Roll + TxtStart_06);
-                Combat.PoisonRounds = (sbyte)(Combat.PoisonRounds - 1);
+                Combat.PoisonRounds = (Combat.PoisonRounds - 1);
             }
 
             Session.ExitRequested = false;
@@ -3195,7 +3198,7 @@ public static class Game {
 
             if (Session.Room == DeadRoom) Death();
 
-            Combat.Fled = 0;
+            Combat.Fled = false;
         } while (!(Session.Room == RoomQuit));
     }
 
@@ -3205,13 +3208,13 @@ public static class Game {
     }
 
     public static void LoadGame() {
-        short dummy = 0;
+        int dummy = 0;
         Assign(Session.SaveFile, SaveFileName());
         Reset(Session.SaveFile);
         LoadSlot(new IntSlot(() => Player.Mana, v => Player.Mana = v));
-        Player.Mana = (short)(Player.Mana / SaveStatScale);
+        Player.Mana = (Player.Mana / SaveStatScale);
         LoadSlotShort(ref Player.Level);
-        Player.Level = (sbyte)(Player.Level - SaveLevelBias);
+        Player.Level = (Player.Level - SaveLevelBias);
         LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.OldSword));
         LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.Pipe));
         LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.Diploma));
@@ -3219,13 +3222,13 @@ public static class Game {
         LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.SpikedSuit));
         LoadSlot(new IntSlot(() => Player.Experience, v => Player.Experience = v));
         LoadSlot(new IntSlot(() => Player.Energy, v => Player.Energy = v));
-        Player.Energy = (short)(Player.Energy / SaveStatScale);
-        Player.Energy = (short)(Player.Energy - SaveEnergyBias);
+        Player.Energy = (Player.Energy / SaveStatScale);
+        Player.Energy = (Player.Energy - SaveEnergyBias);
         LoadSlot(new IntSlot(() => Session.OuterRoom, v => Session.OuterRoom = v));
         LoadSlot(IntSlot.Into(Player.Stats, (int)TStat.Dexterity));
-        Player.Stats[(int)TStat.Dexterity] = (short)(Player.Stats[(int)TStat.Dexterity] - SaveDexterityBias);
+        Player.Stats[(int)TStat.Dexterity] = (Player.Stats[(int)TStat.Dexterity] - SaveDexterityBias);
         LoadSlot(IntSlot.Into(Player.Stats, (int)TStat.Strength));
-        Player.Stats[(int)TStat.Strength] = (short)(Player.Stats[(int)TStat.Strength] + SaveStrengthBias);
+        Player.Stats[(int)TStat.Strength] = (Player.Stats[(int)TStat.Strength] + SaveStrengthBias);
         LoadSlot(IntSlot.Into(Player.Stats, (int)TStat.Wisdom));
         LoadSlot(new IntSlot(() => Player.Practice, v => Player.Practice = v));
         LoadSlot(new IntSlot(() => Session.CheckpointStage, v => Session.CheckpointStage = v));
@@ -3247,7 +3250,7 @@ public static class Game {
         LoadSlot(IntSlot.Into(Gear.Values, (int)TGearItem.WeaponKind));
         LoadSlot(IntSlot.Into(Gear.Values, (int)TGearItem.Wearing));
         LoadSlot(new IntSlot(() => Session.Overall, v => Session.Overall = v));
-        LoadSlot(new IntSlot(() => Session.SavedFlag, v => Session.SavedFlag = v));
+        LoadSlot(new IntSlot(() => Session.SavedFlag ? 1 : 0, v => Session.SavedFlag = v != 0));
         LoadSlot(IntSlot.Into(World.Monsters, (int)TMonster.CageWeakling));
         LoadSlot(IntSlot.Into(World.Monsters, (int)TMonster.CageStrong));
         LoadSlot(IntSlot.Into(World.Monsters, (int)TMonster.CageAgile));
@@ -3274,7 +3277,7 @@ public static class Game {
         LoadSlot(IntSlot.Into(Skills.Values, (int)TSkill.KickMaxEnergy));
         LoadSlot(IntSlot.Into(Skills.Values, (int)TSkill.Fleeing));
         LoadSlot(IntSlot.Into(Skills.Values, (int)TSkill.FleeEnergy));
-        LoadSlot(new IntSlot(() => Combat.Fled, v => Combat.Fled = v));
+        LoadSlot(new IntSlot(() => Combat.Fled ? 1 : 0, v => Combat.Fled = v != 0));
         LoadSlot(new IntSlot(() => Session.InArena, v => Session.InArena = v));
         LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.Tracksuit));
         LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.Cassette));
@@ -3291,7 +3294,7 @@ public static class Game {
         LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.Beer));
         LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.CompareScroll));
         LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.ReturnScroll));
-        LoadSlot(new IntSlot(() => World.OldElf, v => World.OldElf = v));
+        LoadSlot(new IntSlot(() => World.OldElf ? 1 : 0, v => World.OldElf = v != 0));
         LoadSlotShort(ref World.DuncanQuest);
         LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.Backpack));
         LoadSlot(IntSlot.Into(World.Monsters, (int)TMonster.Duncan));

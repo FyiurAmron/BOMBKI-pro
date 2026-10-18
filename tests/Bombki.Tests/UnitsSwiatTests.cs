@@ -13,7 +13,7 @@ public class UnitsSwiatTests {
         Player.Experience = 100;
         Player.Stats[(int)TStat.Strength] = 127;
         Player.Stats[(int)TStat.Dexterity] = 127;
-        Combat.Fled = 0;
+        Combat.Fled = false;
         Skills.Values[(int)TSkill.Fleeing] = 0;
         Skills.Values[(int)TSkill.FleeEnergy] = 0;
         Player.Mana = 0;
@@ -40,7 +40,7 @@ public class UnitsSwiatTests {
         Player.Practice = 1;
     }
 
-    static void PokojAt(string cmds, short room) {
+    static void PokojAt(string cmds, int room) {
         Session.ExitRequested = false;
         Session.Room = room;
         using (FeedStdin(cmds))
@@ -84,7 +84,7 @@ public class UnitsSwiatTests {
             Player.Experience = 100;
             Player.Stats[(int)TStat.Strength] = 127;
             Player.Stats[(int)TStat.Dexterity] = 127;
-            Combat.Fled = 0;
+            Combat.Fled = false;
             Skills.Values[(int)TSkill.Fleeing] = 0;
             Skills.Values[(int)TSkill.FleeEnergy] = 0;
             Player.Mana = 0;
@@ -123,7 +123,7 @@ public class UnitsSwiatTests {
         Skills.Values[(int)TSkill.Fleeing] = 100;
         PokojAt("ZABIJ POTWOR|WYJSCIE", 13);
         Assert.Equal(13, World.Monsters[(int)TMonster.CageStrong]);
-        Assert.Equal(0, Combat.Fled);
+        Assert.False(Combat.Fled);
     }
 
     [Fact]
@@ -136,8 +136,8 @@ public class UnitsSwiatTests {
 
     [Fact]
     public void PokojeSmallRooms() {
-        List<short> rooms = [6, 8, 7, 10];
-        foreach (short room in rooms) {
+        List<int> rooms = [6, 8, 7, 10];
+        foreach (int room in rooms) {
             RoomSetup();
             PokojAt("EXIT|MODE|WYJSCIE", room);
             Assert.Equal(room, Session.Room);
@@ -272,4 +272,5 @@ public class UnitsSwiatTests {
         Assert.Equal(-1, Bag.Count);
         Assert.Equal(4, Player.Stats[(int)TStat.Wisdom]);
     }
+
 }

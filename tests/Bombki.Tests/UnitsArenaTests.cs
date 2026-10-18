@@ -155,7 +155,7 @@ public class UnitsArenaTests {
         Player.Stats[(int)TStat.Strength] = 127;
         Player.Stats[(int)TStat.Dexterity] = 127;
         Player.Energy = 30000;
-        Combat.Fled = 0;
+        Combat.Fled = false;
     }
 
     [Fact]
@@ -186,7 +186,7 @@ public class UnitsArenaTests {
             Rooms.DispatchRoom();
     }
 
-    static void MiniarenaAt(string cmd, short room) {
+    static void MiniarenaAt(string cmd, int room) {
         Session.ExitRequested = false;
         Session.Room = room;
         using (FeedStdin(cmd))
@@ -233,7 +233,7 @@ public class UnitsArenaTests {
         Player.Stats[(int)TStat.Strength] = 127;
         Player.Stats[(int)TStat.Dexterity] = 127;
         Player.Energy = 30000;
-        Combat.Fled = 0;
+        Combat.Fled = false;
         World.DuncanQuest = 0;
         Player.Money = 10000;
         Bag.Permit = 100;
@@ -310,11 +310,11 @@ public class UnitsArenaTests {
         int poziom, int sil, int zre, int par, int kop) {
         using (FeedStdin(monster)) {
             Player.Mana = 10;
-            Player.Level = (sbyte)poziom;
-            Player.Stats[(int)TStat.Strength] = (short)sil;
-            Player.Stats[(int)TStat.Dexterity] = (short)zre;
-            Skills.Values[(int)TSkill.Parry] = (short)par;
-            Skills.Values[(int)TSkill.Kick] = (short)kop;
+            Player.Level = poziom;
+            Player.Stats[(int)TStat.Strength] = sil;
+            Player.Stats[(int)TStat.Dexterity] = zre;
+            Skills.Values[(int)TSkill.Parry] = par;
+            Skills.Values[(int)TSkill.Kick] = kop;
             CompareFoe();
         }
     }
@@ -412,7 +412,7 @@ public class UnitsArenaTests {
         Player.Energy = 30000;
         Player.Stats[(int)TStat.Strength] = 127;
         Player.Stats[(int)TStat.Dexterity] = 127;
-        Combat.Fled = 0;
+        Combat.Fled = false;
         Skills.Values[(int)TSkill.Fleeing] = 0;
         Skills.Values[(int)TSkill.FleeEnergy] = 0;
         Player.Mana = 0;
@@ -495,7 +495,7 @@ public class UnitsArenaTests {
             Combat.PoisonRounds = 0;
             Skills.Values[(int)TSkill.Fleeing] = 0;
             Skills.Values[(int)TSkill.FleeEnergy] = 0;
-            Combat.Fled = 0;
+            Combat.Fled = false;
             Player.Experience = 0;
             Gear.Values[(int)TGearItem.LuckRoll] = 0;
             Gear.Values[(int)TGearItem.Armor] = 0;
@@ -531,7 +531,7 @@ public class UnitsArenaTests {
             Combat.PoisonRounds = 0;
             Skills.Values[(int)TSkill.Fleeing] = 0;
             Skills.Values[(int)TSkill.FleeEnergy] = 0;
-            Combat.Fled = 0;
+            Combat.Fled = false;
             Player.Experience = 0;
             Gear.Values[(int)TGearItem.LuckRoll] = 0;
             Gear.Values[(int)TGearItem.Armor] = 0;
