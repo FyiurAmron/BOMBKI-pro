@@ -35,22 +35,28 @@ internal class TestStdin : IDisposable {
 
     public static TestStdin Feed(string lines) {
         int saved = dup(0);
-        if (pipe(out PipeEnds ends) != 0)
+        if (pipe(out PipeEnds ends) != 0) {
             throw new InvalidOperationException("stdin pipe failed");
+        }
+
         int readEnd = ends.readEnd;
         int writeEnd = ends.writeEnd;
-        if (dup2(readEnd, 0) != 0)
+        if (dup2(readEnd, 0) != 0) {
             throw new InvalidOperationException("stdin dup2 failed");
+        }
+
         close(readEnd);
         var bytes = Encoding.Latin1.GetBytes($"{lines.Replace("|", "\n", StringComparison.Ordinal)}\n");
-        if (write(writeEnd, bytes, (nuint)bytes.Length) != (nint)bytes.Length)
-            throw new InvalidOperationException("stdin feed failed");
-        return new(saved, writeEnd);
+        return write(writeEnd, bytes, (nuint)bytes.Length) != (nint)bytes.Length
+            ? throw new InvalidOperationException("stdin feed failed")
+            : new(saved, writeEnd);
     }
 
     public void Dispose() {
-        if (_disposed)
+        if (_disposed) {
             return;
+        }
+
         _disposed = true;
         close(_writeEnd);
         if (_saved >= 0) {

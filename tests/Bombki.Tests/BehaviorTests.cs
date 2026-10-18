@@ -156,12 +156,18 @@ public class BehaviorTests {
             }
             using (doc) {
                 var element = doc.RootElement;
-                if (!element.TryGetProperty("event", out var ev) || ev.GetString() != "OUTPUT")
+                if (!element.TryGetProperty("event", out var ev) || ev.GetString() != "OUTPUT") {
                     continue;
-                if (!element.TryGetProperty("raw_hex", out var raw))
+                }
+
+                if (!element.TryGetProperty("raw_hex", out var raw)) {
                     continue;
-                if (element.TryGetProperty("step", out var step) && step.GetInt32() <= 1)
+                }
+
+                if (element.TryGetProperty("step", out var step) && step.GetInt32() <= 1) {
                     continue;
+                }
+
                 byte[] bytes;
                 try {
                     bytes = Convert.FromHexString(raw.GetString() ?? "");
@@ -170,8 +176,9 @@ public class BehaviorTests {
                 }
                 string text = Encoding.Latin1.GetString(bytes).Replace("\x1b[H\x1b[2J", "");
                 int at = text.IndexOf('\x1b');
-                if (at >= 0)
+                if (at >= 0) {
                     return $"cursor motion bytes {ToHex(text.Substring(at, Math.Min(8, text.Length - at)))} in output";
+                }
             }
         }
 
@@ -224,11 +231,9 @@ public class BehaviorTests {
         }
 
         var observed = before.Value + residue.Value - Level2Deduction;
-        if (observed != Level2Deduction) {
-            return $"prompt KUNSZT {before} + sheet residue {residue} implies a {observed} deduction at level 1, expected {Level2Deduction}";
-        }
-
-        return null;
+        return observed != Level2Deduction
+            ? $"prompt KUNSZT {before} + sheet residue {residue} implies a {observed} deduction at level 1, expected {Level2Deduction}"
+            : null;
     }
 
     static string FindRepoRoot() {
@@ -278,11 +283,6 @@ public class BehaviorTests {
         throw new FileNotFoundException($"stub binary not found under build/out/Bombki/*/net11.0/. Run 'dotnet build' first.");
     }
 
-    static string Tail(string text, int maxChars) {
-        if (text.Length <= maxChars) {
-            return text;
-        }
-
-        return text[^maxChars..];
-    }
+    static string Tail(string text, int maxChars) =>
+        text.Length <= maxChars ? text : text[^maxChars..];
 }

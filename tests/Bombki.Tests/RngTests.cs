@@ -4,7 +4,7 @@ namespace Bombki.Tests;
 
 public class RngTests {
     static List<int> Draws(int bound, int count) =>
-        Enumerable.Range(0, count).Select(_ => Game.Roll(bound)).ToList();
+        [.. Enumerable.Range(0, count).Select(_ => Game.Roll(bound))];
 
     [Fact]
     public void Rolls_match_oracle_sequence() {

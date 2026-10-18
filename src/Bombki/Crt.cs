@@ -50,21 +50,25 @@ public static class Crt {
     static readonly double DelayMult = ReadDelayMult();
 
     static double ReadDelayMult() {
-        if (!DebugEnabled())
+        if (!DebugEnabled()) {
             return 1;
+        }
+
         string? raw = Environment.GetEnvironmentVariable("BOMBKI_DELAY_MULT");
-        if (raw is not null && double.TryParse(raw,
+        return raw is not null && double.TryParse(raw,
                 System.Globalization.NumberStyles.Float,
                 System.Globalization.CultureInfo.InvariantCulture,
                 out double mult)
-            && double.IsFinite(mult) && mult >= 0)
-            return mult;
-        return 1;
+            && double.IsFinite(mult) && mult >= 0
+            ? mult
+            : 1;
     }
 
     static Crt() {
-        if (IsWindows)
+        if (IsWindows) {
             return;
+        }
+
         if (tcgetattr(0, out Termios saved) == 0) {
             _saved = saved;
             _hasSaved = true;
@@ -103,36 +107,40 @@ public static class Crt {
     };
 
     public static void TextColor(int color) {
-        if (color == 7)
+        if (color == 7) {
             color = 0;
-        if (color == _colorState)
+        }
+
+        if (color == _colorState) {
             return;
-        if (!ColorDeltas.TryGetValue((_colorState, color), out string? delta))
+        }
+
+        if (!ColorDeltas.TryGetValue((_colorState, color), out string? delta)) {
             throw new InvalidOperationException($"unprobed color transition {_colorState}->{color}");
+        }
+
         _colorState = color;
         Out.Write(delta);
     }
 
     public static void TextBackground(int color) {
         int bits = color & 31;
-        if (bits == 0 || bits > 23)
+        if (bits == 0 || bits > 23) {
             return;
-        if (bits == 8)
-            Out.Write("\x1b[m");
-        else
-            Out.Write($"\x1b[0;4{bits % 8}m");
+        }
+
+        Out.Write(bits == 8 ? "\x1b[m" : $"\x1b[0;4{bits % 8}m");
     }
 
     public static int ReadInt() {
         string line = ReadLn().Trim();
-        if (int.TryParse(line, out int value))
-            return value;
-        return 0;
+        return int.TryParse(line, out int value) ? value : 0;
     }
     public static void Delay(int ms) {
         int scaled = (int)(ms * DelayMult);
-        if (scaled > 0)
+        if (scaled > 0) {
             Thread.Sleep(scaled);
+        }
     }
 
     public static bool KeyPressed() =>
@@ -157,15 +165,19 @@ public static class Crt {
 
     public static char ReadKey() {
         char key = IsWindows ? WindowsTerminal.ReadKeyRaw() : UnixReadKey();
-        if (key == '\x3')
+        if (key == '\x3') {
             Interrupt();
+        }
+
         return key;
     }
 
     static char UnixReadKey() {
         int b = Stdin.ReadByte();
-        if (b == 3)
+        if (b == 3) {
             Interrupt();
+        }
+
         if (b == 27) {
             ConsumeEscape();
             return '\0';
@@ -175,22 +187,25 @@ public static class Crt {
 
     static int TryReadByte(int timeoutMs) {
         PollFd fds = new() { fd = 0, events = 1 };
-        if (poll(ref fds, 1, timeoutMs) <= 0)
-            return -1;
-        return Stdin.ReadByte();
+        return poll(ref fds, 1, timeoutMs) <= 0 ? -1 : Stdin.ReadByte();
     }
 
     static void ConsumeEscape() {
         int second = TryReadByte(50);
-        if (second < 0)
+        if (second < 0) {
             return;
+        }
+
         if (second == '[') {
             while (true) {
                 int c = TryReadByte(50);
-                if (c < 0)
+                if (c < 0) {
                     return;
-                if (c >= 0x40 && c <= 0x7E)
+                }
+
+                if (c >= 0x40 && c <= 0x7E) {
                     return;
+                }
             }
         }
     }

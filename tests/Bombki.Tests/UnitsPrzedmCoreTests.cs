@@ -104,27 +104,35 @@ public class UnitsPrzedmCoreTests {
             TMonster.Bison, TMonster.Panther, TMonster.Gladiator,
             TMonster.Warrior, TMonster.Tamer,
         ];
-        foreach (TMonster m in beasts)
+        foreach (TMonster m in beasts) {
             Assert.InRange(World.Monsters[(int)m], 33, 57);
+        }
+
         Assert.InRange(World.Monsters[(int)TMonster.Kid], 61, 66);
         Assert.InRange(World.Monsters[(int)TMonster.Reporter], 61, 66);
         List<TMonster> maniacs = [
             TMonster.Lunatic, TMonster.Listener, TMonster.Fan,
             TMonster.Man, TMonster.OldMan,
         ];
-        foreach (TMonster m in maniacs)
+        foreach (TMonster m in maniacs) {
             Assert.InRange(World.Monsters[(int)m], 61, 67);
+        }
+
         List<TMonster> heavies = [
             TMonster.Policeman, TMonster.Bouncer, TMonster.Gorilla,
         ];
-        foreach (TMonster m in heavies)
+        foreach (TMonster m in heavies) {
             Assert.InRange(World.Monsters[(int)m], 61, 68);
+        }
+
         List<TMonster> musicians = [
             TMonster.Guitarist, TMonster.Drummer, TMonster.Keyboardist,
             TMonster.Liroy,
         ];
-        foreach (TMonster m in musicians)
+        foreach (TMonster m in musicians) {
             Assert.InRange(World.Monsters[(int)m], 70, 72);
+        }
+
         Assert.Equal(67, World.Monsters[(int)TMonster.Minibarman]);
         Assert.Equal(67, World.Monsters[(int)TMonster.Fatso]);
         Assert.Equal(69, World.Monsters[(int)TMonster.DJ]);
@@ -139,21 +147,26 @@ public class UnitsPrzedmCoreTests {
             TMonster.Vendor, TMonster.Sweeper, TMonster.Drunkard,
             TMonster.SickMan,
         ];
-        foreach (TMonster m in dogs)
+        foreach (TMonster m in dogs) {
             Assert.InRange(World.Monsters[(int)m], 20, 26);
+        }
+
         List<TMonster> flowers = [
             TMonster.Sorrel, TMonster.Daisy, TMonster.Clover,
             TMonster.SowThistle, TMonster.Dandelion, TMonster.Rose,
             TMonster.Thistle, TMonster.Raspberry,
         ];
-        foreach (TMonster m in flowers)
+        foreach (TMonster m in flowers) {
             Assert.InRange(World.Monsters[(int)m], 77, 83);
+        }
+
         List<TMonster> berries = [
             TMonster.Gooseberry, TMonster.Blackberry, TMonster.Grass,
             TMonster.Duncan,
         ];
-        foreach (TMonster m in berries)
+        foreach (TMonster m in berries) {
             Assert.InRange(World.Monsters[(int)m], 77, 84);
+        }
     }
 
     [Fact]

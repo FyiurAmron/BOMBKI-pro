@@ -104,7 +104,7 @@ static int FindFirst(List<string> reference, List<string> actual, int total) {
 }
 
 static string Truncate(string line) =>
-    line.Length > 120 ? line.Substring(0, 120) : line;
+    line.Length > 120 ? line[..120] : line;
 
 static string Repr(string value) {
     string quote = value.Contains('\'') && !value.Contains('"') ? "\"" : "'";

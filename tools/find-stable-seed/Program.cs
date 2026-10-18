@@ -96,7 +96,7 @@ return 1;
 static string? Shift(string arg, List<string> rest, ref int i) {
     int marker = arg.IndexOf('=', StringComparison.Ordinal);
     if (marker >= 0) {
-        return arg.Substring(marker + 1);
+        return arg[(marker + 1)..];
     }
     if (i + 1 >= rest.Count) {
         return null;
@@ -173,7 +173,7 @@ static string ReadFail(string log) {
             using JsonDocument document = JsonDocument.Parse(trimmed);
             if (document.RootElement.TryGetProperty("event", out JsonElement kind) && kind.GetString() == "FAIL") {
                 if (document.RootElement.TryGetProperty("message", out JsonElement detail) && detail.GetString() is string text) {
-                    message = text.Length > 120 ? text.Substring(0, 120) : text;
+                    message = text.Length > 120 ? text[..120] : text;
                 }
             }
         } catch (JsonException) {

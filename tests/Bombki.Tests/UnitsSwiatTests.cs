@@ -43,16 +43,19 @@ public class UnitsSwiatTests {
     static void PokojAt(string cmds, int room) {
         Session.ExitRequested = false;
         Session.Room = room;
-        using (FeedStdin(cmds))
+        using (FeedStdin(cmds)) {
             Rooms.DispatchRoom();
+        }
     }
 
     [Fact]
     public void Pokoj5Poster() {
         RoomSetup();
         Session.Room = 5;
-        using (FeedStdin("EXIT|PATRZ PLAKAT|WYJSCIE"))
+        using (FeedStdin("EXIT|PATRZ PLAKAT|WYJSCIE")) {
             Rooms.DispatchRoom();
+        }
+
         Assert.Equal(5, Session.Room);
     }
 
@@ -60,8 +63,10 @@ public class UnitsSwiatTests {
     public void Pokoj1Poster() {
         RoomSetup();
         Session.Room = 1;
-        using (FeedStdin("EXIT|PATRZ PLAKAT|WYJSCIE"))
+        using (FeedStdin("EXIT|PATRZ PLAKAT|WYJSCIE")) {
             Rooms.DispatchRoom();
+        }
+
         Assert.Equal(1, Session.Room);
     }
 
@@ -99,14 +104,21 @@ public class UnitsSwiatTests {
             Gear.Values[(int)TGearItem.LuckRoll] = 0;
             World.Monsters[(int)TMonster.CageStrong] = 13;
             PokojAt("ZABIJ POTWOR|WYJSCIE", 13);
-            if (Bag.Items[(int)TBagItem.OldSword] != 0)
+            if (Bag.Items[(int)TBagItem.OldSword] != 0) {
                 sawSword = true;
-            if (Bag.Items[(int)TBagItem.SmallShield] != 0)
+            }
+
+            if (Bag.Items[(int)TBagItem.SmallShield] != 0) {
                 sawShield = true;
-            if (Bag.Items[(int)TBagItem.Heart] != 0)
+            }
+
+            if (Bag.Items[(int)TBagItem.Heart] != 0) {
                 sawHeart = true;
-            if (sawSword && sawShield && sawHeart)
+            }
+
+            if (sawSword && sawShield && sawHeart) {
                 break;
+            }
         }
         Assert.True(sawSword);
         Assert.True(sawShield);
@@ -272,5 +284,4 @@ public class UnitsSwiatTests {
         Assert.Equal(-1, Bag.Count);
         Assert.Equal(4, Player.Stats[(int)TStat.Wisdom]);
     }
-
 }

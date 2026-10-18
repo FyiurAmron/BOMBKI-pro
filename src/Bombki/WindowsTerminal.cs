@@ -12,8 +12,10 @@ public static class WindowsTerminal {
         StringBuilder sb = new();
         while (true) {
             ConsoleKeyInfo key = Console.ReadKey(intercept: true);
-            if (key.KeyChar == '\x3')
+            if (key.KeyChar == '\x3') {
                 Crt.Interrupt();
+            }
+
             if (key.Key == ConsoleKey.Enter || key.KeyChar == '\n') {
                 Crt.EchoNewLine();
                 return Crt.StripDiacritics(sb.ToString()).ToUpperInvariant();
@@ -25,8 +27,10 @@ public static class WindowsTerminal {
                 }
                 continue;
             }
-            if (key.KeyChar == '\0')
+            if (key.KeyChar == '\0') {
                 continue;
+            }
+
             sb.Append(key.KeyChar);
             Crt.EchoChar(key.KeyChar);
         }

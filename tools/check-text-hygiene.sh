@@ -194,6 +194,17 @@ check_cs_trailing_commas() {
                     i++
                     continue
                 }
+                # A character literal is one quoted character, plain
+                # or escaped: swallow it whole so its brackets
+                # and quotes never read as code.
+                if (c == q) {
+                    if (substr(line, i+1, 1) == "\\") { i += 4 }
+                    else if (substr(line, i+2, 1) == q) { i += 3 }
+                    else { out = out c; prev = c; i++; continue }
+                    out = out q
+                    prev = q
+                    continue
+                }
                 if (c == "\"") {
                     if (substr(line, i+1, 1) == "\"" && substr(line, i+2, 1) == "\"") { raw = 1; i += 3; continue }
                     if (prev == "@") { verb = 1; i++; continue }

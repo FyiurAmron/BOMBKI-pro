@@ -116,8 +116,9 @@ public class UnitsArenaTests {
     [Fact]
     public void Porownanie() {
         Player.Mana = 10;
-        using (FeedStdin("DZIK"))
+        using (FeedStdin("DZIK")) {
             CompareFoe();
+        }
     }
 
     static void MiniarenaSetup() {
@@ -161,36 +162,41 @@ public class UnitsArenaTests {
     [Fact]
     public void MiniarenaSlabo() {
         MiniarenaSetup();
-        using (FeedStdin("ZABIJ BAKTERIA|ZABIJ SLIMAK|ZABIJ KORNIK|ZABIJ MUCHA|ZABIJ ZUK|ZABIJ KARALUCH|ZABIJ MROWKA|ZABIJ PAJAK|WYJSCIE"))
+        using (FeedStdin("ZABIJ BAKTERIA|ZABIJ SLIMAK|ZABIJ KORNIK|ZABIJ MUCHA|ZABIJ ZUK|ZABIJ KARALUCH|ZABIJ MROWKA|ZABIJ PAJAK|WYJSCIE")) {
             Rooms.DispatchRoom();
+        }
     }
 
     [Fact]
     public void MiniarenaMniejslabo() {
         MiniarenaSetup();
-        using (FeedStdin("ZABIJ DZIK|ZABIJ WILCZUR|ZABIJ SZCZUR|ZABIJ LIS|ZABIJ KUROPATWA|ZABIJ ZAJAC|ZABIJ ORZEL|ZABIJ SARNA|WYJSCIE"))
+        using (FeedStdin("ZABIJ DZIK|ZABIJ WILCZUR|ZABIJ SZCZUR|ZABIJ LIS|ZABIJ KUROPATWA|ZABIJ ZAJAC|ZABIJ ORZEL|ZABIJ SARNA|WYJSCIE")) {
             Rooms.DispatchRoom();
+        }
     }
 
     [Fact]
     public void MiniarenaSrednio() {
         MiniarenaSetup();
-        using (FeedStdin("ZABIJ SLON|ZABIJ LEW|ZABIJ ZYRAFA|ZABIJ WILK|ZABIJ WIELBLAD|ZABIJ STRUS|ZABIJ BOA|ZABIJ BIZON|ZABIJ PANTERA|WYJSCIE"))
+        using (FeedStdin("ZABIJ SLON|ZABIJ LEW|ZABIJ ZYRAFA|ZABIJ WILK|ZABIJ WIELBLAD|ZABIJ STRUS|ZABIJ BOA|ZABIJ BIZON|ZABIJ PANTERA|WYJSCIE")) {
             Rooms.DispatchRoom();
+        }
     }
 
     [Fact]
     public void MiniarenaTrudno() {
         MiniarenaSetup();
-        using (FeedStdin("ZABIJ GLADIATOR|ZABIJ WOJOWNIK|ZABIJ TRENER|WYJSCIE"))
+        using (FeedStdin("ZABIJ GLADIATOR|ZABIJ WOJOWNIK|ZABIJ TRENER|WYJSCIE")) {
             Rooms.DispatchRoom();
+        }
     }
 
     static void MiniarenaAt(string cmd, int room) {
         Session.ExitRequested = false;
         Session.Room = room;
-        using (FeedStdin(cmd))
+        using (FeedStdin(cmd)) {
             Rooms.DispatchRoom();
+        }
     }
 
     [Fact]
@@ -401,8 +407,10 @@ public class UnitsArenaTests {
         PorownanieAsk("DZIK", 0, 10, 0, 51, 11);
         PorownanieAsk("DZIK", 0, 10, 0, 76, 71);
         Player.Mana = 10;
-        using (FeedStdin("BAKTERIA"))
+        using (FeedStdin("BAKTERIA")) {
             CompareFoe();
+        }
+
         Assert.Equal(15, Player.Mana);
     }
 
@@ -431,45 +439,60 @@ public class UnitsArenaTests {
     [Fact]
     public void EncounterHeartVeasy() {
         LootSetup();
-        for (int i = 1; i <= 160; i++)
-            if (Bag.Items[(int)TBagItem.Heart] == 0)
+        for (int i = 1; i <= 160; i++) {
+            if (Bag.Items[(int)TBagItem.Heart] == 0) {
                 Fight(TFoe.VeryEasyEnemy);
+            }
+        }
+
         Assert.Equal(-10, Bag.Items[(int)TBagItem.Heart]);
     }
 
     [Fact]
     public void EncounterHeartEasy() {
         LootSetup();
-        for (int i = 1; i <= 160; i++)
-            if (Bag.Items[(int)TBagItem.Heart] == 0)
+        for (int i = 1; i <= 160; i++) {
+            if (Bag.Items[(int)TBagItem.Heart] == 0) {
                 Fight(TFoe.EasyEnemy);
+            }
+        }
+
         Assert.Equal(-10, Bag.Items[(int)TBagItem.Heart]);
     }
 
     [Fact]
     public void EncounterHeartNeasy() {
         LootSetup();
-        for (int i = 1; i <= 160; i++)
-            if (Bag.Items[(int)TBagItem.Heart] == 0)
+        for (int i = 1; i <= 160; i++) {
+            if (Bag.Items[(int)TBagItem.Heart] == 0) {
                 Fight(TFoe.NotEasyEnemy);
+            }
+        }
+
         Assert.Equal(-10, Bag.Items[(int)TBagItem.Heart]);
     }
 
     [Fact]
     public void EncounterHeartTrudno() {
         LootSetup();
-        for (int i = 1; i <= 110; i++)
-            if (Bag.Items[(int)TBagItem.Heart] == 0)
+        for (int i = 1; i <= 110; i++) {
+            if (Bag.Items[(int)TBagItem.Heart] == 0) {
                 Fight(TFoe.HardEnemy);
+            }
+        }
+
         Assert.Equal(-10, Bag.Items[(int)TBagItem.Heart]);
     }
 
     [Fact]
     public void EncounterHeartBtrudno() {
         LootSetup();
-        for (int i = 1; i <= 150; i++)
-            if (Bag.Items[(int)TBagItem.Heart] == 0)
+        for (int i = 1; i <= 150; i++) {
+            if (Bag.Items[(int)TBagItem.Heart] == 0) {
                 Fight(TFoe.VeryHardEnemy);
+            }
+        }
+
         Assert.Equal(-10, Bag.Items[(int)TBagItem.Heart]);
     }
 
@@ -504,8 +527,9 @@ public class UnitsArenaTests {
             Skills.Values[(int)TSkill.Cooking] = 1;
             Bag.Items[(int)TBagItem.Bigos] = 0;
             DoFight();
-            if (Skills.Values[(int)TSkill.Cooking] > 1)
+            if (Skills.Values[(int)TSkill.Cooking] > 1) {
                 learned = true;
+            }
         }
         Assert.True(learned);
     }
@@ -538,8 +562,9 @@ public class UnitsArenaTests {
             Gear.Values[(int)TGearItem.WornCount] = 0;
             Player.Energy = 30000;
             DoFight();
-            if (Skills.Values[(int)TSkill.Parry] > 99)
+            if (Skills.Values[(int)TSkill.Parry] > 99) {
                 break;
+            }
         }
         Assert.True(Skills.Values[(int)TSkill.Parry] > 99);
     }

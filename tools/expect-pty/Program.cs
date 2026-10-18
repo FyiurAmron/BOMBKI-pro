@@ -107,10 +107,7 @@ static class Harness {
                 }
                 continue;
             }
-            if (arg == "--pyte" || arg == "--cols" || arg == "--rows") {
-                return Fail($"unsupported option: {arg}");
-            }
-            return Fail($"unknown option: {arg}");
+            return arg == "--pyte" || arg == "--cols" || arg == "--rows" ? Fail($"unsupported option: {arg}") : Fail($"unknown option: {arg}");
         }
         if (positional.Count != 2) {
             return Fail("expected: expect-pty <executable> <scenario> --log <path> [--timeout <seconds>] [--settle <seconds>]");
@@ -136,12 +133,11 @@ static class Harness {
             return Fail($"cannot read scenario: {error.Message}");
         }
         using (scenario) {
-            if (!scenario.RootElement.TryGetProperty("steps", out JsonElement steps) ||
+            return !scenario.RootElement.TryGetProperty("steps", out JsonElement steps) ||
                 steps.ValueKind != JsonValueKind.Array ||
-                steps.GetArrayLength() == 0) {
-                return Fail("scenario must contain a nonempty 'steps' array");
-            }
-            return Drive(exe, scene, scenario.RootElement, logPath, timeout, settle);
+                steps.GetArrayLength() == 0
+                ? Fail("scenario must contain a nonempty 'steps' array")
+                : Drive(exe, scene, scenario.RootElement, logPath, timeout, settle);
         }
     }
 
@@ -166,7 +162,7 @@ static class Harness {
     static int Drive(string exe, string scenarioPath, JsonElement root, string logPath, double timeout, double settle) {
         string encoding = root.TryGetProperty("encoding", out JsonElement enc) ? enc.GetString() ?? "utf-8" : "utf-8";
         List<string> extra = root.TryGetProperty("args", out JsonElement args)
-            ? args.EnumerateArray().Select(e => e.GetString() ?? "").ToList()
+            ? [.. args.EnumerateArray().Select(e => e.GetString() ?? "")]
             : [];
         string? cwd = root.TryGetProperty("cwd", out JsonElement cwdElement) ? cwdElement.GetString() : null;
         cwd ??= Path.Combine(FindRepoRoot(), "build", "pty-native", Path.GetFileNameWithoutExtension(scenarioPath));
@@ -391,8 +387,7 @@ static class Harness {
             } catch (IOException) {
             }
             return 1;
-        }
-        finally {
+        } finally {
             if (child > 0 && !PollChild(child, ref returncode)) {
                 Libc.kill(-child, Sigterm);
                 if (!WaitExit(child, 2000, ref returncode)) {
@@ -434,9 +429,7 @@ static class Harness {
         return Directory.GetCurrentDirectory();
     }
 
-    static bool WaitReadable(int fd, double seconds) {
-        return PollFdReady(fd, (int)Math.Max(0, Math.Ceiling(seconds * 1000)));
-    }
+    static bool WaitReadable(int fd, double seconds) => PollFdReady(fd, (int)Math.Max(0, Math.Ceiling(seconds * 1000)));
 
     static bool PollFdReady(int fd, int timeoutMs) {
         PollFd[] fds = [new PollFd { Fd = fd, Events = Pollin }];
@@ -450,13 +443,9 @@ static class Harness {
             return buffer[..(int)got];
         }
         int error = Marshal.GetLastSystemError();
-        if (got == 0 || error == Eio) {
-            return [];
-        }
-        if ((int)got < 0 && error == Eagain) {
-            return [];
-        }
-        throw new IOException($"PTY read failed: {error}");
+        return got == 0 || error == Eio
+            ? []
+            : (int)got < 0 && error == Eagain ? [] : throw new IOException($"PTY read failed: {error}");
     }
 
     static void WriteAll(int fd, byte[] payload) {
@@ -521,10 +510,5 @@ static class Harness {
         }
     }
 
-    static int DecodeStatus(int status) {
-        if ((status & 0x7f) == 0) {
-            return (status >> 8) & 0xff;
-        }
-        return -(status & 0x7f);
-    }
+    static int DecodeStatus(int status) => (status & 0x7f) == 0 ? (status >> 8) & 0xff : -(status & 0x7f);
 }
