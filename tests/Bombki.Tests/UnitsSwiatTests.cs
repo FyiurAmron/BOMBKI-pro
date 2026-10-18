@@ -127,7 +127,7 @@ public class UnitsSwiatTests {
     }
 
     [Fact]
-    public void Pokoj13Poster() {
+    public void Pokoj13Exits() {
         RoomSetup();
         World.Monsters[(int)TMonster.CageStrong] = 0;
         PokojAt("EXIT|MODE|WYJSCIE", 13);
