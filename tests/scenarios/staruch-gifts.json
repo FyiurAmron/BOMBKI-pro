@@ -46,22 +46,22 @@
     },
     {
       "label": "second weka",
-      "expect": "Kupujesz\\ WEKĘ\\ za\\ 29\\ monet[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Kupujesz\\ WEKĘ\\ za\\ 29\\ MONET[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "KUP WEKA"
     },
     {
       "label": "third weka",
-      "expect": "Kupujesz\\ WEKĘ\\ za\\ 29\\ monet[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Kupujesz\\ WEKĘ\\ za\\ 29\\ MONET[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "KUP WEKA"
     },
     {
       "label": "fourth weka",
-      "expect": "Kupujesz\\ WEKĘ\\ za\\ 29\\ monet[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Kupujesz\\ WEKĘ\\ za\\ 29\\ MONET[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "KUP WEKA"
     },
     {
       "label": "bakery, back to the street",
-      "expect": "Kupujesz\\ WEKĘ\\ za\\ 29\\ monet[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Kupujesz\\ WEKĘ\\ za\\ 29\\ MONET[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -76,7 +76,7 @@
     },
     {
       "label": "dark street",
-      "expect": "Jesteś\\ na\\ ulicy\\ ciemne[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ Ciemne[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
@@ -96,7 +96,7 @@
     },
     {
       "label": "cave entrance",
-      "expect": "To\\ ciekawe\\ że\\ wcześnie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "To\\ ciekawe,\\ że\\ wcześnie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -126,7 +126,7 @@
     },
     {
       "label": "staruch's den",
-      "expect": "Dobra\\ jesteś\\ w\\ środku\\ brak\\ oświetlenia[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Dobra,\\ jesteś\\ w\\ środku\\.\\ Brak\\ oświetlenia[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ROZMAWIAJ STARUCH"
     },
     {

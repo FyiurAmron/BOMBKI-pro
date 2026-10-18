@@ -31,7 +31,7 @@
     },
     {
       "label": "shock room",
-      "expect": "Szok!!!\\ Aaa\\ upsi[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "SZOK!!!\\ AAA\\ UPSI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "GORA"
     },
     {
@@ -61,7 +61,7 @@
     },
     {
       "label": "room 16 attacks on entry; fight it out",
-      "expect": "Ten\\ pokój\\ jest\\ cały\\ obryzgany\\ krwią[\\s\\S]*?wyciągasz\\ [0-9]+\\ monet\\ z\\ ciała\\ potwora[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Ten pokój jest cały obryzgany krwią[\\s\\S]*?wyciągasz [0-9]+\\ MONET\\ z\\ ciała\\ potwora[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {

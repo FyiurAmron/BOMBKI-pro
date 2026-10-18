@@ -61,22 +61,22 @@
     },
     {
       "label": "owczarek down",
-      "expect": "wyciągasz\\ [0-9]+\\ monet\\ z\\ ciała\\ psa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "wyciągasz [0-9]+\\ MONET\\ z\\ ciała\\ psa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "street continues, piesek and spaniel here",
-      "expect": "Ciągnie\\ się\\ tedy\\ ulica[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Ciągnie\\ się\\ tędy\\ ulica[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZABIJ PIESEK"
     },
     {
       "label": "piesek down",
-      "expect": "wyciągasz\\ [0-9]+\\ monet\\ z\\ ciała\\ psa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "wyciągasz [0-9]+\\ MONET\\ z\\ ciała\\ psa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZABIJ SPANIEL"
     },
     {
       "label": "spaniel down",
-      "expect": "wyciągasz\\ [0-9]+\\ monet\\ z\\ ciała\\ psa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "wyciągasz [0-9]+\\ MONET\\ z\\ ciała\\ psa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -86,17 +86,17 @@
     },
     {
       "label": "jamnik down",
-      "expect": "wyciągasz\\ [0-9]+\\ monet\\ z\\ ciała\\ psa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "wyciągasz [0-9]+\\ MONET\\ z\\ ciała\\ psa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZABIJ PUDEL"
     },
     {
       "label": "pudel down",
-      "expect": "wyciągasz\\ [0-9]+\\ monet\\ z\\ ciała\\ psa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "wyciągasz [0-9]+\\ MONET\\ z\\ ciała\\ psa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "back on the street continues",
-      "expect": "Ciągnie\\ się\\ tedy\\ ulica[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Ciągnie\\ się\\ tędy\\ ulica[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     }
   ]

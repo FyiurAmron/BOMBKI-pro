@@ -31,7 +31,7 @@
     },
     {
       "label": "dark street",
-      "expect": "Jesteś\\ na\\ ulicy\\ ciemnej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ Ciemnej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
@@ -51,22 +51,22 @@
     },
     {
       "label": "cave entrance",
-      "expect": "To\\ ciekawe\\ że\\ wcześniej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "To\\ ciekawe,\\ że\\ wcześniej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "cave hall",
-      "expect": "Mlask,\\ mlask\\ któś\\ rzeczywiście[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Mlask,\\ mlask,\\ ktoś\\ rzeczywiście[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "cave exit",
-      "expect": "Mój\\ boże,\\ coż\\ to\\ jest,\\ na\\ tronie\\ siedzi[\\s\\S]*?Tak\\ lub\\ nie\\ >",
+      "expect": "Jeżu,\\ coż\\ to\\ jest!\\ Na\\ tronie\\ siedzi[\\s\\S]*?TAK\\ lub\\ NIE\\ >",
       "send": "TAK"
     },
     {
       "label": "the twenty-times-bigger POKRZYWA cannot be beaten",
-      "expect": "No\\ to\\ gin!!![\\s\\S]*?Zostałeś\\ zabity[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "No\\ to\\ giń!!![\\s\\S]*?Zostałeś zabity[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": ""
     },
     {

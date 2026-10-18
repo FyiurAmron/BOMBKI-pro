@@ -31,7 +31,7 @@
     },
     {
       "label": "ulica dluga",
-      "expect": "Ulica\\ długa\\ ciągnie\\ si[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Ulica\\ Długa\\ ciągnie\\ si[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -76,17 +76,17 @@
     },
     {
       "label": "listener down, fight the bodyguard",
-      "expect": "wyciągasz\\ [0-9]+\\ monet\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "wyciągasz [0-9]+\\ MONET\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZABIJ OCHRONIARZ"
     },
     {
       "label": "bodyguard down, fight the child",
-      "expect": "wyciągasz\\ [0-9]+\\ monet\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "wyciągasz [0-9]+\\ MONET\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZABIJ DZIECKO"
     },
     {
       "label": "child down, head for the Policeman",
-      "expect": "wyciągasz\\ [0-9]+\\ monet\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "wyciągasz [0-9]+\\ MONET\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -116,7 +116,7 @@
     },
     {
       "label": "policeman down",
-      "expect": "wyciągasz\\ [0-9]+\\ monet\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "wyciągasz [0-9]+\\ MONET\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     }
   ]

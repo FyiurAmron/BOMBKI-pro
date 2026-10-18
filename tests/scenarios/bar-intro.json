@@ -31,12 +31,12 @@
     },
     {
       "label": "dark street to bar",
-      "expect": "Jesteś\\ na\\ ulicy\\ ciemnej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ Ciemnej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "bar opening dialogue",
-      "expect": "Jesteś\\ w\\ barze\\ \"pod\\ dwoma\\ pedałami\".\\ Chcąc\\ rozwikłać\\ tę\\ dziwną\\ nazwę[\\s\\S]*?Pytasz\\ się\\ barmana:\\ przepraszam\\ dlaczego\\ ten\\ bar\\ nazywa\\ się[\\s\\S]*?\"Pod\\ dwoma\\ pedałami\"\\?\\ A\\ on\\ na\\ to\\ \\-\\ właściwie\\ to\\ nie\\ wiem[\\s\\S]*?Ale\\ spytam\\ się\\ żony:\\ mareeek!!!\\ ...\\ \\(Teraz\\ już\\ wiesz\\)[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>"
+      "expect": "Jesteś\\ w\\ barze\\ \"POD\\ DWOMA\\ PEDAŁAMI\". Chcąc rozwikłać tę dziwną nazwę[\\s\\S]*?pytasz\\ się\\ barmana:\\ przepraszam,\\ dlaczego\\ ten\\ bar\\ nazywa\\ się[\\s\\S]*?\"POD\\ DWOMA\\ PEDAŁAMI\"\\?\\ A\\ on\\ na\\ to:\\ \"Właściwie\\ to\\ nie\\ wiem[\\s\\S]*?ale\\ spytam\\ się\\ żony:\\ Mareeek!!![\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>"
     }
   ]
 }

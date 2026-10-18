@@ -26,7 +26,7 @@
     },
     {
       "label": "post-save character-sheet response",
-      "expect": "W\\ sumie\\ masz[\\s\\S]*?Twoje\\ parametry:\\ SIŁA\\ \\-\\ [0-9]+/[0-9]+[\\s\\S]*?FUKSROLL-[0-9]+[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "W sumie masz[\\s\\S]*?Twoje\\ parametry:\\ SIŁA:\\ [0-9]+/[0-9]+[\\s\\S]*?FUKSROLL:\\ [0-9]+[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "DAWAJ KASE"
     },
     {
@@ -36,7 +36,7 @@
     },
     {
       "label": "changed-money report",
-      "expect": "Masz\\ 5030\\ monet",
+      "expect": "Masz\\ 5030\\ MONET",
       "send": "WLACZ POSTAC"
     },
     {

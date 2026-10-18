@@ -31,7 +31,7 @@
     },
     {
       "label": "the dark street",
-      "expect": "Jesteś\\ na\\ ulicy\\ ciemnej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ Ciemnej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -86,7 +86,7 @@
     },
     {
       "label": "back to city centre",
-      "expect": "Jesteś\\ na\\ ulicy\\ ciemnej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ Ciemnej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {

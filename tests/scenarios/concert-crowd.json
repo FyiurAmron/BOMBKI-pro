@@ -31,7 +31,7 @@
     },
     {
       "label": "ulica dluga",
-      "expect": "Ulica\\ długa\\ ciągnie\\ si[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Ulica\\ Długa\\ ciągnie\\ si[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -81,17 +81,17 @@
     },
     {
       "label": "fan down, fight the goril",
-      "expect": "wyciągasz\\ [0-9]+\\ monet\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "wyciągasz [0-9]+\\ MONET\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZABIJ GORYL"
     },
     {
       "label": "goril down, fight the grandpa",
-      "expect": "wyciągasz\\ [0-9]+\\ monet\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "wyciągasz [0-9]+\\ MONET\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZABIJ DZIADEK"
     },
     {
       "label": "grandpa down, head for the crowd",
-      "expect": "wyciągasz\\ [0-9]+\\ monet\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "wyciągasz [0-9]+\\ MONET\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
@@ -121,12 +121,12 @@
     },
     {
       "label": "man down, fight the reporter",
-      "expect": "wyciągasz\\ [0-9]+\\ monet\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "wyciągasz [0-9]+\\ MONET\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZABIJ REPORTER"
     },
     {
       "label": "reporter down, head for the wariat",
-      "expect": "wyciągasz\\ [0-9]+\\ monet\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "wyciągasz [0-9]+\\ MONET\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
@@ -156,7 +156,7 @@
     },
     {
       "label": "madman down",
-      "expect": "wyciągasz\\ [0-9]+\\ monet\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "wyciągasz [0-9]+\\ MONET\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     }
   ]

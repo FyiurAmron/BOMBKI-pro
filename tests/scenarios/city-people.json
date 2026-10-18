@@ -61,7 +61,7 @@
     },
     {
       "label": "zamiatacz down, head for the street continues",
-      "expect": "wyciągasz\\ [0-9]+\\ monet\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "wyciągasz [0-9]+\\ MONET\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -91,7 +91,7 @@
     },
     {
       "label": "sprzedawca down, back to the shopping street",
-      "expect": "wyciągasz\\ [0-9]+\\ monet\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "wyciągasz [0-9]+\\ MONET\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
@@ -126,7 +126,7 @@
     },
     {
       "label": "pijak down, back to the shopping street",
-      "expect": "wyciągasz\\ [0-9]+\\ monet\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "wyciągasz [0-9]+\\ MONET\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
@@ -136,7 +136,7 @@
     },
     {
       "label": "street continues, turn into the multi-branch shop",
-      "expect": "Ciągnie\\ się\\ tedy\\ ulica[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Ciągnie\\ się\\ tędy\\ ulica[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -166,7 +166,7 @@
     },
     {
       "label": "taksowkarz down, fight the zebrak",
-      "expect": "wyciągasz\\ [0-9]+\\ monet\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "wyciągasz [0-9]+\\ MONET\\ z\\ ciała[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZABIJ ZEBRAK"
     },
     {

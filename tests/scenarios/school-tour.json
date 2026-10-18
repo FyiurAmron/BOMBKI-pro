@@ -56,7 +56,7 @@
     },
     {
       "label": "room 2 (JESTES W POKOJU GDZI)",
-      "expect": "Jesteś\\ w\\ pokoju\\ gdzie\\ rambo\\ trenuje\\ sw[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ pokoju\\ gdzie\\ Rambo\\ trenuje\\ sw[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "PATRZ PLAKAT"
     },
     {
@@ -91,7 +91,7 @@
     },
     {
       "label": "room 5 (SZOK!!! AAA UPSI  O N)",
-      "expect": "Szok!!!\\ Aaa\\ upsi\\ o\\ nie\\ fuj\\ ach\\ aj\\ och\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "SZOK!!!\\ AAA\\ UPSI\\ O\\ NIE\\ FUJ\\ ACH\\ AJ\\ OCH\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
@@ -111,7 +111,7 @@
     },
     {
       "label": "room 5 (SZOK!!! AAA UPSI  O N)",
-      "expect": "Szok!!!\\ Aaa\\ upsi\\ o\\ nie\\ fuj\\ ach\\ aj\\ och\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "SZOK!!!\\ AAA\\ UPSI\\ O\\ NIE\\ FUJ\\ ACH\\ AJ\\ OCH\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
@@ -131,7 +131,7 @@
     },
     {
       "label": "room 5 (SZOK!!! AAA UPSI  O N)",
-      "expect": "Szok!!!\\ Aaa\\ upsi\\ o\\ nie\\ fuj\\ ach\\ aj\\ och\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "SZOK!!!\\ AAA\\ UPSI\\ O\\ NIE\\ FUJ\\ ACH\\ AJ\\ OCH\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
@@ -151,7 +151,7 @@
     },
     {
       "label": "room 5 (SZOK!!! AAA UPSI  O N)",
-      "expect": "Szok!!!\\ Aaa\\ upsi\\ o\\ nie\\ fuj\\ ach\\ aj\\ och\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "SZOK!!!\\ AAA\\ UPSI\\ O\\ NIE\\ FUJ\\ ACH\\ AJ\\ OCH\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
@@ -171,7 +171,7 @@
     },
     {
       "label": "room 5 (SZOK!!! AAA UPSI  O N)",
-      "expect": "Szok!!!\\ Aaa\\ upsi\\ o\\ nie\\ fuj\\ ach\\ aj\\ och\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "SZOK!!!\\ AAA\\ UPSI\\ O\\ NIE\\ FUJ\\ ACH\\ AJ\\ OCH\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {

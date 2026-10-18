@@ -46,7 +46,7 @@
     },
     {
       "label": "room 75 (JESTES NA ULICY CIEM)",
-      "expect": "Jesteś\\ na\\ ulicy\\ ciemnej,\\ właściwie\\ na[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ Ciemnej,\\ właściwie\\ na[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
@@ -56,7 +56,7 @@
     },
     {
       "label": "room 76 (JESTES W BARZE POD D)",
-      "expect": "Jesteś\\ w\\ barze\\ \"pod\\ dwoma\\ pedałami\".\\ Chcąc[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ barze\\ \"POD\\ DWOMA\\ PEDAŁAMI\". Chcąc[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "LISTA"
     },
     {
@@ -76,7 +76,7 @@
     },
     {
       "label": "room 75 (JESTES NA ULICY CIEM)",
-      "expect": "Jesteś\\ na\\ ulicy\\ ciemnej,\\ właściwie\\ na[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ Ciemnej,\\ właściwie\\ na[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
@@ -116,7 +116,7 @@
     },
     {
       "label": "room 79 (SLYSZYSZ POKRZYWE KT)",
-      "expect": "Słyszysz\\ POKRZYWĘ\\ którą\\ pożera\\ bezbron[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Słyszysz\\ pokrzywę\\ którą\\ pożera\\ bezbron[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
@@ -151,7 +151,7 @@
     },
     {
       "label": "room 81 (PRZEDZIERASZ SIE PRZ)",
-      "expect": "Przedzierasz\\ się\\ przez\\ cały\\ ten\\ SYF\\ i\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Przedzierasz\\ się\\ przez\\ cały\\ ten\\ syf\\ i\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
@@ -201,7 +201,7 @@
     },
     {
       "label": "room 84 (TO CIEKAWE ZE WCZESN)",
-      "expect": "To\\ ciekawe\\ że\\ wcześniej\\ nie\\ zauważyłeś[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "To\\ ciekawe,\\ że\\ wcześniej\\ nie\\ zauważyłeś[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
@@ -211,7 +211,7 @@
     },
     {
       "label": "room 85 (DO DOBRA WYGLADA TO )",
-      "expect": "Do\\ dobra\\ wygląda\\ to\\ na\\ jakiś\\ dom,\\ wej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Do\\ dobra,\\ wygląda\\ to\\ na\\ jakiś\\ dom,\\ wej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
@@ -221,7 +221,7 @@
     },
     {
       "label": "room 84 (TO CIEKAWE ZE WCZESN)",
-      "expect": "To\\ ciekawe\\ że\\ wcześniej\\ nie\\ zauważyłeś[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "To\\ ciekawe,\\ że\\ wcześniej\\ nie\\ zauważyłeś[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
@@ -231,7 +231,7 @@
     },
     {
       "label": "room 87 (MLASK , MLASK KTOS R)",
-      "expect": "Mlask,\\ mlask\\ któś\\ rzeczywiście\\ się\\ ob[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Mlask,\\ mlask,\\ ktoś\\ rzeczywiście\\ się\\ ob[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     }
   ]

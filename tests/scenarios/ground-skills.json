@@ -36,12 +36,12 @@
     },
     {
       "label": "the alleys",
-      "expect": "Jesteś\\ na\\ ulicy\\ na\\ ulicy\\ sklepikowej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ na\\ ulicy\\ Sklepikowej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "the magic shop",
-      "expect": "Ciągnie\\ się\\ tedy\\ ulica\\ sklepikowa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Ciągnie\\ się\\ tędy\\ ulica\\ Sklepikowa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -56,12 +56,12 @@
     },
     {
       "label": "the shopping street again",
-      "expect": "Ciągnie\\ się\\ tedy\\ ulica\\ sklepikowa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Ciągnie\\ się\\ tędy\\ ulica\\ Sklepikowa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "the city centre again",
-      "expect": "Jesteś\\ na\\ ulicy\\ na\\ ulicy\\ sklepikowej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ na\\ ulicy\\ Sklepikowej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
@@ -76,7 +76,7 @@
     },
     {
       "label": "the training list",
-      "expect": "Jesteś\\ w\\ pokoju\\ gdzie\\ rambo\\ trenuje[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ pokoju\\ gdzie\\ Rambo\\ trenuje[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ"
     },
     {

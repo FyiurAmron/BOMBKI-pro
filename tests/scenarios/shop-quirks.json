@@ -31,7 +31,7 @@
     },
     {
       "label": "shopping street south",
-      "expect": "Jesteś\\ na\\ ulicy\\ na\\ ulicy\\ sklepikowej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ na\\ ulicy\\ Sklepikowej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -41,7 +41,7 @@
     },
     {
       "label": "unconditional shield sale pays 8 with nothing sold",
-      "expect": "Ta\\ tarcza\\ jest\\ bajer,\\ frajer\\ kupię\\ ją\\ od\\ ciebie\\ za\\ 8\\ monet[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Ta\\ tarcza\\ jest\\ bajer\\ frajer,\\ kupię\\ ją\\ od\\ ciebie\\ za\\ 8\\ MONET[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "SPRZEDAJ MALA"
     },
     {
@@ -56,12 +56,12 @@
     },
     {
       "label": "back on the south street",
-      "expect": "Jesteś\\ na\\ ulicy\\ na\\ ulicy\\ sklepikowej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ na\\ ulicy\\ Sklepikowej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "shopping street north",
-      "expect": "Ciągnie\\ się\\ tedy\\ ulica\\ sklepikowa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Ciągnie\\ się\\ tędy\\ ulica\\ Sklepikowa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -71,7 +71,7 @@
     },
     {
       "label": "gate 15 charges 20: sale succeeds at 16 coins",
-      "expect": "Kupujesz\\ MAŁĄ\\ butelkę\\ MANY\\ za\\ 20\\ monet\\ \\(ahhhh\\ ta\\ inflacja\\)[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Kupujesz\\ MAŁĄ\\ butelkę\\ MANY\\ za\\ 20\\ MONET\\ \\(ahhh\\ ta\\ inflacja\\)[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "SPRZEDAJ PIGULKA TRANSPORTUJACA"
     },
     {
@@ -89,7 +89,7 @@
     },
     {
       "label": "sheet: 16 - 20 + 170 = 166 coins",
-      "expect": "Masz\\ 166\\ monet\\ i\\ 10\\ praktyk",
+      "expect": "Masz\\ 166\\ MONET\\ i\\ 10\\ PRAKTYK",
       "send": "WYJSCIE"
     }
   ]

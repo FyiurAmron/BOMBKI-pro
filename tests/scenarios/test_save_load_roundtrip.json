@@ -38,7 +38,7 @@
       "send": "JA"
     },
     {
-      "expect": "Masz\\ 30\\ monet",
+      "expect": "Masz\\ 30\\ MONET",
       "send": "JA"
     },
     {

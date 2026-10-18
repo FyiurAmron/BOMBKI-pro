@@ -36,7 +36,7 @@
     },
     {
       "label": "street continues",
-      "expect": "Ciągnie\\ się\\ tedy\\ ulica[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Ciągnie\\ się\\ tędy\\ ulica[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -106,7 +106,7 @@
     },
     {
       "label": "street continues again",
-      "expect": "Ciągnie\\ się\\ tedy\\ ulica[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Ciągnie\\ się\\ tędy\\ ulica[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {

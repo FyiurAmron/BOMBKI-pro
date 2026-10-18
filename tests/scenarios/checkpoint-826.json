@@ -41,7 +41,7 @@
     },
     {
       "label": "the shock room",
-      "expect": "Szok!!!\\ Aaa\\ upsi[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "SZOK!!!\\ AAA\\ UPSI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "GORA"
     },
     {
@@ -236,7 +236,7 @@
     },
     {
       "label": "ulica dluga (30)",
-      "expect": "Ulica\\ długa\\ ciągnie\\ się\\ w\\ nieskończoność",
+      "expect": "Ulica\\ Długa\\ ciągnie\\ się\\ w\\ nieskończoność",
       "send": "ZACHOD"
     },
     {

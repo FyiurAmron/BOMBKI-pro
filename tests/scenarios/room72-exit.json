@@ -31,7 +31,7 @@
     },
     {
       "label": "ulica długa (30)",
-      "expect": "Ulica\\ długa\\ ciągnie\\ się\\ w\\ nieskończoność[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Ulica\\ Długa\\ ciągnie\\ się\\ w\\ nieskończoność[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -96,7 +96,7 @@
     },
     {
       "label": "scena (70)",
-      "expect": "All\\ right\\ jesteś\\ na\\ scenie!!!\\ Na\\ twój\\ widok\\ ochroniarze[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "All\\ right\\ \\-\\ jesteś\\ na\\ scenie!!!\\ Na\\ twój\\ widok\\ ochroniarze[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {

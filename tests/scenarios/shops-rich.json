@@ -51,7 +51,7 @@
     },
     {
       "label": "shopping street south",
-      "expect": "Jesteś\\ na\\ ulicy\\ na\\ ulicy\\ sklepikowej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ na\\ ulicy\\ Sklepikowej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
@@ -61,7 +61,7 @@
     },
     {
       "label": "bakery list",
-      "expect": "SUCHA RACJA[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "SUCHA\\ RACJA[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "KUP PACZEK"
     },
     {
@@ -101,7 +101,7 @@
     },
     {
       "label": "back on the street",
-      "expect": "Jesteś\\ na\\ ulicy\\ na\\ ulicy\\ sklepikowej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ na\\ ulicy\\ Sklepikowej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -151,12 +151,12 @@
     },
     {
       "label": "shield equipped",
-      "expect": "Używasz\\ małej\\ tarczy\\ jako\\ tarczy[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "MAŁA\\ tarcza\\ to\\ teraz\\ twoja\\ tarcza[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "UZYJ STARY"
     },
     {
       "label": "sword equipped",
-      "expect": "Używasz\\ starego\\ zardzewiałego\\ miecza\\ jako\\ broni[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "STARY\\ zardzewiały\\ miecz\\ to\\ teraz\\ twoja\\ broń[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "JA"
     },
     {
@@ -166,12 +166,12 @@
     },
     {
       "label": "street again",
-      "expect": "Jesteś\\ na\\ ulicy\\ na\\ ulicy\\ sklepikowej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ na\\ ulicy\\ Sklepikowej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "shopping street north",
-      "expect": "Ciągnie\\ się\\ tedy\\ ulica\\ sklepikowa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Ciągnie\\ się\\ tędy\\ ulica\\ Sklepikowa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
@@ -181,7 +181,7 @@
     },
     {
       "label": "store notice",
-      "expect": "\\*\\ Sklep\\ otwarty[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "\\*\\ SKLEP\\ OTWARTY[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "LISTA"
     },
     {
@@ -191,12 +191,12 @@
     },
     {
       "label": "buy overall",
-      "expect": "Kupujesz\\ !KOMPLET![\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Kupujesz\\ KOMPLET[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "SPRZEDAJ KOMPLET"
     },
     {
       "label": "sell overall",
-      "expect": "Sprzedajesz\\ !KOMPLET![\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Sprzedajesz\\ KOMPLET[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "KUP FAJKA"
     },
     {
@@ -236,7 +236,7 @@
     },
     {
       "label": "north street again",
-      "expect": "Ciągnie\\ się\\ tedy\\ ulica\\ sklepikowa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Ciągnie\\ się\\ tędy\\ ulica\\ Sklepikowa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -246,7 +246,7 @@
     },
     {
       "label": "magic notice",
-      "expect": "\\*\\ Otwarte\\ z\\ powodu\\ choroby[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "\\*\\ OTWARTE\\ Z\\ POWODU\\ CHOROBY[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "LISTA"
     },
     {
@@ -296,7 +296,7 @@
     },
     {
       "label": "back on the north street",
-      "expect": "Ciągnie\\ się\\ tedy\\ ulica\\ sklepikowa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Ciągnie\\ się\\ tędy\\ ulica\\ Sklepikowa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WYJSCIE"
     }
   ]

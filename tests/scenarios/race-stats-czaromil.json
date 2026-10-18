@@ -35,15 +35,15 @@
     },
     {
       "label": "starting money and practices",
-      "expect": "Masz\\ 0\\ monet\\ i\\ 10\\ praktyk"
+      "expect": "Masz\\ 0\\ MONET\\ i\\ 10\\ PRAKTYK"
     },
     {
       "label": "first level gap at zero KUNSZT",
-      "expect": "Jesteś\\ na\\ pierwszym\\ levelu\\ a\\ do\\ następnego\\ brakuje\\ ci\\ 700\\ kunsztu"
+      "expect": "Jesteś\\ na\\ pierwszym\\ levelu\\ a\\ do\\ następnego\\ brakuje\\ ci\\ 700\\ KUNSZTU"
     },
     {
       "label": "starting attributes",
-      "expect": "Twoje\\ parametry:\\ SIŁA\\ \\-\\ 6/9\\ ZRĘCZNOŚĆ\\ \\-\\ 7/11\\ MĄDROŚĆ\\ \\-\\ 16/25"
+      "expect": "Twoje\\ parametry:\\ SIŁA: 6/9\\ ZRĘCZNOŚĆ: 7/11\\ MĄDROŚĆ: 16/25"
     },
     {
       "label": "starting mana",
@@ -51,7 +51,7 @@
     },
     {
       "label": "starting energy (ENERGIA := 50 lands after the race block)",
-      "expect": "Masz\\ 50/50\\ energii",
+      "expect": "Masz\\ 50/50\\ ENERGII",
       "send": "WYJSCIE"
     }
   ]

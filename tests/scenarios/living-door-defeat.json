@@ -31,7 +31,7 @@
     },
     {
       "label": "dark street",
-      "expect": "Jesteś\\ na\\ ulicy\\ ciemnej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ Ciemnej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
@@ -51,7 +51,7 @@
     },
     {
       "label": "cave entrance",
-      "expect": "To\\ ciekawe\\ że\\ wcześniej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "To\\ ciekawe,\\ że\\ wcześniej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -91,7 +91,7 @@
     },
     {
       "label": "past the DRZWI into the dark room",
-      "expect": "Dobra\\ jesteś\\ w\\ środku\\ brak\\ oświetlenia[\\s\\S]*?W\\ rogu\\ zauważasz\\ małego\\ wygłodzonego\\ elfiego\\ starucha[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Dobra,\\ jesteś\\ w\\ środku\\.\\ Brak\\ oświetlenia[\\s\\S]*?W rogu zauważasz małego wygłodzonego elfiego starucha[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -101,7 +101,7 @@
     },
     {
       "label": "PATRZ GARNKI on the empty pots",
-      "expect": "Z\\ jązorem\\ na\\ wierzchu\\ patrzysz[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Z\\ jęzorem\\ na\\ wierzchu\\ patrzysz[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {

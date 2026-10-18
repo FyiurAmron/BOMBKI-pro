@@ -26,7 +26,7 @@
     },
     {
       "label": "character-sheet response",
-      "expect": "Nazwałeś\\ się\\ TESTER[\\s\\S]*?W\\ sumie\\ masz[\\s\\S]*?Twoje\\ parametry:\\ SIŁA\\ \\-\\ [0-9]+/[0-9]+ ZRĘCZNOŚĆ - [0-9]+/[0-9]+ MĄDROŚĆ - [0-9]+/[0-9]+[\\s\\S]*?S\\.Z\\-[0-9]+ +FUKSROLL-[0-9]+[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Nazwałeś się TESTER[\\s\\S]*?W sumie masz[\\s\\S]*?Twoje\\ parametry:\\ SIŁA:\\ [0-9]+/[0-9]+\\ ZRĘCZNOŚĆ:\\ [0-9]+/[0-9]+\\ MĄDROŚĆ:\\ [0-9]+/[0-9]+[\\s\\S]*?S\\.Z:\\ [0-9]+ +FUKSROLL:\\ [0-9]+[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZDOLNOSCI"
     },
     {

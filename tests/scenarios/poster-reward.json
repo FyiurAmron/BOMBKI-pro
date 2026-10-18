@@ -31,7 +31,7 @@
     },
     {
       "label": "shock room to small room",
-      "expect": "Szok!!!\\ Aaa\\ upsi[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "SZOK!!!\\ AAA\\ UPSI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "GORA"
     },
     {
@@ -46,7 +46,7 @@
     },
     {
       "label": "poster room and poster text",
-      "expect": "Jesteś\\ w\\ pokoju\\ w\\ którym\\ jest\\ !PLAKAT!\\ \\(Śmierdzi\\ tu\\)[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ pokoju\\ w\\ którym\\ jest\\ PLAKAT\\ \\(i\\ śmierdzi\\ tu\\)[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "PATRZ PLAKAT"
     },
     {

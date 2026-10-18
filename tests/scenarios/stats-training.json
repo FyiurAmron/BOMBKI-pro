@@ -26,7 +26,7 @@
     },
     {
       "label": "strength room",
-      "expect": "Jesteś\\ w\\ pokoju\\ gdzie\\ rambo\\ trenuje[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ pokoju\\ gdzie\\ Rambo\\ trenuje[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ ZRECZNOSC"
     },
     {
@@ -66,7 +66,7 @@
     },
     {
       "label": "dark street",
-      "expect": "Jesteś\\ na\\ ulicy\\ ciemnej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ Ciemnej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
@@ -86,7 +86,7 @@
     },
     {
       "label": "cave entrance",
-      "expect": "To\\ ciekawe\\ że\\ wcześniej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "To\\ ciekawe,\\ że\\ wcześniej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -96,7 +96,7 @@
     },
     {
       "label": "flee threshold prompt",
-      "expect": "Poniżej\\ ilu\\ energii\\ chcesz\\ UCIEKAĆ",
+      "expect": "Poniżej\\ ilu\\ ENERGII\\ chcesz\\ UCIEKAĆ",
       "send": "500"
     },
     {
@@ -121,7 +121,7 @@
     },
     {
       "label": "past the DRZWI into the dark room",
-      "expect": "Dobra\\ jesteś\\ w\\ środku\\ brak\\ oświetlenia[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Dobra,\\ jesteś\\ w\\ środku\\.\\ Brak\\ oświetlenia[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -699,7 +699,7 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Hurrra\\ to\\ już\\ dwunasty\\ poziom",
+      "expect": "Hurra!\\ To\\ już\\ dwunasty\\ poziom",
       "send": ""
     },
     {
@@ -743,7 +743,7 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Hurrra\\ to\\ już\\ dwunasty\\ poziom",
+      "expect": "Hurra!\\ To\\ już\\ dwunasty\\ poziom",
       "send": ""
     },
     {
@@ -787,7 +787,7 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Hurrra\\ to\\ już\\ dwunasty\\ poziom",
+      "expect": "Hurra!\\ To\\ już\\ dwunasty\\ poziom",
       "send": ""
     },
     {
@@ -831,7 +831,7 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Hurrra\\ to\\ już\\ dwunasty\\ poziom",
+      "expect": "Hurra!\\ To\\ już\\ dwunasty\\ poziom",
       "send": ""
     },
     {
@@ -875,7 +875,7 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Hurrra\\ to\\ już\\ dwunasty\\ poziom",
+      "expect": "Hurra!\\ To\\ już\\ dwunasty\\ poziom",
       "send": ""
     },
     {
@@ -929,12 +929,12 @@
     },
     {
       "label": "out to the living door",
-      "expect": "Do\\ dobra\\ wygląda\\ to\\ na\\ jakiś\\ dom[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Do\\ dobra,\\ wygląda\\ to\\ na\\ jakiś\\ dom[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
       "label": "out to the cave entrance",
-      "expect": "To\\ ciekawe\\ że\\ wcześniej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "To\\ ciekawe,\\ że\\ wcześniej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
@@ -954,7 +954,7 @@
     },
     {
       "label": "out to the dark street",
-      "expect": "Jesteś\\ na\\ ulicy\\ ciemnej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ Ciemnej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -969,7 +969,7 @@
     },
     {
       "label": "into the strength room",
-      "expect": "Jesteś\\ w\\ pokoju\\ gdzie\\ rambo\\ trenuje[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ pokoju\\ gdzie\\ Rambo\\ trenuje[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ"
     },
     {
@@ -1159,7 +1159,7 @@
     },
     {
       "label": "read the training poster again",
-      "expect": "Szał\\ \\-\\ komenda\\ szał[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "SZAŁ\\ \\-\\ komenda\\ SZAŁ[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "PATRZ PLAKAT"
     },
     {

@@ -26,7 +26,7 @@
     },
     {
       "label": "strength room",
-      "expect": "Jesteś\\ w\\ pokoju\\ gdzie\\ rambo\\ trenuje[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ pokoju\\ gdzie\\ Rambo\\ trenuje[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ SILA"
     },
     {
@@ -61,7 +61,7 @@
     },
     {
       "label": "kick energy prompt",
-      "expect": "1\\)\\ Poniżej\\ jakiej\\ energii\\ chcesz\\ zacząć\\ KOPAĆ",
+      "expect": "1\\)\\ Poniżej\\ jakiej\\ ENERGII\\ chcesz\\ zacząć\\ KOPAĆ",
       "send": "20"
     },
     {

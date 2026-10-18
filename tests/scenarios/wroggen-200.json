@@ -31,7 +31,7 @@
     },
     {
       "label": "the dark street",
-      "expect": "Jesteś\\ na\\ ulicy\\ ciemnej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ Ciemnej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
@@ -51,12 +51,12 @@
     },
     {
       "label": "the cave entrance",
-      "expect": "To\\ ciekawe\\ że\\ wcześniej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "To\\ ciekawe,\\ że\\ wcześniej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "the tree room",
-      "expect": "Mlask,\\ mlask\\ któś\\ rzeczywiście\\ się\\ obżera[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Mlask,\\ mlask,\\ ktoś\\ rzeczywiście\\ się\\ obżera[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
@@ -66,27 +66,27 @@
     },
     {
       "label": "the cave entrance again",
-      "expect": "To\\ ciekawe\\ że\\ wcześniej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "To\\ ciekawe,\\ że\\ wcześniej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "the tree room again",
-      "expect": "Mlask,\\ mlask\\ któś\\ rzeczywiście\\ się\\ obżera[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Mlask,\\ mlask,\\ ktoś\\ rzeczywiście\\ się\\ obżera[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
       "label": "the cave entrance once more",
-      "expect": "To\\ ciekawe\\ że\\ wcześniej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "To\\ ciekawe,\\ że\\ wcześniej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "the tree room once more",
-      "expect": "Mlask,\\ mlask\\ któś\\ rzeczywiście\\ się\\ obżera[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Mlask,\\ mlask,\\ ktoś\\ rzeczywiście\\ się\\ obżera[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "the giant plant",
-      "expect": "Mój\\ boże,\\ coż\\ to\\ jest[\\s\\S]*?Tak\\ lub\\ nie\\ >",
+      "expect": "Jeżu,\\ coż\\ to\\ jest[\\s\\S]*?TAK\\ lub\\ NIE\\ >",
       "send": "TAK"
     },
     {

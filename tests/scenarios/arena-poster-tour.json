@@ -46,7 +46,7 @@
     },
     {
       "label": "room 30 (ULICA DLUGA CIAGNIE )",
-      "expect": "Ulica\\ długa\\ ciągnie\\ się\\ w\\ nieskończono[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Ulica\\ Długa\\ ciągnie\\ się\\ w\\ nieskończono[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
@@ -56,7 +56,7 @@
     },
     {
       "label": "room 32 (CZESC TO ARENA PRZYC)",
-      "expect": "Cześć\\ to\\ arena\\ przychodza\\ tu\\ tacy\\ jak\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "To\\ arena\\.\\ Przychodzą\\ tu\\ tacy\\ jak\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "PATRZ PLAKAT"
     },
     {

@@ -46,7 +46,7 @@
     },
     {
       "label": "room 5 (SZOK!!! AAA UPSI  O N)",
-      "expect": "Szok!!!\\ Aaa\\ upsi\\ o\\ nie\\ fuj\\ ach\\ aj\\ och\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "SZOK!!!\\ AAA\\ UPSI\\ O\\ NIE\\ FUJ\\ ACH\\ AJ\\ OCH\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
@@ -176,7 +176,7 @@
     },
     {
       "label": "room 17 (JESTES W POKOJU W KT)",
-      "expect": "Jesteś\\ w\\ pokoju\\ w\\ którym\\ jest\\ !PLAKA[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ pokoju\\ w\\ którym\\ jest\\ PLAKA[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {

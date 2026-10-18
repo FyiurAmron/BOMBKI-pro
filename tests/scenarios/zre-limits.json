@@ -26,7 +26,7 @@
     },
     {
       "label": "strength room, first training (ZRE 16 -> 17)",
-      "expect": "Jesteś\\ w\\ pokoju\\ gdzie\\ rambo[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ pokoju\\ gdzie\\ Rambo[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ ZRECZNOSC"
     },
     {

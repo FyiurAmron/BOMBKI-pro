@@ -26,7 +26,7 @@
     },
     {
       "label": "strength room",
-      "expect": "Jesteś\\ w\\ pokoju\\ gdzie\\ rambo\\ trenuje\\ sw[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ pokoju\\ gdzie\\ Rambo\\ trenuje\\ sw[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "TRENUJ ZRECZNOSC"
     },
     {
@@ -66,7 +66,7 @@
     },
     {
       "label": "in room 75",
-      "expect": "Jesteś\\ na\\ ulicy\\ ciemnej,\\ właściwie\\ na[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ na\\ ulicy\\ Ciemnej,\\ właściwie\\ na[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
@@ -86,7 +86,7 @@
     },
     {
       "label": "in the cave entrance room 84",
-      "expect": "To\\ ciekawe\\ że\\ wcześniej\\ nie\\ zauważyłeś[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "To\\ ciekawe,\\ że\\ wcześniej\\ nie\\ zauważyłeś[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -96,7 +96,7 @@
     },
     {
       "label": "flee threshold prompt",
-      "expect": "Poniżej\\ ilu\\ energii\\ chcesz\\ UCIEKAĆ\\?",
+      "expect": "Poniżej\\ ilu\\ ENERGII\\ chcesz\\ UCIEKAĆ\\?",
       "send": "500"
     },
     {
@@ -121,7 +121,7 @@
     },
     {
       "label": "past the living door into the dark room",
-      "expect": "Dobra\\ jesteś\\ w\\ środku\\ brak\\ oświetlenia[\\s\\S]*?starucha[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Dobra,\\ jesteś\\ w\\ środku\\.\\ Brak\\ oświetlenia[\\s\\S]*?starucha[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -141,7 +141,7 @@
     },
     {
       "label": "sheet shows the level-2 line",
-      "expect": "Jesteś\\ na\\ drugim\\ levelu\\ a\\ do\\ następnego\\ brakuje\\ ci\\ \\-?[0-9]+\\ kunsztu",
+      "expect": "Jesteś na drugim levelu a do następnego brakuje ci -?[0-9]+\\ KUNSZTU",
       "send": "WYJSCIE"
     }
   ]

@@ -26,7 +26,7 @@
     },
     {
       "label": "rambo's room",
-      "expect": "Jesteś\\ w\\ pokoju\\ gdzie\\ rambo\\ trenuje[\\s\\S]*?",
+      "expect": "Jesteś\\ w\\ pokoju\\ gdzie\\ Rambo\\ trenuje[\\s\\S]*?",
       "send": "TRENUJ"
     },
     {
@@ -81,7 +81,7 @@
     },
     {
       "label": "flee threshold prompt",
-      "expect": "Poniżej\\ ilu\\ energii\\ chcesz\\ UCIEKAĆ",
+      "expect": "Poniżej\\ ilu\\ ENERGII\\ chcesz\\ UCIEKAĆ",
       "send": "900"
     },
     {
@@ -101,7 +101,7 @@
     },
     {
       "label": "the shock room",
-      "expect": "Szok!!!\\ Aaa\\ upsi[\\s\\S]*?",
+      "expect": "SZOK!!!\\ AAA\\ UPSI[\\s\\S]*?",
       "send": "GORA"
     },
     {

@@ -31,7 +31,7 @@
     },
     {
       "label": "ulica długa (30)",
-      "expect": "Ulica\\ długa\\ ciągnie\\ się\\ w\\ nieskończoność[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Ulica\\ Długa\\ ciągnie\\ się\\ w\\ nieskończoność[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -116,7 +116,7 @@
     },
     {
       "label": "back to city centre",
-      "expect": "Ulica\\ długa\\ ciągnie\\ się\\ w\\ nieskończoność[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Ulica\\ Długa\\ ciągnie\\ się\\ w\\ nieskończoność[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
