@@ -87,7 +87,6 @@ public class BehaviorTests {
         "sleep-rounds",
         "stats-training",
         "test_save_load",
-        "test_save_load_orig",
         "training-poster",
         "wroggen-200",
         "wroggen-win",
