@@ -40,8 +40,8 @@
       "send": "WYJSCIE"
     },
     {
-      "label": "room exit response",
-      "expect": "Jesteś\\ w\\ okrągłym\\ salonie"
+      "label": "WYJSCIE quits",
+      "expect_exit": true
     }
   ]
 }

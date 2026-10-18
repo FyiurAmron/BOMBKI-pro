@@ -1197,14 +1197,18 @@
       "send": ""
     },
     {
-      "label": "leave ground",
+      "label": "loaded room exit list",
       "expect": "[0-9]+%\\.-?[0-9]+>",
+      "send": "EXIT"
+    },
+    {
+      "label": "meditation room exits",
+      "expect": "Dostępne\\ WYJŚCIE\\ -\\ GÓRA\\ -\\ hala\\ główna\\ mud\\ szkoły[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "WYJSCIE"
     },
     {
-      "label": "exit response",
-      "expect": "Zszedłeś\\ na\\ DÓŁ[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
-      "send": ""
+      "label": "WYJSCIE quits",
+      "expect_exit": true
     }
   ]
 }

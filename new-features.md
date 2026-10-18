@@ -25,3 +25,4 @@
 - Sentence-case texts
   - game texts read as normal sentences
   - command, item and enemy names stay uppercase
+- WYJSCIE always quits

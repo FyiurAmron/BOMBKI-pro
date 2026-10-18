@@ -348,18 +348,13 @@ public static class Game {
                 MoveTo(moves[i].dest);
     }
 
-    public static bool MoveWhenOrExit(List<TMovement> moves) {
-        if (Verb == CmdWyjscie)
+    public static bool MoveWhenOrQuit(List<TMovement> moves) {
+        if (Verb == CmdWyjscie) {
+            Session.ExitRequested = true;
             return true;
+        }
         MoveWhen(moves);
         return false;
-    }
-
-    public static bool MoveWhenOrQuit(List<TMovement> moves) {
-        bool leave = MoveWhenOrExit(moves);
-        if (leave)
-            Session.ExitRequested = true;
-        return leave;
     }
 
     public static void WriteLines(List<string> lines) {

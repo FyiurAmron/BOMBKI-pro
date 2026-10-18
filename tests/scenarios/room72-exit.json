@@ -135,14 +135,13 @@
       "send": "EXIT"
     },
     {
-      "label": "wyjscie to room 71",
+      "label": "exit list in room 72",
       "expect": "[\\s\\S]*?Dostępne\\ WYJŚCIA[\\s\\S]*?PÓŁNOC: Środek\\ sceny[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WYJSCIE"
     },
     {
-      "label": "ground context in 71",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "WYJSCIE"
+      "label": "WYJSCIE quits",
+      "expect_exit": true
     }
   ]
 }

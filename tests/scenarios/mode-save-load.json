@@ -55,8 +55,8 @@
       "send": "WYJSCIE"
     },
     {
-      "label": "room exit",
-      "expect": "Jesteś\\ w\\ okrągłym\\ salonie"
+      "label": "WYJSCIE quits",
+      "expect_exit": true
     }
   ]
 }

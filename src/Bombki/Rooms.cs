@@ -111,7 +111,6 @@ public static class Rooms {
         public List<string> exits = [];
         public List<TMovement> moves = [];
         public List<TRoomPoster> posters = [];
-        public bool quit = false;
         public bool expand = false;
         public short teleport = RoomAny;
         public Action<bool>? turn = null;
@@ -406,7 +405,6 @@ public static class Rooms {
                 else
                     CageMonsterFight(IntSlot.Into(World.Monsters, (int)CageAgile), RoomCageAgile, 20, 30, 3, 15, 7);
             },
-            quit = true,
         },
         new() {
             number = RoomCageTough,
@@ -419,7 +417,6 @@ public static class Rooms {
                 else
                     CageMonsterFight(IntSlot.Into(World.Monsters, (int)CageTough), RoomCageTough, 40, 3, 3, 15, 7);
             },
-            quit = true,
         },
         new() {
             number = RoomCageHuge,
@@ -446,7 +443,6 @@ public static class Rooms {
                     }
                 }
             },
-            quit = true,
         },
         new() {
             number = RoomCageReward,
@@ -466,7 +462,6 @@ public static class Rooms {
                         Bag.Items[(int)TBagItem.Diploma] = RoomCageReward;
                 }
             },
-            quit = true,
         },
         new() {
             number = RoomTeleport,
@@ -487,7 +482,6 @@ public static class Rooms {
                      Go(CmdWschod, RoomDarkStreet), ],
             posters = [new(CmdPatrz + CmdPlakat, [TxtRoom20_02])],
             turn = StreetTurn,
-            quit = true,
         },
         new() {
             number = RoomShopStreet,
@@ -502,7 +496,6 @@ public static class Rooms {
                      Go(CmdWschod, RoomBakery),
                      Go(CmdZachod, RoomArmoury), ],
             turn = StreetTurn,
-            quit = true,
         },
         new() {
             number = RoomShopStreet2,
@@ -517,7 +510,6 @@ public static class Rooms {
                      Go(CmdZachod, RoomMagicShop),
                      Go(CmdPolnoc, RoomQuestMaster), ],
             turn = StreetTurn,
-            quit = true,
         },
         new() {
             number = RoomBakery,
@@ -532,7 +524,6 @@ public static class Rooms {
                 else
                     BakeryShop();
             },
-            quit = true,
         },
         new() {
             number = RoomArmoury,
@@ -549,7 +540,6 @@ public static class Rooms {
                     StreetFights();
                 }
             },
-            quit = true,
         },
         new() {
             number = RoomGeneralStore,
@@ -567,7 +557,6 @@ public static class Rooms {
                     GeneralStoreShop();
                 }
             },
-            quit = true,
         },
         new() {
             number = RoomMagicShop,
@@ -584,7 +573,6 @@ public static class Rooms {
                     StreetFights();
                 }
             },
-            quit = true,
         },
         new() {
             number = RoomLongStreet,
@@ -604,7 +592,6 @@ public static class Rooms {
                      TxtExitWschod, TxtPlaceUlicaDluga,
                      TxtExitPolnoc, TxtPlaceDolinaRozrywek, ],
             moves = [Go(CmdWschod, RoomLongStreet), Go(CmdPolnoc, RoomValley)],
-            quit = true,
         },
         new() {
             number = RoomArenaEntrance,
@@ -614,7 +601,6 @@ public static class Rooms {
                      TxtExitPolnoc, TxtPlaceArena, ],
             moves = [Go(CmdPolodnie, RoomLongStreet), Go(CmdPolnoc, RoomArena33)],
             posters = [new(CmdPatrz + CmdPlakat, [TxtRoom32_03, TxtRoom32_04])],
-            quit = true,
         },
         ArenaRoom(RoomArena33, [TxtShared_03,
                                 TxtExitPolodnie, TxtPlaceWejscieNaArene,
@@ -987,7 +973,6 @@ public static class Rooms {
                         break;
                 }
             },
-            quit = true,
         },
         new() {
             number = RoomIvy1,
@@ -1003,7 +988,6 @@ public static class Rooms {
                      Go(CmdPolodnie, RoomIvy4), ],
             turn = PlantTurn,
             expand = true,
-            quit = true,
         },
         new() {
             number = RoomIvy2,
@@ -1013,7 +997,6 @@ public static class Rooms {
             moves = [Go(CmdZachod, RoomIvy1)],
             turn = PlantTurn,
             expand = true,
-            quit = true,
         },
         new() {
             number = RoomIvy3,
@@ -1023,7 +1006,6 @@ public static class Rooms {
             moves = [Go(CmdWschod, RoomIvy1)],
             turn = PlantTurn,
             expand = true,
-            quit = true,
         },
         new() {
             number = RoomIvy4,
@@ -1059,7 +1041,6 @@ public static class Rooms {
                 }
             },
             expand = true,
-            quit = true,
         },
         new() {
             number = RoomIvy5,
@@ -1069,7 +1050,6 @@ public static class Rooms {
             moves = [Go(CmdWschod, RoomIvy4)],
             turn = PlantTurn,
             expand = true,
-            quit = true,
         },
         new() {
             number = RoomIvy6,
@@ -1079,7 +1059,6 @@ public static class Rooms {
             moves = [Go(CmdZachod, RoomIvy4)],
             turn = PlantTurn,
             expand = true,
-            quit = true,
         },
         new() {
             number = RoomClearing,
@@ -1101,7 +1080,6 @@ public static class Rooms {
             moves = [Go(CmdWschod, RoomClearing), Go(CmdZachod, RoomLivingDoor), Go(CmdPolodnie, RoomCaveMouth)],
             turn = PlantTurn,
             expand = true,
-            quit = true,
         },
         new() {
             number = RoomLivingDoor,
@@ -1132,7 +1110,6 @@ public static class Rooms {
                     else Out.WriteLine(TxtRoom85_07);
             },
             expand = true,
-            quit = true,
         },
         new() {
             number = RoomHut,
@@ -1187,7 +1164,6 @@ public static class Rooms {
                 }
             },
             expand = true,
-            quit = true,
         },
         new() {
             number = RoomCaveMouth,
@@ -1206,7 +1182,6 @@ public static class Rooms {
                 }
             },
             expand = true,
-            quit = true,
         },
         new() {
             number = RoomNettleThrone,
@@ -1238,7 +1213,6 @@ public static class Rooms {
                 }
             },
             expand = true,
-            quit = true,
         },
         new() {
             number = RoomQuestMaster,
@@ -1305,7 +1279,6 @@ public static class Rooms {
             moves = [Go(CmdWschod, RoomQuestMaster), Go(CmdZachod, RoomRoad2),
                      Go(CmdPolnoc, RoomForest), ],
             posters = [new(CmdPatrz + CmdDrogowskaz, [TxtRoom101_05])],
-            quit = true,
         },
         new() {
             number = RoomRoad2,
@@ -1316,7 +1289,6 @@ public static class Rooms {
                      TxtExitPolnoc, TxtPlaceLas,
                      TxtExitPolodnie, TxtPlaceLas, ],
             moves = [Go(CmdWschod, RoomRoad1), Go(CmdZachod, RoomRoad3)],
-            quit = true,
         },
         new() {
             number = RoomRoad3,
@@ -1326,7 +1298,6 @@ public static class Rooms {
                      TxtExitPolnoc, TxtPlaceLas,
                      TxtExitPolodnie, TxtPlaceLas, ],
             moves = [Go(CmdWschod, RoomRoad2)],
-            quit = true,
         },
     ];
 
@@ -1359,7 +1330,7 @@ public static class Rooms {
                 WriteExits(room.exits);
             if (Session.Room == room.number)
                 room.turn?.Invoke(false);
-            if (room.quit ? MoveWhenOrQuit(room.moves) : MoveWhenOrExit(room.moves))
+            if (MoveWhenOrQuit(room.moves))
                 return;
             for (int pi = 0; pi < room.posters.Count; pi++)
                 if (Matches(room.posters[pi].cmd))
