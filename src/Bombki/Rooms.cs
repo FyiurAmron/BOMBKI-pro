@@ -146,12 +146,9 @@ public static class Rooms {
 
     static void ArenaTurn(bool entering) {
         if (entering) {
-            Session.InArena = 1;
             DescribeBeasts();
             return;
         }
-        if (Verb == CmdWyjscie)
-            return;
         switch (Verb) {
             case CmdZabij:
                 switch (Rest) {
@@ -189,18 +186,14 @@ public static class Rooms {
                 break;
             case CmdPolnoc:
                 MazeMove(TMazeDir.mdPolnoc);
-                Session.MoveGuard = 1;
                 break;
             case CmdWschod:
                 MazeMove(TMazeDir.mdWschod);
-                Session.MoveGuard = 1;
                 break;
             case CmdZachod:
                 MazeMove(TMazeDir.mdZachod);
-                Session.MoveGuard = 1;
                 break;
         }
-        Session.MoveGuard = 0;
     }
 
     public static void CageMonsterFight(IntSlot monster, int room, int energy, int dexterity, int strength, int lootRand, int lootThreshold) {

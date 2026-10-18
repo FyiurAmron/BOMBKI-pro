@@ -26,3 +26,7 @@
   - game texts read as normal sentences
   - command, item and enemy names stay uppercase
 - WYJSCIE always quits
+- JSON save system
+  - save file is `{charname}.json` and human-readable
+  - full bag and monster state preserved, road permit and living door included
+- the skills screen shows the real cooking value

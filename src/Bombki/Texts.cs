@@ -489,7 +489,6 @@ public static class Texts {
     public const string TxtCheatRefusalOther = "To też do kolegi na podwórku możesz mówić chamie";
     public const string TxtCheatSuccess = "Okej hakerze, bierz!";
     public const string TxtCheatSuccessOther = "No okej hakerze!";
-    public const string TxtCmdJustSaved_01 = " mięcho!";
     public const string TxtCmdDrinkBeer_01 = "Gdy poczułeś ambrozję w ustach odzyskałeś 10 MANY i 10% ENERGII.";
     public const string TxtCmdWieldOldSword_01 = "STARY zardzewiały miecz to teraz twoja broń";
     public const string TxtCmdUnwieldOldSword_01 = "Chowasz STARY zardzewiały miecz i nie używasz go jako broni";

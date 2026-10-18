@@ -1,6 +1,8 @@
 
 using System.Linq;
 using System.Text;
+using System.Text.Encodings.Web;
+using System.Text.Json;
 using static Texts;
 using static Rooms;
 
@@ -16,7 +18,7 @@ public static class Game {
 
     public enum TSkill {
         Parry, Kick, KickMinMana, KickMaxEnergy, Fleeing, FleeEnergy,
-        Comparing, Cooking, CookingDisplayBug, Returning,
+        Comparing, Cooking, Returning,
     }
 
     public enum TGearItem {
@@ -96,12 +98,11 @@ public static class Game {
     }
 
     public class TSession {
-        public int Room, OuterRoom, InArena, MoveGuard;
+        public int Room, OuterRoom;
         public int CheckpointStage;
         public bool SavedFlag;
         public int SleepHours, Overall;
         public bool ExitRequested;
-        public SaveFile SaveFile = new();
     }
 
     public class TQuestOffer {
@@ -295,11 +296,6 @@ public static class Game {
 
     public const int MaxInt = 32767;
     public const int ItemUnit = 10;
-    public const int SaveLevelBias = 0x17;
-    public const int SaveEnergyBias = 0x28;
-    public const int SaveStrengthBias = 24;
-    public const int SaveDexterityBias = 12;
-    public const int SaveStatScale = 4;
 
     public static readonly List<TQuestOffer> QuestOffers = [
         null!,
@@ -1612,12 +1608,11 @@ public static class Game {
     ];
 
     public static void MazeMove(TMazeDir dir) {
-        Session.InArena = 0;
         for (int mi = 1; mi < MazeMoves.Count; mi++) {
             TMazeMove m = MazeMoves[mi];
             if (Session.Room == m.room) {
-                if (m.dest[(int)dir] == m.room) Session.InArena = 1;
-                else MoveTo(m.dest[(int)dir]);
+                if (m.dest[(int)dir] != m.room)
+                    MoveTo(m.dest[(int)dir]);
                 break;
             }
         }
@@ -2036,7 +2031,6 @@ public static class Game {
         }
         if (File.Exists(SaveFileName())) {
             LoadGame();
-            Session.Room = Session.OuterRoom;
             Session.SavedFlag = false;
             return;
         }
@@ -2244,196 +2238,137 @@ public static class Game {
         }
     }
 
-    public class SaveFile {
-        string _name = "";
-        FileStream? _stream;
-        readonly List<byte> _pushback = new();
+    public record SaveStats(
+        int Strength,
+        int Dexterity,
+        int Wisdom,
+        int MaxStrength,
+        int MaxDexterity,
+        int MaxWisdom);
 
-        public void Assign(string name) =>
-            _name = name;
-        public void Rewrite() =>
-            _stream = File.Create(_name);
-        public void Reset() =>
-            _stream = File.OpenRead(_name);
+    public record SavePlayer(
+        int Level,
+        int Experience,
+        int Energy,
+        int MaxEnergy,
+        int Mana,
+        int MaxMana,
+        int Practice,
+        int Money,
+        SaveStats Stats);
 
-        public void Close() {
-            _stream?.Close();
-            _stream = null;
-            _pushback.Clear();
-        }
+    public record SaveBag(
+        int Count,
+        int Limit,
+        int Permit,
+        Dictionary<string, int> Items);
 
-        int GetByte() {
-            if (_pushback.Any()) {
-                int last = _pushback[^1];
-                _pushback.RemoveAt(_pushback.Count - 1);
-                return last;
-            }
-            return _stream!.ReadByte();
-        }
+    public record SaveGear(
+        int Armor,
+        int WornCount,
+        int LuckRoll,
+        int Wearing,
+        int WeaponKind,
+        int ShieldKind,
+        string WornGarment);
 
-        public void WriteLine(long value) =>
-            WriteLine(value.ToString());
+    public record SaveSkills(
+        int Parry,
+        int Kick,
+        int KickMinMana,
+        int KickMaxEnergy,
+        int Fleeing,
+        int FleeEnergy,
+        int Comparing,
+        int Cooking,
+        int Returning);
 
-        public void WriteLine(string value) {
-            foreach (char c in value)
-                _stream!.WriteByte((byte)c);
-            _stream!.WriteByte((byte)'\n');
-            _stream.Flush();
-        }
+    public record SaveSession(
+        int Room,
+        int CheckpointStage,
+        bool SavedFlag);
 
-        static bool IsSpace(int b) =>
-            b == ' ' || b == '\t' || b == '\n' || b == '\r';
+    public record SaveWorld(
+        int Quest,
+        int QuestKills,
+        bool Door,
+        bool OldElf,
+        int DuncanQuest,
+        Dictionary<string, int> Monsters);
 
-        public long ReadNumber() {
-            int b;
-            do {
-                b = GetByte();
-            } while (b >= 0 && IsSpace(b));
-            bool neg = false;
-            if (b == '+' || b == '-') {
-                neg = b == '-';
-                b = GetByte();
-            }
-            long value = 0;
-            while (b >= '0' && b <= '9') {
-                value = value * 10 + (b - '0');
-                b = GetByte();
-            }
-            _pushback.Add((byte)b);
-            return neg ? -value : value;
-        }
+    public record SaveData(
+        string Name,
+        SavePlayer Player,
+        SaveBag Bag,
+        SaveGear Gear,
+        SaveSkills Skills,
+        SaveSession Session,
+        SaveWorld World);
 
-        public string ReadRemainder() {
-            StringBuilder sb = new();
-            int b;
-            while ((b = GetByte()) >= 0 && b != '\n')
-                sb.Append((char)b);
-            return sb.ToString();
-        }
+    static readonly JsonSerializerOptions SaveFormat = new() {
+        WriteIndented = true,
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+    };
 
-        public void SkipLine() {
-            int b;
-            do {
-                b = GetByte();
-            } while (b >= 0 && b != '\n');
-        }
+    static Dictionary<string, int> SaveItems() {
+        Dictionary<string, int> items = [];
+        for (int i = 0; i < Bag.Items.Count; i++)
+            items[((TBagItem)i).ToString()] = Bag.Items[i];
+        return items;
     }
 
-    public static void Assign(SaveFile f, string name) =>
-        f.Assign(name);
-    public static void Rewrite(SaveFile f) =>
-        f.Rewrite();
-    public static void Reset(SaveFile f) =>
-        f.Reset();
-    public static void Close(SaveFile f) =>
-        f.Close();
+    static Dictionary<string, int> SaveMonsters() {
+        Dictionary<string, int> monsters = [];
+        for (int i = 0; i < World.Monsters.Count; i++)
+            monsters[((TMonster)i).ToString()] = World.Monsters[i];
+        return monsters;
+    }
 
-    public static void SaveSlot(int value) =>
-        Session.SaveFile.WriteLine((long)value);
-    public static void SaveSlotText(string value) =>
-        Session.SaveFile.WriteLine(value);
-    public static void LoadSlot(IntSlot value) =>
-        value.Set(unchecked((int)Session.SaveFile.ReadNumber()));
-    public static void LoadSlotShort(ref int value) =>
-        value = unchecked((int)Session.SaveFile.ReadNumber());
-    public static void LoadSlotLong(ref int value) =>
-        value = unchecked((int)Session.SaveFile.ReadNumber());
-    public static void LoadSlotText(ref string value) =>
-        value = Session.SaveFile.ReadRemainder();
+    static void LoadItems(Dictionary<string, int> items) {
+        for (int i = 0; i < Bag.Items.Count; i++)
+            Bag.Items[i] = 0;
+        foreach (KeyValuePair<string, int> item in items)
+            if (Enum.TryParse(item.Key, out TBagItem parsed))
+                Bag.Items[(int)parsed] = item.Value;
+    }
+
+    static void LoadMonsters(Dictionary<string, int> monsters) {
+        for (int i = 0; i < World.Monsters.Count; i++)
+            World.Monsters[i] = 0;
+        foreach (KeyValuePair<string, int> monster in monsters)
+            if (Enum.TryParse(monster.Key, out TMonster parsed))
+                World.Monsters[(int)parsed] = monster.Value;
+    }
 
     public static string SaveFileName() =>
-        $"{Player.Name}.BOMBKI";
+        $"{Player.Name}.json";
 
     public static void SaveCharacter() {
         Command = CmdJa;
         Session.SavedFlag = true;
         Out.WriteLine(TxtSaveCharacter_01);
         Crt.ClrScr();
-        Assign(Session.SaveFile, SaveFileName());
-        Rewrite(Session.SaveFile);
-        SaveSlot(Player.Mana * SaveStatScale);
-        SaveSlot(Player.Level + SaveLevelBias);
-        SaveSlot(Bag.Items[(int)TBagItem.OldSword]);
-        SaveSlot(Bag.Items[(int)TBagItem.Pipe]);
-        SaveSlot(Bag.Items[(int)TBagItem.Diploma]);
-        SaveSlot(Bag.Items[(int)TBagItem.SmallShield]);
-        SaveSlot(Bag.Items[(int)TBagItem.SpikedSuit]);
-        SaveSlot(Player.Experience);
-        SaveSlot((Player.Energy + SaveEnergyBias) * SaveStatScale);
-        SaveSlot(Session.OuterRoom);
-        SaveSlot(Player.Stats[(int)TStat.Dexterity] + SaveDexterityBias);
-        SaveSlot(Player.Stats[(int)TStat.Strength] - SaveStrengthBias);
-        SaveSlot(Player.Stats[(int)TStat.Wisdom]);
-        SaveSlot(Player.Practice);
-        SaveSlot(Session.CheckpointStage);
-        SaveSlot(0);
-        SaveSlot(0);
-        SaveSlot(Player.Money * Player.Stats[(int)TStat.Wisdom]);
-        SaveSlot(Combat.Loot);
-        SaveSlot(Player.MaxEnergy);
-        SaveSlot(Bag.Limit);
-        SaveSlot(Skills.Values[(int)TSkill.Comparing]);
-        SaveSlot(Player.MaxMana);
-        SaveSlot(Player.Stats[(int)TStat.MaxStrength]);
-        SaveSlot(Player.Stats[(int)TStat.MaxDexterity]);
-        SaveSlot(Player.Stats[(int)TStat.MaxWisdom]);
-        SaveSlot(Bag.Count);
-        SaveSlot(Gear.Values[(int)TGearItem.Armor]);
-        SaveSlot(Gear.Values[(int)TGearItem.LuckRoll]);
-        SaveSlot(Gear.Values[(int)TGearItem.WeaponKind]);
-        SaveSlot(Gear.Values[(int)TGearItem.Wearing]);
-        SaveSlot(Session.Overall);
-        SaveSlot(Session.SavedFlag ? 1 : 0);
-        SaveSlot(World.Monsters[(int)TMonster.CageWeakling]);
-        SaveSlot(World.Monsters[(int)TMonster.CageStrong]);
-        SaveSlot(World.Monsters[(int)TMonster.CageAgile]);
-        SaveSlot(World.Monsters[(int)TMonster.CageTough]);
-        SaveSlot(World.Monsters[(int)TMonster.CageHuge]);
-        SaveSlot(Gear.Values[(int)TGearItem.ShieldKind]);
-        SaveSlot(Gear.Values[(int)TGearItem.ArmorRating]);
-        SaveSlot(Skills.Values[(int)TSkill.Cooking]);
-        SaveSlot(Skills.Values[(int)TSkill.CookingDisplayBug]);
-        SaveSlot(0);
-        SaveSlot(Bag.Items[(int)TBagItem.Heart]);
-        SaveSlot(Bag.Items[(int)TBagItem.ManaBottle]);
-        SaveSlot(Bag.Items[(int)TBagItem.Cookie]);
-        SaveSlot(Bag.Items[(int)TBagItem.DryRation]);
-        SaveSlot(Bag.Items[(int)TBagItem.Bread]);
-        SaveSlot(Bag.Items[(int)TBagItem.BreadRoll]);
-        SaveSlot(Bag.Items[(int)TBagItem.Sausage]);
-        SaveSlot(Bag.Items[(int)TBagItem.Bread]);
-        SaveSlot(Bag.Items[(int)TBagItem.BreadRoll]);
-        SaveSlot(Gear.Values[(int)TGearItem.WornCount]);
-        SaveSlot(Skills.Values[(int)TSkill.Parry]);
-        SaveSlot(Skills.Values[(int)TSkill.Kick]);
-        SaveSlot(Skills.Values[(int)TSkill.KickMinMana]);
-        SaveSlot(Skills.Values[(int)TSkill.KickMaxEnergy]);
-        SaveSlot(Skills.Values[(int)TSkill.Fleeing]);
-        SaveSlot(Skills.Values[(int)TSkill.FleeEnergy]);
-        SaveSlot(Combat.Fled ? 1 : 0);
-        SaveSlot(Session.InArena);
-        SaveSlot(Bag.Items[(int)TBagItem.Tracksuit]);
-        SaveSlot(Bag.Items[(int)TBagItem.Cassette]);
-        SaveSlot(Bag.Items[(int)TBagItem.TeleportPill]);
-        SaveSlot(World.Monsters[(int)TMonster.Woodworm]);
-        SaveSlot(World.Monsters[(int)TMonster.Fly]);
-        SaveSlot(World.Monsters[(int)TMonster.Bacterium]);
-        SaveSlot(World.Quest);
-        SaveSlot(World.QuestKills);
-        SaveSlot(World.Monsters[(int)TMonster.Snail]);
-        SaveSlot(Bag.Items[(int)TBagItem.LuckyLeaf]);
-        SaveSlot(Skills.Values[(int)TSkill.Returning]);
-        SaveSlot(Bag.Items[(int)TBagItem.Bigos]);
-        SaveSlot(Bag.Items[(int)TBagItem.Beer]);
-        SaveSlot(Bag.Items[(int)TBagItem.CompareScroll]);
-        SaveSlot(Bag.Items[(int)TBagItem.ReturnScroll]);
-        SaveSlot(World.OldElf ? 1 : 0);
-        SaveSlot(World.DuncanQuest);
-        SaveSlot(Bag.Items[(int)TBagItem.Backpack]);
-        SaveSlot(World.Monsters[(int)TMonster.Duncan]);
-        SaveSlotText(Gear.WornGarment);
-        SaveSlotText(Player.Name);
-        Close(Session.SaveFile);
+        SaveData save = new(
+            Player.Name,
+            new SavePlayer(Player.Level, Player.Experience, Player.Energy, Player.MaxEnergy,
+                Player.Mana, Player.MaxMana, Player.Practice, Player.Money,
+                new SaveStats(Player.Stats[(int)TStat.Strength], Player.Stats[(int)TStat.Dexterity],
+                    Player.Stats[(int)TStat.Wisdom], Player.Stats[(int)TStat.MaxStrength],
+                    Player.Stats[(int)TStat.MaxDexterity], Player.Stats[(int)TStat.MaxWisdom])),
+            new SaveBag(Bag.Count, Bag.Limit, Bag.Permit, SaveItems()),
+            new SaveGear(Gear.Values[(int)TGearItem.Armor], Gear.Values[(int)TGearItem.WornCount],
+                Gear.Values[(int)TGearItem.LuckRoll], Gear.Values[(int)TGearItem.Wearing],
+                Gear.Values[(int)TGearItem.WeaponKind], Gear.Values[(int)TGearItem.ShieldKind],
+                Gear.WornGarment),
+            new SaveSkills(Skills.Values[(int)TSkill.Parry], Skills.Values[(int)TSkill.Kick],
+                Skills.Values[(int)TSkill.KickMinMana], Skills.Values[(int)TSkill.KickMaxEnergy],
+                Skills.Values[(int)TSkill.Fleeing], Skills.Values[(int)TSkill.FleeEnergy],
+                Skills.Values[(int)TSkill.Comparing], Skills.Values[(int)TSkill.Cooking],
+                Skills.Values[(int)TSkill.Returning]),
+            new SaveSession(Session.Room, Session.CheckpointStage, Session.SavedFlag),
+            new SaveWorld(World.Quest, World.QuestKills, World.Door, World.OldElf,
+                World.DuncanQuest, SaveMonsters()));
+        File.WriteAllText(SaveFileName(), JsonSerializer.Serialize(save, SaveFormat));
     }
 
     public static void Death() {
@@ -2945,7 +2880,6 @@ public static class Game {
         if (Session.SavedFlag) {
             Command = CmdZdolnosci;
             Session.SavedFlag = false;
-            Out.WriteLine(Session.OuterRoom + TxtCmdJustSaved_01);
         }
     }
 
@@ -3129,7 +3063,7 @@ public static class Game {
         new() { wisdom = 10, strength = -1, dexterity = 10, text1 = TxtCmdShowSkills_02, skill = TSkill.Fleeing, text2 = TxtShared_26 },
         new() { wisdom = 15, strength = -1, dexterity = 11, text1 = TxtCmdShowSkills_03, skill = TSkill.Parry, text2 = TxtShared_26 },
         new() { wisdom = 11, strength = -1, dexterity = -1, text1 = TxtCmdShowSkills_04, skill = TSkill.Comparing, text2 = TxtShared_26 },
-        new() { wisdom = 18, strength = -1, dexterity = -1, text1 = TxtCmdShowSkills_05, skill = TSkill.CookingDisplayBug, text2 = TxtShared_26 },
+        new() { wisdom = 18, strength = -1, dexterity = -1, text1 = TxtCmdShowSkills_05, skill = TSkill.Cooking, text2 = TxtShared_26 },
         new() { wisdom = 19, strength = -1, dexterity = -1, text1 = TxtCmdShowSkills_06, skill = TSkill.Returning, text2 = TxtShared_26 },
     ];
 
@@ -3208,100 +3142,54 @@ public static class Game {
     }
 
     public static void LoadGame() {
-        int dummy = 0;
-        Assign(Session.SaveFile, SaveFileName());
-        Reset(Session.SaveFile);
-        LoadSlot(new IntSlot(() => Player.Mana, v => Player.Mana = v));
-        Player.Mana = (Player.Mana / SaveStatScale);
-        LoadSlotShort(ref Player.Level);
-        Player.Level = (Player.Level - SaveLevelBias);
-        LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.OldSword));
-        LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.Pipe));
-        LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.Diploma));
-        LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.SmallShield));
-        LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.SpikedSuit));
-        LoadSlot(new IntSlot(() => Player.Experience, v => Player.Experience = v));
-        LoadSlot(new IntSlot(() => Player.Energy, v => Player.Energy = v));
-        Player.Energy = (Player.Energy / SaveStatScale);
-        Player.Energy = (Player.Energy - SaveEnergyBias);
-        LoadSlot(new IntSlot(() => Session.OuterRoom, v => Session.OuterRoom = v));
-        LoadSlot(IntSlot.Into(Player.Stats, (int)TStat.Dexterity));
-        Player.Stats[(int)TStat.Dexterity] = (Player.Stats[(int)TStat.Dexterity] - SaveDexterityBias);
-        LoadSlot(IntSlot.Into(Player.Stats, (int)TStat.Strength));
-        Player.Stats[(int)TStat.Strength] = (Player.Stats[(int)TStat.Strength] + SaveStrengthBias);
-        LoadSlot(IntSlot.Into(Player.Stats, (int)TStat.Wisdom));
-        LoadSlot(new IntSlot(() => Player.Practice, v => Player.Practice = v));
-        LoadSlot(new IntSlot(() => Session.CheckpointStage, v => Session.CheckpointStage = v));
-        LoadSlot(new IntSlot(() => dummy, v => dummy = v));
-        LoadSlot(new IntSlot(() => dummy, v => dummy = v));
-        LoadSlotLong(ref Player.Money);
-        Player.Money = Player.Money / Player.Stats[(int)TStat.Wisdom];
-        LoadSlot(new IntSlot(() => Combat.Loot, v => Combat.Loot = v));
-        LoadSlot(new IntSlot(() => Player.MaxEnergy, v => Player.MaxEnergy = v));
-        LoadSlot(new IntSlot(() => Bag.Limit, v => Bag.Limit = v));
-        LoadSlot(IntSlot.Into(Skills.Values, (int)TSkill.Comparing));
-        LoadSlot(new IntSlot(() => Player.MaxMana, v => Player.MaxMana = v));
-        LoadSlot(IntSlot.Into(Player.Stats, (int)TStat.MaxStrength));
-        LoadSlot(IntSlot.Into(Player.Stats, (int)TStat.MaxDexterity));
-        LoadSlot(IntSlot.Into(Player.Stats, (int)TStat.MaxWisdom));
-        LoadSlot(new IntSlot(() => Bag.Count, v => Bag.Count = v));
-        LoadSlot(IntSlot.Into(Gear.Values, (int)TGearItem.Armor));
-        LoadSlot(IntSlot.Into(Gear.Values, (int)TGearItem.LuckRoll));
-        LoadSlot(IntSlot.Into(Gear.Values, (int)TGearItem.WeaponKind));
-        LoadSlot(IntSlot.Into(Gear.Values, (int)TGearItem.Wearing));
-        LoadSlot(new IntSlot(() => Session.Overall, v => Session.Overall = v));
-        LoadSlot(new IntSlot(() => Session.SavedFlag ? 1 : 0, v => Session.SavedFlag = v != 0));
-        LoadSlot(IntSlot.Into(World.Monsters, (int)TMonster.CageWeakling));
-        LoadSlot(IntSlot.Into(World.Monsters, (int)TMonster.CageStrong));
-        LoadSlot(IntSlot.Into(World.Monsters, (int)TMonster.CageAgile));
-        LoadSlot(IntSlot.Into(World.Monsters, (int)TMonster.CageTough));
-        LoadSlot(IntSlot.Into(World.Monsters, (int)TMonster.CageHuge));
-        LoadSlot(IntSlot.Into(Gear.Values, (int)TGearItem.ShieldKind));
-        LoadSlot(IntSlot.Into(Gear.Values, (int)TGearItem.ArmorRating));
-        LoadSlot(IntSlot.Into(Skills.Values, (int)TSkill.Cooking));
-        LoadSlot(IntSlot.Into(Skills.Values, (int)TSkill.CookingDisplayBug));
-        LoadSlot(new IntSlot(() => dummy, v => dummy = v));
-        LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.Heart));
-        LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.ManaBottle));
-        LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.Cookie));
-        LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.DryRation));
-        LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.Bread));
-        LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.BreadRoll));
-        LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.Sausage));
-        LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.Bread));
-        LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.BreadRoll));
-        LoadSlot(IntSlot.Into(Gear.Values, (int)TGearItem.WornCount));
-        LoadSlot(IntSlot.Into(Skills.Values, (int)TSkill.Parry));
-        LoadSlot(IntSlot.Into(Skills.Values, (int)TSkill.Kick));
-        LoadSlot(IntSlot.Into(Skills.Values, (int)TSkill.KickMinMana));
-        LoadSlot(IntSlot.Into(Skills.Values, (int)TSkill.KickMaxEnergy));
-        LoadSlot(IntSlot.Into(Skills.Values, (int)TSkill.Fleeing));
-        LoadSlot(IntSlot.Into(Skills.Values, (int)TSkill.FleeEnergy));
-        LoadSlot(new IntSlot(() => Combat.Fled ? 1 : 0, v => Combat.Fled = v != 0));
-        LoadSlot(new IntSlot(() => Session.InArena, v => Session.InArena = v));
-        LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.Tracksuit));
-        LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.Cassette));
-        LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.TeleportPill));
-        LoadSlot(IntSlot.Into(World.Monsters, (int)TMonster.Woodworm));
-        LoadSlot(IntSlot.Into(World.Monsters, (int)TMonster.Fly));
-        LoadSlot(IntSlot.Into(World.Monsters, (int)TMonster.Bacterium));
-        LoadSlot(new IntSlot(() => World.Quest, v => World.Quest = v));
-        LoadSlot(new IntSlot(() => World.QuestKills, v => World.QuestKills = v));
-        LoadSlot(IntSlot.Into(World.Monsters, (int)TMonster.Snail));
-        LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.LuckyLeaf));
-        LoadSlot(IntSlot.Into(Skills.Values, (int)TSkill.Returning));
-        LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.Bigos));
-        LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.Beer));
-        LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.CompareScroll));
-        LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.ReturnScroll));
-        LoadSlot(new IntSlot(() => World.OldElf ? 1 : 0, v => World.OldElf = v != 0));
-        LoadSlotShort(ref World.DuncanQuest);
-        LoadSlot(IntSlot.Into(Bag.Items, (int)TBagItem.Backpack));
-        LoadSlot(IntSlot.Into(World.Monsters, (int)TMonster.Duncan));
-        Session.SaveFile.SkipLine();
-        LoadSlotText(ref Gear.WornGarment);
-        LoadSlotText(ref Player.Name);
-        Close(Session.SaveFile);
+        SaveData? save = JsonSerializer.Deserialize<SaveData>(File.ReadAllText(SaveFileName()));
+        if (save is null)
+            return;
+        Player.Name = save.Name;
+        Player.Level = save.Player.Level;
+        Player.Experience = save.Player.Experience;
+        Player.Energy = save.Player.Energy;
+        Player.MaxEnergy = save.Player.MaxEnergy;
+        Player.Mana = save.Player.Mana;
+        Player.MaxMana = save.Player.MaxMana;
+        Player.Practice = save.Player.Practice;
+        Player.Money = save.Player.Money;
+        Player.Stats[(int)TStat.Strength] = save.Player.Stats.Strength;
+        Player.Stats[(int)TStat.Dexterity] = save.Player.Stats.Dexterity;
+        Player.Stats[(int)TStat.Wisdom] = save.Player.Stats.Wisdom;
+        Player.Stats[(int)TStat.MaxStrength] = save.Player.Stats.MaxStrength;
+        Player.Stats[(int)TStat.MaxDexterity] = save.Player.Stats.MaxDexterity;
+        Player.Stats[(int)TStat.MaxWisdom] = save.Player.Stats.MaxWisdom;
+        Bag.Count = save.Bag.Count;
+        Bag.Limit = save.Bag.Limit;
+        Bag.Permit = save.Bag.Permit;
+        LoadItems(save.Bag.Items);
+        Gear.Values[(int)TGearItem.Armor] = save.Gear.Armor;
+        Gear.Values[(int)TGearItem.WornCount] = save.Gear.WornCount;
+        Gear.Values[(int)TGearItem.LuckRoll] = save.Gear.LuckRoll;
+        Gear.Values[(int)TGearItem.Wearing] = save.Gear.Wearing;
+        Gear.Values[(int)TGearItem.WeaponKind] = save.Gear.WeaponKind;
+        Gear.Values[(int)TGearItem.ShieldKind] = save.Gear.ShieldKind;
+        Gear.WornGarment = save.Gear.WornGarment;
+        Skills.Values[(int)TSkill.Parry] = save.Skills.Parry;
+        Skills.Values[(int)TSkill.Kick] = save.Skills.Kick;
+        Skills.Values[(int)TSkill.KickMinMana] = save.Skills.KickMinMana;
+        Skills.Values[(int)TSkill.KickMaxEnergy] = save.Skills.KickMaxEnergy;
+        Skills.Values[(int)TSkill.Fleeing] = save.Skills.Fleeing;
+        Skills.Values[(int)TSkill.FleeEnergy] = save.Skills.FleeEnergy;
+        Skills.Values[(int)TSkill.Comparing] = save.Skills.Comparing;
+        Skills.Values[(int)TSkill.Cooking] = save.Skills.Cooking;
+        Skills.Values[(int)TSkill.Returning] = save.Skills.Returning;
+        Session.Room = save.Session.Room;
+        Session.OuterRoom = save.Session.Room;
+        Session.CheckpointStage = save.Session.CheckpointStage;
+        Session.SavedFlag = save.Session.SavedFlag;
+        World.Quest = save.World.Quest;
+        World.QuestKills = save.World.QuestKills;
+        World.Door = save.World.Door;
+        World.OldElf = save.World.OldElf;
+        World.DuncanQuest = save.World.DuncanQuest;
+        LoadMonsters(save.World.Monsters);
         Out.WriteLine(TxtLoadCharacter_01 + Gear.WornGarment);
     }
 
