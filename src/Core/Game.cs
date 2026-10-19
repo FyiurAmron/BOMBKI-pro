@@ -322,6 +322,7 @@ public static class Game {
 
     public const int MaxInt = 32767;
     public const int ItemUnit = 10;
+    public const int LiroyKills = 150;
 
     public static readonly List<TQuestOffer> QuestOffers = [
         null!,
@@ -847,6 +848,16 @@ public static class Game {
             strengthBase = 16, strengthRand = 2, lootBase = 15, lootRand = 50,
             heartChance = 5, requireEnergy = false, antDoughnut = false, },
     ]);
+
+    public class TCageStats {
+        public int energy, dexterity, strength, lootRand, lootThreshold;
+    }
+
+    public static readonly TCageStats CageWeaklingStats = new() { energy = 20, dexterity = 3, strength = 3, lootRand = 10, lootThreshold = 4, };
+    public static readonly TCageStats CageStrongStats = new() { energy = 20, dexterity = 3, strength = 10, lootRand = 15, lootThreshold = 7, };
+    public static readonly TCageStats CageAgileStats = new() { energy = 20, dexterity = 30, strength = 3, lootRand = 15, lootThreshold = 7, };
+    public static readonly TCageStats CageToughStats = new() { energy = 40, dexterity = 3, strength = 3, lootRand = 15, lootThreshold = 7, };
+    public static readonly TCageStats CageHugeStats = new() { energy = 40, dexterity = 11, strength = 10, lootRand = 30, lootThreshold = 10, };
 
     public static void Fight(TFoe foe) {
         TFoeStats f = Foes[foe];
@@ -1761,7 +1772,7 @@ public static class Game {
                                 Player.Money += 30;
                                 CassetteGain();
                                 if (World.Quest > 1) {
-                                    World.QuestKills -= 150;
+                                    World.QuestKills -= LiroyKills;
                                 }
 
                                 World.Monsters[TMonster.Liroy] = 0;
@@ -2171,7 +2182,7 @@ public static class Game {
         }
 
         if (World.Quest > 1) {
-            Out.WriteLine(TxtShowCharacter_27 + (World.QuestKills - 150) + TxtShowCharacter_28);
+            Out.WriteLine(TxtShowCharacter_27 + (World.QuestKills - LiroyKills) + TxtShowCharacter_28);
         }
 
         if (World.DuncanQuest != 0) {
@@ -2563,12 +2574,8 @@ public static class Game {
 
     public static void Death() {
         WriteLines([.. TxtDeathLines1.Skip(1)]);
-        if (World.Quest == 1) {
-            World.QuestKills = 75;
-        }
-
-        if (World.Quest > 1) {
-            World.QuestKills = 200;
+        if (World.Quest > 0) {
+            World.QuestKills = QuestOffers[World.Quest].kills;
         }
 
         Player.Energy = Player.MaxEnergy;

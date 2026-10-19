@@ -100,6 +100,8 @@ public static class Rooms {
     public const int RoomForest4 = 108;
     public const int RoomForest5 = 109;
 
+    public const int StaruchPrice = 200;
+
     public class TRoomPoster {
         public string cmd = "";
         public List<string> lines = [];
@@ -205,18 +207,18 @@ public static class Rooms {
         }
     }
 
-    public static void CageMonsterFight(IntSlot monster, int room, int energy, int dexterity, int strength, int lootRand, int lootThreshold) {
+    public static void CageMonsterFight(IntSlot monster, int room, TCageStats stats) {
         if ((Verb == CmdZabij && Rest == CmdPotwor) && (monster.Get() == room)) {
-            Combat.EnemyEnergy = energy;
-            Combat.EnemyDexterity = dexterity;
-            Combat.EnemyStrength = strength;
+            Combat.EnemyEnergy = stats.energy;
+            Combat.EnemyDexterity = stats.dexterity;
+            Combat.EnemyStrength = stats.strength;
             DoFight();
             if (!Combat.Fled) {
                 monster.Set(0);
-                Combat.Loot = Roll(lootRand);
+                Combat.Loot = Roll(stats.lootRand);
                 Out.WriteLine(TxtShared_08 + Combat.Loot + TxtShared_09);
                 Player.Money += Combat.Loot;
-                TryCageLoot(lootThreshold);
+                TryCageLoot(stats.lootThreshold);
             } else {
                 Combat.Fled = false;
             }
@@ -390,7 +392,7 @@ public static class Rooms {
                 if (entering) {
                     DescribeCage(CageWeakling, RoomCageWeakling, TxtRoom12_01, TxtShared_07);
                 } else {
-                    CageMonsterFight(IntSlot.Into(World.Monsters, CageWeakling), RoomCageWeakling, 20, 3, 3, 10, 4);
+                    CageMonsterFight(IntSlot.Into(World.Monsters, CageWeakling), RoomCageWeakling, CageWeaklingStats);
                 }
             },
         },
@@ -403,7 +405,7 @@ public static class Rooms {
                 if (entering) {
                     DescribeCage(CageStrong, RoomCageStrong, TxtRoom13_01, TxtShared_07);
                 } else {
-                    CageMonsterFight(IntSlot.Into(World.Monsters, CageStrong), RoomCageStrong, 20, 3, 10, 15, 7);
+                    CageMonsterFight(IntSlot.Into(World.Monsters, CageStrong), RoomCageStrong, CageStrongStats);
                 }
             },
         },
@@ -416,7 +418,7 @@ public static class Rooms {
                 if (entering) {
                     DescribeCage(CageAgile, RoomCageAgile, TxtRoom14_01, TxtRoom14_02);
                 } else {
-                    CageMonsterFight(IntSlot.Into(World.Monsters, CageAgile), RoomCageAgile, 20, 30, 3, 15, 7);
+                    CageMonsterFight(IntSlot.Into(World.Monsters, CageAgile), RoomCageAgile, CageAgileStats);
                 }
             },
         },
@@ -429,7 +431,7 @@ public static class Rooms {
                 if (entering) {
                     DescribeCage(CageTough, RoomCageTough, TxtRoom15_01, TxtShared_07);
                 } else {
-                    CageMonsterFight(IntSlot.Into(World.Monsters, CageTough), RoomCageTough, 40, 3, 3, 15, 7);
+                    CageMonsterFight(IntSlot.Into(World.Monsters, CageTough), RoomCageTough, CageToughStats);
                 }
             },
         },
@@ -443,19 +445,19 @@ public static class Rooms {
                     DescribeCage(CageHuge, RoomCageHuge, TxtRoom16_01, TxtShared_07);
                 }
                 if (World.Monsters[CageHuge] == RoomCageHuge) {
-                    Combat.EnemyEnergy = 40;
-                    Combat.EnemyDexterity = 11;
-                    Combat.EnemyStrength = 10;
+                    Combat.EnemyEnergy = CageHugeStats.energy;
+                    Combat.EnemyDexterity = CageHugeStats.dexterity;
+                    Combat.EnemyStrength = CageHugeStats.strength;
                     DoFight();
                     if (Combat.Fled) {
                         Combat.Fled = false;
                         MoveTo(RoomCageCorridor);
                     } else {
                         World.Monsters[CageHuge] = 0;
-                        Combat.Loot = Roll(30);
+                        Combat.Loot = Roll(CageHugeStats.lootRand);
                         Out.WriteLine(TxtShared_08 + Combat.Loot + TxtShared_09);
                         Player.Money += Combat.Loot;
-                        TryCageLoot(10);
+                        TryCageLoot(CageHugeStats.lootThreshold);
                     }
                 }
             },
@@ -1177,14 +1179,14 @@ public static class Rooms {
                             if (Bag.Items[TBagItem.ReturnScroll] < 0) {
                                 Out.WriteLine(TxtRoom86_13);
                                 MoveTo(RoomCageHuge);
-                            } else if ((Bag.Items[TBagItem.Sausage] > -30) && (Player.Money < 200) && (Bag.Items[TBagItem.ReturnScroll] == 0)) {
+                            } else if ((Bag.Items[TBagItem.Sausage] > -30) && (Player.Money < StaruchPrice) && (Bag.Items[TBagItem.ReturnScroll] == 0)) {
                                 WriteLines([.. TxtRoom86Lines1.Skip(1)]);
-                            } else if ((Bag.Items[TBagItem.Sausage] < -30) && (Player.Money > 199)) {
+                            } else if ((Bag.Items[TBagItem.Sausage] < -30) && (Player.Money >= StaruchPrice)) {
                                 WriteLines([.. TxtRoom86Lines2.Skip(1)]);
                                 MoveTo(RoomCityCentre);
                                 Bag.Items[TBagItem.Beer] -= ItemUnit;
                                 Bag.Items[TBagItem.Sausage] += 40;
-                                Player.Money -= 200;
+                                Player.Money -= StaruchPrice;
                                 Bag.Items[TBagItem.ReturnScroll] -= ItemUnit;
                                 Player.Experience += 50;
                                 Bag.Count -= 2;

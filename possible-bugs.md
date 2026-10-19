@@ -23,8 +23,7 @@ behaviour, so a fix must re-pin them.
 5. `TxtGeneralStoreShopLines1` is unused (and omits
     TxtGeneralStoreShop_02, which is used elsewhere).
 6. Quest text "ZABIJ 50 potworów w tym LIROYA" vs 200 kill units
-    (Liroy = 150; the sheet prints `QuestKills - 150`); magic 150 is
-    duplicated in two places.
+    (Liroy = 150; the sheet prints `QuestKills - LiroyKills`).
 7. Sentinel styles mixed: line lists start with "", data tables with
     `null!`; consumption mixes Skip(1) and direct indexes
     (`TxtRoom1Lines1[1..3]`).
@@ -46,13 +45,10 @@ behaviour, so a fix must re-pin them.
     `== 0` across use/drop/sell/buy/loot.
 13. `ShowCharacter` has side effects: recomputes Bag.Limit and
     Gear.ArmorRating; ArmorRating is display-only (combat uses Armor).
-14. Magic numbers duplicated: Liroy = 150 (StageFights + ShowCharacter),
-    quest = 200, Staruch 4 weka/200 money/-2 count, cage stats, cave
-    rocks 25.
-15. `Bag.Count`/`Limit` have no sanity checks.
-16. Quest prices duplicated as text (TxtRoom100_05..07) and data
+14. `Bag.Count`/`Limit` have no sanity checks.
+15. Quest prices duplicated as text (TxtRoom100_05..07) and data
     (QuestOffers) - drift risk.
-17. Permit bookkeeping is inconsistent: the permit is a carried item
+16. Permit bookkeeping is inconsistent: the permit is a carried item
     (buying a forged one adds a bag slot, so quest 1's reward adding one
     is right), but quests 2/3 and the quest-master kill grant it without
     a slot, and ZNISZCZ PRZEPUSTKA adds a slot instead of freeing one
@@ -62,15 +58,15 @@ behaviour, so a fix must re-pin them.
 
 ## Smells / architecture
 
-18. `Game.cs` is a ~3.3k-line monolith (combat, economy, shops, saves,
+17. `Game.cs` is a ~3.3k-line monolith (combat, economy, shops, saves,
     input, RNG); `Rooms.cs` ~1.36k; `Texts.cs` ~1k.
-19. Verb/rest convention (trailing space in verb consts, first-space
+18. Verb/rest convention (trailing space in verb consts, first-space
     split) is undocumented and fails silently; SplitCache is a mutable
     static dictionary.
-20. The `Command` setter throws on null (readers currently never return
+19. The `Command` setter throws on null (readers currently never return
     null).
-21. `ExpandAbbrev` allocates two lists per command; `DebugEnabled` reads
+20. `ExpandAbbrev` allocates two lists per command; `DebugEnabled` reads
     the environment on every command.
-22. `TRoom.turn` is `Action<bool>` with undocumented "entering"
+21. `TRoom.turn` is `Action<bool>` with undocumented "entering"
     semantics; some lambdas peek at `Session.Room`.
-23. Data/graph divergence has no validation (e.g. item 4).
+22. Data/graph divergence has no validation (e.g. item 4).
