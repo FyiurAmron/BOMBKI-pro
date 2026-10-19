@@ -161,17 +161,17 @@ public static class Rooms {
             case CmdZabij:
                 switch (Rest) {
                     case CmdBakteria:
-                        if (Session.Room == World.Monsters[(int)TMonster.Bacterium]) {
+                        if (Session.Room == World.Monsters[TMonster.Bacterium]) {
                             Fight(TFoe.WeakEnemy);
-                            World.Monsters[(int)TMonster.Bacterium] = 0;
+                            World.Monsters[TMonster.Bacterium] = 0;
                             Out.WriteLine(TxtArenaMaze_02);
                         }
                         break;
                     case CmdWilczur:
-                        if (Session.Room == World.Monsters[(int)TMonster.Mongrel]) {
+                        if (Session.Room == World.Monsters[TMonster.Mongrel]) {
                             Out.WriteLine(TxtArenaMaze_03);
                             Fight(TFoe.WeakishEnemy);
-                            World.Monsters[(int)TMonster.Mongrel] = 0;
+                            World.Monsters[TMonster.Mongrel] = 0;
                         }
                         break;
                 }
@@ -180,9 +180,9 @@ public static class Rooms {
         for (int bi = 1; bi < BeastKills.Count; bi++) {
             TBeastKill b = BeastKills[bi];
             if (b.unlessFled) {
-                KillBeastUnlessFled(b.cmd, IntSlot.Into(World.Monsters, (int)b.beast), b.foe);
+                KillBeastUnlessFled(b.cmd, IntSlot.Into(World.Monsters, b.beast), b.foe);
             } else {
-                KillBeast(b.cmd, IntSlot.Into(World.Monsters, (int)b.beast), b.foe);
+                KillBeast(b.cmd, IntSlot.Into(World.Monsters, b.beast), b.foe);
             }
         }
         for (int ai = 1; ai < ArenaKills.Count; ai++) {
@@ -225,9 +225,9 @@ public static class Rooms {
 
     public static void DescribeCage(TMonster monster, int room, string aliveLine, string deadLine) {
         Out.WriteLine(TxtShared_06);
-        if (World.Monsters[(int)monster] == room) {
+        if (World.Monsters[monster] == room) {
             Out.WriteLine(aliveLine);
-        } else if (World.Monsters[(int)monster] == 0) {
+        } else if (World.Monsters[monster] == 0) {
             Out.WriteLine(deadLine);
         }
     }
@@ -244,14 +244,14 @@ public static class Rooms {
                 Bag.Count += 1;
                 break;
             case 2:
-                Bag.Items[(int)TBagItem.Diploma] = 0;
+                Bag.Items[TBagItem.Diploma] = 0;
                 Bag.Count -= 1;
                 Player.MaxEnergy -= 5;
                 break;
             case 3:
                 Bag.Count -= 1;
-                Player.Stats[(int)TStat.Wisdom]--;
-                Bag.Items[(int)TBagItem.Pipe] += ItemUnit;
+                Player.Stats[TStat.Wisdom]--;
+                Bag.Items[TBagItem.Pipe] += ItemUnit;
                 Player.Practice -= 1;
                 break;
         }
@@ -390,7 +390,7 @@ public static class Rooms {
                 if (entering) {
                     DescribeCage(CageWeakling, RoomCageWeakling, TxtRoom12_01, TxtShared_07);
                 } else {
-                    CageMonsterFight(IntSlot.Into(World.Monsters, (int)CageWeakling), RoomCageWeakling, 20, 3, 3, 10, 4);
+                    CageMonsterFight(IntSlot.Into(World.Monsters, CageWeakling), RoomCageWeakling, 20, 3, 3, 10, 4);
                 }
             },
         },
@@ -403,7 +403,7 @@ public static class Rooms {
                 if (entering) {
                     DescribeCage(CageStrong, RoomCageStrong, TxtRoom13_01, TxtShared_07);
                 } else {
-                    CageMonsterFight(IntSlot.Into(World.Monsters, (int)CageStrong), RoomCageStrong, 20, 3, 10, 15, 7);
+                    CageMonsterFight(IntSlot.Into(World.Monsters, CageStrong), RoomCageStrong, 20, 3, 10, 15, 7);
                 }
             },
         },
@@ -416,7 +416,7 @@ public static class Rooms {
                 if (entering) {
                     DescribeCage(CageAgile, RoomCageAgile, TxtRoom14_01, TxtRoom14_02);
                 } else {
-                    CageMonsterFight(IntSlot.Into(World.Monsters, (int)CageAgile), RoomCageAgile, 20, 30, 3, 15, 7);
+                    CageMonsterFight(IntSlot.Into(World.Monsters, CageAgile), RoomCageAgile, 20, 30, 3, 15, 7);
                 }
             },
         },
@@ -429,7 +429,7 @@ public static class Rooms {
                 if (entering) {
                     DescribeCage(CageTough, RoomCageTough, TxtRoom15_01, TxtShared_07);
                 } else {
-                    CageMonsterFight(IntSlot.Into(World.Monsters, (int)CageTough), RoomCageTough, 40, 3, 3, 15, 7);
+                    CageMonsterFight(IntSlot.Into(World.Monsters, CageTough), RoomCageTough, 40, 3, 3, 15, 7);
                 }
             },
         },
@@ -442,7 +442,7 @@ public static class Rooms {
                 if (entering) {
                     DescribeCage(CageHuge, RoomCageHuge, TxtRoom16_01, TxtShared_07);
                 }
-                if (World.Monsters[(int)CageHuge] == RoomCageHuge) {
+                if (World.Monsters[CageHuge] == RoomCageHuge) {
                     Combat.EnemyEnergy = 40;
                     Combat.EnemyDexterity = 11;
                     Combat.EnemyStrength = 10;
@@ -451,7 +451,7 @@ public static class Rooms {
                         Combat.Fled = false;
                         MoveTo(RoomCageCorridor);
                     } else {
-                        World.Monsters[(int)CageHuge] = 0;
+                        World.Monsters[CageHuge] = 0;
                         Combat.Loot = Roll(30);
                         Out.WriteLine(TxtShared_08 + Combat.Loot + TxtShared_09);
                         Player.Money += Combat.Loot;
@@ -473,10 +473,10 @@ public static class Rooms {
                 }
                 if (Verb == CmdPatrz && Rest == CmdPlakat) {
                     WriteLines([.. TxtRoom17Lines1.Skip(1)]);
-                    if ((World.Monsters[(int)CageWeakling] == 0) && (World.Monsters[(int)CageAgile] == 0) &&
-                    (World.Monsters[(int)CageStrong] == 0) && (World.Monsters[(int)CageTough] == 0) &&
-                    (World.Monsters[(int)CageHuge] == 0) && (Bag.Items[(int)TBagItem.Diploma] == 0)) {
-                        Bag.Items[(int)TBagItem.Diploma] = RoomCageReward;
+                    if ((World.Monsters[CageWeakling] == 0) && (World.Monsters[CageAgile] == 0) &&
+                    (World.Monsters[CageStrong] == 0) && (World.Monsters[CageTough] == 0) &&
+                    (World.Monsters[CageHuge] == 0) && (Bag.Items[TBagItem.Diploma] == 0)) {
+                        Bag.Items[TBagItem.Diploma] = RoomCageReward;
                     }
                 }
             },
@@ -811,10 +811,10 @@ public static class Rooms {
             moves = [Go(CmdPolodnie, RoomCrowd3), Go(CmdWschod, RoomStageEntrance)],
             turn = entering => {
                 if (entering) {
-                    if (World.Monsters[(int)Minibarman] == 67) {
+                    if (World.Monsters[Minibarman] == 67) {
                         Out.WriteLine(TxtConcertRooms_20);
                     }
-                    if (World.Monsters[(int)Fatso] == 67) {
+                    if (World.Monsters[Fatso] == 67) {
                         Out.WriteLine(TxtConcertRooms_21);
                     }
                     DescribeCrowd();
@@ -825,29 +825,29 @@ public static class Rooms {
                     case CmdZabij:
                         switch (Rest) {
                             case CmdMiniBarman:
-                                if (World.Monsters[(int)Minibarman] == 67) {
+                                if (World.Monsters[Minibarman] == 67) {
                                     Out.WriteLine(TxtConcertRooms_23);
                                     Out.WriteLine(TxtConcertRooms_24);
                                     Fight(VeryHardEnemy);
                                     if (Player.Energy > 0) {
-                                        World.Monsters[(int)Minibarman] = 0;
+                                        World.Monsters[Minibarman] = 0;
                                         Combat.Roll = Roll(100);
                                         if (Combat.Roll < 15) {
                                             Out.WriteLine(TxtConcertRooms_25 + TxtShared_08 + TxtPiwoTail);
-                                            Bag.Items[(int)TBagItem.Beer] -= ItemUnit;
+                                            Bag.Items[TBagItem.Beer] -= ItemUnit;
                                             Bag.Count += 1;
                                         }
                                     }
                                 }
                                 break;
                             case CmdGrubas:
-                                if (World.Monsters[(int)Fatso] == 67) {
+                                if (World.Monsters[Fatso] == 67) {
                                     Fight(VeryHardEnemy);
                                     if (Player.Energy > 0) {
-                                        World.Monsters[(int)Fatso] = 0;
+                                        World.Monsters[Fatso] = 0;
                                         if (Combat.Roll < 15) {
                                             Out.WriteLine(TxtConcertRooms_26 + TxtShared_08 + TxtPiwoTail);
-                                            Bag.Items[(int)TBagItem.Beer] -= ItemUnit;
+                                            Bag.Items[TBagItem.Beer] -= ItemUnit;
                                             Bag.Count += 1;
                                         }
                                     }
@@ -888,30 +888,30 @@ public static class Rooms {
             moves = [Go(CmdZachod, RoomStageEntrance), Go(CmdPolodnie, RoomStage1)],
             turn = entering => {
                 if (entering) {
-                    if (World.Monsters[(int)DJ] == 69) {
+                    if (World.Monsters[DJ] == 69) {
                         Out.WriteLine(TxtConcertRooms_35);
                     }
                     return;
                 }
                 if (Verb == CmdZabij && Rest == CmdDJ) {
-                    if (World.Monsters[(int)DJ] == 69) {
+                    if (World.Monsters[DJ] == 69) {
                         Fight(VeryHardEnemy);
                         if (Combat.EnemyEnergy < 0) {
-                            World.Monsters[(int)DJ] = 0;
+                            World.Monsters[DJ] = 0;
                             Combat.Roll = Roll(100);
                             if (Combat.Roll < 25) {
                                 Out.WriteLine(TxtShared_08 + TxtConcertRooms_38);
-                                Bag.Items[(int)TBagItem.DryRation] -= ItemUnit;
+                                Bag.Items[TBagItem.DryRation] -= ItemUnit;
                                 Bag.Count += 1;
                             }
                             if (Combat.Roll < 3) {
                                 Out.WriteLine(TxtShared_08 + TxtConcertRooms_39);
                                 Out.WriteLine(TxtBang + TxtUniqeItem + TxtConcertRooms_40);
-                                Bag.Items[(int)TBagItem.Cassette] -= ItemUnit;
+                                Bag.Items[TBagItem.Cassette] -= ItemUnit;
                                 Player.MaxEnergy += 5;
-                                Gear.Values[(int)TGearItem.Armor] -= 8;
+                                Gear.Values[TGearItem.Armor] -= 8;
                                 Bag.Count += 1;
-                                Player.Stats[(int)TStat.Dexterity]++;
+                                Player.Stats[TStat.Dexterity]++;
                             }
                         }
                     }
@@ -961,13 +961,13 @@ public static class Rooms {
             moves = [Go(CmdPolodnie, RoomDarkStreet)],
             turn = entering => {
                 if (entering) {
-                    if (World.Monsters[(int)Maciek] == 76) {
+                    if (World.Monsters[Maciek] == 76) {
                         Out.WriteLine(TxtRoom76_05);
                     }
-                    if (World.Monsters[(int)Pedal] == 76) {
+                    if (World.Monsters[Pedal] == 76) {
                         Out.WriteLine(TxtRoom76_06);
                     }
-                    if (World.Monsters[(int)Couple] == 76) {
+                    if (World.Monsters[Couple] == 76) {
                         Out.WriteLine(TxtRoom76_07);
                     }
                     return;
@@ -980,17 +980,17 @@ public static class Rooms {
                         switch (Rest) {
                             case CmdPedal:
                                 Fight(EasyEnemy);
-                                World.Monsters[(int)Pedal] = 0;
+                                World.Monsters[Pedal] = 0;
                                 PillGain();
                                 break;
                             case CmdPara:
                                 Fight(VeryHardEnemy);
-                                World.Monsters[(int)Couple] = 0;
+                                World.Monsters[Couple] = 0;
                                 Fight(VeryHardEnemy);
                                 break;
                             case CmdMaciek:
                                 Fight(EasyEnemy);
-                                World.Monsters[(int)Maciek] = 0;
+                                World.Monsters[Maciek] = 0;
                                 break;
                         }
                         break;
@@ -1174,18 +1174,18 @@ public static class Rooms {
                         break;
                     case CmdRozmawiaj:
                         if (Rest == CmdStaruch) {
-                            if (Bag.Items[(int)TBagItem.ReturnScroll] < 0) {
+                            if (Bag.Items[TBagItem.ReturnScroll] < 0) {
                                 Out.WriteLine(TxtRoom86_13);
                                 MoveTo(RoomCageHuge);
-                            } else if ((Bag.Items[(int)TBagItem.Sausage] > -30) && (Player.Money < 200) && (Bag.Items[(int)TBagItem.ReturnScroll] == 0)) {
+                            } else if ((Bag.Items[TBagItem.Sausage] > -30) && (Player.Money < 200) && (Bag.Items[TBagItem.ReturnScroll] == 0)) {
                                 WriteLines([.. TxtRoom86Lines1.Skip(1)]);
-                            } else if ((Bag.Items[(int)TBagItem.Sausage] < -30) && (Player.Money > 199)) {
+                            } else if ((Bag.Items[TBagItem.Sausage] < -30) && (Player.Money > 199)) {
                                 WriteLines([.. TxtRoom86Lines2.Skip(1)]);
                                 MoveTo(RoomCityCentre);
-                                Bag.Items[(int)TBagItem.Beer] -= ItemUnit;
-                                Bag.Items[(int)TBagItem.Sausage] += 40;
+                                Bag.Items[TBagItem.Beer] -= ItemUnit;
+                                Bag.Items[TBagItem.Sausage] += 40;
                                 Player.Money -= 200;
-                                Bag.Items[(int)TBagItem.ReturnScroll] -= ItemUnit;
+                                Bag.Items[TBagItem.ReturnScroll] -= ItemUnit;
                                 Player.Experience += 50;
                                 Bag.Count -= 2;
                             }
@@ -1219,7 +1219,7 @@ public static class Rooms {
                 }
                 Combat.Roll = Roll(100);
                 if (Combat.Roll < 40) {
-                    int damage = Math.Max(0, 25 - Player.Stats[(int)TStat.Dexterity]);
+                    int damage = Math.Max(0, 25 - Player.Stats[TStat.Dexterity]);
                     Out.WriteLine(TxtRoom87_03 + damage + TxtShared_26);
                     if (!Player.ChangeEnergy(-damage)) {
                         Session.Room = DeadRoom;
@@ -1296,12 +1296,12 @@ public static class Rooms {
                                 }
                                 break;
                             case 2:
-                                if ((World.QuestKills < 1) && (Bag.Items[(int)TBagItem.Diploma] <= -ItemUnit)) {
+                                if ((World.QuestKills < 1) && (Bag.Items[TBagItem.Diploma] <= -ItemUnit)) {
                                     GrantQuestReward(2, 250);
                                 }
                                 break;
                             case 3:
-                                if ((World.QuestKills < 1) && (Bag.Items[(int)TBagItem.Pipe] <= -ItemUnit) && (Player.Practice > 0)) {
+                                if ((World.QuestKills < 1) && (Bag.Items[TBagItem.Pipe] <= -ItemUnit) && (Player.Practice > 0)) {
                                     GrantQuestReward(3, 425);
                                 }
                                 break;

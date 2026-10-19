@@ -36,56 +36,56 @@ public class UnitsPrzedmCoreTests {
 
     [Fact]
     public void TrainSila() {
-        Player.Stats[(int)TStat.Strength] = 10;
-        Player.Stats[(int)TStat.MaxStrength] = 20;
+        Player.Stats[TStat.Strength] = 10;
+        Player.Stats[TStat.MaxStrength] = 20;
         Player.Practice = 10;
         Command = "TRENUJ SILA";
         HandleTrain();
-        Assert.Equal(11, Player.Stats[(int)TStat.Strength]);
+        Assert.Equal(11, Player.Stats[TStat.Strength]);
         Assert.Equal(7, Player.Practice);
     }
 
     [Fact]
     public void TrainZrecznosc() {
-        Player.Stats[(int)TStat.Dexterity] = 10;
-        Player.Stats[(int)TStat.MaxDexterity] = 20;
+        Player.Stats[TStat.Dexterity] = 10;
+        Player.Stats[TStat.MaxDexterity] = 20;
         Player.Practice = 10;
         Command = "TRENUJ ZRECZNOSC";
         HandleTrain();
-        Assert.Equal(11, Player.Stats[(int)TStat.Dexterity]);
+        Assert.Equal(11, Player.Stats[TStat.Dexterity]);
         Assert.Equal(8, Player.Practice);
     }
 
     [Fact]
     public void TrainMadrosc() {
-        Player.Stats[(int)TStat.Wisdom] = 10;
-        Player.Stats[(int)TStat.MaxWisdom] = 20;
+        Player.Stats[TStat.Wisdom] = 10;
+        Player.Stats[TStat.MaxWisdom] = 20;
         Player.Practice = 10;
         Command = "TRENUJ MADROSC";
         HandleTrain();
-        Assert.Equal(11, Player.Stats[(int)TStat.Wisdom]);
+        Assert.Equal(11, Player.Stats[TStat.Wisdom]);
         Assert.Equal(7, Player.Practice);
     }
 
     [Fact]
     public void TrainNeedsPracticePoints() {
-        Player.Stats[(int)TStat.Strength] = 10;
-        Player.Stats[(int)TStat.MaxStrength] = 20;
+        Player.Stats[TStat.Strength] = 10;
+        Player.Stats[TStat.MaxStrength] = 20;
         Player.Practice = 2;
         Command = "TRENUJ SILA";
         HandleTrain();
-        Assert.Equal(10, Player.Stats[(int)TStat.Strength]);
+        Assert.Equal(10, Player.Stats[TStat.Strength]);
         Assert.Equal(2, Player.Practice);
     }
 
     [Fact]
     public void TrainCapsAtMaximum() {
-        Player.Stats[(int)TStat.Strength] = 20;
-        Player.Stats[(int)TStat.MaxStrength] = 20;
+        Player.Stats[TStat.Strength] = 20;
+        Player.Stats[TStat.MaxStrength] = 20;
         Player.Practice = 10;
         Command = "TRENUJ SILA";
         HandleTrain();
-        Assert.Equal(20, Player.Stats[(int)TStat.Strength]);
+        Assert.Equal(20, Player.Stats[TStat.Strength]);
         Assert.Equal(10, Player.Practice);
     }
 
@@ -105,24 +105,24 @@ public class UnitsPrzedmCoreTests {
             TMonster.Warrior, TMonster.Tamer,
         ];
         foreach (TMonster m in beasts) {
-            Assert.InRange(World.Monsters[(int)m], 33, 57);
+            Assert.InRange(World.Monsters[m], 33, 57);
         }
 
-        Assert.InRange(World.Monsters[(int)TMonster.Kid], 61, 66);
-        Assert.InRange(World.Monsters[(int)TMonster.Reporter], 61, 66);
+        Assert.InRange(World.Monsters[TMonster.Kid], 61, 66);
+        Assert.InRange(World.Monsters[TMonster.Reporter], 61, 66);
         List<TMonster> maniacs = [
             TMonster.Lunatic, TMonster.Listener, TMonster.Fan,
             TMonster.Man, TMonster.OldMan,
         ];
         foreach (TMonster m in maniacs) {
-            Assert.InRange(World.Monsters[(int)m], 61, 67);
+            Assert.InRange(World.Monsters[m], 61, 67);
         }
 
         List<TMonster> heavies = [
             TMonster.Policeman, TMonster.Bouncer, TMonster.Gorilla,
         ];
         foreach (TMonster m in heavies) {
-            Assert.InRange(World.Monsters[(int)m], 61, 68);
+            Assert.InRange(World.Monsters[m], 61, 68);
         }
 
         List<TMonster> musicians = [
@@ -130,15 +130,15 @@ public class UnitsPrzedmCoreTests {
             TMonster.Liroy,
         ];
         foreach (TMonster m in musicians) {
-            Assert.InRange(World.Monsters[(int)m], 70, 72);
+            Assert.InRange(World.Monsters[m], 70, 72);
         }
 
-        Assert.Equal(67, World.Monsters[(int)TMonster.Minibarman]);
-        Assert.Equal(67, World.Monsters[(int)TMonster.Fatso]);
-        Assert.Equal(69, World.Monsters[(int)TMonster.DJ]);
-        Assert.Equal(76, World.Monsters[(int)TMonster.Pedal]);
-        Assert.Equal(76, World.Monsters[(int)TMonster.Couple]);
-        Assert.Equal(76, World.Monsters[(int)TMonster.Maciek]);
+        Assert.Equal(67, World.Monsters[TMonster.Minibarman]);
+        Assert.Equal(67, World.Monsters[TMonster.Fatso]);
+        Assert.Equal(69, World.Monsters[TMonster.DJ]);
+        Assert.Equal(76, World.Monsters[TMonster.Pedal]);
+        Assert.Equal(76, World.Monsters[TMonster.Couple]);
+        Assert.Equal(76, World.Monsters[TMonster.Maciek]);
         Assert.True(World.Door);
         Assert.True(World.OldElf);
         List<TMonster> dogs = [
@@ -148,7 +148,7 @@ public class UnitsPrzedmCoreTests {
             TMonster.SickMan,
         ];
         foreach (TMonster m in dogs) {
-            Assert.InRange(World.Monsters[(int)m], 20, 26);
+            Assert.InRange(World.Monsters[m], 20, 26);
         }
 
         List<TMonster> flowers = [
@@ -157,7 +157,7 @@ public class UnitsPrzedmCoreTests {
             TMonster.Thistle, TMonster.Raspberry,
         ];
         foreach (TMonster m in flowers) {
-            Assert.InRange(World.Monsters[(int)m], 77, 83);
+            Assert.InRange(World.Monsters[m], 77, 83);
         }
 
         List<TMonster> berries = [
@@ -165,7 +165,7 @@ public class UnitsPrzedmCoreTests {
             TMonster.Duncan,
         ];
         foreach (TMonster m in berries) {
-            Assert.InRange(World.Monsters[(int)m], 77, 84);
+            Assert.InRange(World.Monsters[m], 77, 84);
         }
     }
 
@@ -173,8 +173,8 @@ public class UnitsPrzedmCoreTests {
     public void TarczaAppliesShield() {
         UnitsSeed.Reseed();
         Combat.Damage = 50;
-        Gear.Values[(int)TGearItem.WornCount] = 30;
-        Gear.Values[(int)TGearItem.Armor] = 100;
+        Gear.Values[TGearItem.WornCount] = 30;
+        Gear.Values[TGearItem.Armor] = 100;
         ShieldBlock();
         Assert.Equal(20, Combat.Damage);
     }
@@ -183,8 +183,8 @@ public class UnitsPrzedmCoreTests {
     public void TarczaClampsAtZero() {
         UnitsSeed.Reseed();
         Combat.Damage = 10;
-        Gear.Values[(int)TGearItem.WornCount] = 30;
-        Gear.Values[(int)TGearItem.Armor] = 100;
+        Gear.Values[TGearItem.WornCount] = 30;
+        Gear.Values[TGearItem.Armor] = 100;
         ShieldBlock();
         Assert.Equal(0, Combat.Damage);
     }

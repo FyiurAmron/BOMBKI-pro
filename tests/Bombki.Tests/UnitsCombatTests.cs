@@ -7,26 +7,26 @@ public class UnitsCombatTests {
         int zre, int wrogZre, int par, int kop) {
         UnitsSeed.Reseed();
         Player.Energy = 100;
-        Skills.Values[(int)TSkill.Parry] = par;
-        Skills.Values[(int)TSkill.Kick] = kop;
-        Skills.Values[(int)TSkill.KickMinMana] = 0;
-        Skills.Values[(int)TSkill.KickMaxEnergy] = 0;
+        Skills.Values[TSkill.Parry] = par;
+        Skills.Values[TSkill.Kick] = kop;
+        Skills.Values[TSkill.KickMinMana] = 0;
+        Skills.Values[TSkill.KickMaxEnergy] = 0;
         Player.Mana = 0;
         Combat.FireballCharges = 0;
         Combat.PoisonCharges = 0;
         Combat.PoisonRounds = 0;
-        Skills.Values[(int)TSkill.Fleeing] = 0;
-        Skills.Values[(int)TSkill.FleeEnergy] = 0;
+        Skills.Values[TSkill.Fleeing] = 0;
+        Skills.Values[TSkill.FleeEnergy] = 0;
         Combat.Fled = false;
         Player.Experience = 0;
-        Gear.Values[(int)TGearItem.LuckRoll] = 0;
-        Gear.Values[(int)TGearItem.Armor] = 0;
-        Gear.Values[(int)TGearItem.WornCount] = 0;
+        Gear.Values[TGearItem.LuckRoll] = 0;
+        Gear.Values[TGearItem.Armor] = 0;
+        Gear.Values[TGearItem.WornCount] = 0;
         Player.MaxEnergy = maxE;
         Combat.EnemyEnergy = wrogE;
-        Player.Stats[(int)TStat.Strength] = sil;
+        Player.Stats[TStat.Strength] = sil;
         Combat.EnemyStrength = wrogSil;
-        Player.Stats[(int)TStat.Dexterity] = zre;
+        Player.Stats[TStat.Dexterity] = zre;
         Combat.EnemyDexterity = wrogZre;
     }
 
@@ -47,8 +47,8 @@ public class UnitsCombatTests {
     static void RunWalkaShielded(int maxE, int wrogE, int sil, int wrogSil,
         int zre, int wrogZre, int par, int kop, int expectedKunszt) {
         WalkaSetup(maxE, wrogE, sil, wrogSil, zre, wrogZre, par, kop);
-        Gear.Values[(int)TGearItem.Armor] = 100;
-        Gear.Values[(int)TGearItem.WornCount] = 127;
+        Gear.Values[TGearItem.Armor] = 100;
+        Gear.Values[TGearItem.WornCount] = 127;
         DoFight();
         Assert.Equal(expectedKunszt, Player.Experience);
     }
@@ -183,7 +183,7 @@ public class UnitsCombatTests {
     public void WalkaSuperKopHit() {
         WalkaSetup(0, 0, 1, 1, 10, 10, 0, 100);
         Player.Mana = 100;
-        Skills.Values[(int)TSkill.KickMaxEnergy] = 100;
+        Skills.Values[TSkill.KickMaxEnergy] = 100;
         Player.Energy = 50;
         DoFight();
         Assert.True(Combat.EnemyEnergy < 1);
@@ -194,7 +194,7 @@ public class UnitsCombatTests {
     public void WalkaSuperKopHitAgain() {
         WalkaSetup(0, 0, 1, 1, 10, 10, 0, 100);
         Player.Mana = 100;
-        Skills.Values[(int)TSkill.KickMaxEnergy] = 100;
+        Skills.Values[TSkill.KickMaxEnergy] = 100;
         Player.Energy = 50;
         DoFight();
         Assert.True(Combat.EnemyEnergy < 1);
@@ -205,7 +205,7 @@ public class UnitsCombatTests {
     public void WalkaSuperKopChybia() {
         WalkaSetup(0, 0, 1, 1, 10, 10, 0, 11);
         Player.Mana = 100;
-        Skills.Values[(int)TSkill.KickMaxEnergy] = 100;
+        Skills.Values[TSkill.KickMaxEnergy] = 100;
         Player.Energy = 50;
         DoFight();
         Assert.True(Combat.EnemyEnergy < 1);
@@ -215,8 +215,8 @@ public class UnitsCombatTests {
     [Fact]
     public void WalkaFlee() {
         WalkaSetup(0, 0, 1, 1, 10, 10, 0, 0);
-        Skills.Values[(int)TSkill.Fleeing] = 100;
-        Skills.Values[(int)TSkill.FleeEnergy] = 100;
+        Skills.Values[TSkill.Fleeing] = 100;
+        Skills.Values[TSkill.FleeEnergy] = 100;
         Player.Energy = 50;
         Player.Mana = 100;
         DoFight();
@@ -226,8 +226,8 @@ public class UnitsCombatTests {
     [Fact]
     public void WalkaFleeChybia() {
         WalkaSetup(0, 0, 1, 1, 10, 10, 0, 0);
-        Skills.Values[(int)TSkill.Fleeing] = 1;
-        Skills.Values[(int)TSkill.FleeEnergy] = 100;
+        Skills.Values[TSkill.Fleeing] = 1;
+        Skills.Values[TSkill.FleeEnergy] = 100;
         Player.Energy = 50;
         Player.Mana = 100;
         DoFight();
@@ -237,8 +237,8 @@ public class UnitsCombatTests {
     [Fact]
     public void WalkaPotrawki() {
         WalkaSetup(0, 0, 1, 1, 10, 10, 0, 0);
-        Skills.Values[(int)TSkill.Cooking] = 99;
-        Bag.Items[(int)TBagItem.Bigos] = 50;
+        Skills.Values[TSkill.Cooking] = 99;
+        Bag.Items[TBagItem.Bigos] = 50;
         Bag.Count = 0;
         DoFight();
         Assert.True(Combat.EnemyEnergy < 1);
@@ -256,19 +256,19 @@ public class UnitsCombatTests {
     [Fact]
     public void WalkaFukroll() {
         WalkaSetup(0, 10, 2, 1, 10, 10, 0, 0);
-        Gear.Values[(int)TGearItem.LuckRoll] = 1;
+        Gear.Values[TGearItem.LuckRoll] = 1;
         DoFight();
         Assert.True(Combat.EnemyEnergy < 1);
     }
 
     static void EncounterSetup() {
         WalkaSetup(127, 0, 127, 1, 127, 1, 0, 0);
-        Bag.Items[(int)TBagItem.SmallShield] = 0;
-        Skills.Values[(int)TSkill.Cooking] = 0;
+        Bag.Items[TBagItem.SmallShield] = 0;
+        Skills.Values[TSkill.Cooking] = 0;
         Combat.FireballCharges = 0;
         Combat.PoisonCharges = 0;
         Combat.PoisonRounds = 0;
-        Bag.Items[(int)TBagItem.Heart] = 0;
+        Bag.Items[TBagItem.Heart] = 0;
     }
 
     [Fact]

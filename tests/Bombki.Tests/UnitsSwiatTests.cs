@@ -11,32 +11,32 @@ public class UnitsSwiatTests {
         UnitsSeed.Reseed();
         Player.Energy = 30000;
         Player.Experience = 100;
-        Player.Stats[(int)TStat.Strength] = 127;
-        Player.Stats[(int)TStat.Dexterity] = 127;
+        Player.Stats[TStat.Strength] = 127;
+        Player.Stats[TStat.Dexterity] = 127;
         Combat.Fled = false;
-        Skills.Values[(int)TSkill.Fleeing] = 0;
-        Skills.Values[(int)TSkill.FleeEnergy] = 0;
+        Skills.Values[TSkill.Fleeing] = 0;
+        Skills.Values[TSkill.FleeEnergy] = 0;
         Player.Mana = 0;
-        Skills.Values[(int)TSkill.Parry] = 0;
+        Skills.Values[TSkill.Parry] = 0;
         Combat.FireballCharges = 0;
         Combat.PoisonCharges = 0;
         Combat.PoisonRounds = 0;
-        Skills.Values[(int)TSkill.Cooking] = 0;
-        Skills.Values[(int)TSkill.Kick] = 0;
-        Skills.Values[(int)TSkill.KickMinMana] = 0;
-        Skills.Values[(int)TSkill.KickMaxEnergy] = 0;
-        Gear.Values[(int)TGearItem.Armor] = 0;
-        Gear.Values[(int)TGearItem.WornCount] = 0;
-        Gear.Values[(int)TGearItem.LuckRoll] = 0;
+        Skills.Values[TSkill.Cooking] = 0;
+        Skills.Values[TSkill.Kick] = 0;
+        Skills.Values[TSkill.KickMinMana] = 0;
+        Skills.Values[TSkill.KickMaxEnergy] = 0;
+        Gear.Values[TGearItem.Armor] = 0;
+        Gear.Values[TGearItem.WornCount] = 0;
+        Gear.Values[TGearItem.LuckRoll] = 0;
         Player.MaxEnergy = 50;
-        World.Monsters[(int)TMonster.CageStrong] = 0;
+        World.Monsters[TMonster.CageStrong] = 0;
         Bag.Count = 0;
         World.Quest = 0;
         World.QuestKills = 0;
         Player.Money = 0;
         Bag.Permit = 0;
-        Bag.Items[(int)TBagItem.Diploma] = 0;
-        Bag.Items[(int)TBagItem.Pipe] = 0;
+        Bag.Items[TBagItem.Diploma] = 0;
+        Bag.Items[TBagItem.Pipe] = 0;
         Player.Practice = 1;
     }
 
@@ -80,39 +80,39 @@ public class UnitsSwiatTests {
     [Fact]
     public void Pokoj13Loot() {
         RoomSetup();
-        Bag.Items[(int)TBagItem.OldSword] = 0;
-        Bag.Items[(int)TBagItem.SmallShield] = 0;
-        Bag.Items[(int)TBagItem.Heart] = 0;
+        Bag.Items[TBagItem.OldSword] = 0;
+        Bag.Items[TBagItem.SmallShield] = 0;
+        Bag.Items[TBagItem.Heart] = 0;
         bool sawSword = false, sawShield = false, sawHeart = false;
         for (int i = 1; i <= 80; i++) {
             Player.Energy = 30000;
             Player.Experience = 100;
-            Player.Stats[(int)TStat.Strength] = 127;
-            Player.Stats[(int)TStat.Dexterity] = 127;
+            Player.Stats[TStat.Strength] = 127;
+            Player.Stats[TStat.Dexterity] = 127;
             Combat.Fled = false;
-            Skills.Values[(int)TSkill.Fleeing] = 0;
-            Skills.Values[(int)TSkill.FleeEnergy] = 0;
+            Skills.Values[TSkill.Fleeing] = 0;
+            Skills.Values[TSkill.FleeEnergy] = 0;
             Player.Mana = 0;
-            Skills.Values[(int)TSkill.Parry] = 0;
+            Skills.Values[TSkill.Parry] = 0;
             Combat.FireballCharges = 0;
             Combat.PoisonCharges = 0;
             Combat.PoisonRounds = 0;
-            Skills.Values[(int)TSkill.Cooking] = 0;
-            Skills.Values[(int)TSkill.Kick] = 0;
-            Skills.Values[(int)TSkill.KickMinMana] = 0;
-            Skills.Values[(int)TSkill.KickMaxEnergy] = 0;
-            Gear.Values[(int)TGearItem.LuckRoll] = 0;
-            World.Monsters[(int)TMonster.CageStrong] = 13;
+            Skills.Values[TSkill.Cooking] = 0;
+            Skills.Values[TSkill.Kick] = 0;
+            Skills.Values[TSkill.KickMinMana] = 0;
+            Skills.Values[TSkill.KickMaxEnergy] = 0;
+            Gear.Values[TGearItem.LuckRoll] = 0;
+            World.Monsters[TMonster.CageStrong] = 13;
             PokojAt("ZABIJ POTWOR|WYJSCIE", 13);
-            if (Bag.Items[(int)TBagItem.OldSword] != 0) {
+            if (Bag.Items[TBagItem.OldSword] != 0) {
                 sawSword = true;
             }
 
-            if (Bag.Items[(int)TBagItem.SmallShield] != 0) {
+            if (Bag.Items[TBagItem.SmallShield] != 0) {
                 sawShield = true;
             }
 
-            if (Bag.Items[(int)TBagItem.Heart] != 0) {
+            if (Bag.Items[TBagItem.Heart] != 0) {
                 sawHeart = true;
             }
 
@@ -128,20 +128,20 @@ public class UnitsSwiatTests {
     [Fact]
     public void Pokoj13Flee() {
         RoomSetup();
-        World.Monsters[(int)TMonster.CageStrong] = 13;
+        World.Monsters[TMonster.CageStrong] = 13;
         Player.Energy = 50;
-        Skills.Values[(int)TSkill.FleeEnergy] = 100;
+        Skills.Values[TSkill.FleeEnergy] = 100;
         Player.Mana = 20;
-        Skills.Values[(int)TSkill.Fleeing] = 100;
+        Skills.Values[TSkill.Fleeing] = 100;
         PokojAt("ZABIJ POTWOR|WYJSCIE", 13);
-        Assert.Equal(13, World.Monsters[(int)TMonster.CageStrong]);
+        Assert.Equal(13, World.Monsters[TMonster.CageStrong]);
         Assert.False(Combat.Fled);
     }
 
     [Fact]
     public void Pokoj13Exits() {
         RoomSetup();
-        World.Monsters[(int)TMonster.CageStrong] = 0;
+        World.Monsters[TMonster.CageStrong] = 0;
         PokojAt("EXIT|MODE|WYJSCIE", 13);
         Assert.Equal(13, Session.Room);
     }
@@ -253,14 +253,14 @@ public class UnitsSwiatTests {
         RoomSetup();
         World.Quest = 2;
         World.QuestKills = 0;
-        Bag.Items[(int)TBagItem.Diploma] = -10;
+        Bag.Items[TBagItem.Diploma] = -10;
         Player.MaxEnergy = 50;
         Bag.Permit = 0;
         Player.Experience = 100;
         Bag.Count = 1;
         PokojAt("SPRZEDAJ QUEST|WYJSCIE", 100);
         Assert.Equal(0, World.Quest);
-        Assert.Equal(0, Bag.Items[(int)TBagItem.Diploma]);
+        Assert.Equal(0, Bag.Items[TBagItem.Diploma]);
         Assert.Equal(45, Player.MaxEnergy);
         Assert.Equal(-10, Bag.Permit);
         Assert.Equal(350, Player.Experience);
@@ -272,29 +272,29 @@ public class UnitsSwiatTests {
         RoomSetup();
         World.Quest = 3;
         World.QuestKills = 0;
-        Bag.Items[(int)TBagItem.Pipe] = -10;
+        Bag.Items[TBagItem.Pipe] = -10;
         Player.Practice = 1;
         Bag.Permit = 0;
         Player.Experience = 100;
         Bag.Count = 0;
-        Player.Stats[(int)TStat.Wisdom] = 5;
+        Player.Stats[TStat.Wisdom] = 5;
         PokojAt("SPRZEDAJ QUEST|WYJSCIE", 100);
         Assert.Equal(0, World.Quest);
-        Assert.Equal(0, Bag.Items[(int)TBagItem.Pipe]);
+        Assert.Equal(0, Bag.Items[TBagItem.Pipe]);
         Assert.Equal(0, Player.Practice);
         Assert.Equal(-10, Bag.Permit);
         Assert.Equal(525, Player.Experience);
         Assert.Equal(-1, Bag.Count);
-        Assert.Equal(4, Player.Stats[(int)TStat.Wisdom]);
+        Assert.Equal(4, Player.Stats[TStat.Wisdom]);
     }
 
     [Fact]
     public void StaruchTradeLeavesYouInTheCity() {
         RoomSetup();
         Session.Room = Rooms.RoomHut;
-        Bag.Items[(int)TBagItem.Sausage] = -40;
-        Bag.Items[(int)TBagItem.ReturnScroll] = 0;
-        Bag.Items[(int)TBagItem.Beer] = 0;
+        Bag.Items[TBagItem.Sausage] = -40;
+        Bag.Items[TBagItem.ReturnScroll] = 0;
+        Bag.Items[TBagItem.Beer] = 0;
         Bag.Count = 4;
         Player.Money = 200;
         World.OldElf = false;
@@ -303,9 +303,9 @@ public class UnitsSwiatTests {
         }
 
         Assert.Equal(Rooms.RoomCityCentre, Session.Room);
-        Assert.Equal(-ItemUnit, Bag.Items[(int)TBagItem.ReturnScroll]);
-        Assert.Equal(-ItemUnit, Bag.Items[(int)TBagItem.Beer]);
-        Assert.Equal(0, Bag.Items[(int)TBagItem.Sausage]);
+        Assert.Equal(-ItemUnit, Bag.Items[TBagItem.ReturnScroll]);
+        Assert.Equal(-ItemUnit, Bag.Items[TBagItem.Beer]);
+        Assert.Equal(0, Bag.Items[TBagItem.Sausage]);
         Assert.Equal(0, Player.Money);
         Assert.Equal(2, Bag.Count);
     }
@@ -315,7 +315,7 @@ public class UnitsSwiatTests {
         RoomSetup();
         Player.MaxEnergy = 50;
         Player.Energy = 10;
-        Player.Stats[(int)TStat.Dexterity] = 10;
+        Player.Stats[TStat.Dexterity] = 10;
         for (int i = 1; i <= 20; i++) {
             PokojAt("PATRZ|POLNOC", 87);
             if (Session.Room == Texts.DeadRoom) {
