@@ -190,28 +190,37 @@ public static class Crt {
         return poll(ref fds, 1, timeoutMs) <= 0 ? -1 : Stdin.ReadByte();
     }
 
-    static void ConsumeEscape() {
+    static char ConsumeEscape() {
         int second = TryReadByte(50);
         if (second < 0) {
-            return;
+            return '\0';
         }
 
-        if (second == '[') {
-            while (true) {
-                int c = TryReadByte(50);
-                if (c < 0) {
-                    return;
-                }
+        if (second == 'O') {
+            int key = TryReadByte(50);
+            return key < 0 ? '\0' : (char)key;
+        }
 
-                if (c >= 0x40 && c <= 0x7E) {
-                    return;
-                }
+        if (second != '[') {
+            return '\0';
+        }
+
+        while (true) {
+            int c = TryReadByte(50);
+            if (c < 0) {
+                return '\0';
+            }
+
+            if (c >= 0x40 && c <= 0x7E) {
+                return (char)c;
             }
         }
     }
 
     public static void EchoChar(char c) =>
         Out.Write(c.ToString());
+    public static void EchoText(string value) =>
+        Out.Write(value);
     public static void EchoNewLine() =>
         Out.Write("\r\n");
     public static void EchoErase() =>
@@ -220,8 +229,12 @@ public static class Crt {
     public static bool DebugEnabled() =>
         Environment.GetEnvironmentVariable("BOMBKI_DEBUG") == "2137";
 
-    public static string ReadLn() =>
-        IsWindows ? WindowsTerminal.ReadLine() : UnixReadLn();
+    public static string ReadLn() {
+        History.Begin();
+        string line = IsWindows ? WindowsTerminal.ReadLine() : UnixReadLn();
+        History.Remember(line);
+        return StripDiacritics(line).ToUpperInvariant();
+    }
 
     public static string StripDiacritics(string value) =>
         string.Concat(value.Normalize(NormalizationForm.FormD).Where(IsSpacing).Select(FoldStroke));
@@ -243,7 +256,12 @@ public static class Crt {
             if (b == 3) {
                 Interrupt();
             } else if (b == 27) {
-                ConsumeEscape();
+                char sequence = ConsumeEscape();
+                if (sequence == 'A') {
+                    ReplaceLine(bytes, History.Up(CurrentLine(bytes)));
+                } else if (sequence == 'B') {
+                    ReplaceLine(bytes, History.Down(CurrentLine(bytes)));
+                }
             } else if (b == 8 || b == 127) {
                 if (bytes.Any()) {
                     EraseChar(bytes);
@@ -256,7 +274,24 @@ public static class Crt {
             }
         }
         EchoNewLine();
-        return StripDiacritics(Encoding.UTF8.GetString([.. bytes])).ToUpperInvariant();
+        return CurrentLine(bytes);
+    }
+
+    static string CurrentLine(List<byte> bytes) =>
+        Encoding.UTF8.GetString([.. bytes]);
+
+    static void ReplaceLine(List<byte> bytes, string line) {
+        for (int i = 0; i < CurrentLine(bytes).Length; i++) {
+            EchoErase();
+        }
+
+        bytes.Clear();
+        if (line.Length == 0) {
+            return;
+        }
+
+        bytes.AddRange(Encoding.UTF8.GetBytes(line));
+        EchoText(line);
     }
 
     static void EraseChar(List<byte> bytes) {

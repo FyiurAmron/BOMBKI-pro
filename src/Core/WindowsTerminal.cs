@@ -18,7 +18,15 @@ public static class WindowsTerminal {
 
             if (key.Key == ConsoleKey.Enter || key.KeyChar == '\n') {
                 Crt.EchoNewLine();
-                return Crt.StripDiacritics(sb.ToString()).ToUpperInvariant();
+                return sb.ToString();
+            }
+            if (key.Key == ConsoleKey.UpArrow) {
+                ReplaceLine(sb, History.Up(sb.ToString()));
+                continue;
+            }
+            if (key.Key == ConsoleKey.DownArrow) {
+                ReplaceLine(sb, History.Down(sb.ToString()));
+                continue;
             }
             if (key.Key == ConsoleKey.Backspace || key.Key == ConsoleKey.Delete || key.KeyChar == '\b') {
                 if (sb.Length > 0) {
@@ -34,5 +42,19 @@ public static class WindowsTerminal {
             sb.Append(key.KeyChar);
             Crt.EchoChar(key.KeyChar);
         }
+    }
+
+    static void ReplaceLine(StringBuilder sb, string line) {
+        while (sb.Length > 0) {
+            sb.Length--;
+            Crt.EchoErase();
+        }
+
+        if (line.Length == 0) {
+            return;
+        }
+
+        sb.Append(line);
+        Crt.EchoText(line);
     }
 }

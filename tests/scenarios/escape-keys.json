@@ -12,7 +12,7 @@
     {
       "label": "race prompt",
       "expect": "Napisz\\ swą\\ rasę",
-      "send": "P\u001b[A\u001b[A\u001b[D\u001b[C\u001b[3~OL-ELF"
+      "send": "P\u001b[D\u001b[C\u001b[3~OL-ELF"
     },
     {
       "label": "starting room",

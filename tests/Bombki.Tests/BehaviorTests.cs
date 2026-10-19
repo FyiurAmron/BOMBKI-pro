@@ -66,6 +66,7 @@ public class BehaviorTests {
         "cage-loss",
         "cave-boss-death",
         "checkpoint-826",
+        "command-history",
         "concert-barricade",
         "concert-crowd",
         "concert-dispatch",

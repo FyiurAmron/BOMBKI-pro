@@ -42,3 +42,4 @@
 - all rooms wired; no longer crashes after going into northern LAS
 - handing the diploma over frees a bag slot
 - Staruch checks the return scroll before the trade
+- command history: up/down arrows scroll previously typed lines
