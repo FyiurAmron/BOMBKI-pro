@@ -269,7 +269,7 @@ public class BehaviorTests {
         var configs = new List<string> { "Debug", "Release" };
         foreach (var config in configs) {
             foreach (var name in names) {
-                var candidate = $"{root}/build/out/Bombki/{config}/net11.0/{name}";
+                var candidate = $"{root}/build/out/Core/{config}/net11.0/{name}";
                 if (File.Exists(candidate)) {
                     if (name.EndsWith(".dll")) {
                         continue;
@@ -280,7 +280,7 @@ public class BehaviorTests {
             }
         }
 
-        throw new FileNotFoundException($"stub binary not found under build/out/Bombki/*/net11.0/. Run 'dotnet build' first.");
+        throw new FileNotFoundException($"stub binary not found under build/out/Core/*/net11.0/. Run 'dotnet build' first.");
     }
 
     static string Tail(string text, int maxChars) =>

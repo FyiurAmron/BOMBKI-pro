@@ -1,6 +1,6 @@
 <Solution>
   <Folder Name="/src/">
-    <Project Path="src/Bombki/Bombki.csproj" />
+    <Project Path="src/Core/Core.csproj" />
   </Folder>
   <Folder Name="/tools/">
     <Project Path="tools/expect-pty/expect-pty.csproj" />

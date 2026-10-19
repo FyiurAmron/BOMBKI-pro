@@ -14,7 +14,7 @@ for arg in "$@"; do
     fi
 done
 dotnet build "$ROOT/BombkiPro.slnx" --nologo -v q
-BIN="$ROOT/build/out/Bombki/Debug/net11.0/Bombki"
+BIN="$ROOT/build/out/Core/Debug/net11.0/Bombki"
 case "$(uname -s)" in
     MINGW*|MSYS*|CYGWIN*) BIN="$BIN.exe" ;;
 esac

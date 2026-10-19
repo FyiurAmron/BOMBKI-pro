@@ -44,7 +44,7 @@ jobs:
         run: dotnet test BombkiPro.slnx --no-build
 
       - name: Publish the Linux game binary
-        run: dotnet publish src/Bombki/Bombki.csproj -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=true -o build/artifacts/linux-x64
+        run: dotnet publish src/Core/Core.csproj -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=true -o build/artifacts/linux-x64
 
       - name: Zip the Linux game binary
         run: bash tools/zip-dir.sh build/artifacts/linux-x64 build/artifacts/BOMBKI-pro-linux-x86_64.zip
@@ -71,7 +71,7 @@ jobs:
         run: dotnet build BombkiPro.slnx
 
       - name: Publish the Windows game binary
-        run: dotnet publish src/Bombki/Bombki.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o build/artifacts/win-x64
+        run: dotnet publish src/Core/Core.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o build/artifacts/win-x64
 
       - name: Zip the Windows game binary
         run: bash tools/zip-dir.sh build/artifacts/win-x64 build/artifacts/BOMBKI-pro-win-x64.zip
