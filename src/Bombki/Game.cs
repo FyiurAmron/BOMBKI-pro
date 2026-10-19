@@ -1194,11 +1194,11 @@ public static class Game {
                                 break;
                             case >= 3 and <= 9:
                                 Combat.Damage = (Combat.Damage - 2);
-                                Out.WriteLine(TxtFightParryLabel + Combat.Damage + TxtFightTailEnergi);
+                                Out.WriteLine(TxtFightParryLabel + Combat.Damage + TxtFightTailEnergii);
                                 break;
                             default:
                                 Combat.Damage = (Combat.Damage - 3);
-                                Out.WriteLine(TxtFightParryLabel + Combat.Damage + TxtFightTailEnergi);
+                                Out.WriteLine(TxtFightParryLabel + Combat.Damage + TxtFightTailEnergii);
                                 break;
                         }
                         if ((Combat.Roll < 1) && (Skills.Values[(int)TSkill.Parry] < 100)) {
@@ -1232,7 +1232,7 @@ public static class Game {
                 }
                 if (Combat.PoisonRounds > 0) {
                     Combat.Roll = Roll(5);
-                    Out.WriteLine(TxtFightPoisonedLabel + Combat.Roll + TxtFightTailEnergi);
+                    Out.WriteLine(TxtFightPoisonedLabel + Combat.Roll + TxtFightTailEnergii);
                     Player.Energy = (Player.Energy - Combat.Roll);
                     Combat.PoisonRounds = (Combat.PoisonRounds - 1);
                 }
@@ -1267,7 +1267,7 @@ public static class Game {
                 if (Combat.Roll <= Skills.Values[(int)TSkill.Kick] - 10) {
                     Combat.Roll = (Roll(10) + Roll(Player.Level));
                     Crt.TextColor(14);
-                    Out.WriteLine(TxtFightKickVerb + TxtFightSuperKickLabel + Combat.Roll + TxtFightTailEnergi);
+                    Out.WriteLine(TxtFightKickVerb + TxtFightSuperKickLabel + Combat.Roll + TxtFightTailEnergii);
                     Crt.TextColor(15);
                     Player.Mana = (Player.Mana - Roll(3) - 3);
                     Combat.EnemyEnergy = (Combat.EnemyEnergy - Combat.Roll);
@@ -1322,7 +1322,7 @@ public static class Game {
                 Combat.FightExperience = 0;
             }
 
-            Out.WriteLine(TxtFightVictoryLabel + Combat.FightExperience + TxtFightVictoryTail);
+            Out.WriteLine(TxtFightVictoryLabel + Combat.FightExperience + TxtShared_22);
             Player.Experience = (Combat.FightExperience + Player.Experience);
             Combat.FireballCharges = 0;
             Combat.PoisonCharges = 0;
@@ -1418,7 +1418,7 @@ public static class Game {
         new() { cmd = CmdOdrzuc + CmdStary, item = TBagItem.OldSword, verb = TxtDropVerb, line = TxtTakeDrop_06, effect = TTakeEffect.teNone },
         new() { cmd = CmdOdrzuc + CmdFajka, item = TBagItem.Pipe, verb = "", line = TxtTakeDrop_07, effect = TTakeEffect.tePipe },
         new() { cmd = CmdOdrzuc + CmdMala, item = TBagItem.SmallShield, verb = TxtDropVerb, line = TxtTakeDrop_08, effect = TTakeEffect.teNone },
-        new() { cmd = CmdOdrzuc + CmdSerce, item = TBagItem.Heart, verb = TxtDropVerb, line = TxtTakeDrop_09, effect = TTakeEffect.teNone },
+        new() { cmd = CmdOdrzuc + CmdSerce, item = TBagItem.Heart, verb = TxtDropVerb, line = CmdZakrwawioneSerce, effect = TTakeEffect.teNone },
         new() { cmd = CmdOdrzuc + CmdDyplom, item = TBagItem.Diploma, verb = TxtDropVerb, line = TxtTakeDrop_10, effect = TTakeEffect.teDiploma },
     ];
 
@@ -2048,8 +2048,8 @@ public static class Game {
         new() { item = IntSlot.Into(Bag.Items, (int)TBagItem.Bigos), desc = CmdPysznyBigosZKapustaZWroga, width = 10, kind = TSheetKind.ikShown },
         new() { item = IntSlot.Into(Bag.Items, (int)TBagItem.Beer), desc = CmdOrzezwiajacePiwskoZKonkretnymKlimatem, width = 0, kind = TSheetKind.ikDiv10 },
         new() { item = IntSlot.Into(Bag.Items, (int)TBagItem.Pipe), desc = CmdCiezkaFajkaOdDziadaMroza, width = 0, kind = TSheetKind.ikPlain },
-        new() { item = IntSlot.Into(Bag.Items, (int)TBagItem.Tracksuit), desc = CmdKompletUbranFirmySyf, width = 0, kind = TSheetKind.ikPlain },
-        new() { item = IntSlot.Into(Bag.Items, (int)TBagItem.SpikedSuit), desc = CmdGarniturZKolcami, width = 0, kind = TSheetKind.ikPlain },
+        new() { item = IntSlot.Into(Bag.Items, (int)TBagItem.Tracksuit), desc = TxtKompletUbranFirmySyf, width = 0, kind = TSheetKind.ikPlain },
+        new() { item = IntSlot.Into(Bag.Items, (int)TBagItem.SpikedSuit), desc = TxtGarniturZKolcami, width = 0, kind = TSheetKind.ikPlain },
         new() { item = IntSlot.Into(Bag.Items, (int)TBagItem.ManaBottle), desc = CmdMalaButelkeMany, width = 0, kind = TSheetKind.ikPlain },
         new() { item = IntSlot.Into(Bag.Items, (int)TBagItem.LuckyLeaf), desc = CmdDelikatnyChocSzorstkiListek, width = 0, kind = TSheetKind.ikPlain },
         new() { item = IntSlot.Into(Bag.Items, (int)TBagItem.Cassette), desc = CmdKasetaLiroyaLJakLiroy, width = 0, kind = TSheetKind.ikPlain },
@@ -2107,11 +2107,11 @@ public static class Game {
         }
 
         if (Gear.WornGarment == TxtWornSyf) {
-            Out.WriteLine(TxtWearingLabel + TxtShowCharacter_08);
+            Out.WriteLine(TxtWearingLabel + TxtKompletUbranFirmySyf);
         }
 
         if (Gear.WornGarment == TxtWornGarnitur) {
-            Out.WriteLine(TxtWearingLabel + TxtShowCharacter_09);
+            Out.WriteLine(TxtWearingLabel + TxtGarniturZKolcami);
         }
 
         if ((Gear.Values[(int)TGearItem.ShieldKind] == 1) && (Bag.Items[(int)TBagItem.SmallShield] == -100)) {
@@ -2595,11 +2595,11 @@ public static class Game {
     }
 
     public static readonly List<TBakeryItem> BakeryItems = [null!,
-        new() { cmd = CmdKup + CmdPaczek, item = TBagItem.Doughnut, price = 8, desc = TxtItemPaczek },
-        new() { cmd = CmdKup + CmdCiastko, item = TBagItem.Cookie, price = 12, desc = TxtItemCiastko },
+        new() { cmd = CmdKup + CmdPaczek, item = TBagItem.Doughnut, price = 8, desc = CmdPaczek },
+        new() { cmd = CmdKup + CmdCiastko, item = TBagItem.Cookie, price = 12, desc = CmdCiastko },
         new() { cmd = CmdKup + CmdSuchaRacja, item = TBagItem.DryRation, price = 15, desc = TxtItemSuchaRacje },
         new() { cmd = CmdKup + CmdBulka, item = TBagItem.BreadRoll, price = 19, desc = TxtItemBulke },
-        new() { cmd = CmdKup + CmdChleb, item = TBagItem.Bread, price = 24, desc = TxtItemChleb },
+        new() { cmd = CmdKup + CmdChleb, item = TBagItem.Bread, price = 24, desc = CmdChleb },
         new() { cmd = CmdKup + CmdWeka, item = TBagItem.Sausage, price = 29, desc = TxtItemWeke },
     ];
 
@@ -2685,7 +2685,7 @@ public static class Game {
         (Bag.Items[(int)TBagItem.Pipe] == 0) && (Player.Money >= 480);
 
     public static void BuyPipe() {
-        Out.WriteLine(TxtShopVerb + TxtBuyPipe_01 + TxtSpaceZa + 480 + TxtSpaceMonet);
+        Out.WriteLine(TxtShopVerb + TxtTakeDrop_05 + TxtSpaceZa + 480 + TxtSpaceMonet);
         Player.Money = Player.Money - 480;
         Bag.Items[(int)TBagItem.Pipe] = (Bag.Items[(int)TBagItem.Pipe] - ItemUnit);
         Bag.Count = (Bag.Count + 1);
@@ -3358,7 +3358,7 @@ public static class Game {
 
             if (Bag.Count > Bag.Limit) {
                 Out.WriteLine(TxtStart_01 + (Bag.Count - Bag.Limit) + TxtStart_02);
-                Out.WriteLine(TxtStart_03 + ((Bag.Count - Bag.Limit) * 10) + TxtStart_04);
+                Out.WriteLine(TxtStart_03 + ((Bag.Count - Bag.Limit) * 10) + TxtFightTailEnergii);
                 Player.Energy = (Player.Energy - ((Bag.Count - Bag.Limit) * 10));
             }
 

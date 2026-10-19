@@ -12,7 +12,6 @@ public static class Texts {
     public const string TxtFightMassacredYouLabel = "!MASAKRUJE! ciebie i tracisz aż ";
     public const string TxtFightGougedYouLabel = "!!!WYPRUWA FLAKI!!! z ciebie i tracisz !!! ";
     public const string TxtFightParryLabel = "            <<<<<Odparowujesz atak przeciwnika!!! Tracisz ";
-    public const string TxtFightTailEnergi = "% ENERGII";
     public const string TxtFightParryLearn = "PAROWANIE !!! ***************";
     public const string TxtFightFireballLabel = "puszcza fireballa w twym kierunku - tracisz ";
     public const string TxtFightCastsPoison = "rzuca czar \"poison\"";
@@ -27,7 +26,6 @@ public static class Texts {
     public const string TxtFightFled = "Wstyd!!! Uciekłeś z pola bitwy tracisz 20 KUNSZTU";
     public const string TxtFightFleeFailed = "Nie udało ci się uciec!!! Walczysz dalej!!!";
     public const string TxtFightVictoryLabel = "Zabiłeś go!!! Zyskujesz za to ";
-    public const string TxtFightVictoryTail = " KUNSZTU";
     public const string TxtFightMadeBigos = "Robisz sobie pyszny pyszny BIGOS z kapustą z wroga";
     public const string TxtFightCookingLearn = "Uczysz się ZDOLNOŚCI POTRAWKI!!!";
     public const string TxtFightKilled = "!!!!!!!!!!!Zostałeś zabity!!!!!!!!!!!!";
@@ -230,7 +228,6 @@ public static class Texts {
     public const string TxtTakeDrop_06 = "STARY zardzewiały miecz i masz jarówę że go nie posiadasz";
     public const string TxtTakeDrop_07 = "Wyrzucasz FAJKĘ";
     public const string TxtTakeDrop_08 = "MAŁĄ zwykłą tarczę";
-    public const string TxtTakeDrop_09 = "Zakrwawione SERCE";
     public const string TxtTakeDrop_10 = "DYPLOM mud szkoły, i przestajesz czuć przepływającą przez ciebie moc";
     public const string TxtUseItems_01 = "Zapalasz fajeczkę i pykasz z zadowoleniem";
     public const string TxtUseItems_02 = "zakrwawione SERCE i odzyskujesz 5% ENERGII";
@@ -304,8 +301,6 @@ public static class Texts {
     public const string TxtShowCharacter_05 = "Bijesz się na pięści";
     public const string TxtShowCharacter_06 = "Nie masz żadnej ochrony";
     public const string TxtShowCharacter_07 = "Jesteś nagi!!!";
-    public const string TxtShowCharacter_08 = "KOMPLET ubrań firmy \"SYF\"";
-    public const string TxtShowCharacter_09 = "GARNITUR z kolcami";
     public const string TxtShowCharacter_10 = "Twoją ochroną jest MAŁA tarcza";
     public const string TxtShowCharacter_11 = "Jako broni używasz starego miecza";
     public const string TxtShowCharacter_12 = "Masz ";
@@ -388,7 +383,6 @@ public static class Texts {
     public const string TxtSellOldSword_02 = "Albo dobra kupię go od ciebie za 30 MONET";
     public const string TxtBuySmallShield_01 = "!MAŁA! Tarcza";
     public const string TxtSellSmallShield_01 = "Ta tarcza jest bajer frajer, kupię ją od ciebie za 8 MONET";
-    public const string TxtBuyPipe_01 = "FAJKĘ";
     public const string TxtBuyTracksuit_01 = "KOMPLET Ubrań firmy \"SYF\"";
     public const string TxtSellTracksuit_01 = "KOMPLET Ubrań firmy \"SYF\" za 15 MONET";
     public const string TxtSellPipe_01 = "FAJKĘ za 120 MONET";
@@ -630,7 +624,6 @@ public static class Texts {
     public const string TxtStart_01 = "Jesteś obładowany!!! Masz o ";
     public const string TxtStart_02 = " za dużo";
     public const string TxtStart_03 = "Tracisz ";
-    public const string TxtStart_04 = "% ENERGII";
     public const string TxtStart_05 = "Jesteś zatruty tracisz ";
     public const string TxtStart_06 = " % ENERGII";
     public const string TxtStart_07 = "W twym pokoju leży STARY Zardzewiały miecz";
@@ -754,8 +747,8 @@ public static class Texts {
     public const string CmdPysznyBigosZKapustaZWroga = "Pyszny BIGOS z kapustą z wroga";
     public const string CmdOrzezwiajacePiwskoZKonkretnymKlimatem = "Orzeźwiające piwsko (PIWO) z konkretnym klimatem";
     public const string CmdCiezkaFajkaOdDziadaMroza = "Ciężka FAJKA od dziada mroza";
-    public const string CmdKompletUbranFirmySyf = "KOMPLET ubrań firmy \"SYF\"";
-    public const string CmdGarniturZKolcami = "GARNITUR z kolcami";
+    public const string TxtKompletUbranFirmySyf = "KOMPLET ubrań firmy \"SYF\"";
+    public const string TxtGarniturZKolcami = "GARNITUR z kolcami";
     public const string CmdMalaButelkeMany = "MAŁĄ butelkę MANY";
     public const string CmdDelikatnyChocSzorstkiListek = "Delikatny choć szorstki LISTEK";
     public const string CmdKasetaLiroyaLJakLiroy = "KASETA LIROYA: L - jak LIROY ";
@@ -788,7 +781,6 @@ public static class Texts {
     public const string TxtPlacePokojTreningowy1 = "Pokój treningowy (1)";
     public const string TxtPlacePoddziemnyPokojTreningowy2 = "Poddziemny pokój treningowy (2)";
     public const string TxtPlacePokojCentralny = "Pokój centralny";
-    public const string TxtPlaceMudSzkola2 = "Mud szkoła (2)";
     public const string TxtPlaceKlatkiPelneGajdy = "Klatki pełne gajdy";
     public const string TxtPlaceKlatkaCieniasa = "Klatka cieniaśa";
     public const string TxtPlaceKlatkaSilnego = "Klatka silnego";
@@ -808,7 +800,6 @@ public static class Texts {
     public const string TxtPlaceDrogaZablokowanaPrzezQuestMastera = "droga (zablokowana przez QUEST-mastera)";
     public const string TxtPlaceDroga = "droga";
     public const string TxtPlaceArena = "Arena";
-    public const string TxtPlacePok224JCentralny = "Pokój centralny";
     public const string TxtPlaceDolinaRozrywek = "Dolina rozrywek";
     public const string TxtPlaceTlum = "Tłum";
     public const string TxtPlacePiwiarnia = "Piwiarnia";
@@ -954,11 +945,8 @@ public static class Texts {
     public const string TxtShopVerb = "Kupujesz ";
     public const string TxtSpaceZa = " za ";
     public const string TxtSpaceMonet = " MONET";
-    public const string TxtItemPaczek = "PACZEK";
-    public const string TxtItemCiastko = "CIASTKO";
     public const string TxtItemSuchaRacje = "Suchą rację";
     public const string TxtItemBulke = "BUŁKĘ";
-    public const string TxtItemChleb = "CHLEB";
     public const string TxtItemWeke = "WEKĘ";
     public const string TxtPiwoTail = "napój bogów: PIWO!!!";
     public const string TxtEatVerb = "Zjadasz ";

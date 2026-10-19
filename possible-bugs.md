@@ -44,54 +44,43 @@ behaviour, so a fix must re-pin them.
     item), "MUD SZKOŁY" (art), "Mud szkoła" (places).
 15. Level-up banner prints 4x per level (`TxtCheckLevelUpLines1`
     repeats one const 4 times; 52 occurrences in the run).
-16. Duplicate constants: TxtPlacePokojCentralny/TxtPlacePok224JCentralny;
-    TxtFightTailEnergii/TxtFightTailEnergi/TxtStart_04;
-    TxtShared_22/TxtFightVictoryTail; CmdChleb/TxtItemChleb;
-    CmdCiastko/TxtItemCiastko; CmdPaczek/TxtItemPaczek;
-    CmdMudSzkola2/TxtPlaceMudSzkola2;
-    CmdGarniturZKolcami/TxtShowCharacter_09;
-    CmdKompletUbranFirmySyf/TxtShowCharacter_08;
-    TxtTakeDrop_05/TxtBuyPipe_01; TxtTakeDrop_09/CmdZakrwawioneSerce.
-17. Odd names: TxtPlacePok224JCentralny (224 artifact),
-    TxtFightTailEnergi (truncated), Cmd* constants that are display
-    texts (CmdGarniturZKolcami, CmdKompletUbranFirmySyf).
-18. Listed exits with no move: Road1 POŁUDNIE->Las; Road2/Road3
+16. Listed exits with no move: Road1 POŁUDNIE->Las; Road2/Road3
     PÓŁNOC/POŁUDNIE->Las (intentional barricade?).
-19. RoomStart and RoomMeditation EXIT print one prose line instead of
+17. RoomStart and RoomMeditation EXIT print one prose line instead of
     the standard exit list, though both have exits.
-20. `TxtGeneralStoreShopLines1` is unused (and omits
+18. `TxtGeneralStoreShopLines1` is unused (and omits
     TxtGeneralStoreShop_02, which is used elsewhere).
-21. Quest text "ZABIJ 50 potworów w tym LIROYA" vs 200 kill units
+19. Quest text "ZABIJ 50 potworów w tym LIROYA" vs 200 kill units
     (Liroy = 150; the sheet prints `QuestKills - 150`); magic 150 is
     duplicated in two places.
-22. Sentinel styles mixed: line lists start with "", data tables with
+20. Sentinel styles mixed: line lists start with "", data tables with
     `null!`; consumption mixes Skip(1) and direct indexes
     (`TxtRoom1Lines1[1..3]`).
 
 ## Vestigial / dead code
 
-23. `RoomAny` is used only as the teleport sentinel now, no longer for
+21. `RoomAny` is used only as the teleport sentinel now, no longer for
     dispatch.
-24. `Crt.Sound`/`Crt.NoSound` are empty unused stubs.
-25. Flavor prose lives in lists with dummy first elements (e.g.
+22. `Crt.Sound`/`Crt.NoSound` are empty unused stubs.
+23. Flavor prose lives in lists with dummy first elements (e.g.
     TxtRoom5_01..03).
 
 ## Mechanical inconsistencies
 
-26. Abbreviation expansion is room-dependent (on: corridor, ivy, cave,
+24. Abbreviation expansion is room-dependent (on: corridor, ivy, cave,
     most concert rooms; off: start, salon, school, shops, streets, bar,
     cages 12-17, stages, roads, quest master).
-27. Item quantity checks mix `== -ItemUnit`, `<= -ItemUnit`, `< 0`,
+25. Item quantity checks mix `== -ItemUnit`, `<= -ItemUnit`, `< 0`,
     `== 0` across use/drop/sell/buy/loot.
-28. `ShowCharacter` has side effects: recomputes Bag.Limit and
+26. `ShowCharacter` has side effects: recomputes Bag.Limit and
     Gear.ArmorRating; ArmorRating is display-only (combat uses Armor).
-29. Magic numbers duplicated: Liroy = 150 (StageFights + ShowCharacter),
+27. Magic numbers duplicated: Liroy = 150 (StageFights + ShowCharacter),
     quest = 200, Staruch 4 weka/200 money/-2 count, cage stats, cave
     rocks 25.
-30. `Bag.Count`/`Limit` have no sanity checks.
-31. Quest prices duplicated as text (TxtRoom100_05..07) and data
+28. `Bag.Count`/`Limit` have no sanity checks.
+29. Quest prices duplicated as text (TxtRoom100_05..07) and data
     (QuestOffers) - drift risk.
-32. Permit bookkeeping is inconsistent: the permit is a carried item
+30. Permit bookkeeping is inconsistent: the permit is a carried item
     (buying a forged one adds a bag slot, so quest 1's reward adding one
     is right), but quests 2/3 and the quest-master kill grant it without
     a slot, and ZNISZCZ PRZEPUSTKA adds a slot instead of freeing one
@@ -101,15 +90,15 @@ behaviour, so a fix must re-pin them.
 
 ## Smells / architecture
 
-33. `Game.cs` is a ~3.3k-line monolith (combat, economy, shops, saves,
+31. `Game.cs` is a ~3.3k-line monolith (combat, economy, shops, saves,
     input, RNG); `Rooms.cs` ~1.36k; `Texts.cs` ~1k.
-34. Verb/rest convention (trailing space in verb consts, first-space
+32. Verb/rest convention (trailing space in verb consts, first-space
     split) is undocumented and fails silently; SplitCache is a mutable
     static dictionary.
-35. The `Command` setter throws on null (readers currently never return
+33. The `Command` setter throws on null (readers currently never return
     null).
-36. `ExpandAbbrev` allocates two lists per command; `DebugEnabled` reads
+34. `ExpandAbbrev` allocates two lists per command; `DebugEnabled` reads
     the environment on every command.
-37. `TRoom.turn` is `Action<bool>` with undocumented "entering"
+35. `TRoom.turn` is `Action<bool>` with undocumented "entering"
     semantics; some lambdas peek at `Session.Room`.
-38. Data/graph divergence has no validation (e.g. items 13, 14, 19).
+36. Data/graph divergence has no validation (e.g. items 13, 14, 17).
