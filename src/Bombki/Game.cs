@@ -62,6 +62,11 @@ public static class Game {
         public int Experience;
         public int Money;
         public string Name = "";
+
+        public bool ChangeEnergy(int delta) {
+            Energy = (Energy + delta).Clamp(0, MaxEnergy);
+            return Energy > 0;
+        }
     }
 
     public class TSkills {
@@ -1208,14 +1213,16 @@ public static class Game {
                         }
                     }
                 }
-                Player.Energy = (Player.Energy - Combat.Damage);
+                if (Combat.Damage > 0) {
+                    Player.ChangeEnergy(-Combat.Damage);
+                }
                 if (Combat.FireballCharges > 0) {
                     Combat.Roll = Roll(100);
                     if (Combat.Roll < 10) {
                         Crt.TextColor(14);
                         Combat.Roll = Roll(20);
                         Out.WriteLine(TxtEnemy + TxtFightFireballLabel + Combat.Roll + TxtFightTailEnergii);
-                        Player.Energy = (Player.Energy - Combat.Roll);
+                        Player.ChangeEnergy(-Combat.Roll);
                         Combat.FireballCharges = (Combat.FireballCharges - 1);
                         Crt.TextColor(15);
                     }
@@ -1233,7 +1240,7 @@ public static class Game {
                 if (Combat.PoisonRounds > 0) {
                     Combat.Roll = Roll(5);
                     Out.WriteLine(TxtFightPoisonedLabel + Combat.Roll + TxtFightTailEnergii);
-                    Player.Energy = (Player.Energy - Combat.Roll);
+                    Player.ChangeEnergy(-Combat.Roll);
                     Combat.PoisonRounds = (Combat.PoisonRounds - 1);
                 }
             }
@@ -1496,10 +1503,7 @@ public static class Game {
                         if (Bag.Items[(int)TBagItem.Heart] == -ItemUnit) {
                             Bag.Items[(int)TBagItem.Heart] = 0;
                             Out.WriteLine(TxtEatVerb + TxtUseItems_02);
-                            Player.Energy = (Player.Energy + 5);
-                            int tmpEnergy = Player.Energy;
-                            ClampStat(ref tmpEnergy, Player.MaxEnergy);
-                            Player.Energy = tmpEnergy;
+                            Player.ChangeEnergy(5);
                             Bag.Count = (Bag.Count - 1);
                         }
                         break;
@@ -1550,8 +1554,7 @@ public static class Game {
                             } else if (Player.Stats[(int)TStat.Wisdom] < 16) {
                                 Out.WriteLine(TxtUseItems_35);
                                 Out.WriteLine(TxtUseItems_36);
-                                Player.Energy = (Player.Energy - 40);
-                                if (Player.Energy < 1) {
+                                if (!Player.ChangeEnergy(-40)) {
                                     Player.Energy = 1;
                                 }
 
@@ -3092,8 +3095,10 @@ public static class Game {
     public static void CmdClearScreen() =>
         Crt.ClrScr();
 
-    public static void CmdGiveEnergy() =>
-        Player.Energy = (Player.Energy + 200);
+    public static void CmdGiveEnergy() {
+        Player.MaxEnergy += 200;
+        Player.ChangeEnergy(200);
+    }
 
     public static void CmdGiveKunszt() =>
         Player.Experience = (Player.Experience + 500);
@@ -3128,7 +3133,7 @@ public static class Game {
             Bag.Items[(int)TBagItem.Beer] = (Bag.Items[(int)TBagItem.Beer] + ItemUnit);
             Out.WriteLine(TxtCmdDrinkBeer_01);
             Bag.Count = (Bag.Count - 1);
-            Player.Energy = (Player.Energy + 10);
+            Player.ChangeEnergy(10);
             Player.Mana = (Player.Mana + 10);
         }
     }
@@ -3187,22 +3192,19 @@ public static class Game {
             Crt.Delay(5000);
             Out.WriteLine(TxtCmdSleep_01 + Session.SleepHours + TxtCmdSleep_02);
             Player.Experience = (Player.Experience - 20);
-            Player.Energy = (Player.Energy + 10);
+            Player.ChangeEnergy(10);
         } while (!Crt.KeyPressed());
         Out.WriteLine(TxtCmdSleep_03 + (Session.SleepHours * 10)
             + TxtCmdSleep_04 + ((20 * Session.SleepHours) - Roll(2 * Session.SleepHours)) + TxtShared_22);
         Player.Experience = (Player.Experience + Roll(2 * Session.SleepHours));
         if (Session.SleepHours > 4) {
             Out.WriteLine(TxtCmdSleep_05 + Player.Stats[(int)TStat.Wisdom] + TxtCmdSleep_06);
-            Player.Energy = (Player.Energy + Player.Stats[(int)TStat.Wisdom]);
+            Player.ChangeEnergy(Player.Stats[(int)TStat.Wisdom]);
         }
         if (Session.SleepHours > 8) {
             Out.WriteLine(TxtCmdSleep_07 + (Player.Stats[(int)TStat.Wisdom] * 2) + TxtShared_19);
-            Player.Energy = (Player.Energy + (Player.Stats[(int)TStat.Wisdom] * 2));
+            Player.ChangeEnergy(Player.Stats[(int)TStat.Wisdom] * 2);
         }
-        int tmpEnergy = Player.Energy;
-        ClampStat(ref tmpEnergy, Player.MaxEnergy);
-        Player.Energy = tmpEnergy;
     }
 
     public static void CmdCompare() {
@@ -3359,13 +3361,18 @@ public static class Game {
             if (Bag.Count > Bag.Limit) {
                 Out.WriteLine(TxtStart_01 + (Bag.Count - Bag.Limit) + TxtStart_02);
                 Out.WriteLine(TxtStart_03 + ((Bag.Count - Bag.Limit) * 10) + TxtFightTailEnergii);
-                Player.Energy = (Player.Energy - ((Bag.Count - Bag.Limit) * 10));
+                if (!Player.ChangeEnergy(-((Bag.Count - Bag.Limit) * 10))) {
+                    Session.Room = DeadRoom;
+                }
             }
 
             if (Combat.PoisonRounds > 0) {
                 Combat.Roll = Roll(5);
                 Out.WriteLine(TxtStart_05 + Combat.Roll + TxtStart_06);
                 Combat.PoisonRounds = (Combat.PoisonRounds - 1);
+                if (!Player.ChangeEnergy(-Combat.Roll)) {
+                    Session.Room = DeadRoom;
+                }
             }
 
             Session.ExitRequested = false;

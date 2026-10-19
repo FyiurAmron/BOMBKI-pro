@@ -308,6 +308,7 @@ public class UnitsItemsTests {
     public void UzywaPigulkaMid() {
         Bag.Items[(int)TBagItem.TeleportPill] = -10;
         Player.Stats[(int)TStat.Wisdom] = 12;
+        Player.MaxEnergy = 100;
         Player.Energy = 100;
         Player.Experience = 100;
         Command = "UZYJ PIGULKA";
@@ -320,6 +321,7 @@ public class UnitsItemsTests {
     public void UzywaPigulkaHigh() {
         Bag.Items[(int)TBagItem.TeleportPill] = -10;
         Player.Stats[(int)TStat.Wisdom] = 20;
+        Player.MaxEnergy = 100;
         Player.Energy = 100;
         Player.Experience = 100;
         Command = "UZYJ PIGULKA";

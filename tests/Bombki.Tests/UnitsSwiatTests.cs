@@ -284,4 +284,37 @@ public class UnitsSwiatTests {
         Assert.Equal(-1, Bag.Count);
         Assert.Equal(4, Player.Stats[(int)TStat.Wisdom]);
     }
+
+    [Fact]
+    public void KamienieMogaZabic() {
+        RoomSetup();
+        Player.MaxEnergy = 50;
+        Player.Energy = 10;
+        Player.Stats[(int)TStat.Dexterity] = 10;
+        for (int i = 1; i <= 20; i++) {
+            PokojAt("PATRZ|POLNOC", 87);
+            if (Session.Room == Texts.DeadRoom) {
+                break;
+            }
+        }
+
+        Assert.Equal(Texts.DeadRoom, Session.Room);
+        Assert.Equal(0, Player.Energy);
+    }
+
+    [Fact]
+    public void StudniaMozeZabic() {
+        RoomSetup();
+        Player.MaxEnergy = 50;
+        Player.Energy = 50;
+        for (int i = 1; i <= 100; i++) {
+            PokojAt("PATRZ STUDNIA|POLNOC", 80);
+            if (Session.Room == Texts.DeadRoom) {
+                break;
+            }
+        }
+
+        Assert.Equal(Texts.DeadRoom, Session.Room);
+        Assert.Equal(0, Player.Energy);
+    }
 }

@@ -44,6 +44,15 @@ public class UnitsCombatTests {
         Assert.InRange(Player.Experience, kunsztLo, kunsztHi);
     }
 
+    static void RunWalkaShielded(int maxE, int wrogE, int sil, int wrogSil,
+        int zre, int wrogZre, int par, int kop, int expectedKunszt) {
+        WalkaSetup(maxE, wrogE, sil, wrogSil, zre, wrogZre, par, kop);
+        Gear.Values[(int)TGearItem.Armor] = 100;
+        Gear.Values[(int)TGearItem.WornCount] = 127;
+        DoFight();
+        Assert.Equal(expectedKunszt, Player.Experience);
+    }
+
     [Fact]
     public void WalkaEqualStats() =>
         RunWalka(0, 0, 1, 1, 10, 10, 0, 0, 34);
@@ -85,16 +94,16 @@ public class UnitsCombatTests {
         RunWalkaRange(0, 21, 61, 1, 10, 10, 0, 0, 33, 36);
     [Fact]
     public void WalkaSilPlusOne() =>
-        RunWalka(0, 0, 11, 10, 10, 10, 0, 0, 33);
+        RunWalkaShielded(0, 0, 11, 10, 10, 10, 0, 0, 33);
     [Fact]
     public void WalkaSilPlusTen() =>
-        RunWalka(0, 0, 20, 10, 10, 10, 0, 0, 24);
+        RunWalkaShielded(0, 0, 20, 10, 10, 10, 0, 0, 24);
     [Fact]
     public void WalkaSilMinusOne() =>
-        RunWalka(0, 0, 9, 10, 10, 10, 0, 0, 35);
+        RunWalkaShielded(0, 0, 9, 10, 10, 10, 0, 0, 35);
     [Fact]
     public void WalkaSilMinusTen() =>
-        RunWalka(0, 0, 1, 11, 10, 10, 0, 0, 44);
+        RunWalkaShielded(0, 0, 1, 11, 10, 10, 0, 0, 44);
     [Fact]
     public void WalkaParAdjustments() =>
         RunWalka(0, 0, 1, 1, 10, 10, 96, 0, 29);
@@ -116,7 +125,7 @@ public class UnitsCombatTests {
 
     [Fact]
     public void WalkaPoisoned() {
-        WalkaSetup(0, 0, 1, 1, 10, 10, 0, 0);
+        WalkaSetup(100, 0, 1, 1, 10, 10, 0, 0);
         Combat.PoisonRounds = 10;
         DoFight();
         Assert.True(Combat.EnemyEnergy < 1);
@@ -143,7 +152,7 @@ public class UnitsCombatTests {
 
     [Fact]
     public void WalkaParry() {
-        WalkaSetup(0, 0, 1, 20, 10, 10, 139, 0);
+        WalkaSetup(100, 0, 1, 20, 10, 10, 139, 0);
         DoFight();
         Assert.True(Combat.EnemyEnergy < 1);
         Assert.True(Player.Energy > 0);
@@ -151,7 +160,7 @@ public class UnitsCombatTests {
 
     [Fact]
     public void WalkaParryLight() {
-        WalkaSetup(0, 10, 3, 3, 10, 10, 139, 0);
+        WalkaSetup(10000, 10, 3, 3, 10, 10, 139, 0);
         Player.Energy = 10000;
         DoFight();
         Assert.True(Combat.EnemyEnergy < 1);
@@ -160,7 +169,7 @@ public class UnitsCombatTests {
 
     [Fact]
     public void WalkaSpecials() {
-        WalkaSetup(0, 20, 3, 20, 10, 10, 139, 0);
+        WalkaSetup(10000, 20, 3, 20, 10, 10, 139, 0);
         Player.Energy = 10000;
         Combat.FireballCharges = 1;
         Combat.PoisonCharges = 1;
@@ -292,6 +301,22 @@ public class UnitsCombatTests {
         EncounterSetup();
         Fight(TFoe.VeryHardEnemy);
         Assert.True(Combat.EnemyEnergy < 1);
+    }
+
+    [Fact]
+    public void EnergyClampsAtZero() {
+        Player.MaxEnergy = 50;
+        Player.Energy = 10;
+        Assert.False(Player.ChangeEnergy(-40));
+        Assert.Equal(0, Player.Energy);
+    }
+
+    [Fact]
+    public void EnergyClampsAtMax() {
+        Player.MaxEnergy = 50;
+        Player.Energy = 10;
+        Assert.True(Player.ChangeEnergy(100));
+        Assert.Equal(50, Player.Energy);
     }
 
     [Fact]

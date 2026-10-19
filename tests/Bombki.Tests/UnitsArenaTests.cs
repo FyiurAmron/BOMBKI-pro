@@ -417,6 +417,7 @@ public class UnitsArenaTests {
     static void LootSetup() {
         UnitsSeed.Reseed();
         Bag.Items[(int)TBagItem.Heart] = 0;
+        Player.MaxEnergy = 30000;
         Player.Energy = 30000;
         Player.Stats[(int)TStat.Strength] = 127;
         Player.Stats[(int)TStat.Dexterity] = 127;
@@ -504,7 +505,7 @@ public class UnitsArenaTests {
             Player.Energy = 100;
             Player.Stats[(int)TStat.Strength] = 127;
             Player.Stats[(int)TStat.Dexterity] = 127;
-            Player.MaxEnergy = 0;
+            Player.MaxEnergy = 100;
             Combat.EnemyEnergy = 0;
             Combat.EnemyStrength = 1;
             Combat.EnemyDexterity = 1;
@@ -541,7 +542,7 @@ public class UnitsArenaTests {
             Player.Energy = 100;
             Player.Stats[(int)TStat.Strength] = 127;
             Player.Stats[(int)TStat.Dexterity] = 127;
-            Player.MaxEnergy = 0;
+            Player.MaxEnergy = 30000;
             Combat.EnemyEnergy = 3000;
             Combat.EnemyStrength = 5;
             Combat.EnemyDexterity = 1;

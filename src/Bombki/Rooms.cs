@@ -1053,7 +1053,10 @@ public static class Rooms {
                     Combat.Roll = Roll(100);
                     if (Combat.Roll < 10) {
                         Out.WriteLine(TxtRoom80_06);
-                        Player.Energy = (Player.Energy - 40);
+                        if (!Player.ChangeEnergy(-40)) {
+                            Session.Room = DeadRoom;
+                            return;
+                        }
                         Out.WriteLine(TxtRoom80_07);
                         Player.Money = Player.Money - 100;
                         if (Player.Money < 0) {
@@ -1209,8 +1212,11 @@ public static class Rooms {
                 }
                 Combat.Roll = Roll(100);
                 if (Combat.Roll < 40) {
-                    Out.WriteLine(TxtRoom87_03 + (25 - Player.Stats[(int)TStat.Dexterity]) + TxtShared_26);
-                    Player.Energy = (Player.Energy - 25 + Player.Stats[(int)TStat.Dexterity]);
+                    int damage = Math.Max(0, 25 - Player.Stats[(int)TStat.Dexterity]);
+                    Out.WriteLine(TxtRoom87_03 + damage + TxtShared_26);
+                    if (!Player.ChangeEnergy(-damage)) {
+                        Session.Room = DeadRoom;
+                    }
                 }
             },
             expand = true,

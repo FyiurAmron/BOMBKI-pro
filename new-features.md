@@ -30,3 +30,4 @@
   - save file is `{charname}.json` and human-readable
   - full bag and monster state preserved, road permit and living door included
 - the skills screen shows the real cooking value
+- "energia" is now clamped between 0 and max.
