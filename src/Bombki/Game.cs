@@ -2041,7 +2041,7 @@ public static class Game {
         new() { item = IntSlot.Into(Bag.Items, (int)TBagItem.OldSword), desc = CmdStaryZardzewialyMiecz, width = 0, kind = TSheetKind.ikShown },
         new() { item = IntSlot.Into(Bag.Items, (int)TBagItem.SmallShield), desc = CmdOkraglaMalaTarcza, width = 0, kind = TSheetKind.ikShown },
         new() { item = IntSlot.Into(Bag.Items, (int)TBagItem.Heart), desc = CmdZakrwawioneSerce, width = 0, kind = TSheetKind.ikShown },
-        new() { item = IntSlot.Into(Bag.Items, (int)TBagItem.Diploma), desc = CmdDyplomMudSzkoly, width = 0, kind = TSheetKind.ikShown },
+        new() { item = IntSlot.Into(Bag.Items, (int)TBagItem.Diploma), desc = CmdDyplomSzkolyZycia, width = 0, kind = TSheetKind.ikShown },
         new() { item = IntSlot.Into(Bag.Items, (int)TBagItem.Doughnut), desc = CmdSmacznyPolanyLikieremPaczek, width = 10, kind = TSheetKind.ikShown },
         new() { item = IntSlot.Into(Bag.Items, (int)TBagItem.Cookie), desc = CmdSmaczneCiastko, width = 10, kind = TSheetKind.ikShown },
         new() { item = IntSlot.Into(Bag.Items, (int)TBagItem.DryRation), desc = CmdTwardaSuchaRacje, width = 10, kind = TSheetKind.ikShown },

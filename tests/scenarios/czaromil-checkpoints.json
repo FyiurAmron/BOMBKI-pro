@@ -36,7 +36,7 @@
     },
     {
       "label": "the school hall",
-      "expect": "Jesteś\\ w\\ hallu\\ mud\\ szkoły[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ hallu\\ Szkoły\\ Życia[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {

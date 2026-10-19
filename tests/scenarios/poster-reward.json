@@ -20,13 +20,13 @@
       "send": "POLNOC"
     },
     {
-      "label": "round salon to mud school hall",
+      "label": "round salon to school of life hall",
       "expect": "Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
-      "label": "mud school hall to shock room",
-      "expect": "Jesteś\\ w\\ hallu\\ mud\\ szkoły[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "label": "school of life hall to shock room",
+      "expect": "Jesteś\\ w\\ hallu\\ Szkoły\\ Życia[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {

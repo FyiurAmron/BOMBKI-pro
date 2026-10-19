@@ -96,7 +96,7 @@
     },
     {
       "label": "the school hall",
-      "expect": "Jesteś\\ w\\ hallu\\ mud\\ szkoły[\\s\\S]*?",
+      "expect": "Jesteś\\ w\\ hallu\\ Szkoły\\ Życia[\\s\\S]*?",
       "send": "ZACHOD"
     },
     {

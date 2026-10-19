@@ -35,8 +35,8 @@
       "send": "ZACHOD"
     },
     {
-      "label": "room 4 (JESTES W HALLU MUD S)",
-      "expect": "Jesteś\\ w\\ hallu\\ mud\\ szkoły\\ \\-\\ ogarnia\\ cię[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "label": "room 4 (school of life hall)",
+      "expect": "Jesteś\\ w\\ hallu\\ Szkoły\\ Życia\\ \\-\\ ogarnia\\ cię[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
