@@ -155,7 +155,7 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
@@ -194,7 +194,7 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
@@ -233,7 +233,7 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
@@ -272,7 +272,7 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
@@ -311,7 +311,7 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
@@ -350,7 +350,7 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
@@ -389,7 +389,7 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
@@ -428,7 +428,7 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
@@ -467,7 +467,7 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
@@ -506,7 +506,7 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
@@ -584,7 +584,7 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
@@ -623,7 +623,7 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {

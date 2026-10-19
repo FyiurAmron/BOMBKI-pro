@@ -220,6 +220,7 @@ public class UnitsSwiatTests {
         Bag.Permit = -20;
         PokojAt("EXIT|ZACHOD", 100);
         Assert.Equal(101, Session.Room);
+        Assert.Equal(101, Session.OuterRoom);
     }
 
     [Fact]
@@ -256,12 +257,14 @@ public class UnitsSwiatTests {
         Player.MaxEnergy = 50;
         Bag.Permit = 0;
         Player.Experience = 100;
+        Bag.Count = 1;
         PokojAt("SPRZEDAJ QUEST|WYJSCIE", 100);
         Assert.Equal(0, World.Quest);
         Assert.Equal(0, Bag.Items[(int)TBagItem.Diploma]);
         Assert.Equal(45, Player.MaxEnergy);
         Assert.Equal(-10, Bag.Permit);
         Assert.Equal(350, Player.Experience);
+        Assert.Equal(0, Bag.Count);
     }
 
     [Fact]
@@ -283,6 +286,28 @@ public class UnitsSwiatTests {
         Assert.Equal(525, Player.Experience);
         Assert.Equal(-1, Bag.Count);
         Assert.Equal(4, Player.Stats[(int)TStat.Wisdom]);
+    }
+
+    [Fact]
+    public void StaruchTradeLeavesYouInTheCity() {
+        RoomSetup();
+        Session.Room = Rooms.RoomHut;
+        Bag.Items[(int)TBagItem.Sausage] = -40;
+        Bag.Items[(int)TBagItem.ReturnScroll] = 0;
+        Bag.Items[(int)TBagItem.Beer] = 0;
+        Bag.Count = 4;
+        Player.Money = 200;
+        World.OldElf = false;
+        using (FeedStdin("ROZMAWIAJ STARUCH")) {
+            Rooms.DispatchRoom();
+        }
+
+        Assert.Equal(Rooms.RoomCityCentre, Session.Room);
+        Assert.Equal(-ItemUnit, Bag.Items[(int)TBagItem.ReturnScroll]);
+        Assert.Equal(-ItemUnit, Bag.Items[(int)TBagItem.Beer]);
+        Assert.Equal(0, Bag.Items[(int)TBagItem.Sausage]);
+        Assert.Equal(0, Player.Money);
+        Assert.Equal(2, Bag.Count);
     }
 
     [Fact]

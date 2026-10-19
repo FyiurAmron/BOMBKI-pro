@@ -479,4 +479,21 @@ public class UnitsItemsTests {
         Assert.True(Bag.Count > 0);
         Assert.Equal(90, Bag.Items[(int)TBagItem.CompareScroll]);
     }
+
+    [Fact]
+    public void BagLimitFollowsDexterity() {
+        Player.Stats[(int)TStat.Dexterity] = 10;
+        Bag.Items[(int)TBagItem.Backpack] = 0;
+        RecalcBagLimit();
+        Assert.Equal(10, Bag.Limit);
+        Player.Stats[(int)TStat.Dexterity] = 12;
+        RecalcBagLimit();
+        Assert.Equal(11, Bag.Limit);
+        Player.Stats[(int)TStat.Dexterity] = 25;
+        RecalcBagLimit();
+        Assert.Equal(16, Bag.Limit);
+        Bag.Items[(int)TBagItem.Backpack] = -ItemUnit;
+        RecalcBagLimit();
+        Assert.Equal(20, Bag.Limit);
+    }
 }

@@ -130,8 +130,8 @@
       "send": "ROZMAWIAJ STARUCH"
     },
     {
-      "label": "ground prompt with the gift beer",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
+      "label": "trade ends in the city centre (no refusal)",
+      "expect": "I\\ piwsko\\ na\\ osłodzenie\\ życia,\\ no\\ trudno\\.\\ Przynajmniej\\ czegoś\\ się\\ nauczyłeś(?:(?!Aaaa,\\ spadaj)[\\s\\S])*?Jesteś\\ w\\ centrum\\ miast[\\s\\S]*?[0-9]+%\\..-?[0-9]+>",
       "send": "JA"
     },
     {
@@ -150,9 +150,18 @@
       "send": "UZYJ SCROLL POWROT"
     },
     {
-      "label": "back in the city centre",
-      "expect": "Jesteś\\ w\\ centrum\\ miast[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "label": "the return portal opens",
+      "expect": "Otwierasz\\ magiczny\\ portal[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "EXIT"
+    },
+    {
+      "label": "city centre exits",
+      "expect": "Dostępne\\ WYJŚCIA[\\s\\S]*?POŁUDNIE:\\ Pokój\\ centralny[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "send": "WYJSCIE"
+    },
+    {
+      "label": "the game ends",
+      "expect_exit": true
     }
   ]
 }

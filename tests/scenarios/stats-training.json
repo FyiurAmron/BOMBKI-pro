@@ -165,7 +165,7 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
@@ -214,7 +214,7 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
@@ -263,7 +263,7 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
@@ -312,7 +312,7 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
@@ -361,7 +361,7 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
@@ -410,7 +410,7 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
@@ -459,7 +459,7 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
@@ -508,7 +508,7 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
@@ -557,7 +557,7 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
@@ -606,7 +606,7 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
@@ -655,7 +655,7 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
@@ -1203,7 +1203,7 @@
     },
     {
       "label": "meditation room exits",
-      "expect": "Dostępne\\ WYJŚCIE\\ -\\ GÓRA\\ -\\ hala\\ główna\\ mud\\ szkoły[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCIA:[\\s\\S]*?GÓRA:\\ Pokój\\ centralny[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "WYJSCIE"
     },
     {

@@ -62,6 +62,31 @@
     {
       "label": "the road",
       "expect": "[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "send": "POLNOC"
+    },
+    {
+      "label": "in the forest",
+      "expect": "Wiele\\ wskazuje\\ na\\ to,\\ że\\ jesteś\\ w\\ lesie[\\s\\S]*?zasłaniają\\ ci\\ drzewa[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "send": "EXIT"
+    },
+    {
+      "label": "forest exit list",
+      "expect": "Dostępne\\ WYJŚCIA[\\s\\S]*?POŁUDNIE:\\ droga[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "send": "POLUDNIE"
+    },
+    {
+      "label": "back on the road",
+      "expect": "Idziesz\\ drogą\\ do\\ miasta[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "POLUDNIE"
+    },
+    {
+      "label": "south forest",
+      "expect": "Wiele\\ wskazuje\\ na\\ to,\\ że\\ jesteś\\ w\\ lesie[\\s\\S]*?zasłaniają\\ ci\\ drzewa[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "send": "POLNOC"
+    },
+    {
+      "label": "back on the road again",
+      "expect": "Idziesz\\ drogą\\ do\\ miasta[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "PATRZ DROGOWSKAZ"
     },
     {
@@ -77,6 +102,26 @@
     {
       "label": "stony road",
       "expect": "[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "send": "POLNOC"
+    },
+    {
+      "label": "north forest of the stony road",
+      "expect": "Wiele\\ wskazuje\\ na\\ to,\\ że\\ jesteś\\ w\\ lesie[\\s\\S]*?zasłaniają\\ ci\\ drzewa[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "send": "POLUDNIE"
+    },
+    {
+      "label": "stony road again",
+      "expect": "Idziesz\\ dalej\\ kamienis[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "POLUDNIE"
+    },
+    {
+      "label": "south forest of the stony road",
+      "expect": "Wiele\\ wskazuje\\ na\\ to,\\ że\\ jesteś\\ w\\ lesie[\\s\\S]*?zasłaniają\\ ci\\ drzewa[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "send": "POLNOC"
+    },
+    {
+      "label": "stony road once more",
+      "expect": "Idziesz\\ dalej\\ kamienis[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -87,6 +132,26 @@
     {
       "label": "road ends at the river",
       "expect": "[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "send": "POLNOC"
+    },
+    {
+      "label": "north forest of the river road",
+      "expect": "Wiele\\ wskazuje\\ na\\ to,\\ że\\ jesteś\\ w\\ lesie[\\s\\S]*?zasłaniają\\ ci\\ drzewa[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "send": "POLUDNIE"
+    },
+    {
+      "label": "river road again",
+      "expect": "Co\\ to\\ za\\ głupota[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "POLUDNIE"
+    },
+    {
+      "label": "south forest of the river road",
+      "expect": "Wiele\\ wskazuje\\ na\\ to,\\ że\\ jesteś\\ w\\ lesie[\\s\\S]*?zasłaniają\\ ci\\ drzewa[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "send": "POLNOC"
+    },
+    {
+      "label": "river road once more",
+      "expect": "Co\\ to\\ za\\ głupota[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {

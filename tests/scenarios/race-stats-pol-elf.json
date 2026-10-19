@@ -51,7 +51,7 @@
     },
     {
       "label": "starting energy",
-      "expect": "Masz\\ 50/45\\ ENERGII",
+      "expect": "Masz\\ 45/45\\ ENERGII",
       "send": "WYJSCIE"
     }
   ]

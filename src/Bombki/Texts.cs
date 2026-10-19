@@ -500,7 +500,7 @@ public static class Texts {
     public const string TxtCmdRefuseFoodDrop_01 = "Jak śmiesz wyrzucać jedzenie!!! Wstyd mi za ciebie!!! Nie pozwolę!!!";
     public const string TxtCmdOpenPortal_01 = "Otwierasz magiczny portal który przenosi cię do miasta";
     public const string TxtCmdOpenPortal_02 = "Nie udaje ci się otworzyć magicznego portalu";
-    public const string TxtCmdOpenPortal_03 = "Otwierasz magiczny portal który jednak przenosi cię do innego miejsca";
+    public const string TxtCmdOpenPortal_03 = "Jesteś lama i zamiast dostać portal to tracisz manę.";
     public const string TxtCmdSetKickThresholds_01 = "Zadam ci parę pytań:";
     public const string TxtCmdSetKickThresholds_02 = "1) Poniżej jakiej ENERGII chcesz zacząć KOPAĆ";
     public const string TxtCmdSetKickThresholds_03 = "2) Do jakiej ilości MANY chcesz KOPAĆ";
@@ -601,6 +601,7 @@ public static class Texts {
     public const string TxtRoom103_02 = "przecież równie dobrze mogła by iść środkiem, zyskali by na tym wszyscy";
     public const string TxtRoom103_03 = "A szczególnie ty, bo bolą cię nogi od tego chodzenia niemożebnie";
     public const string TxtRoom103_04 = "Ups. Droga się kończy na tej przepastnej rzece. O dalszej podróży nie ma mowy";
+    public const string TxtForest_01 = "Wiele wskazuje na to, że jesteś w lesie, ale ciężko to stwierdzić jednoznacznie, bo cały widok zasłaniają ci drzewa.";
     public const string TxtRoom23_01 = "piekarni, sklep przesiąknięty jest przyjemnym zapachem chleba";
     public const string TxtRoom23_02 = "Piekarz miło się na ciebie patrzy wycierając mąkę z twarzy";
     public const string TxtRoom23_03 = "Na ścianie jest PLAKAT cały w mące";
@@ -967,7 +968,6 @@ public static class Texts {
     public static readonly List<string> TxtRoom3Lines1 = ["", TxtRoom3_01, TxtRoom3_02, TxtRoom3_03];
     public static readonly List<string> TxtConcertRoomsLines1 = ["", TxtConcertRooms_01, TxtConcertRooms_02, TxtConcertRooms_03];
     public static readonly List<string> TxtConcertRoomsLines2 = ["", TxtConcertRooms_41, TxtConcertRooms_42, TxtConcertRooms_43];
-    public static readonly List<string> TxtCheckLevelUpLines1 = ["", TxtCheckLevelUp_01, TxtCheckLevelUp_01, TxtCheckLevelUp_01, TxtCheckLevelUp_01];
     public static readonly List<string> TxtRoom17Lines1 = ["", TxtShared_13, TxtRoom17_03, TxtRoom17_04, TxtRoom17_05];
     public static readonly List<string> TxtRoom18Lines1 = ["", TxtRoom18_01, TxtRoom18_02, TxtRoom18_03, TxtRoom18_04];
     public static readonly List<string> TxtRoom76Lines1 = ["", TxtRoom76_02, TxtRoom76_03, TxtRoom76_04];

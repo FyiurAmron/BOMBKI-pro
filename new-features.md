@@ -31,3 +31,14 @@
   - full bag and monster state preserved, road permit and living door included
 - the skills screen shows the real cooking value
 - "energia" is now clamped between 0 and max.
+- no negative xp
+- dying no longer "helps" with first quest
+- items dropped on the road by the quest master are visible again
+- inventory limit now works correctly
+- very failed portal no longer teleports you randomly
+  (could teleport you out-of-bounds and brick the game in vanilla)
+- better level-up banner
+- all rooms show their exit list
+- all rooms wired; no longer crashes after going into northern LAS
+- handing the diploma over frees a bag slot
+- Staruch checks the return scroll before the trade

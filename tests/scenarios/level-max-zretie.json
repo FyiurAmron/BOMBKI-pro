@@ -115,12 +115,12 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
-      "label": "level 2: banner, then grant 1/2",
-      "expect": "Zdobyłeś\\ level",
+      "label": "level 2: grant 1/2",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -154,12 +154,12 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
-      "label": "level 3: banner, then grant 1/2",
-      "expect": "Zdobyłeś\\ level",
+      "label": "level 3: grant 1/2",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -193,12 +193,12 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
-      "label": "level 4: banner, then grant 1/2",
-      "expect": "Zdobyłeś\\ level",
+      "label": "level 4: grant 1/2",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -232,12 +232,12 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
-      "label": "level 5: banner, then grant 1/2",
-      "expect": "Zdobyłeś\\ level",
+      "label": "level 5: grant 1/2",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -271,12 +271,12 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
-      "label": "level 6: banner, then grant 1/2",
-      "expect": "Zdobyłeś\\ level",
+      "label": "level 6: grant 1/2",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -310,12 +310,12 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
-      "label": "level 7: banner, then grant 1/2",
-      "expect": "Zdobyłeś\\ level",
+      "label": "level 7: grant 1/2",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -349,12 +349,12 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
-      "label": "level 8: banner, then grant 1/2",
-      "expect": "Zdobyłeś\\ level",
+      "label": "level 8: grant 1/2",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -388,12 +388,12 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
-      "label": "level 9: banner, then grant 1/2",
-      "expect": "Zdobyłeś\\ level",
+      "label": "level 9: grant 1/2",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -427,12 +427,12 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
-      "label": "level 10: banner, then grant 1/2",
-      "expect": "Zdobyłeś\\ level",
+      "label": "level 10: grant 1/2",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -466,12 +466,12 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
-      "label": "level 11: banner, then grant 1/2",
-      "expect": "Zdobyłeś\\ level",
+      "label": "level 11: grant 1/2",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -505,11 +505,11 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {
-      "label": "level 12: banner, then grant 1/2",
+      "label": "level 12: grant 1/2",
       "expect": "Hurra!\\ To\\ już\\ dwunasty\\ poziom[\\s\\S]*?Masz teraz",
       "send": "DAWAJ KUNSZT"
     },
@@ -549,7 +549,7 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Zdobyłeś\\ level",
+      "expect": "Zyskałeś\\ [0-9]+\\ PRAKTYK",
       "send": ""
     },
     {

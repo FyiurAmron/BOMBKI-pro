@@ -94,7 +94,11 @@ public static class Rooms {
     public const int RoomRoad2 = 102;
     public const int RoomRoad3 = 103;
     public const int RoomForest = 104;
-    public const int RoomQuit = 193;
+    public const int RoomForest1 = 105;
+    public const int RoomForest2 = 106;
+    public const int RoomForest3 = 107;
+    public const int RoomForest4 = 108;
+    public const int RoomForest5 = 109;
 
     public class TRoomPoster {
         public string cmd = "";
@@ -241,6 +245,7 @@ public static class Rooms {
                 break;
             case 2:
                 Bag.Items[(int)TBagItem.Diploma] = 0;
+                Bag.Count -= 1;
                 Player.MaxEnergy -= 5;
                 break;
             case 3:
@@ -273,7 +278,8 @@ public static class Rooms {
         new() {
             number = RoomStart,
             intro = [TxtRoom0_01],
-            exits = [TxtRoom0_02],
+            exits = [TxtShared_03,
+                     TxtExitPolnoc, TxtPlacePokojCentralny, ],
             moves = [Go(CmdPolnoc, RoomSalon)],
         },
         new() {
@@ -308,7 +314,8 @@ public static class Rooms {
         new() {
             number = RoomMeditation,
             intro = [..TxtRoom3Lines1.Skip(1)],
-            exits = [TxtRoom3_04],
+            exits = [TxtShared_03,
+                     TxtExitGora, TxtPlacePokojCentralny, ],
             moves = [Go(CmdGora, RoomSalon)],
             turn = entering => {
                 if (!entering) {
@@ -734,7 +741,8 @@ public static class Rooms {
             exits = [TxtShared_03,
                      TxtExitZachod, TxtPlaceDolinaRozrywek,
                      TxtExitPolnoc, TxtPlaceTlum,
-                     TxtExitPolodnie, TxtPlaceTlum, ],
+                     TxtExitPolodnie, TxtPlaceTlum,
+                     TxtExitWschod, TxtPlaceTlum, ],
             moves = [Go(CmdZachod, RoomValley),
                      Go(CmdPolnoc, RoomCrowd3),
                      Go(CmdPolodnie, RoomCrowd2),
@@ -1166,9 +1174,12 @@ public static class Rooms {
                         break;
                     case CmdRozmawiaj:
                         if (Rest == CmdStaruch) {
-                            if ((Bag.Items[(int)TBagItem.Sausage] > -30) && (Player.Money < 200) && (Bag.Items[(int)TBagItem.ReturnScroll] == 0))
+                            if (Bag.Items[(int)TBagItem.ReturnScroll] < 0) {
+                                Out.WriteLine(TxtRoom86_13);
+                                MoveTo(RoomCageHuge);
+                            } else if ((Bag.Items[(int)TBagItem.Sausage] > -30) && (Player.Money < 200) && (Bag.Items[(int)TBagItem.ReturnScroll] == 0)) {
                                 WriteLines([.. TxtRoom86Lines1.Skip(1)]);
-                            if ((Bag.Items[(int)TBagItem.Sausage] < -30) && (Player.Money > 199)) {
+                            } else if ((Bag.Items[(int)TBagItem.Sausage] < -30) && (Player.Money > 199)) {
                                 WriteLines([.. TxtRoom86Lines2.Skip(1)]);
                                 MoveTo(RoomCityCentre);
                                 Bag.Items[(int)TBagItem.Beer] -= ItemUnit;
@@ -1177,10 +1188,6 @@ public static class Rooms {
                                 Bag.Items[(int)TBagItem.ReturnScroll] -= ItemUnit;
                                 Player.Experience += 50;
                                 Bag.Count -= 2;
-                            }
-                            if (Bag.Items[(int)TBagItem.ReturnScroll] < 0) {
-                                Out.WriteLine(TxtRoom86_13);
-                                MoveTo(RoomCageHuge);
                             }
                         }
                         break;
@@ -1303,7 +1310,7 @@ public static class Rooms {
                     switch (Verb) {
                         case CmdZachod:
                             if (Bag.Permit <= -ItemUnit) {
-                                Session.Room = RoomRoad1;
+                                MoveTo(RoomRoad1);
                             }
                             if (Bag.Permit == 0) {
                                 Out.WriteLine(TxtRoom100_16);
@@ -1335,7 +1342,7 @@ public static class Rooms {
                      TxtExitPolnoc, TxtPlaceLas,
                      TxtExitPolodnie, TxtPlaceLas, ],
             moves = [Go(CmdWschod, RoomQuestMaster), Go(CmdZachod, RoomRoad2),
-                     Go(CmdPolnoc, RoomForest), ],
+                     Go(CmdPolnoc, RoomForest), Go(CmdPolodnie, RoomForest1), ],
             posters = [new(CmdPatrz + CmdDrogowskaz, [TxtRoom101_05])],
         },
         new() {
@@ -1346,7 +1353,8 @@ public static class Rooms {
                      TxtExitZachod, TxtPlaceDroga,
                      TxtExitPolnoc, TxtPlaceLas,
                      TxtExitPolodnie, TxtPlaceLas, ],
-            moves = [Go(CmdWschod, RoomRoad1), Go(CmdZachod, RoomRoad3)],
+            moves = [Go(CmdWschod, RoomRoad1), Go(CmdZachod, RoomRoad3),
+                     Go(CmdPolnoc, RoomForest2), Go(CmdPolodnie, RoomForest3), ],
         },
         new() {
             number = RoomRoad3,
@@ -1355,7 +1363,50 @@ public static class Rooms {
                      TxtExitWschod, TxtPlaceDroga,
                      TxtExitPolnoc, TxtPlaceLas,
                      TxtExitPolodnie, TxtPlaceLas, ],
-            moves = [Go(CmdWschod, RoomRoad2)],
+            moves = [Go(CmdWschod, RoomRoad2),
+                     Go(CmdPolnoc, RoomForest4), Go(CmdPolodnie, RoomForest5), ],
+        },
+        new() {
+            number = RoomForest,
+            intro = [TxtForest_01],
+            exits = [TxtShared_03,
+                     TxtExitPolodnie, TxtPlaceDroga, ],
+            moves = [Go(CmdPolodnie, RoomRoad1)],
+        },
+        new() {
+            number = RoomForest1,
+            intro = [TxtForest_01],
+            exits = [TxtShared_03,
+                     TxtExitPolnoc, TxtPlaceDroga, ],
+            moves = [Go(CmdPolnoc, RoomRoad1)],
+        },
+        new() {
+            number = RoomForest2,
+            intro = [TxtForest_01],
+            exits = [TxtShared_03,
+                     TxtExitPolodnie, TxtPlaceDroga, ],
+            moves = [Go(CmdPolodnie, RoomRoad2)],
+        },
+        new() {
+            number = RoomForest3,
+            intro = [TxtForest_01],
+            exits = [TxtShared_03,
+                     TxtExitPolnoc, TxtPlaceDroga, ],
+            moves = [Go(CmdPolnoc, RoomRoad2)],
+        },
+        new() {
+            number = RoomForest4,
+            intro = [TxtForest_01],
+            exits = [TxtShared_03,
+                     TxtExitPolodnie, TxtPlaceDroga, ],
+            moves = [Go(CmdPolodnie, RoomRoad3)],
+        },
+        new() {
+            number = RoomForest5,
+            intro = [TxtForest_01],
+            exits = [TxtShared_03,
+                     TxtExitPolnoc, TxtPlaceDroga, ],
+            moves = [Go(CmdPolnoc, RoomRoad3)],
         },
     ];
 

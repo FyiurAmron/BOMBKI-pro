@@ -2078,7 +2078,7 @@ public static class Game {
         }
     }
 
-    public static void ShowCharacter() {
+    public static void RecalcBagLimit() {
         for (int i = DexterityItemLimits.Count - 1; i >= 1; i--) {
             if (Player.Stats[(int)TStat.Dexterity] >= DexterityItemLimits[i].gate) {
                 Bag.Limit = DexterityItemLimits[i].limit;
@@ -2089,7 +2089,10 @@ public static class Game {
         if (Bag.Items[(int)TBagItem.Backpack] < 0) {
             Bag.Limit += 4;
         }
+    }
 
+    public static void ShowCharacter() {
+        RecalcBagLimit();
         Out.WriteLine($"{TxtShowCharacter_30}{Player.Name}");
         Out.WriteLine(TxtShowCharacter_01);
         for (int si = 1; si < SheetItems.Count; si++) {
@@ -2213,10 +2216,9 @@ public static class Game {
                 Player.MaxMana += Races[chosen].MaxManaBonus;
                 Player.Money += Races[chosen].MoneyBonus;
                 Player.MaxEnergy += Races[chosen].MaxEnergyBonus;
-                Player.Energy += Races[chosen].EnergyBonus;
             }
         } while (!(chosen > 0));
-        Player.Energy = 50;
+        Player.Energy = (50 + Races[chosen].EnergyBonus);
         Player.Practice = 10;
         SpawnAt([.. CageInits.Skip(1)]);
         Player.Level = 1;
@@ -2565,7 +2567,7 @@ public static class Game {
     public static void Death() {
         WriteLines([.. TxtDeathLines1.Skip(1)]);
         if (World.Quest == 1) {
-            World.QuestKills = 50;
+            World.QuestKills = 75;
         }
 
         if (World.Quest > 1) {
@@ -2573,7 +2575,7 @@ public static class Game {
         }
 
         Player.Energy = Player.MaxEnergy;
-        Player.Experience -= 250 - Roll(50) + (5 * Player.Level);
+        Player.Experience = (Player.Experience - (250 - Roll(50) + (5 * Player.Level))).Clamp(0, MaxInt);
         MoveTo(RoomCityCentre);
         SpawnMonsters();
         Command = CmdPamietaj;
@@ -3017,7 +3019,8 @@ public static class Game {
             return;
         }
 
-        WriteLines([.. TxtCheckLevelUpLines1.Skip(1)]);
+        WriteRainbow(TxtCheckLevelUp_01);
+        Out.WriteLine();
 
         Player.Experience -= BandAmount([.. LevelCosts.Skip(1)], Player.Level);
         Player.Practice += BandAmount([.. PracticeGains.Skip(1)], Player.Stats[(int)TStat.Wisdom]);
@@ -3267,7 +3270,6 @@ public static class Game {
             if (Skills.Values[(int)TSkill.Returning] + 29 < Combat.Roll) {
                 Out.WriteLine(TxtCmdOpenPortal_03);
                 Player.Mana -= 10;
-                MoveTo((Roll(100) + 1));
             }
         }
     }
@@ -3358,6 +3360,7 @@ public static class Game {
             Checkpoints();
             CheckLevelUp();
 
+            RecalcBagLimit();
             if (Bag.Count > Bag.Limit) {
                 Out.WriteLine(TxtStart_01 + (Bag.Count - Bag.Limit) + TxtStart_02);
                 Out.WriteLine(TxtStart_03 + ((Bag.Count - Bag.Limit) * 10) + TxtFightTailEnergii);
@@ -3386,7 +3389,7 @@ public static class Game {
             }
 
             Combat.Fled = false;
-        } while (!(Session.Room == RoomQuit));
+        } while (true);
     }
 
     public static void LoadCharacter() {
