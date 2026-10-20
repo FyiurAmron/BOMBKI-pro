@@ -660,6 +660,7 @@ public class UnitsItemsTests {
             LoadGame();
         } finally {
             File.Delete(path);
+            Session.SavedFlag = false;
         }
         Assert.Equal(2, Bag.Items[TBagItem.Beer]);
         Assert.Equal(0, Bag.Items[TBagItem.Diploma]);
