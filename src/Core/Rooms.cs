@@ -246,7 +246,7 @@ public static class Rooms {
                 Bag.Count += 1;
                 break;
             case 2:
-                Bag.Items[TBagItem.Diploma] = 0;
+                Bag.Items[TBagItem.Diploma] -= 1;
                 Bag.Count -= 1;
                 Player.MaxEnergy -= 5;
                 break;

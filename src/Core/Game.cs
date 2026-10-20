@@ -1428,7 +1428,7 @@ public static class Game {
     public static void DropItem(string cmd, TBagItem item, string verb, string line, TTakeEffect effect) {
         bool wielded = (item == TBagItem.OldSword && Gear.Values[TGearItem.WeaponKind] == 1) ||
             (item == TBagItem.SmallShield && Gear.Values[TGearItem.ShieldKind] == 1);
-        if ((Matches(cmd)) && (Bag.Items[item] == 1) && !wielded) {
+        if ((Matches(cmd)) && (Bag.Items[item] > 0) && !wielded) {
             Out.WriteLine(verb + line);
             Bag.Items[item] -= 1;
             Bag.ItemRooms[item] = Session.OuterRoom;
@@ -1535,21 +1535,21 @@ public static class Game {
             case CmdUzyj:
                 switch (Rest) {
                     case CmdFajka:
-                        if (Bag.Items[TBagItem.Pipe] == 1) {
+                        if (Bag.Items[TBagItem.Pipe] > 0) {
                             Out.WriteLine(TxtUseItems_01);
                         }
 
                         break;
                     case CmdSerce:
-                        if (Bag.Items[TBagItem.Heart] == 1) {
-                            Bag.Items[TBagItem.Heart] = 0;
+                        if (Bag.Items[TBagItem.Heart] > 0) {
+                            Bag.Items[TBagItem.Heart] -= 1;
                             Out.WriteLine(TxtEatVerb + TxtUseItems_02);
                             Player.ChangeEnergy(5);
                             Bag.Count -= 1;
                         }
                         break;
                     case CmdDyplom:
-                        if (Bag.Items[TBagItem.Diploma] == 1) {
+                        if (Bag.Items[TBagItem.Diploma] > 0) {
                             WriteLines([.. TxtUseItemsLines1.Skip(1)]);
                         }
 
@@ -2565,13 +2565,13 @@ public static class Game {
         BuyItem(CmdKup + CmdStary, IntSlot.Into(Bag.Items, TBagItem.OldSword), 70, TxtBuyOldSword_01, true);
 
     public static bool CanSellOldSword() =>
-        (Bag.Items[TBagItem.OldSword] == 1) && (Gear.Values[TGearItem.WeaponKind] == 0);
+        (Bag.Items[TBagItem.OldSword] > 0) && (Gear.Values[TGearItem.WeaponKind] == 0);
 
     public static void SellOldSword() {
         Out.WriteLine(TxtSellOldSword_01);
         Out.WriteLine(TxtSellOldSword_02);
         Player.Money += 30;
-        Bag.Items[TBagItem.OldSword] = 0;
+        Bag.Items[TBagItem.OldSword] -= 1;
         Bag.Count -= 1;
     }
 
@@ -2584,7 +2584,7 @@ public static class Game {
     public static void SellSmallShield() {
         Out.WriteLine(TxtSellSmallShield_01);
         Player.Money += 8;
-        Bag.Items[TBagItem.SmallShield] = 0;
+        Bag.Items[TBagItem.SmallShield] = (Bag.Items[TBagItem.SmallShield] - 1).Clamp(0, MaxInt);
         Bag.Count -= 1;
     }
 
@@ -2619,7 +2619,7 @@ public static class Game {
         SellItem(IntSlot.Into(Bag.Items, TBagItem.Tracksuit), 15, TxtSellTracksuit_01);
 
     public static bool CanSellPipe() =>
-        Bag.Items[TBagItem.Pipe] == 1;
+        Bag.Items[TBagItem.Pipe] > 0;
 
     public static void SellPipe() {
         Out.WriteLine(TxtSellVerb + TxtSellPipe_01);
@@ -2653,7 +2653,7 @@ public static class Game {
     }
 
     public static bool CanSellSpikedSuit() =>
-        Gear.WornGarment != TxtWornGarnitur;
+        (Bag.Items[TBagItem.SpikedSuit] > 0) && (Gear.WornGarment != TxtWornGarnitur);
 
     public static void SellSpikedSuit() =>
         SellItem(IntSlot.Into(Bag.Items, TBagItem.SpikedSuit), 500, TxtSellSpikedSuit_01);
@@ -2704,7 +2704,7 @@ public static class Game {
     }
 
     public static bool CanSellLuckyLeaf() =>
-        Player.Money >= 820;
+        Bag.Items[TBagItem.LuckyLeaf] > 0;
 
     public static void SellLuckyLeaf() {
         Out.WriteLine(TxtSellVerb + TxtSellLuckyLeaf_01);
@@ -3048,7 +3048,7 @@ public static class Game {
     }
 
     public static void CmdWieldOldSword() {
-        if ((Bag.Items[TBagItem.OldSword] == 1) && (Gear.Values[TGearItem.WeaponKind] == 0)) {
+        if ((Bag.Items[TBagItem.OldSword] > 0) && (Gear.Values[TGearItem.WeaponKind] == 0)) {
             Gear.Values[TGearItem.WeaponKind] = 1;
             Out.WriteLine(TxtCmdWieldOldSword_01);
             Player.Stats[TStat.Strength]++;
@@ -3066,7 +3066,7 @@ public static class Game {
     }
 
     public static void CmdWieldSmallShield() {
-        if ((Gear.Values[TGearItem.ShieldKind] == 0) && (Bag.Items[TBagItem.SmallShield] == 1)) {
+        if ((Gear.Values[TGearItem.ShieldKind] == 0) && (Bag.Items[TBagItem.SmallShield] > 0)) {
             Gear.Values[TGearItem.ShieldKind] = 1;
             Gear.Values[TGearItem.Armor] += 15;
             Gear.Values[TGearItem.WornCount] += 1;

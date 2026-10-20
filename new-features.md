@@ -56,3 +56,4 @@
 - spells refuse to run without enough MANA and say "Masz za mało MANY!"
   - the return and compare scrolls are not consumed when you lack MANA
 - the JA sheet shows real item counts
+- stacks are used, dropped and sold one unit at a time
