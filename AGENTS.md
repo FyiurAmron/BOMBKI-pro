@@ -76,6 +76,13 @@ instead, except when reproducing a direct quotation verbatim.
   unpredictable. If several scenarios need checking,
   run them one after another, one command at a time.
 
+## Timeouts
+
+- 60 seconds is a hard limit for every process, foreground and
+  background alike. Anything expected to run longer than 15 seconds
+  goes to the background, still bounded by the same limit, and is
+  picked up from the run log when it finishes.
+
 ## Scenarios
 
 `tests/scenarios/*.json` drives the game through a PTY: each
