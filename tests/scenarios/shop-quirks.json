@@ -40,13 +40,51 @@
       "send": "SPRZEDAJ MALA"
     },
     {
-      "label": "unconditional shield sale pays 8 with nothing sold",
-      "expect": "Ta\\ tarcza\\ jest\\ bajer\\ frajer,\\ kupię\\ ją\\ od\\ ciebie\\ za\\ 8\\ MONET[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "label": "empty shield sale is refused",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
+      "send": "ODRZUC STARY"
+    },
+    {
+      "label": "empty sword drop is refused",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
+      "send": "JA"
+    },
+    {
+      "label": "sheet: no items",
+      "expect": "W\\ sumie\\ masz\\ 0/10\\ przedmiotów"
+    },
+    {
+      "label": "sheet: no money",
+      "expect": "Masz\\ 0\\ MONET\\ i\\ 10\\ PRAKTYK",
+      "send": "DAWAJ KASE"
+    },
+    {
+      "label": "ground prompt after the cheat",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
+      "send": "KUP MALA"
+    },
+    {
+      "label": "buy the shield",
+      "expect": "Kupujesz\\ !MAŁA!\\ Tarcza[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "SPRZEDAJ MALA"
     },
     {
-      "label": "the unconditional sale repeats",
+      "label": "sell the owned shield",
       "expect": "Ta\\ tarcza\\ jest\\ bajer[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "SPRZEDAJ MALA"
+    },
+    {
+      "label": "second shield sale is refused",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
+      "send": "JA"
+    },
+    {
+      "label": "sheet: the shield is gone",
+      "expect": "W\\ sumie\\ masz\\ 0/10\\ przedmiotów"
+    },
+    {
+      "label": "sheet: money after buy and sell",
+      "expect": "Masz\\ 4993\\ MONET\\ i\\ 10\\ PRAKTYK",
       "send": "EXIT"
     },
     {
@@ -67,29 +105,20 @@
     {
       "label": "magic shop",
       "expect": "Wchodzisz\\ do\\ sklepu\\ ale\\ niczego[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
-      "send": "KUP MALA BUTELKA MANY"
-    },
-    {
-      "label": "gate 15 charges 20: sale succeeds at 16 coins",
-      "expect": "Kupujesz\\ MAŁĄ\\ butelkę\\ MANY\\ za\\ 20\\ MONET\\ \\(ahhh\\ ta\\ inflacja\\)[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "SPRZEDAJ PIGULKA TRANSPORTUJACA"
     },
     {
-      "label": "ground prompt",
+      "label": "empty pill sale is refused",
       "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "JA"
     },
     {
-      "label": "sheet: the bottle is carried",
-      "expect": "MAŁĄ\\ butelkę\\ MANY1"
+      "label": "sheet: no pill",
+      "expect": "W\\ sumie\\ masz\\ 0/10\\ przedmiotów"
     },
     {
-      "label": "sheet: PRZED went negative from the empty sales",
-      "expect": "W\\ sumie\\ masz\\ \\-2/10\\ przedmiotów"
-    },
-    {
-      "label": "sheet: 16 - 20 + 170 = 166 coins",
-      "expect": "Masz\\ 166\\ MONET\\ i\\ 10\\ PRAKTYK",
+      "label": "sheet: the pill sale did not pay",
+      "expect": "Masz\\ 4993\\ MONET\\ i\\ 10\\ PRAKTYK",
       "send": "WYJSCIE"
     }
   ]

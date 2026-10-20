@@ -1425,10 +1425,17 @@ public static class Game {
         }
     }
 
+    public static bool IsEquipped(TBagItem item) =>
+        item switch {
+            TBagItem.OldSword => Gear.Values[TGearItem.WeaponKind] == 1,
+            TBagItem.SmallShield => Gear.Values[TGearItem.ShieldKind] == 1,
+            TBagItem.Tracksuit => Gear.WornGarment == TxtWornSyf,
+            TBagItem.SpikedSuit => Gear.WornGarment == TxtWornGarnitur,
+            _ => false,
+        };
+
     public static void DropItem(string cmd, TBagItem item, string verb, string line, TTakeEffect effect) {
-        bool wielded = (item == TBagItem.OldSword && Gear.Values[TGearItem.WeaponKind] == 1) ||
-            (item == TBagItem.SmallShield && Gear.Values[TGearItem.ShieldKind] == 1);
-        if ((Matches(cmd)) && (Bag.Items[item] > 0) && !wielded) {
+        if ((Matches(cmd)) && (Bag.Items[item] > 0) && !IsEquipped(item)) {
             Out.WriteLine(verb + line);
             Bag.Items[item] -= 1;
             Bag.ItemRooms[item] = Session.OuterRoom;
@@ -1445,27 +1452,23 @@ public static class Game {
     }
 
     public static bool Equip(TBagItem item) {
+        if ((Bag.Items[item] == 0) || IsEquipped(item)) {
+            return false;
+        }
+
         switch (item) {
             case TBagItem.OldSword:
-                if ((Bag.Items[item] == 0) || (Gear.Values[TGearItem.WeaponKind] == 1)) {
-                    return false;
-                }
-
                 Gear.Values[TGearItem.WeaponKind] = 1;
                 Player.Stats[TStat.Strength] += 1;
                 Gear.Values[TGearItem.LuckRoll] += 3;
                 return true;
             case TBagItem.SmallShield:
-                if ((Bag.Items[item] == 0) || (Gear.Values[TGearItem.ShieldKind] == 1)) {
-                    return false;
-                }
-
                 Gear.Values[TGearItem.ShieldKind] = 1;
                 Gear.Values[TGearItem.Armor] += 15;
                 Gear.Values[TGearItem.WornCount] += 1;
                 return true;
             case TBagItem.Tracksuit:
-                if ((Bag.Items[item] == 0) || (Gear.WornGarment != TxtEmpty)) {
+                if (Gear.WornGarment != TxtEmpty) {
                     return false;
                 }
 
@@ -1474,7 +1477,7 @@ public static class Game {
                 Gear.WornGarment = TxtWornSyf;
                 return true;
             case TBagItem.SpikedSuit:
-                if ((Bag.Items[item] == 0) || (Gear.WornGarment != TxtEmpty)) {
+                if (Gear.WornGarment != TxtEmpty) {
                     return false;
                 }
 
@@ -1490,39 +1493,27 @@ public static class Game {
     }
 
     public static bool Unequip(TBagItem item) {
+        if (!IsEquipped(item)) {
+            return false;
+        }
+
         switch (item) {
             case TBagItem.OldSword:
-                if (Gear.Values[TGearItem.WeaponKind] == 0) {
-                    return false;
-                }
-
                 Gear.Values[TGearItem.WeaponKind] = 0;
                 Player.Stats[TStat.Strength] -= 1;
                 Gear.Values[TGearItem.LuckRoll] -= 3;
                 return true;
             case TBagItem.SmallShield:
-                if (Gear.Values[TGearItem.ShieldKind] == 0) {
-                    return false;
-                }
-
                 Gear.Values[TGearItem.ShieldKind] = 0;
                 Gear.Values[TGearItem.Armor] -= 15;
                 Gear.Values[TGearItem.WornCount] -= 1;
                 return true;
             case TBagItem.Tracksuit:
-                if (Gear.WornGarment != TxtWornSyf) {
-                    return false;
-                }
-
                 Gear.Values[TGearItem.Wearing] = 0;
                 Gear.Values[TGearItem.Armor] -= 7;
                 Gear.WornGarment = TxtEmpty;
                 return true;
             case TBagItem.SpikedSuit:
-                if (Gear.WornGarment != TxtWornGarnitur) {
-                    return false;
-                }
-
                 Gear.Values[TGearItem.Wearing] = 0;
                 Gear.Values[TGearItem.WornCount] -= 1;
                 Gear.Values[TGearItem.Armor] -= 10;
@@ -2566,29 +2557,147 @@ public static class Game {
         SaveCharacter();
     }
 
-    public static void BuyItem(string cmd, IntSlot Item, int price, string itemName, bool available) {
-        if ((Matches(cmd)) && available && (Player.Money >= price)) {
-            Bag.Count += 1;
-            Item.Set(Item.Get() + 1);
-            Player.Money -= price;
-            Out.WriteLine(TxtShopVerb + itemName + TxtSpaceZa + price + TxtSpaceMonet);
+    public class TShopOffer {
+        public TBagItem item;
+        public int buyPrice, buyGate = -1, sellPrice;
+        public int armor, dexterity, maxEnergy, maxMana, wisdom;
+        public bool unique;
+        public string buyName = "", buyLine = "";
+        public List<string> sellLines = [];
+    }
+
+    public static readonly List<TShopOffer> ShopOffers = [
+        new() { item = TBagItem.OldSword, buyPrice = 70, unique = true, buyName = TxtBuyOldSword_01,
+            sellPrice = 30, sellLines = [TxtSellOldSword_01, TxtSellOldSword_02], },
+        new() { item = TBagItem.SmallShield, buyPrice = 15, unique = true, buyName = TxtBuySmallShield_01,
+            sellPrice = 8, sellLines = [TxtSellSmallShield_01], },
+        new() { item = TBagItem.Pipe, buyPrice = 480, unique = true, buyName = TxtTakeDrop_05, wisdom = 1,
+            sellPrice = 120, sellLines = [$"{TxtSellVerb}{TxtSellPipe_01}"], },
+        new() { item = TBagItem.Tracksuit, buyPrice = 35, unique = true, buyName = TxtBuyTracksuit_01,
+            sellPrice = 15, sellLines = [$"{TxtSellVerb}{TxtSellTracksuit_01}"], },
+        new() { item = TBagItem.Cassette, buyPrice = 1999, buyName = TxtBuyCassette_01,
+            sellPrice = 1000, armor = -8, dexterity = 1, maxEnergy = 5,
+            sellLines = [$"{TxtSellVerb}{TxtSellCassette_01}"], },
+        new() { item = TBagItem.SpikedSuit, buyPrice = 1000, buyLine = TxtBuySpikedSuit_01,
+            sellPrice = 500, sellLines = [$"{TxtSellVerb}{TxtSellSpikedSuit_01}"], },
+        new() { item = TBagItem.ManaBottle, buyPrice = 20, buyGate = 15, buyLine = TxtBuyManaBottle_01 },
+        new() { item = TBagItem.LuckyLeaf, buyPrice = 830, buyGate = 820, buyLine = TxtBuyLuckyLeaf_01, maxMana = 40,
+            sellPrice = 400, sellLines = [$"{TxtSellVerb}{TxtSellLuckyLeaf_01}"], },
+        new() { item = TBagItem.TeleportPill, buyPrice = 235, buyName = TxtBuyTeleportPill_01,
+            sellPrice = 170, sellLines = [TxtSellTeleportPill_01], },
+        new() { item = TBagItem.CompareScroll, buyPrice = 40, buyLine = TxtBuyCompareScroll_01,
+            sellPrice = 18, sellLines = [TxtSellCompareScroll_01], },
+        new() { item = TBagItem.Doughnut, buyPrice = 8, buyName = CmdPaczek },
+        new() { item = TBagItem.Cookie, buyPrice = 12, buyName = CmdCiastko },
+        new() { item = TBagItem.DryRation, buyPrice = 15, buyName = TxtItemSuchaRacje },
+        new() { item = TBagItem.BreadRoll, buyPrice = 19, buyName = TxtItemBulke },
+        new() { item = TBagItem.Bread, buyPrice = 24, buyName = CmdChleb },
+        new() { item = TBagItem.Sausage, buyPrice = 29, buyName = TxtItemWeke },
+    ];
+
+    public static TShopOffer? ShopOffer(TBagItem item) =>
+        ShopOffers.FirstOrDefault(o => o.item == item);
+
+    public static void ApplyShopStats(TShopOffer offer, int sign) {
+        Gear.Values[TGearItem.Armor] += sign * offer.armor;
+        Player.MaxEnergy += sign * offer.maxEnergy;
+        Player.Stats[TStat.Dexterity] += sign * offer.dexterity;
+        Player.Stats[TStat.Wisdom] += sign * offer.wisdom;
+        Player.MaxMana += sign * offer.maxMana;
+    }
+
+    public static bool Buy(TBagItem item) {
+        TShopOffer? offer = ShopOffer(item);
+        if ((offer is null)
+            || (offer.unique && (Bag.Items[item] > 0))
+            || (Player.Money < (offer.buyGate >= 0 ? offer.buyGate : offer.buyPrice))) {
+            return false;
+        }
+
+        Out.WriteLine(offer.buyLine != TxtEmpty
+            ? offer.buyLine
+            : $"{TxtShopVerb}{offer.buyName}{TxtSpaceZa}{offer.buyPrice}{TxtSpaceMonet}");
+        Player.Money -= offer.buyPrice;
+        Bag.Items[item] += 1;
+        Bag.Count += 1;
+        ApplyShopStats(offer, 1);
+        return true;
+    }
+
+    public static bool Sell(TBagItem item) {
+        TShopOffer? offer = ShopOffer(item);
+        if ((offer is null) || IsEquipped(item) || (Bag.Items[item] < 1)) {
+            return false;
+        }
+
+        offer.sellLines.ForEach(Out.WriteLine);
+        Player.Money += offer.sellPrice;
+        Bag.Items[item] = (Bag.Items[item] - 1).Clamp(0, MaxInt);
+        Bag.Count -= 1;
+        ApplyShopStats(offer, -1);
+        return true;
+    }
+
+    public class TShopRule {
+        public string cmd = "";
+        public TBagItem item;
+        public bool selling;
+
+        public TShopRule(string cmd, TBagItem item, bool selling) {
+            this.cmd = cmd;
+            this.item = item;
+            this.selling = selling;
         }
     }
 
-    public class TBakeryItem {
-        public string cmd = "";
-        public TBagItem item;
-        public int price;
-        public string desc = "";
+    public static void RunShopRules(List<TShopRule> rules) {
+        TShopRule? rule = rules.FirstOrDefault(r => Matches(r.cmd));
+        if (rule is null) {
+            return;
+        }
+
+        if (rule.selling) {
+            Sell(rule.item);
+        } else {
+            Buy(rule.item);
+        }
     }
 
-    public static readonly List<TBakeryItem> BakeryItems = [null!,
-        new() { cmd = CmdKup + CmdPaczek, item = TBagItem.Doughnut, price = 8, desc = CmdPaczek },
-        new() { cmd = CmdKup + CmdCiastko, item = TBagItem.Cookie, price = 12, desc = CmdCiastko },
-        new() { cmd = CmdKup + CmdSuchaRacja, item = TBagItem.DryRation, price = 15, desc = TxtItemSuchaRacje },
-        new() { cmd = CmdKup + CmdBulka, item = TBagItem.BreadRoll, price = 19, desc = TxtItemBulke },
-        new() { cmd = CmdKup + CmdChleb, item = TBagItem.Bread, price = 24, desc = CmdChleb },
-        new() { cmd = CmdKup + CmdWeka, item = TBagItem.Sausage, price = 29, desc = TxtItemWeke },
+    public static readonly List<TShopRule> ArmouryRules = [
+        new(CmdKup + CmdStary, TBagItem.OldSword, false),
+        new(CmdSprzedaj + CmdStary, TBagItem.OldSword, true),
+        new(CmdKup + CmdMala, TBagItem.SmallShield, false),
+        new(CmdSprzedaj + CmdMala, TBagItem.SmallShield, true),
+    ];
+
+    public static readonly List<TShopRule> GeneralStoreRules = [
+        new(CmdKup + CmdFajka, TBagItem.Pipe, false),
+        new(CmdKup + CmdKomplet, TBagItem.Tracksuit, false),
+        new(CmdSprzedaj + CmdKomplet, TBagItem.Tracksuit, true),
+        new(CmdSprzedaj + CmdFajka, TBagItem.Pipe, true),
+        new(CmdKup + CmdKaseta, TBagItem.Cassette, false),
+        new(CmdKup + TxtWornGarnitur, TBagItem.SpikedSuit, false),
+        new(CmdSprzedaj + TxtWornGarnitur, TBagItem.SpikedSuit, true),
+        new(CmdSprzedaj + CmdKaseta, TBagItem.Cassette, true),
+    ];
+
+    public static readonly List<TShopRule> MagicShopRules = [
+        new(CmdKup + CmdMalaButelkaMany, TBagItem.ManaBottle, false),
+        new(CmdKup + CmdListek, TBagItem.LuckyLeaf, false),
+        new(CmdSprzedaj + CmdListek, TBagItem.LuckyLeaf, true),
+        new(CmdKup + CmdPigulkaTransportujaca, TBagItem.TeleportPill, false),
+        new(CmdSprzedaj + CmdPigulkaTransportujaca, TBagItem.TeleportPill, true),
+        new(CmdKup + CmdScrollPorownywanie, TBagItem.CompareScroll, false),
+        new(CmdSprzedaj + CmdScrollPorownywanie, TBagItem.CompareScroll, true),
+    ];
+
+    public static readonly List<TShopRule> BakeryRules = [
+        new(CmdKup + CmdPaczek, TBagItem.Doughnut, false),
+        new(CmdKup + CmdCiastko, TBagItem.Cookie, false),
+        new(CmdKup + CmdSuchaRacja, TBagItem.DryRation, false),
+        new(CmdKup + CmdBulka, TBagItem.BreadRoll, false),
+        new(CmdKup + CmdChleb, TBagItem.Bread, false),
+        new(CmdKup + CmdWeka, TBagItem.Sausage, false),
     ];
 
     public static void BakeryShop() {
@@ -2597,239 +2706,8 @@ public static class Game {
         }
 
         StreetFights();
-        for (int bi2 = 1; bi2 < BakeryItems.Count; bi2++) {
-            TBakeryItem b = BakeryItems[bi2];
-            BuyItem(b.cmd, IntSlot.Into(Bag.Items, b.item), b.price, b.desc, true);
-        }
+        RunShopRules(BakeryRules);
     }
-
-    public class TShopRule {
-        public string cmd = "";
-        public Func<bool> allowed = () =>
-            false;
-        public Action act = () => { };
-    }
-
-    public static void RunShopRules(List<TShopRule> rules) {
-        for (int i = 0; i < rules.Count; i++) {
-            if (Matches(rules[i].cmd)) {
-                if (rules[i].allowed()) {
-                    rules[i].act();
-                }
-
-                break;
-            }
-        }
-    }
-
-    public static bool Always() =>
-        true;
-
-    public static bool CanBuyOldSword() =>
-        (Bag.Items[TBagItem.OldSword] == 0) && (Player.Money >= 70);
-
-    public static void SellItem(IntSlot Item, int price, string itemName) {
-        Out.WriteLine(TxtSellVerb + itemName);
-        Player.Money += price;
-        Item.Set((Item.Get() - 1).Clamp(0, MaxInt));
-        Bag.Count -= 1;
-    }
-
-    public static void BuyOldSword() =>
-        BuyItem(CmdKup + CmdStary, IntSlot.Into(Bag.Items, TBagItem.OldSword), 70, TxtBuyOldSword_01, true);
-
-    public static bool CanSellOldSword() =>
-        (Bag.Items[TBagItem.OldSword] > 0) && (Gear.Values[TGearItem.WeaponKind] == 0);
-
-    public static void SellOldSword() {
-        Out.WriteLine(TxtSellOldSword_01);
-        Out.WriteLine(TxtSellOldSword_02);
-        Player.Money += 30;
-        Bag.Items[TBagItem.OldSword] -= 1;
-        Bag.Count -= 1;
-    }
-
-    public static bool CanBuySmallShield() =>
-        (Bag.Items[TBagItem.SmallShield] == 0) && (Player.Money >= 15);
-
-    public static void BuySmallShield() =>
-        BuyItem(CmdKup + CmdMala, IntSlot.Into(Bag.Items, TBagItem.SmallShield), 15, TxtBuySmallShield_01, true);
-
-    public static void SellSmallShield() {
-        Out.WriteLine(TxtSellSmallShield_01);
-        Player.Money += 8;
-        Bag.Items[TBagItem.SmallShield] = (Bag.Items[TBagItem.SmallShield] - 1).Clamp(0, MaxInt);
-        Bag.Count -= 1;
-    }
-
-    public static readonly List<TShopRule> ArmouryRules = [
-        new() { cmd = CmdKup + CmdStary, allowed = CanBuyOldSword, act = BuyOldSword },
-        new() { cmd = CmdSprzedaj + CmdStary, allowed = CanSellOldSword, act = SellOldSword },
-        new() { cmd = CmdKup + CmdMala, allowed = CanBuySmallShield, act = BuySmallShield },
-        new() { cmd = CmdSprzedaj + CmdMala, allowed = Always, act = SellSmallShield },
-    ];
-
-    public static bool CanBuyPipe() =>
-        (Bag.Items[TBagItem.Pipe] == 0) && (Player.Money >= 480);
-
-    public static void BuyPipe() {
-        Out.WriteLine(TxtShopVerb + TxtTakeDrop_05 + TxtSpaceZa + 480 + TxtSpaceMonet);
-        Player.Money -= 480;
-        Bag.Items[TBagItem.Pipe] += 1;
-        Bag.Count += 1;
-        Player.Stats[TStat.Wisdom]++;
-    }
-
-    public static bool CanBuyTracksuit() =>
-        (Bag.Items[TBagItem.Tracksuit] == 0) && (Player.Money >= 35);
-
-    public static void BuyTracksuit() =>
-        BuyItem(CmdKup + CmdKomplet, IntSlot.Into(Bag.Items, TBagItem.Tracksuit), 35, TxtBuyTracksuit_01, true);
-
-    public static bool CanSellTracksuit() =>
-        (Bag.Items[TBagItem.Tracksuit] > 0) && (Gear.WornGarment != TxtWornSyf);
-
-    public static void SellTracksuit() =>
-        SellItem(IntSlot.Into(Bag.Items, TBagItem.Tracksuit), 15, TxtSellTracksuit_01);
-
-    public static bool CanSellPipe() =>
-        Bag.Items[TBagItem.Pipe] > 0;
-
-    public static void SellPipe() {
-        Out.WriteLine(TxtSellVerb + TxtSellPipe_01);
-        Player.Money += 120;
-        Bag.Items[TBagItem.Pipe] -= 1;
-        Bag.Count -= 1;
-        Player.Stats[TStat.Wisdom]--;
-    }
-
-    public static bool CanBuyCassette() =>
-        Player.Money >= 1999;
-
-    public static void BuyCassette() {
-        Out.WriteLine(TxtShopVerb + TxtBuyCassette_01 + TxtSpaceZa + 1999 + TxtSpaceMonet);
-        Player.Money -= 1999;
-        Bag.Items[TBagItem.Cassette] += 1;
-        Gear.Values[TGearItem.Armor] -= 8;
-        Player.MaxEnergy += 5;
-        Player.Stats[TStat.Dexterity]++;
-        Bag.Count += 1;
-    }
-
-    public static bool CanBuySpikedSuit() =>
-        Player.Money >= 1000;
-
-    public static void BuySpikedSuit() {
-        Out.WriteLine(TxtBuySpikedSuit_01);
-        Player.Money -= 1000;
-        Bag.Items[TBagItem.SpikedSuit] += 1;
-        Bag.Count += 1;
-    }
-
-    public static bool CanSellSpikedSuit() =>
-        (Bag.Items[TBagItem.SpikedSuit] > 0) && (Gear.WornGarment != TxtWornGarnitur);
-
-    public static void SellSpikedSuit() =>
-        SellItem(IntSlot.Into(Bag.Items, TBagItem.SpikedSuit), 500, TxtSellSpikedSuit_01);
-
-    public static bool CanSellCassette() =>
-        Bag.Items[TBagItem.Cassette] > 0;
-
-    public static void SellCassette() {
-        Out.WriteLine(TxtSellVerb + TxtSellCassette_01);
-        Player.Money += 1000;
-        Bag.Items[TBagItem.Cassette] -= 1;
-        Gear.Values[TGearItem.Armor] += 8;
-        Player.MaxEnergy -= 5;
-        Player.Stats[TStat.Dexterity]--;
-        Bag.Count -= 1;
-    }
-
-    public static readonly List<TShopRule> GeneralStoreRules = [
-        new() { cmd = CmdKup + CmdFajka, allowed = CanBuyPipe, act = BuyPipe },
-        new() { cmd = CmdKup + CmdKomplet, allowed = CanBuyTracksuit, act = BuyTracksuit },
-        new() { cmd = CmdSprzedaj + CmdKomplet, allowed = CanSellTracksuit, act = SellTracksuit },
-        new() { cmd = CmdSprzedaj + CmdFajka, allowed = CanSellPipe, act = SellPipe },
-        new() { cmd = CmdKup + CmdKaseta, allowed = CanBuyCassette, act = BuyCassette },
-        new() { cmd = CmdKup + TxtWornGarnitur, allowed = CanBuySpikedSuit, act = BuySpikedSuit },
-        new() { cmd = CmdSprzedaj + TxtWornGarnitur, allowed = CanSellSpikedSuit, act = SellSpikedSuit },
-        new() { cmd = CmdSprzedaj + CmdKaseta, allowed = CanSellCassette, act = SellCassette },
-    ];
-
-    public static bool CanBuyManaBottle() =>
-        Player.Money >= 15;
-
-    public static void BuyManaBottle() {
-        Out.WriteLine(TxtBuyManaBottle_01);
-        Player.Money -= 20;
-        Bag.Items[TBagItem.ManaBottle] += 1;
-        Bag.Count += 1;
-    }
-
-    public static bool CanBuyLuckyLeaf() =>
-        Player.Money >= 820;
-
-    public static void BuyLuckyLeaf() {
-        Out.WriteLine(TxtBuyLuckyLeaf_01);
-        Player.Money -= 830;
-        Bag.Items[TBagItem.LuckyLeaf] += 1;
-        Bag.Count += 1;
-        Player.MaxMana += 40;
-    }
-
-    public static bool CanSellLuckyLeaf() =>
-        Bag.Items[TBagItem.LuckyLeaf] > 0;
-
-    public static void SellLuckyLeaf() {
-        Out.WriteLine(TxtSellVerb + TxtSellLuckyLeaf_01);
-        Player.Money += 400;
-        Bag.Items[TBagItem.LuckyLeaf] = (Bag.Items[TBagItem.LuckyLeaf] - 1).Clamp(0, MaxInt);
-        Bag.Count -= 1;
-        Player.MaxMana -= 40;
-    }
-
-    public static bool CanBuyTeleportPill() =>
-        Player.Money >= 235;
-
-    public static void BuyTeleportPill() =>
-        BuyItem(CmdKup + CmdPigulkaTransportujaca, IntSlot.Into(Bag.Items, TBagItem.TeleportPill), 235, TxtBuyTeleportPill_01, true);
-
-    public static void SellTeleportPill() {
-        Out.WriteLine(TxtSellTeleportPill_01);
-        Player.Money += 170;
-        Bag.Items[TBagItem.TeleportPill] = (Bag.Items[TBagItem.TeleportPill] - 1).Clamp(0, MaxInt);
-        Bag.Count -= 1;
-    }
-
-    public static bool CanBuyCompareScroll() =>
-        Player.Money > 39;
-
-    public static void BuyCompareScroll() {
-        Out.WriteLine(TxtBuyCompareScroll_01);
-        Player.Money -= 40;
-        Bag.Items[TBagItem.CompareScroll] += 1;
-        Bag.Count += 1;
-    }
-
-    public static bool CanSellCompareScroll() =>
-        Bag.Items[TBagItem.CompareScroll] > 0;
-
-    public static void SellCompareScroll() {
-        Out.WriteLine(TxtSellCompareScroll_01);
-        Player.Money += 18;
-        Bag.Items[TBagItem.CompareScroll] -= 1;
-        Bag.Count -= 1;
-    }
-
-    public static readonly List<TShopRule> MagicShopRules = [
-        new() { cmd = CmdKup + CmdMalaButelkaMany, allowed = CanBuyManaBottle, act = BuyManaBottle },
-        new() { cmd = CmdKup + CmdListek, allowed = CanBuyLuckyLeaf, act = BuyLuckyLeaf },
-        new() { cmd = CmdSprzedaj + CmdListek, allowed = CanSellLuckyLeaf, act = SellLuckyLeaf },
-        new() { cmd = CmdKup + CmdPigulkaTransportujaca, allowed = CanBuyTeleportPill, act = BuyTeleportPill },
-        new() { cmd = CmdSprzedaj + CmdPigulkaTransportujaca, allowed = Always, act = SellTeleportPill },
-        new() { cmd = CmdKup + CmdScrollPorownywanie, allowed = CanBuyCompareScroll, act = BuyCompareScroll },
-        new() { cmd = CmdSprzedaj + CmdScrollPorownywanie, allowed = CanSellCompareScroll, act = SellCompareScroll },
-    ];
 
     public class TShopStock {
         public TBagItem item;

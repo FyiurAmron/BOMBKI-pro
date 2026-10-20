@@ -57,3 +57,5 @@
   - the return and compare scrolls are not consumed when you lack MANA
 - the JA sheet shows real item counts
 - stacks are used, dropped and sold one unit at a time
+- items can no longer be sold without owning one
+- equipped items can no longer be sold or dropped
