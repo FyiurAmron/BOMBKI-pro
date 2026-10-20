@@ -1444,6 +1444,96 @@ public static class Game {
         }
     }
 
+    public static bool Equip(TBagItem item) {
+        switch (item) {
+            case TBagItem.OldSword:
+                if ((Bag.Items[item] == 0) || (Gear.Values[TGearItem.WeaponKind] == 1)) {
+                    return false;
+                }
+
+                Gear.Values[TGearItem.WeaponKind] = 1;
+                Player.Stats[TStat.Strength] += 1;
+                Gear.Values[TGearItem.LuckRoll] += 3;
+                return true;
+            case TBagItem.SmallShield:
+                if ((Bag.Items[item] == 0) || (Gear.Values[TGearItem.ShieldKind] == 1)) {
+                    return false;
+                }
+
+                Gear.Values[TGearItem.ShieldKind] = 1;
+                Gear.Values[TGearItem.Armor] += 15;
+                Gear.Values[TGearItem.WornCount] += 1;
+                return true;
+            case TBagItem.Tracksuit:
+                if ((Bag.Items[item] == 0) || (Gear.WornGarment != TxtEmpty)) {
+                    return false;
+                }
+
+                Gear.Values[TGearItem.Armor] += 7;
+                Gear.Values[TGearItem.Wearing] = 1;
+                Gear.WornGarment = TxtWornSyf;
+                return true;
+            case TBagItem.SpikedSuit:
+                if ((Bag.Items[item] == 0) || (Gear.WornGarment != TxtEmpty)) {
+                    return false;
+                }
+
+                Gear.Values[TGearItem.Wearing] = 1;
+                Gear.Values[TGearItem.WornCount] += 1;
+                Gear.Values[TGearItem.Armor] += 10;
+                Gear.Values[TGearItem.LuckRoll] += 15;
+                Gear.WornGarment = TxtWornGarnitur;
+                return true;
+        }
+
+        return false;
+    }
+
+    public static bool Unequip(TBagItem item) {
+        switch (item) {
+            case TBagItem.OldSword:
+                if (Gear.Values[TGearItem.WeaponKind] == 0) {
+                    return false;
+                }
+
+                Gear.Values[TGearItem.WeaponKind] = 0;
+                Player.Stats[TStat.Strength] -= 1;
+                Gear.Values[TGearItem.LuckRoll] -= 3;
+                return true;
+            case TBagItem.SmallShield:
+                if (Gear.Values[TGearItem.ShieldKind] == 0) {
+                    return false;
+                }
+
+                Gear.Values[TGearItem.ShieldKind] = 0;
+                Gear.Values[TGearItem.Armor] -= 15;
+                Gear.Values[TGearItem.WornCount] -= 1;
+                return true;
+            case TBagItem.Tracksuit:
+                if (Gear.WornGarment != TxtWornSyf) {
+                    return false;
+                }
+
+                Gear.Values[TGearItem.Wearing] = 0;
+                Gear.Values[TGearItem.Armor] -= 7;
+                Gear.WornGarment = TxtEmpty;
+                return true;
+            case TBagItem.SpikedSuit:
+                if (Gear.WornGarment != TxtWornGarnitur) {
+                    return false;
+                }
+
+                Gear.Values[TGearItem.Wearing] = 0;
+                Gear.Values[TGearItem.WornCount] -= 1;
+                Gear.Values[TGearItem.Armor] -= 10;
+                Gear.Values[TGearItem.LuckRoll] -= 15;
+                Gear.WornGarment = TxtEmpty;
+                return true;
+        }
+
+        return false;
+    }
+
     public class TTakeDrop {
         public string cmd = "", verb = "", line = "";
         public TBagItem item;
@@ -1558,11 +1648,8 @@ public static class Game {
                         Out.WriteLine(TxtUseItems_24);
                         break;
                     case CmdKomplet:
-                        if ((Bag.Items[TBagItem.Tracksuit] > 0) && (Gear.WornGarment == TxtEmpty)) {
+                        if (Equip(TBagItem.Tracksuit)) {
                             Out.WriteLine(TxtUseItems_28);
-                            Gear.Values[TGearItem.Armor] += 7;
-                            Gear.Values[TGearItem.Wearing] = 1;
-                            Gear.WornGarment = TxtWornSyf;
                         }
                         break;
                     case CmdListek:
@@ -1572,13 +1659,8 @@ public static class Game {
 
                         break;
                     case TxtWornGarnitur:
-                        if ((Bag.Items[TBagItem.SpikedSuit] > 0) && (Gear.WornGarment == TxtEmpty)) {
+                        if (Equip(TBagItem.SpikedSuit)) {
                             Out.WriteLine(TxtUseItems_31);
-                            Gear.Values[TGearItem.Wearing] = 1;
-                            Gear.Values[TGearItem.WornCount] += 1;
-                            Gear.Values[TGearItem.Armor] += 10;
-                            Gear.Values[TGearItem.LuckRoll] += 15;
-                            Gear.WornGarment = TxtWornGarnitur;
                         }
                         break;
                     case CmdPigulka:
@@ -1623,21 +1705,13 @@ public static class Game {
             case CmdOdloz:
                 switch (Rest) {
                     case CmdKomplet:
-                        if ((Bag.Items[TBagItem.Tracksuit] > 0) && (Gear.WornGarment == TxtWornSyf)) {
+                        if (Unequip(TBagItem.Tracksuit)) {
                             Out.WriteLine(TxtUseItems_29);
-                            Gear.Values[TGearItem.Wearing] = 0;
-                            Gear.Values[TGearItem.Armor] -= 7;
-                            Gear.WornGarment = TxtEmpty;
                         }
                         break;
                     case TxtWornGarnitur:
-                        if ((Bag.Items[TBagItem.SpikedSuit] > 0) && (Gear.WornGarment == TxtWornGarnitur)) {
+                        if (Unequip(TBagItem.SpikedSuit)) {
                             Out.WriteLine(TxtUseItems_38);
-                            Gear.Values[TGearItem.Wearing] = 0;
-                            Gear.Values[TGearItem.WornCount] -= 1;
-                            Gear.Values[TGearItem.Armor] -= 10;
-                            Gear.Values[TGearItem.LuckRoll] -= 15;
-                            Gear.WornGarment = TxtEmpty;
                         }
                         break;
                 }
@@ -3048,37 +3122,25 @@ public static class Game {
     }
 
     public static void CmdWieldOldSword() {
-        if ((Bag.Items[TBagItem.OldSword] > 0) && (Gear.Values[TGearItem.WeaponKind] == 0)) {
-            Gear.Values[TGearItem.WeaponKind] = 1;
+        if (Equip(TBagItem.OldSword)) {
             Out.WriteLine(TxtCmdWieldOldSword_01);
-            Player.Stats[TStat.Strength]++;
-            Gear.Values[TGearItem.LuckRoll] += 3;
         }
     }
 
     public static void CmdUnwieldOldSword() {
-        if (Gear.Values[TGearItem.WeaponKind] == 1) {
-            Gear.Values[TGearItem.WeaponKind] = 0;
+        if (Unequip(TBagItem.OldSword)) {
             Out.WriteLine(TxtCmdUnwieldOldSword_01);
-            Player.Stats[TStat.Strength]--;
-            Gear.Values[TGearItem.LuckRoll] -= 3;
         }
     }
 
     public static void CmdWieldSmallShield() {
-        if ((Gear.Values[TGearItem.ShieldKind] == 0) && (Bag.Items[TBagItem.SmallShield] > 0)) {
-            Gear.Values[TGearItem.ShieldKind] = 1;
-            Gear.Values[TGearItem.Armor] += 15;
-            Gear.Values[TGearItem.WornCount] += 1;
+        if (Equip(TBagItem.SmallShield)) {
             Out.WriteLine(TxtCmdWieldSmallShield_01);
         }
     }
 
     public static void CmdUnwieldSmallShield() {
-        if (Gear.Values[TGearItem.ShieldKind] == 1) {
-            Gear.Values[TGearItem.ShieldKind] = 0;
-            Gear.Values[TGearItem.Armor] -= 15;
-            Gear.Values[TGearItem.WornCount] -= 1;
+        if (Unequip(TBagItem.SmallShield)) {
             Out.WriteLine(TxtCmdUnwieldSmallShield_01);
         }
     }

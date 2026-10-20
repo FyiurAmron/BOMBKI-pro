@@ -246,11 +246,13 @@ public static class Rooms {
                 Bag.Count += 1;
                 break;
             case 2:
+                Unequip(TBagItem.Diploma);
                 Bag.Items[TBagItem.Diploma] -= 1;
                 Bag.Count -= 1;
                 Player.MaxEnergy -= 5;
                 break;
             case 3:
+                Unequip(TBagItem.Pipe);
                 Bag.Count -= 1;
                 Player.Stats[TStat.Wisdom]--;
                 Bag.Items[TBagItem.Pipe] -= 1;
