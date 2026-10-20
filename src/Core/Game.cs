@@ -49,7 +49,7 @@ public static class Game {
 
     public enum TGainBonus { gbNone, gbMana, gbCassette }
     public enum TTakeEffect { teNone, teDiploma, tePipe }
-    public enum TSheetKind { ikShown, ikDiv10, ikPlain }
+    public enum TSheetKind { ikShown, ikPlain }
     public enum TMazeDir { mdPolodnie, mdPolnoc, mdWschod, mdZachod }
     public enum TStreetKind { skDog, skFolk }
 
@@ -83,6 +83,8 @@ public static class Game {
         public int Limit;
         public int Permit;
         public TEnumList<TBagItem, int> Items = new();
+        public TEnumList<TBagItem, int> ItemRooms =
+            new(Enumerable.Repeat(Rooms.RoomAny, Enum.GetValues<TBagItem>().Length));
     }
 
     public class TCombat {
@@ -165,9 +167,9 @@ public static class Game {
     }
 
     public class TGroundItem {
-        public IntSlot item;
+        public TBagItem item;
         public string line = "";
-        public TGroundItem(IntSlot item, string line) {
+        public TGroundItem(TBagItem item, string line) {
             this.item = item;
             this.line = line;
         }
@@ -320,7 +322,6 @@ public static class Game {
         spread <= 0 ? 0 : (int)NextBelow((uint)spread);
 
     public const int MaxInt = 32767;
-    public const int ItemUnit = 10;
 
     public static readonly List<TQuestOffer> QuestOffers = [
         null!,
@@ -331,11 +332,11 @@ public static class Game {
 
     public static readonly List<TGroundItem> GroundItems = [
         null!,
-        new(IntSlot.Into(Bag.Items, TBagItem.OldSword), TxtStart_07),
-        new(IntSlot.Into(Bag.Items, TBagItem.SmallShield), TxtGroundItemLabel + TxtStart_08),
-        new(IntSlot.Into(Bag.Items, TBagItem.Heart), TxtGroundItemLabel + TxtStart_09),
-        new(IntSlot.Into(Bag.Items, TBagItem.Diploma), TxtGroundItemLabel + TxtStart_10),
-        new(IntSlot.Into(Bag.Items, TBagItem.Pipe), TxtStart_11),
+        new(TBagItem.OldSword, TxtStart_07),
+        new(TBagItem.SmallShield, TxtGroundItemLabel + TxtStart_08),
+        new(TBagItem.Heart, TxtGroundItemLabel + TxtStart_09),
+        new(TBagItem.Diploma, TxtGroundItemLabel + TxtStart_10),
+        new(TBagItem.Pipe, TxtStart_11),
     ];
 
     public static void WriteExits(List<string> items) {
@@ -363,7 +364,7 @@ public static class Game {
     public static void GroundItemLines() {
         for (int ti = 1; ti < GroundItems.Count; ti++) {
             TGroundItem t = GroundItems[ti];
-            GroundItemLine(t.item.Get(), t.line);
+            GroundItemLine(Bag.ItemRooms[t.item], t.line);
         }
     }
 
@@ -390,20 +391,20 @@ public static class Game {
         }
     }
 
-    public static void TryLoot(IntSlot slot, int threshold, string foundMsg) {
-        if (slot.Get() == 0) {
+    public static void TryLoot(TBagItem item, int threshold, string foundMsg) {
+        if ((Bag.Items[item] == 0) && (Bag.ItemRooms[item] == Rooms.RoomAny)) {
             Combat.Roll = Roll(20);
             if (Combat.Roll < threshold) {
-                slot.Set(Session.Room);
+                Bag.ItemRooms[item] = Session.Room;
                 Out.WriteLine(TxtShared_08 + foundMsg);
             }
         }
     }
 
     public static void TryCageLoot(int threshold) {
-        TryLoot(IntSlot.Into(Bag.Items, TBagItem.OldSword), threshold, TxtShared_10);
-        TryLoot(IntSlot.Into(Bag.Items, TBagItem.SmallShield), threshold, TxtShared_11);
-        TryLoot(IntSlot.Into(Bag.Items, TBagItem.Heart), 6, TxtShared_12);
+        TryLoot(TBagItem.OldSword, threshold, TxtShared_10);
+        TryLoot(TBagItem.SmallShield, threshold, TxtShared_11);
+        TryLoot(TBagItem.Heart, 6, TxtShared_12);
     }
 
     public static void GroundItemLine(int itemRoom, string line) {
@@ -577,7 +578,7 @@ public static class Game {
         Combat.Loot = Roll(15);
         Out.WriteLine(TxtShared_08 + Combat.Loot + TxtFightDog_01);
         Player.Money += Combat.Loot;
-        TryLoot(IntSlot.Into(Bag.Items, TBagItem.Heart), 5, TxtFightDog_02);
+        TryLoot(TBagItem.Heart, 5, TxtFightDog_02);
     }
 
     public static readonly List<TSpawnedAt> CageInits = [null!,
@@ -804,17 +805,18 @@ public static class Game {
             if (AntDoughnut) {
                 if (Verb == CmdZabij && Rest == CmdMrowka) {
                     Combat.Roll = Roll(10);
-                    if ((Combat.Roll < 7) && (Bag.Items[TBagItem.Doughnut] != -ItemUnit)) {
+                    if ((Combat.Roll < 7) && (Bag.Items[TBagItem.Doughnut] == 0)) {
                         Out.WriteLine(TxtShared_08 + TxtCompositeFight_02);
-                        Bag.Items[TBagItem.Doughnut] = -ItemUnit;
+                        Bag.Items[TBagItem.Doughnut] = 1;
                         Bag.Count += 1;
                     }
                 }
-            } else if ((HeartChance > 0) && (Bag.Items[TBagItem.Heart] == 0)) {
+            } else if ((HeartChance > 0) && (Bag.Items[TBagItem.Heart] == 0) &&
+                (Bag.ItemRooms[TBagItem.Heart] == Rooms.RoomAny)) {
                 Combat.Roll = Roll(20);
-                if ((Combat.Roll < HeartChance) && (Bag.Items[TBagItem.Heart] != -ItemUnit)) {
+                if ((Combat.Roll < HeartChance) && (Bag.Items[TBagItem.Heart] == 0)) {
                     Out.WriteLine(TxtShared_08 + TxtCompositeFight_03);
-                    Bag.Items[TBagItem.Heart] = -ItemUnit;
+                    Bag.Items[TBagItem.Heart] = 1;
                     Bag.Count += 1;
                 }
             }
@@ -1085,7 +1087,7 @@ public static class Game {
                 Out.WriteLine(TxtUniqeItem + line2);
             }
 
-            Bag.Items[item] -= ItemUnit;
+            Bag.Items[item] += 1;
             Bag.Count += 1;
         }
     }
@@ -1098,7 +1100,7 @@ public static class Game {
                 Out.WriteLine(TxtBang + TxtUniqeItem + line2);
             }
 
-            Bag.Items[item] -= ItemUnit;
+            Bag.Items[item] += 1;
             switch (bonus) {
                 case TGainBonus.gbMana:
                     Player.MaxMana += 40;
@@ -1367,7 +1369,7 @@ public static class Game {
                 Combat.Roll = Roll(100);
                 if (Skills.Values[TSkill.Cooking] > Combat.Roll) {
                     Out.WriteLine(TxtFightMadeBigos);
-                    Bag.Items[TBagItem.Bigos] -= ItemUnit;
+                    Bag.Items[TBagItem.Bigos] += 1;
                     Bag.Count += 1;
                     if ((Combat.Roll < 1) && (Skills.Values[TSkill.Cooking] < 100)) {
                         Out.WriteLine(TxtFightCookingLearn);
@@ -1398,9 +1400,10 @@ public static class Game {
     ];
 
     public static void TakeItem(string cmd, TBagItem item, string verb, string line, TTakeEffect effect) {
-        if ((Matches(cmd)) && (Bag.Items[item] == Session.OuterRoom)) {
+        if ((Matches(cmd)) && (Bag.ItemRooms[item] == Session.OuterRoom)) {
             Out.WriteLine(verb + line);
-            Bag.Items[item] = -ItemUnit;
+            Bag.Items[item] += 1;
+            Bag.ItemRooms[item] = Rooms.RoomAny;
             Bag.Count += 1;
             switch (effect) {
                 case TTakeEffect.teDiploma:
@@ -1417,9 +1420,12 @@ public static class Game {
     }
 
     public static void DropItem(string cmd, TBagItem item, string verb, string line, TTakeEffect effect) {
-        if ((Matches(cmd)) && (Bag.Items[item] == -ItemUnit)) {
+        bool wielded = (item == TBagItem.OldSword && Gear.Values[TGearItem.WeaponKind] == 1) ||
+            (item == TBagItem.SmallShield && Gear.Values[TGearItem.ShieldKind] == 1);
+        if ((Matches(cmd)) && (Bag.Items[item] == 1) && !wielded) {
             Out.WriteLine(verb + line);
-            Bag.Items[item] = Session.OuterRoom;
+            Bag.Items[item] -= 1;
+            Bag.ItemRooms[item] = Session.OuterRoom;
             Bag.Count -= 1;
             switch (effect) {
                 case TTakeEffect.teDiploma:
@@ -1499,9 +1505,9 @@ public static class Game {
     }
 
     public static void EatFood(string cmd, TBagItem item, string verb, string line, int gain, IntSlot stat, IntSlot cap) {
-        if ((Matches(cmd)) && (Bag.Items[item] <= -ItemUnit)) {
+        if ((Matches(cmd)) && (Bag.Items[item] > 0)) {
             Bag.Count -= 1;
-            Bag.Items[item] += ItemUnit;
+            Bag.Items[item] -= 1;
             Out.WriteLine(verb + line);
             stat.Set((stat.Get() + gain));
             int tmp = stat.Get();
@@ -1519,13 +1525,13 @@ public static class Game {
             case CmdUzyj:
                 switch (Rest) {
                     case CmdFajka:
-                        if (Bag.Items[TBagItem.Pipe] == -ItemUnit) {
+                        if (Bag.Items[TBagItem.Pipe] == 1) {
                             Out.WriteLine(TxtUseItems_01);
                         }
 
                         break;
                     case CmdSerce:
-                        if (Bag.Items[TBagItem.Heart] == -ItemUnit) {
+                        if (Bag.Items[TBagItem.Heart] == 1) {
                             Bag.Items[TBagItem.Heart] = 0;
                             Out.WriteLine(TxtEatVerb + TxtUseItems_02);
                             Player.ChangeEnergy(5);
@@ -1533,7 +1539,7 @@ public static class Game {
                         }
                         break;
                     case CmdDyplom:
-                        if (Bag.Items[TBagItem.Diploma] == -ItemUnit) {
+                        if (Bag.Items[TBagItem.Diploma] == 1) {
                             WriteLines([.. TxtUseItemsLines1.Skip(1)]);
                         }
 
@@ -1542,7 +1548,7 @@ public static class Game {
                         Out.WriteLine(TxtUseItems_24);
                         break;
                     case CmdKomplet:
-                        if ((Bag.Items[TBagItem.Tracksuit] <= -ItemUnit) && (Gear.WornGarment == TxtEmpty)) {
+                        if ((Bag.Items[TBagItem.Tracksuit] > 0) && (Gear.WornGarment == TxtEmpty)) {
                             Out.WriteLine(TxtUseItems_28);
                             Gear.Values[TGearItem.Armor] += 7;
                             Gear.Values[TGearItem.Wearing] = 1;
@@ -1550,13 +1556,13 @@ public static class Game {
                         }
                         break;
                     case CmdListek:
-                        if (Bag.Items[TBagItem.LuckyLeaf] <= -ItemUnit) {
+                        if (Bag.Items[TBagItem.LuckyLeaf] > 0) {
                             Out.WriteLine(TxtUseItems_30);
                         }
 
                         break;
                     case TxtWornGarnitur:
-                        if ((Bag.Items[TBagItem.SpikedSuit] <= -ItemUnit) && (Gear.WornGarment == TxtEmpty)) {
+                        if ((Bag.Items[TBagItem.SpikedSuit] > 0) && (Gear.WornGarment == TxtEmpty)) {
                             Out.WriteLine(TxtUseItems_31);
                             Gear.Values[TGearItem.Wearing] = 1;
                             Gear.Values[TGearItem.WornCount] += 1;
@@ -1566,9 +1572,9 @@ public static class Game {
                         }
                         break;
                     case CmdPigulka:
-                        if (Bag.Items[TBagItem.TeleportPill] <= -ItemUnit) {
+                        if (Bag.Items[TBagItem.TeleportPill] > 0) {
                             Out.WriteLine(TxtUseItems_32);
-                            Bag.Items[TBagItem.TeleportPill] += ItemUnit;
+                            Bag.Items[TBagItem.TeleportPill] -= 1;
                             SpawnMonsters();
                             if (Player.Stats[TStat.Wisdom] < 10) {
                                 Out.WriteLine(TxtUseItems_33);
@@ -1592,14 +1598,14 @@ public static class Game {
                 }
                 break;
             case CmdZniszcz:
-                if ((Rest == CmdPrzepustka) && (Bag.Permit <= -ItemUnit)) {
+                if ((Rest == CmdPrzepustka) && (Bag.Permit > 0)) {
                     Out.WriteLine(TxtUseItems_16);
-                    Bag.Permit += ItemUnit;
+                    Bag.Permit -= 1;
                     Bag.Count += 1;
                 }
                 break;
             case CmdPatrz:
-                if ((Rest == CmdPrzepustka) && (Bag.Permit <= -ItemUnit)) {
+                if ((Rest == CmdPrzepustka) && (Bag.Permit > 0)) {
                     WriteLines([.. TxtUseItemsLines2.Skip(1)]);
                 }
 
@@ -1607,7 +1613,7 @@ public static class Game {
             case CmdOdloz:
                 switch (Rest) {
                     case CmdKomplet:
-                        if ((Bag.Items[TBagItem.Tracksuit] <= -ItemUnit) && (Gear.WornGarment == TxtWornSyf)) {
+                        if ((Bag.Items[TBagItem.Tracksuit] > 0) && (Gear.WornGarment == TxtWornSyf)) {
                             Out.WriteLine(TxtUseItems_29);
                             Gear.Values[TGearItem.Wearing] = 0;
                             Gear.Values[TGearItem.Armor] -= 7;
@@ -1615,7 +1621,7 @@ public static class Game {
                         }
                         break;
                     case TxtWornGarnitur:
-                        if ((Bag.Items[TBagItem.SpikedSuit] <= -ItemUnit) && (Gear.WornGarment == TxtWornGarnitur)) {
+                        if ((Bag.Items[TBagItem.SpikedSuit] > 0) && (Gear.WornGarment == TxtWornGarnitur)) {
                             Out.WriteLine(TxtUseItems_38);
                             Gear.Values[TGearItem.Wearing] = 0;
                             Gear.Values[TGearItem.WornCount] -= 1;
@@ -1878,7 +1884,7 @@ public static class Game {
                     case CmdDokument:
                         if (Player.Money > 399) {
                             Out.WriteLine(TxtPlantFights_05);
-                            Bag.Permit -= ItemUnit;
+                            Bag.Permit += 1;
                             Player.Money -= 400;
                             Bag.Count += 1;
                         }
@@ -1887,7 +1893,7 @@ public static class Game {
                         if ((World.Monsters[TMonster.Duncan] == Session.Room) && (Player.Money > 4799)) {
                             Out.WriteLine(TxtPlantFights_06);
                             Player.Money -= 4800;
-                            Bag.Items[TBagItem.Backpack] -= ItemUnit;
+                            Bag.Items[TBagItem.Backpack] += 1;
                             Bag.Count += 1;
                         }
                         break;
@@ -2071,7 +2077,7 @@ public static class Game {
         new() { item = IntSlot.Into(Bag.Items, TBagItem.Bread), desc = CmdDuzyCieplyChleb, width = 10, kind = TSheetKind.ikShown },
         new() { item = IntSlot.Into(Bag.Items, TBagItem.Sausage), desc = CmdDlugaISmacznaWeke, width = 10, kind = TSheetKind.ikShown },
         new() { item = IntSlot.Into(Bag.Items, TBagItem.Bigos), desc = CmdPysznyBigosZKapustaZWroga, width = 10, kind = TSheetKind.ikShown },
-        new() { item = IntSlot.Into(Bag.Items, TBagItem.Beer), desc = CmdOrzezwiajacePiwskoZKonkretnymKlimatem, width = 0, kind = TSheetKind.ikDiv10 },
+        new() { item = IntSlot.Into(Bag.Items, TBagItem.Beer), desc = CmdOrzezwiajacePiwskoZKonkretnymKlimatem, width = 0, kind = TSheetKind.ikPlain },
         new() { item = IntSlot.Into(Bag.Items, TBagItem.Pipe), desc = CmdCiezkaFajkaOdDziadaMroza, width = 0, kind = TSheetKind.ikPlain },
         new() { item = IntSlot.Into(Bag.Items, TBagItem.Tracksuit), desc = TxtKompletUbranFirmySyf, width = 0, kind = TSheetKind.ikPlain },
         new() { item = IntSlot.Into(Bag.Items, TBagItem.SpikedSuit), desc = TxtGarniturZKolcami, width = 0, kind = TSheetKind.ikPlain },
@@ -2085,13 +2091,10 @@ public static class Game {
     ];
 
     public static void ShowSheetItem(TSheetKind kind, int val, string desc, int width) {
-        if (val <= -ItemUnit) {
+        if (val > 0) {
             switch (kind) {
                 case TSheetKind.ikShown:
                     Out.WriteLine(width == 0 ? desc : desc + val.ToString().PadLeft(width));
-                    break;
-                case TSheetKind.ikDiv10:
-                    Out.WriteLine(desc + (val / 10));
                     break;
                 case TSheetKind.ikPlain:
                     Out.WriteLine(desc + val);
@@ -2108,7 +2111,7 @@ public static class Game {
             }
         }
 
-        if (Bag.Items[TBagItem.Backpack] < 0) {
+        if (Bag.Items[TBagItem.Backpack] > 0) {
             Bag.Limit += 4;
         }
     }
@@ -2142,11 +2145,11 @@ public static class Game {
             Out.WriteLine(TxtWearingLabel + TxtGarniturZKolcami);
         }
 
-        if ((Gear.Values[TGearItem.ShieldKind] == 1) && (Bag.Items[TBagItem.SmallShield] == -100)) {
+        if (Gear.Values[TGearItem.ShieldKind] == 1) {
             Out.WriteLine(TxtShowCharacter_10);
         }
 
-        if ((Gear.Values[TGearItem.WeaponKind] == 1) && (Bag.Items[TBagItem.OldSword] == -100)) {
+        if (Gear.Values[TGearItem.WeaponKind] == 1) {
             Out.WriteLine(TxtShowCharacter_11);
         }
 
@@ -2246,6 +2249,7 @@ public static class Game {
         Player.MaxMana += 100;
         Player.Mana = Player.MaxMana;
         SpawnMonsters();
+        Bag.ItemRooms[TBagItem.OldSword] = RoomStart;
         WriteLines([.. TxtChooseRaceLines1.Skip(1)]);
     }
 
@@ -2280,7 +2284,7 @@ public static class Game {
             Combat.Roll = Roll(100);
             if ((Combat.Roll < 35) && (Bag.Items[TBagItem.Tracksuit] == 0)) {
                 Out.WriteLine(TxtKillSweeper_01);
-                Bag.Items[TBagItem.Tracksuit] -= ItemUnit;
+                Bag.Items[TBagItem.Tracksuit] += 1;
             }
         }
     }
@@ -2463,7 +2467,8 @@ public static class Game {
         int Count,
         int Limit,
         int Permit,
-        Dictionary<string, int> Items);
+        Dictionary<string, int> Items,
+        Dictionary<string, int> ItemRooms);
 
     public record SaveGear(
         int Armor,
@@ -2516,17 +2521,25 @@ public static class Game {
     static Dictionary<string, int> SaveItems() =>
         Enum.GetValues<TBagItem>().ToDictionary(item => item.ToString(), item => Bag.Items[item]);
 
+    static Dictionary<string, int> SaveItemRooms() =>
+        Enum.GetValues<TBagItem>().ToDictionary(item => item.ToString(), item => Bag.ItemRooms[item]);
+
     static Dictionary<string, int> SaveMonsters() =>
         Enum.GetValues<TMonster>().ToDictionary(monster => monster.ToString(), monster => World.Monsters[monster]);
 
-    static void LoadItems(Dictionary<string, int> items) {
+    static void LoadItems(Dictionary<string, int> items, Dictionary<string, int> rooms) {
         foreach (TBagItem item in Enum.GetValues<TBagItem>()) {
             Bag.Items[item] = 0;
+            Bag.ItemRooms[item] = Rooms.RoomAny;
         }
-
-        foreach (KeyValuePair<string, int> item in items) {
-            if (Enum.TryParse(item.Key, out TBagItem parsed)) {
-                Bag.Items[parsed] = item.Value;
+        foreach (KeyValuePair<string, int> entry in items) {
+            if (Enum.TryParse(entry.Key, out TBagItem parsed)) {
+                Bag.Items[parsed] = entry.Value;
+            }
+        }
+        foreach (KeyValuePair<string, int> entry in rooms) {
+            if (Enum.TryParse(entry.Key, out TBagItem parsed)) {
+                Bag.ItemRooms[parsed] = entry.Value;
             }
         }
     }
@@ -2558,7 +2571,7 @@ public static class Game {
                 new SaveStats(Player.Stats[TStat.Strength], Player.Stats[TStat.Dexterity],
                     Player.Stats[TStat.Wisdom], Player.Stats[TStat.MaxStrength],
                     Player.Stats[TStat.MaxDexterity], Player.Stats[TStat.MaxWisdom])),
-            new SaveBag(Bag.Count, Bag.Limit, Bag.Permit, SaveItems()),
+            new SaveBag(Bag.Count, Bag.Limit, Bag.Permit, SaveItems(), SaveItemRooms()),
             new SaveGear(Gear.Values[TGearItem.Armor], Gear.Values[TGearItem.WornCount],
                 Gear.Values[TGearItem.LuckRoll], Gear.Values[TGearItem.Wearing],
                 Gear.Values[TGearItem.WeaponKind], Gear.Values[TGearItem.ShieldKind],
@@ -2588,7 +2601,7 @@ public static class Game {
     public static void BuyItem(string cmd, IntSlot Item, int price, string itemName, bool available) {
         if ((Matches(cmd)) && available && (Player.Money >= price)) {
             Bag.Count += 1;
-            Item.Set((Item.Get() - ItemUnit));
+            Item.Set(Item.Get() + 1);
             Player.Money -= price;
             Out.WriteLine(TxtShopVerb + itemName + TxtSpaceZa + price + TxtSpaceMonet);
         }
@@ -2650,7 +2663,7 @@ public static class Game {
     public static void SellItem(IntSlot Item, int price, string itemName) {
         Out.WriteLine(TxtSellVerb + itemName);
         Player.Money += price;
-        Item.Set((Item.Get() + ItemUnit));
+        Item.Set((Item.Get() - 1).Clamp(0, MaxInt));
         Bag.Count -= 1;
     }
 
@@ -2658,7 +2671,7 @@ public static class Game {
         BuyItem(CmdKup + CmdStary, IntSlot.Into(Bag.Items, TBagItem.OldSword), 70, TxtBuyOldSword_01, true);
 
     public static bool CanSellOldSword() =>
-        Bag.Items[TBagItem.OldSword] == -ItemUnit;
+        (Bag.Items[TBagItem.OldSword] == 1) && (Gear.Values[TGearItem.WeaponKind] == 0);
 
     public static void SellOldSword() {
         Out.WriteLine(TxtSellOldSword_01);
@@ -2694,7 +2707,7 @@ public static class Game {
     public static void BuyPipe() {
         Out.WriteLine(TxtShopVerb + TxtTakeDrop_05 + TxtSpaceZa + 480 + TxtSpaceMonet);
         Player.Money -= 480;
-        Bag.Items[TBagItem.Pipe] -= ItemUnit;
+        Bag.Items[TBagItem.Pipe] += 1;
         Bag.Count += 1;
         Player.Stats[TStat.Wisdom]++;
     }
@@ -2706,18 +2719,18 @@ public static class Game {
         BuyItem(CmdKup + CmdKomplet, IntSlot.Into(Bag.Items, TBagItem.Tracksuit), 35, TxtBuyTracksuit_01, true);
 
     public static bool CanSellTracksuit() =>
-        (Bag.Items[TBagItem.Tracksuit] <= -ItemUnit) && (Gear.WornGarment != TxtWornSyf);
+        (Bag.Items[TBagItem.Tracksuit] > 0) && (Gear.WornGarment != TxtWornSyf);
 
     public static void SellTracksuit() =>
         SellItem(IntSlot.Into(Bag.Items, TBagItem.Tracksuit), 15, TxtSellTracksuit_01);
 
     public static bool CanSellPipe() =>
-        Bag.Items[TBagItem.Pipe] == -ItemUnit;
+        Bag.Items[TBagItem.Pipe] == 1;
 
     public static void SellPipe() {
         Out.WriteLine(TxtSellVerb + TxtSellPipe_01);
         Player.Money += 120;
-        Bag.Items[TBagItem.Pipe] += ItemUnit;
+        Bag.Items[TBagItem.Pipe] -= 1;
         Bag.Count -= 1;
         Player.Stats[TStat.Wisdom]--;
     }
@@ -2728,7 +2741,7 @@ public static class Game {
     public static void BuyCassette() {
         Out.WriteLine(TxtShopVerb + TxtBuyCassette_01 + TxtSpaceZa + 1999 + TxtSpaceMonet);
         Player.Money -= 1999;
-        Bag.Items[TBagItem.Cassette] -= ItemUnit;
+        Bag.Items[TBagItem.Cassette] += 1;
         Gear.Values[TGearItem.Armor] -= 8;
         Player.MaxEnergy += 5;
         Player.Stats[TStat.Dexterity]++;
@@ -2741,7 +2754,7 @@ public static class Game {
     public static void BuySpikedSuit() {
         Out.WriteLine(TxtBuySpikedSuit_01);
         Player.Money -= 1000;
-        Bag.Items[TBagItem.SpikedSuit] -= ItemUnit;
+        Bag.Items[TBagItem.SpikedSuit] += 1;
         Bag.Count += 1;
     }
 
@@ -2752,12 +2765,12 @@ public static class Game {
         SellItem(IntSlot.Into(Bag.Items, TBagItem.SpikedSuit), 500, TxtSellSpikedSuit_01);
 
     public static bool CanSellCassette() =>
-        Bag.Items[TBagItem.Cassette] < 0;
+        Bag.Items[TBagItem.Cassette] > 0;
 
     public static void SellCassette() {
         Out.WriteLine(TxtSellVerb + TxtSellCassette_01);
         Player.Money += 1000;
-        Bag.Items[TBagItem.Cassette] += ItemUnit;
+        Bag.Items[TBagItem.Cassette] -= 1;
         Gear.Values[TGearItem.Armor] += 8;
         Player.MaxEnergy -= 5;
         Player.Stats[TStat.Dexterity]--;
@@ -2781,7 +2794,7 @@ public static class Game {
     public static void BuyManaBottle() {
         Out.WriteLine(TxtBuyManaBottle_01);
         Player.Money -= 20;
-        Bag.Items[TBagItem.ManaBottle] -= ItemUnit;
+        Bag.Items[TBagItem.ManaBottle] += 1;
         Bag.Count += 1;
     }
 
@@ -2791,7 +2804,7 @@ public static class Game {
     public static void BuyLuckyLeaf() {
         Out.WriteLine(TxtBuyLuckyLeaf_01);
         Player.Money -= 830;
-        Bag.Items[TBagItem.LuckyLeaf] -= ItemUnit;
+        Bag.Items[TBagItem.LuckyLeaf] += 1;
         Bag.Count += 1;
         Player.MaxMana += 40;
     }
@@ -2802,7 +2815,7 @@ public static class Game {
     public static void SellLuckyLeaf() {
         Out.WriteLine(TxtSellVerb + TxtSellLuckyLeaf_01);
         Player.Money += 400;
-        Bag.Items[TBagItem.LuckyLeaf] += ItemUnit;
+        Bag.Items[TBagItem.LuckyLeaf] = (Bag.Items[TBagItem.LuckyLeaf] - 1).Clamp(0, MaxInt);
         Bag.Count -= 1;
         Player.MaxMana -= 40;
     }
@@ -2813,13 +2826,10 @@ public static class Game {
     public static void BuyTeleportPill() =>
         BuyItem(CmdKup + CmdPigulkaTransportujaca, IntSlot.Into(Bag.Items, TBagItem.TeleportPill), 235, TxtBuyTeleportPill_01, true);
 
-    public static bool CanSellTeleportPill() =>
-        Bag.Items[TBagItem.TeleportPill] <= 10;
-
     public static void SellTeleportPill() {
         Out.WriteLine(TxtSellTeleportPill_01);
         Player.Money += 170;
-        Bag.Items[TBagItem.TeleportPill] += ItemUnit;
+        Bag.Items[TBagItem.TeleportPill] = (Bag.Items[TBagItem.TeleportPill] - 1).Clamp(0, MaxInt);
         Bag.Count -= 1;
     }
 
@@ -2829,17 +2839,17 @@ public static class Game {
     public static void BuyCompareScroll() {
         Out.WriteLine(TxtBuyCompareScroll_01);
         Player.Money -= 40;
-        Bag.Items[TBagItem.CompareScroll] -= ItemUnit;
+        Bag.Items[TBagItem.CompareScroll] += 1;
         Bag.Count += 1;
     }
 
     public static bool CanSellCompareScroll() =>
-        Bag.Items[TBagItem.CompareScroll] < 0;
+        Bag.Items[TBagItem.CompareScroll] > 0;
 
     public static void SellCompareScroll() {
         Out.WriteLine(TxtSellCompareScroll_01);
         Player.Money += 18;
-        Bag.Items[TBagItem.CompareScroll] += ItemUnit;
+        Bag.Items[TBagItem.CompareScroll] -= 1;
         Bag.Count -= 1;
     }
 
@@ -2848,7 +2858,7 @@ public static class Game {
         new() { cmd = CmdKup + CmdListek, allowed = CanBuyLuckyLeaf, act = BuyLuckyLeaf },
         new() { cmd = CmdSprzedaj + CmdListek, allowed = CanSellLuckyLeaf, act = SellLuckyLeaf },
         new() { cmd = CmdKup + CmdPigulkaTransportujaca, allowed = CanBuyTeleportPill, act = BuyTeleportPill },
-        new() { cmd = CmdSprzedaj + CmdPigulkaTransportujaca, allowed = CanSellTeleportPill, act = SellTeleportPill },
+        new() { cmd = CmdSprzedaj + CmdPigulkaTransportujaca, allowed = Always, act = SellTeleportPill },
         new() { cmd = CmdKup + CmdScrollPorownywanie, allowed = CanBuyCompareScroll, act = BuyCompareScroll },
         new() { cmd = CmdSprzedaj + CmdScrollPorownywanie, allowed = CanSellCompareScroll, act = SellCompareScroll },
     ];
@@ -2941,7 +2951,7 @@ public static class Game {
                     if ((Combat.Roll < 5) && (Bag.Items[TBagItem.Pipe] == 0)) {
                         Out.WriteLine(TxtShared_08 + TxtConcertFights_01);
                         Out.WriteLine(TxtConcertFights_02);
-                        Bag.Items[TBagItem.Pipe] -= ItemUnit;
+                        Bag.Items[TBagItem.Pipe] += 1;
                         Player.Stats[TStat.Wisdom]++;
                     }
                 }
@@ -3121,8 +3131,8 @@ public static class Game {
         Gear.Values[TGearItem.WeaponKind] = 0;
         Gear.Values[TGearItem.ShieldKind] = 0;
         Gear.WornGarment = TxtEmpty;
-        Bag.Items[TBagItem.OldSword] = -ItemUnit;
-        Bag.Items[TBagItem.SmallShield] = -ItemUnit;
+        Bag.Items[TBagItem.OldSword] = 1;
+        Bag.Items[TBagItem.SmallShield] = 1;
         Player.Stats[TStat.Strength]--;
     }
 
@@ -3134,8 +3144,8 @@ public static class Game {
     }
 
     public static void CmdDrinkBeer() {
-        if (Bag.Items[TBagItem.Beer] <= -ItemUnit) {
-            Bag.Items[TBagItem.Beer] += ItemUnit;
+        if (Bag.Items[TBagItem.Beer] > 0) {
+            Bag.Items[TBagItem.Beer] -= 1;
             Out.WriteLine(TxtCmdDrinkBeer_01);
             Bag.Count -= 1;
             Player.ChangeEnergy(10);
@@ -3144,8 +3154,7 @@ public static class Game {
     }
 
     public static void CmdWieldOldSword() {
-        if ((Bag.Items[TBagItem.OldSword] == -ItemUnit) && (Gear.Values[TGearItem.WeaponKind] == 0)) {
-            Bag.Items[TBagItem.OldSword] = -100;
+        if ((Bag.Items[TBagItem.OldSword] == 1) && (Gear.Values[TGearItem.WeaponKind] == 0)) {
             Gear.Values[TGearItem.WeaponKind] = 1;
             Out.WriteLine(TxtCmdWieldOldSword_01);
             Player.Stats[TStat.Strength]++;
@@ -3154,8 +3163,7 @@ public static class Game {
     }
 
     public static void CmdUnwieldOldSword() {
-        if ((Bag.Items[TBagItem.OldSword] == -100) && (Gear.Values[TGearItem.WeaponKind] == 1)) {
-            Bag.Items[TBagItem.OldSword] = -ItemUnit;
+        if (Gear.Values[TGearItem.WeaponKind] == 1) {
             Gear.Values[TGearItem.WeaponKind] = 0;
             Out.WriteLine(TxtCmdUnwieldOldSword_01);
             Player.Stats[TStat.Strength]--;
@@ -3164,21 +3172,19 @@ public static class Game {
     }
 
     public static void CmdWieldSmallShield() {
-        if ((Gear.Values[TGearItem.ShieldKind] == 0) && (Bag.Items[TBagItem.SmallShield] == -ItemUnit)) {
+        if ((Gear.Values[TGearItem.ShieldKind] == 0) && (Bag.Items[TBagItem.SmallShield] == 1)) {
             Gear.Values[TGearItem.ShieldKind] = 1;
             Gear.Values[TGearItem.Armor] += 15;
             Gear.Values[TGearItem.WornCount] += 1;
-            Bag.Items[TBagItem.SmallShield] = -100;
             Out.WriteLine(TxtCmdWieldSmallShield_01);
         }
     }
 
     public static void CmdUnwieldSmallShield() {
-        if ((Gear.Values[TGearItem.ShieldKind] == 1) && (Bag.Items[TBagItem.SmallShield] == -100)) {
+        if (Gear.Values[TGearItem.ShieldKind] == 1) {
             Gear.Values[TGearItem.ShieldKind] = 0;
             Gear.Values[TGearItem.Armor] -= 15;
             Gear.Values[TGearItem.WornCount] -= 1;
-            Bag.Items[TBagItem.SmallShield] = -ItemUnit;
             Out.WriteLine(TxtCmdUnwieldSmallShield_01);
         }
     }
@@ -3250,14 +3256,14 @@ public static class Game {
                 portal = Skills.Values[TSkill.Returning] > 0;
                 break;
             case CmdUzyj:
-                portal = Rest == CmdScrollPowrot && Bag.Items[TBagItem.ReturnScroll] < 0;
+                portal = Rest == CmdScrollPowrot && Bag.Items[TBagItem.ReturnScroll] > 0;
                 break;
         }
         if (portal) {
             Combat.Roll = Roll(100);
             if (Rest == CmdScrollPowrot) {
                 Combat.Roll = Roll(1);
-                Bag.Items[TBagItem.ReturnScroll] += ItemUnit;
+                Bag.Items[TBagItem.ReturnScroll] -= 1;
                 Bag.Count -= 1;
             }
             if (Combat.Roll <= Skills.Values[TSkill.Returning]) {
@@ -3277,10 +3283,10 @@ public static class Game {
     }
 
     public static void CmdUseCompareScroll() {
-        if (Bag.Items[TBagItem.CompareScroll] < 0) {
+        if (Bag.Items[TBagItem.CompareScroll] > 0) {
             CompareFoe();
             Player.Mana -= 10;
-            Bag.Items[TBagItem.CompareScroll] += ItemUnit;
+            Bag.Items[TBagItem.CompareScroll] -= 1;
             Bag.Count -= 1;
         }
     }
@@ -3296,7 +3302,7 @@ public static class Game {
     }
 
     public static void CmdSpeede() =>
-        Bag.Permit -= ItemUnit;
+        Bag.Permit += 1;
 
     public class TSkillLine {
         public int wisdom, strength, dexterity;
@@ -3423,7 +3429,7 @@ public static class Game {
         Bag.Count = save.Bag.Count;
         Bag.Limit = save.Bag.Limit;
         Bag.Permit = save.Bag.Permit;
-        LoadItems(save.Bag.Items);
+        LoadItems(save.Bag.Items, save.Bag.ItemRooms);
         Gear.Values[TGearItem.Armor] = save.Gear.Armor;
         Gear.Values[TGearItem.WornCount] = save.Gear.WornCount;
         Gear.Values[TGearItem.LuckRoll] = save.Gear.LuckRoll;

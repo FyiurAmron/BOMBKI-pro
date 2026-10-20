@@ -55,8 +55,8 @@
       "send": "JA"
     },
     {
-      "label": "sheet shows the second purchase stacked (-20)",
-      "expect": "Smaczny\\ polany\\ likierem\\ PĄCZEK\\s+-20",
+      "label": "sheet shows the second purchase stacked (2)",
+      "expect": "Smaczny\\ polany\\ likierem\\ PĄCZEK\\s+2",
       "send": "WYJSCIE"
     }
   ]

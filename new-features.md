@@ -52,3 +52,4 @@
   - dying no longer resets quest progress
   - the quest master comments when there is nothing to finish or the
     job is not done
+- the JA sheet shows real item counts

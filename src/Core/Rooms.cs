@@ -240,7 +240,7 @@ public static class Rooms {
         Player.Experience += exp;
         World.Quest = 0;
         World.QuestKills = 0;
-        Bag.Permit -= ItemUnit;
+        Bag.Permit += 1;
         switch (quest) {
             case 1:
                 Bag.Count += 1;
@@ -253,7 +253,7 @@ public static class Rooms {
             case 3:
                 Bag.Count -= 1;
                 Player.Stats[TStat.Wisdom]--;
-                Bag.Items[TBagItem.Pipe] += ItemUnit;
+                Bag.Items[TBagItem.Pipe] -= 1;
                 break;
         }
     }
@@ -476,8 +476,9 @@ public static class Rooms {
                     WriteLines([.. TxtRoom17Lines1.Skip(1)]);
                     if ((World.Monsters[CageWeakling] == 0) && (World.Monsters[CageAgile] == 0) &&
                     (World.Monsters[CageStrong] == 0) && (World.Monsters[CageTough] == 0) &&
-                    (World.Monsters[CageHuge] == 0) && (Bag.Items[TBagItem.Diploma] == 0)) {
-                        Bag.Items[TBagItem.Diploma] = RoomCageReward;
+                    (World.Monsters[CageHuge] == 0) && (Bag.Items[TBagItem.Diploma] == 0) &&
+                    (Bag.ItemRooms[TBagItem.Diploma] == RoomAny)) {
+                        Bag.ItemRooms[TBagItem.Diploma] = RoomCageReward;
                     }
                 }
             },
@@ -835,7 +836,7 @@ public static class Rooms {
                                         Combat.Roll = Roll(100);
                                         if (Combat.Roll < 15) {
                                             Out.WriteLine(TxtConcertRooms_25 + TxtShared_08 + TxtPiwoTail);
-                                            Bag.Items[TBagItem.Beer] -= ItemUnit;
+                                            Bag.Items[TBagItem.Beer] += 1;
                                             Bag.Count += 1;
                                         }
                                     }
@@ -848,7 +849,7 @@ public static class Rooms {
                                         World.Monsters[Fatso] = 0;
                                         if (Combat.Roll < 15) {
                                             Out.WriteLine(TxtConcertRooms_26 + TxtShared_08 + TxtPiwoTail);
-                                            Bag.Items[TBagItem.Beer] -= ItemUnit;
+                                            Bag.Items[TBagItem.Beer] += 1;
                                             Bag.Count += 1;
                                         }
                                     }
@@ -902,13 +903,13 @@ public static class Rooms {
                             Combat.Roll = Roll(100);
                             if (Combat.Roll < 25) {
                                 Out.WriteLine(TxtShared_08 + TxtConcertRooms_38);
-                                Bag.Items[TBagItem.DryRation] -= ItemUnit;
+                                Bag.Items[TBagItem.DryRation] += 1;
                                 Bag.Count += 1;
                             }
                             if (Combat.Roll < 3) {
                                 Out.WriteLine(TxtShared_08 + TxtConcertRooms_39);
                                 Out.WriteLine(TxtBang + TxtUniqeItem + TxtConcertRooms_40);
-                                Bag.Items[TBagItem.Cassette] -= ItemUnit;
+                                Bag.Items[TBagItem.Cassette] += 1;
                                 Player.MaxEnergy += 5;
                                 Gear.Values[TGearItem.Armor] -= 8;
                                 Bag.Count += 1;
@@ -1175,18 +1176,18 @@ public static class Rooms {
                         break;
                     case CmdRozmawiaj:
                         if (Rest == CmdStaruch) {
-                            if (Bag.Items[TBagItem.ReturnScroll] < 0) {
+                            if (Bag.Items[TBagItem.ReturnScroll] > 0) {
                                 Out.WriteLine(TxtRoom86_13);
                                 MoveTo(RoomCageHuge);
-                            } else if ((Bag.Items[TBagItem.Sausage] > -30) && (Player.Money < StaruchPrice) && (Bag.Items[TBagItem.ReturnScroll] == 0)) {
+                            } else if ((Bag.Items[TBagItem.Sausage] < 3) && (Player.Money < StaruchPrice) && (Bag.Items[TBagItem.ReturnScroll] == 0)) {
                                 WriteLines([.. TxtRoom86Lines1.Skip(1)]);
-                            } else if ((Bag.Items[TBagItem.Sausage] < -30) && (Player.Money >= StaruchPrice)) {
+                            } else if ((Bag.Items[TBagItem.Sausage] > 3) && (Player.Money >= StaruchPrice)) {
                                 WriteLines([.. TxtRoom86Lines2.Skip(1)]);
                                 MoveTo(RoomCityCentre);
-                                Bag.Items[TBagItem.Beer] -= ItemUnit;
-                                Bag.Items[TBagItem.Sausage] += 40;
+                                Bag.Items[TBagItem.Beer] += 1;
+                                Bag.Items[TBagItem.Sausage] -= 4;
                                 Player.Money -= StaruchPrice;
-                                Bag.Items[TBagItem.ReturnScroll] -= ItemUnit;
+                                Bag.Items[TBagItem.ReturnScroll] += 1;
                                 Player.Experience += 50;
                                 Bag.Count -= 2;
                             }
@@ -1278,7 +1279,7 @@ public static class Rooms {
                         if (Bag.Permit == 0) {
                             Out.WriteLine(TxtExitZachod + TxtPlaceDrogaZablokowanaPrzezQuestMastera);
                         }
-                        if (Bag.Permit < 0) {
+                        if (Bag.Permit > 0) {
                             Out.WriteLine(TxtExitZachod + TxtPlaceDroga);
                         }
                     }
@@ -1303,14 +1304,14 @@ public static class Rooms {
                                 }
                                 break;
                             case 2:
-                                if ((World.QuestKills < 1) && World.LiroyKilled && (Bag.Items[TBagItem.Diploma] <= -ItemUnit)) {
+                                if ((World.QuestKills < 1) && World.LiroyKilled && (Bag.Items[TBagItem.Diploma] > 0)) {
                                     GrantQuestReward(2, 250);
                                 } else {
                                     Out.WriteLine(TxtRoom100_19);
                                 }
                                 break;
                             case 3:
-                                if ((World.QuestKills < 1) && World.LiroyKilled && (Bag.Items[TBagItem.Pipe] <= -ItemUnit)) {
+                                if ((World.QuestKills < 1) && World.LiroyKilled && (Bag.Items[TBagItem.Pipe] > 0)) {
                                     GrantQuestReward(3, 425);
                                 } else {
                                     Out.WriteLine(TxtRoom100_19);
@@ -1320,7 +1321,7 @@ public static class Rooms {
                     }
                     switch (Verb) {
                         case CmdZachod:
-                            if (Bag.Permit <= -ItemUnit) {
+                            if (Bag.Permit > 0) {
                                 MoveTo(RoomRoad1);
                             }
                             if (Bag.Permit == 0) {
@@ -1336,7 +1337,7 @@ public static class Rooms {
                                 Combat.EnemyEnergy = 188;
                                 DoFight();
                                 if (Combat.EnemyEnergy < 1) {
-                                    Bag.Permit -= ItemUnit;
+                                    Bag.Permit += 1;
                                 }
                             }
                             break;

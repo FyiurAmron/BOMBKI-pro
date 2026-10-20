@@ -417,6 +417,7 @@ public class UnitsArenaTests {
     static void LootSetup() {
         UnitsSeed.Reseed();
         Bag.Items[TBagItem.Heart] = 0;
+        Bag.ItemRooms[TBagItem.Heart] = Rooms.RoomAny;
         Player.MaxEnergy = 30000;
         Player.Energy = 30000;
         Player.Stats[TStat.Strength] = 127;
@@ -446,7 +447,7 @@ public class UnitsArenaTests {
             }
         }
 
-        Assert.Equal(-10, Bag.Items[TBagItem.Heart]);
+        Assert.Equal(1, Bag.Items[TBagItem.Heart]);
     }
 
     [Fact]
@@ -458,7 +459,7 @@ public class UnitsArenaTests {
             }
         }
 
-        Assert.Equal(-10, Bag.Items[TBagItem.Heart]);
+        Assert.Equal(1, Bag.Items[TBagItem.Heart]);
     }
 
     [Fact]
@@ -470,7 +471,7 @@ public class UnitsArenaTests {
             }
         }
 
-        Assert.Equal(-10, Bag.Items[TBagItem.Heart]);
+        Assert.Equal(1, Bag.Items[TBagItem.Heart]);
     }
 
     [Fact]
@@ -482,7 +483,7 @@ public class UnitsArenaTests {
             }
         }
 
-        Assert.Equal(-10, Bag.Items[TBagItem.Heart]);
+        Assert.Equal(1, Bag.Items[TBagItem.Heart]);
     }
 
     [Fact]
@@ -494,7 +495,7 @@ public class UnitsArenaTests {
             }
         }
 
-        Assert.Equal(-10, Bag.Items[TBagItem.Heart]);
+        Assert.Equal(1, Bag.Items[TBagItem.Heart]);
     }
 
     [Fact]

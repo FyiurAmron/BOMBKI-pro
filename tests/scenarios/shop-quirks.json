@@ -81,7 +81,7 @@
     },
     {
       "label": "sheet: the bottle is carried",
-      "expect": "MAŁĄ\\ butelkę\\ MANY\\-10"
+      "expect": "MAŁĄ\\ butelkę\\ MANY1"
     },
     {
       "label": "sheet: PRZED went negative from the empty sales",

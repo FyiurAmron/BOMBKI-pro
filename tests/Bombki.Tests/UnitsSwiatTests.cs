@@ -38,6 +38,9 @@ public class UnitsSwiatTests {
         Bag.Permit = 0;
         Bag.Items[TBagItem.Diploma] = 0;
         Bag.Items[TBagItem.Pipe] = 0;
+        foreach (TBagItem item in Enum.GetValues<TBagItem>()) {
+            Bag.ItemRooms[item] = Rooms.RoomAny;
+        }
         Player.Practice = 1;
     }
 
@@ -105,15 +108,15 @@ public class UnitsSwiatTests {
             Gear.Values[TGearItem.LuckRoll] = 0;
             World.Monsters[TMonster.CageStrong] = 13;
             PokojAt("ZABIJ POTWOR|WYJSCIE", 13);
-            if (Bag.Items[TBagItem.OldSword] != 0) {
+            if (Bag.ItemRooms[TBagItem.OldSword] != Rooms.RoomAny) {
                 sawSword = true;
             }
 
-            if (Bag.Items[TBagItem.SmallShield] != 0) {
+            if (Bag.ItemRooms[TBagItem.SmallShield] != Rooms.RoomAny) {
                 sawShield = true;
             }
 
-            if (Bag.Items[TBagItem.Heart] != 0) {
+            if (Bag.ItemRooms[TBagItem.Heart] != Rooms.RoomAny) {
                 sawHeart = true;
             }
 
@@ -204,7 +207,7 @@ public class UnitsSwiatTests {
         Assert.Equal(1, World.Quest);
         Assert.Equal(75, World.QuestKills);
         Assert.Equal(10000, Player.Money);
-        Assert.Equal(-10, Bag.Permit);
+        Assert.Equal(1, Bag.Permit);
     }
 
     [Fact]
@@ -218,7 +221,7 @@ public class UnitsSwiatTests {
     [Fact]
     public void Pokoj100OpenRoad() {
         RoomSetup();
-        Bag.Permit = -20;
+        Bag.Permit = 1;
         PokojAt("EXIT|ZACHOD", 100);
         Assert.Equal(101, Session.Room);
         Assert.Equal(101, Session.OuterRoom);
@@ -280,7 +283,7 @@ public class UnitsSwiatTests {
         PokojAt("ZAKONCZ QUEST|WYJSCIE", 100);
         Assert.Equal(0, World.Quest);
         Assert.Equal(0, World.QuestKills);
-        Assert.Equal(-10, Bag.Permit);
+        Assert.Equal(1, Bag.Permit);
         Assert.Equal(200, Player.Experience);
         Assert.Equal(1, Bag.Count);
     }
@@ -291,7 +294,7 @@ public class UnitsSwiatTests {
         World.Quest = 2;
         World.QuestKills = 0;
         World.LiroyKilled = true;
-        Bag.Items[TBagItem.Diploma] = -10;
+        Bag.Items[TBagItem.Diploma] = 1;
         Player.MaxEnergy = 50;
         Bag.Permit = 0;
         Player.Experience = 100;
@@ -300,7 +303,7 @@ public class UnitsSwiatTests {
         Assert.Equal(0, World.Quest);
         Assert.Equal(0, Bag.Items[TBagItem.Diploma]);
         Assert.Equal(45, Player.MaxEnergy);
-        Assert.Equal(-10, Bag.Permit);
+        Assert.Equal(1, Bag.Permit);
         Assert.Equal(350, Player.Experience);
         Assert.Equal(0, Bag.Count);
     }
@@ -311,7 +314,7 @@ public class UnitsSwiatTests {
         World.Quest = 2;
         World.QuestKills = 0;
         World.LiroyKilled = false;
-        Bag.Items[TBagItem.Diploma] = -10;
+        Bag.Items[TBagItem.Diploma] = 1;
         Bag.Permit = 0;
         Player.Experience = 100;
         PokojAt("ZAKONCZ QUEST|WYJSCIE", 100);
@@ -326,19 +329,19 @@ public class UnitsSwiatTests {
         World.Quest = 3;
         World.QuestKills = 0;
         World.LiroyKilled = true;
-        Bag.Items[TBagItem.Pipe] = -10;
+        Bag.Items[TBagItem.Pipe] = 1;
         Player.Practice = 1;
         Bag.Permit = 0;
         Player.Experience = 100;
-        Bag.Count = 0;
+        Bag.Count = 1;
         Player.Stats[TStat.Wisdom] = 5;
         PokojAt("ZAKONCZ QUEST|WYJSCIE", 100);
         Assert.Equal(0, World.Quest);
         Assert.Equal(0, Bag.Items[TBagItem.Pipe]);
         Assert.Equal(1, Player.Practice);
-        Assert.Equal(-10, Bag.Permit);
+        Assert.Equal(1, Bag.Permit);
         Assert.Equal(525, Player.Experience);
-        Assert.Equal(-1, Bag.Count);
+        Assert.Equal(0, Bag.Count);
         Assert.Equal(4, Player.Stats[TStat.Wisdom]);
     }
 
@@ -359,7 +362,7 @@ public class UnitsSwiatTests {
     public void StaruchTradeLeavesYouInTheCity() {
         RoomSetup();
         Session.Room = Rooms.RoomHut;
-        Bag.Items[TBagItem.Sausage] = -40;
+        Bag.Items[TBagItem.Sausage] = 4;
         Bag.Items[TBagItem.ReturnScroll] = 0;
         Bag.Items[TBagItem.Beer] = 0;
         Bag.Count = 4;
@@ -370,8 +373,8 @@ public class UnitsSwiatTests {
         }
 
         Assert.Equal(Rooms.RoomCityCentre, Session.Room);
-        Assert.Equal(-ItemUnit, Bag.Items[TBagItem.ReturnScroll]);
-        Assert.Equal(-ItemUnit, Bag.Items[TBagItem.Beer]);
+        Assert.Equal(1, Bag.Items[TBagItem.ReturnScroll]);
+        Assert.Equal(1, Bag.Items[TBagItem.Beer]);
         Assert.Equal(0, Bag.Items[TBagItem.Sausage]);
         Assert.Equal(0, Player.Money);
         Assert.Equal(2, Bag.Count);

@@ -238,7 +238,7 @@ public class UnitsCombatTests {
     public void WalkaPotrawki() {
         WalkaSetup(0, 0, 1, 1, 10, 10, 0, 0);
         Skills.Values[TSkill.Cooking] = 99;
-        Bag.Items[TBagItem.Bigos] = 50;
+        Bag.Items[TBagItem.Bigos] = 0;
         Bag.Count = 0;
         DoFight();
         Assert.True(Combat.EnemyEnergy < 1);
@@ -269,6 +269,7 @@ public class UnitsCombatTests {
         Combat.PoisonCharges = 0;
         Combat.PoisonRounds = 0;
         Bag.Items[TBagItem.Heart] = 0;
+        Bag.ItemRooms[TBagItem.Heart] = Rooms.RoomAny;
     }
 
     [Fact]
