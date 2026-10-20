@@ -90,8 +90,27 @@ public static class Game {
         public int Limit;
         public int Permit;
         public TEnumList<TBagItem, int> Items = new();
-        public TEnumList<TBagItem, int> ItemRooms =
-            new(Enumerable.Repeat(Rooms.RoomAny, Enum.GetValues<TBagItem>().Length));
+        public TEnumList<TBagItem, List<int>> ItemRooms =
+            new(Enum.GetValues<TBagItem>().Select(_ => new List<int>()));
+
+        public void AddGroundItem(TBagItem item, int room) =>
+            ItemRooms[item].Add(room);
+
+        public bool TakeGroundItem(TBagItem item, int room) {
+            int index = ItemRooms[item].IndexOf(room);
+            if (index < 0) {
+                return false;
+            }
+
+            ItemRooms[item].RemoveAt(index);
+            return true;
+        }
+
+        public bool HasGroundItem(TBagItem item, int room) =>
+            ItemRooms[item].Contains(room);
+
+        public bool HasGroundItem(TBagItem item) =>
+            ItemRooms[item].Any();
     }
 
     public class TCombat {
@@ -372,7 +391,9 @@ public static class Game {
     public static void GroundItemLines() {
         for (int ti = 1; ti < GroundItems.Count; ti++) {
             TGroundItem t = GroundItems[ti];
-            GroundItemLine(Bag.ItemRooms[t.item], t.line);
+            if (Bag.HasGroundItem(t.item, Session.OuterRoom)) {
+                Out.WriteLine(t.line);
+            }
         }
     }
 
@@ -400,12 +421,10 @@ public static class Game {
     }
 
     public static void TryLoot(TBagItem item, int threshold, string foundMsg) {
-        if (Bag.ItemRooms[item] == Rooms.RoomAny) {
-            Combat.Roll = Roll(20);
-            if (Combat.Roll < threshold) {
-                Bag.ItemRooms[item] = Session.Room;
-                Out.WriteLine(TxtShared_08 + foundMsg);
-            }
+        Combat.Roll = Roll(20);
+        if (Combat.Roll < threshold) {
+            Bag.AddGroundItem(item, Session.Room);
+            Out.WriteLine(TxtShared_08 + foundMsg);
         }
     }
 
@@ -413,12 +432,6 @@ public static class Game {
         TryLoot(TBagItem.OldSword, threshold, TxtShared_10);
         TryLoot(TBagItem.SmallShield, threshold, TxtShared_11);
         TryLoot(TBagItem.Heart, 6, TxtShared_12);
-    }
-
-    public static void GroundItemLine(int itemRoom, string line) {
-        if (itemRoom == Session.OuterRoom) {
-            Out.WriteLine(line);
-        }
     }
 
     public static void ShowIntro() {
@@ -819,7 +832,7 @@ public static class Game {
                         Bag.Count += 1;
                     }
                 }
-            } else if ((HeartChance > 0) && (Bag.ItemRooms[TBagItem.Heart] == Rooms.RoomAny)) {
+            } else if (HeartChance > 0) {
                 Combat.Roll = Roll(20);
                 if (Combat.Roll < HeartChance) {
                     Out.WriteLine(TxtShared_08 + TxtCompositeFight_03);
@@ -1405,10 +1418,9 @@ public static class Game {
     ];
 
     public static void TakeItem(string cmd, TBagItem item, string verb, string line, TTakeEffect effect) {
-        if ((Matches(cmd)) && (Bag.ItemRooms[item] == Session.OuterRoom)) {
+        if ((Matches(cmd)) && Bag.TakeGroundItem(item, Session.OuterRoom)) {
             Out.WriteLine(verb + line);
             Bag.Items[item] += 1;
-            Bag.ItemRooms[item] = Rooms.RoomAny;
             Bag.Count += 1;
             switch (effect) {
                 case TTakeEffect.teDiploma:
@@ -1447,7 +1459,7 @@ public static class Game {
         if ((Matches(cmd)) && (Bag.Items[item] > 0) && !IsEquipped(item)) {
             Out.WriteLine(verb + line);
             Bag.Items[item] -= 1;
-            Bag.ItemRooms[item] = Session.OuterRoom;
+            Bag.AddGroundItem(item, Session.OuterRoom);
             Bag.Count -= 1;
             switch (effect) {
                 case TTakeEffect.teDiploma:
@@ -2341,7 +2353,7 @@ public static class Game {
         Player.MaxMana += 100;
         Player.Mana = Player.MaxMana;
         SpawnMonsters();
-        Bag.ItemRooms[TBagItem.OldSword] = RoomStart;
+        Bag.AddGroundItem(TBagItem.OldSword, RoomStart);
         WriteLines([.. TxtChooseRaceLines1.Skip(1)]);
     }
 

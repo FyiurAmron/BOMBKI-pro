@@ -269,7 +269,7 @@ public class UnitsCombatTests {
         Combat.PoisonCharges = 0;
         Combat.PoisonRounds = 0;
         Bag.Items[TBagItem.Heart] = 0;
-        Bag.ItemRooms[TBagItem.Heart] = Rooms.RoomAny;
+        Bag.ItemRooms[TBagItem.Heart].Clear();
     }
 
     [Fact]

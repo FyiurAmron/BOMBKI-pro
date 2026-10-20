@@ -7,12 +7,12 @@ public class UnitsItemsTests {
     public void BraniePicksUpSword() {
         Session.OuterRoom = 7;
         Bag.Items[TBagItem.OldSword] = 0;
-        Bag.ItemRooms[TBagItem.OldSword] = 7;
+        Bag.AddGroundItem(TBagItem.OldSword, 7);
         Bag.Count = 0;
         Command = "BIERZ STARY";
         TakeDrop();
         Assert.Equal(1, Bag.Items[TBagItem.OldSword]);
-        Assert.Equal(Rooms.RoomAny, Bag.ItemRooms[TBagItem.OldSword]);
+        Assert.Empty(Bag.ItemRooms[TBagItem.OldSword]);
         Assert.Equal(1, Bag.Count);
     }
 
@@ -24,7 +24,7 @@ public class UnitsItemsTests {
         Command = "ODRZUC STARY";
         TakeDrop();
         Assert.Equal(0, Bag.Items[TBagItem.OldSword]);
-        Assert.Equal(7, Bag.ItemRooms[TBagItem.OldSword]);
+        Assert.Contains(7, Bag.ItemRooms[TBagItem.OldSword]);
         Assert.Equal(0, Bag.Count);
     }
 
@@ -32,7 +32,7 @@ public class UnitsItemsTests {
     public void OdrzucanieNieDzialaNaWladanymMieczu() {
         Session.OuterRoom = 7;
         Bag.Items[TBagItem.OldSword] = 2;
-        Bag.ItemRooms[TBagItem.OldSword] = Rooms.RoomAny;
+        Bag.ItemRooms[TBagItem.OldSword].Clear();
         Bag.Count = 2;
         Gear.Values[TGearItem.WeaponKind] = 0;
         Player.Stats[TStat.Strength] = 0;
@@ -41,7 +41,7 @@ public class UnitsItemsTests {
         Command = "ODRZUC STARY";
         TakeDrop();
         Assert.Equal(1, Bag.Items[TBagItem.OldSword]);
-        Assert.Equal(Rooms.RoomAny, Bag.ItemRooms[TBagItem.OldSword]);
+        Assert.Empty(Bag.ItemRooms[TBagItem.OldSword]);
         Assert.Equal(1, Bag.Count);
         Assert.True(Unequip(TBagItem.OldSword));
         Assert.Equal(2, Bag.Items[TBagItem.OldSword]);
@@ -52,7 +52,7 @@ public class UnitsItemsTests {
     public void OdrzucanieNieDzialaNaWladanejTarczy() {
         Session.OuterRoom = 7;
         Bag.Items[TBagItem.SmallShield] = 2;
-        Bag.ItemRooms[TBagItem.SmallShield] = Rooms.RoomAny;
+        Bag.ItemRooms[TBagItem.SmallShield].Clear();
         Bag.Count = 2;
         Gear.Values[TGearItem.ShieldKind] = 0;
         Gear.Values[TGearItem.Armor] = 0;
@@ -61,7 +61,7 @@ public class UnitsItemsTests {
         Command = "ODRZUC MALA";
         TakeDrop();
         Assert.Equal(1, Bag.Items[TBagItem.SmallShield]);
-        Assert.Equal(Rooms.RoomAny, Bag.ItemRooms[TBagItem.SmallShield]);
+        Assert.Empty(Bag.ItemRooms[TBagItem.SmallShield]);
         Assert.Equal(1, Bag.Count);
         Assert.True(Unequip(TBagItem.SmallShield));
         Assert.Equal(2, Bag.Items[TBagItem.SmallShield]);
@@ -72,13 +72,13 @@ public class UnitsItemsTests {
     public void OdrzucanieBezSztukiNieDziala() {
         Session.OuterRoom = 7;
         Bag.Items[TBagItem.OldSword] = 0;
-        Bag.ItemRooms[TBagItem.OldSword] = Rooms.RoomAny;
+        Bag.ItemRooms[TBagItem.OldSword].Clear();
         Gear.Values[TGearItem.WeaponKind] = 0;
         Bag.Count = 0;
         Command = "ODRZUC STARY";
         TakeDrop();
         Assert.Equal(0, Bag.Items[TBagItem.OldSword]);
-        Assert.Equal(Rooms.RoomAny, Bag.ItemRooms[TBagItem.OldSword]);
+        Assert.Empty(Bag.ItemRooms[TBagItem.OldSword]);
         Assert.Equal(0, Bag.Count);
     }
 
@@ -86,14 +86,50 @@ public class UnitsItemsTests {
     public void OdrzucanieStosuZostawiaReszte() {
         Session.OuterRoom = 7;
         Bag.Items[TBagItem.OldSword] = 2;
-        Bag.ItemRooms[TBagItem.OldSword] = Rooms.RoomAny;
+        Bag.ItemRooms[TBagItem.OldSword].Clear();
         Gear.Values[TGearItem.WeaponKind] = 0;
         Bag.Count = 2;
         Command = "ODRZUC STARY";
         TakeDrop();
         Assert.Equal(1, Bag.Items[TBagItem.OldSword]);
-        Assert.Equal(7, Bag.ItemRooms[TBagItem.OldSword]);
+        Assert.Contains(7, Bag.ItemRooms[TBagItem.OldSword]);
         Assert.Equal(1, Bag.Count);
+    }
+
+    [Fact]
+    public void BranieJednejSztukiZostawiaInne() {
+        Session.OuterRoom = 7;
+        Bag.Items[TBagItem.OldSword] = 0;
+        Bag.Count = 0;
+        Bag.ItemRooms[TBagItem.OldSword].Clear();
+        Bag.AddGroundItem(TBagItem.OldSword, 7);
+        Bag.AddGroundItem(TBagItem.OldSword, 7);
+        Command = "BIERZ STARY";
+        TakeDrop();
+        Assert.Equal(1, Bag.Items[TBagItem.OldSword]);
+        Assert.Equal(1, Bag.Count);
+        Assert.Single(Bag.ItemRooms[TBagItem.OldSword]);
+        TakeDrop();
+        Assert.Equal(2, Bag.Items[TBagItem.OldSword]);
+        Assert.Equal(2, Bag.Count);
+        Assert.Empty(Bag.ItemRooms[TBagItem.OldSword]);
+    }
+
+    [Fact]
+    public void OdrzucanieWieluSztuk() {
+        Session.OuterRoom = 7;
+        Bag.Items[TBagItem.OldSword] = 2;
+        Bag.Count = 2;
+        Bag.ItemRooms[TBagItem.OldSword].Clear();
+        Gear.Values[TGearItem.WeaponKind] = 0;
+        Command = "ODRZUC STARY";
+        TakeDrop();
+        TakeDrop();
+        Assert.Equal(0, Bag.Items[TBagItem.OldSword]);
+        Assert.Equal(0, Bag.Count);
+        Assert.Equal(2, Bag.ItemRooms[TBagItem.OldSword].Count);
+        Assert.All(Bag.ItemRooms[TBagItem.OldSword], room => Assert.Equal(7, room));
+        Bag.ItemRooms[TBagItem.OldSword].Clear();
     }
 
     [Fact]
@@ -139,20 +175,33 @@ public class UnitsItemsTests {
     public void LootDropsWhenTheItemIsAlreadyCarried() {
         Bag.Items[TBagItem.OldSword] = 1;
         Bag.Count = 1;
-        Bag.ItemRooms[TBagItem.OldSword] = Rooms.RoomAny;
+        Bag.ItemRooms[TBagItem.OldSword].Clear();
         Session.Room = 7;
         TryLoot(TBagItem.OldSword, 100, "");
-        Assert.Equal(7, Bag.ItemRooms[TBagItem.OldSword]);
+        Assert.Contains(7, Bag.ItemRooms[TBagItem.OldSword]);
         Bag.Items[TBagItem.OldSword] = 0;
         Bag.Count = 0;
-        Bag.ItemRooms[TBagItem.OldSword] = Rooms.RoomAny;
+        Bag.ItemRooms[TBagItem.OldSword].Clear();
+    }
+
+    [Fact]
+    public void LootDodajeKolejnyPrzedmiotNaZiemi() {
+        Session.Room = 7;
+        Bag.ItemRooms[TBagItem.Heart].Clear();
+        Bag.AddGroundItem(TBagItem.Heart, 7);
+        Bag.AddGroundItem(TBagItem.Heart, 8);
+        TryLoot(TBagItem.Heart, 100, "");
+        Assert.Equal(3, Bag.ItemRooms[TBagItem.Heart].Count);
+        Assert.Equal(2, Bag.ItemRooms[TBagItem.Heart].Count(room => room == 7));
+        Assert.Contains(8, Bag.ItemRooms[TBagItem.Heart]);
+        Bag.ItemRooms[TBagItem.Heart].Clear();
     }
 
     [Fact]
     public void BranieIgnoresMissingSword() {
         Session.OuterRoom = 7;
         Bag.Items[TBagItem.OldSword] = 0;
-        Bag.ItemRooms[TBagItem.OldSword] = Rooms.RoomAny;
+        Bag.ItemRooms[TBagItem.OldSword].Clear();
         Bag.Count = 0;
         Command = "BIERZ STARY";
         TakeDrop();
@@ -164,12 +213,12 @@ public class UnitsItemsTests {
     public void BranieIgnoresStartRoomWhenNothingLiesThere() {
         Session.OuterRoom = Rooms.RoomStart;
         Bag.Items[TBagItem.Diploma] = 0;
-        Bag.ItemRooms[TBagItem.Diploma] = Rooms.RoomAny;
+        Bag.ItemRooms[TBagItem.Diploma].Clear();
         Bag.Count = 0;
         Command = "BIERZ DYPLOM";
         TakeDrop();
         Assert.Equal(0, Bag.Items[TBagItem.Diploma]);
-        Assert.Equal(Rooms.RoomAny, Bag.ItemRooms[TBagItem.Diploma]);
+        Assert.Empty(Bag.ItemRooms[TBagItem.Diploma]);
         Assert.Equal(0, Bag.Count);
     }
 
@@ -180,10 +229,10 @@ public class UnitsItemsTests {
         Bag.Items[TBagItem.Heart] = 0;
         Bag.Items[TBagItem.Diploma] = 0;
         Bag.Items[TBagItem.Pipe] = 0;
-        Bag.ItemRooms[TBagItem.SmallShield] = 7;
-        Bag.ItemRooms[TBagItem.Heart] = 7;
-        Bag.ItemRooms[TBagItem.Diploma] = 7;
-        Bag.ItemRooms[TBagItem.Pipe] = 7;
+        Bag.AddGroundItem(TBagItem.SmallShield, 7);
+        Bag.AddGroundItem(TBagItem.Heart, 7);
+        Bag.AddGroundItem(TBagItem.Diploma, 7);
+        Bag.AddGroundItem(TBagItem.Pipe, 7);
         Bag.Count = 0;
         Player.Stats[TStat.Wisdom] = 0;
         Player.Stats[TStat.MaxWisdom] = 5;
@@ -227,10 +276,10 @@ public class UnitsItemsTests {
         Assert.Equal(0, Bag.Items[TBagItem.Heart]);
         Assert.Equal(0, Bag.Items[TBagItem.Diploma]);
         Assert.Equal(0, Bag.Items[TBagItem.Pipe]);
-        Assert.Equal(7, Bag.ItemRooms[TBagItem.SmallShield]);
-        Assert.Equal(7, Bag.ItemRooms[TBagItem.Heart]);
-        Assert.Equal(7, Bag.ItemRooms[TBagItem.Diploma]);
-        Assert.Equal(7, Bag.ItemRooms[TBagItem.Pipe]);
+        Assert.Contains(7, Bag.ItemRooms[TBagItem.SmallShield]);
+        Assert.Contains(7, Bag.ItemRooms[TBagItem.Heart]);
+        Assert.Contains(7, Bag.ItemRooms[TBagItem.Diploma]);
+        Assert.Contains(7, Bag.ItemRooms[TBagItem.Pipe]);
         Assert.Equal(0, Bag.Count);
         Assert.Equal(50, Player.MaxEnergy);
         Assert.Equal(0, Player.Stats[TStat.Wisdom]);
@@ -916,12 +965,14 @@ public class UnitsItemsTests {
         Player.Name = "COUNTS";
         Bag.Items[TBagItem.Beer] = 2;
         Bag.Items[TBagItem.Diploma] = 0;
-        Bag.ItemRooms[TBagItem.Diploma] = 12;
+        Bag.ItemRooms[TBagItem.Diploma].Clear();
+        Bag.AddGroundItem(TBagItem.Diploma, 12);
+        Bag.AddGroundItem(TBagItem.Diploma, 14);
         string path = SaveFileName();
         try {
             SaveCharacter();
             Bag.Items[TBagItem.Beer] = 0;
-            Bag.ItemRooms[TBagItem.Diploma] = Rooms.RoomAny;
+            Bag.ItemRooms[TBagItem.Diploma].Clear();
             LoadGame();
         } finally {
             File.Delete(path);
@@ -929,8 +980,10 @@ public class UnitsItemsTests {
         }
         Assert.Equal(2, Bag.Items[TBagItem.Beer]);
         Assert.Equal(0, Bag.Items[TBagItem.Diploma]);
-        Assert.Equal(12, Bag.ItemRooms[TBagItem.Diploma]);
-        Assert.Equal(Rooms.RoomAny, Bag.ItemRooms[TBagItem.Beer]);
+        Assert.Equal(2, Bag.ItemRooms[TBagItem.Diploma].Count);
+        Assert.Contains(12, Bag.ItemRooms[TBagItem.Diploma]);
+        Assert.Contains(14, Bag.ItemRooms[TBagItem.Diploma]);
+        Assert.Empty(Bag.ItemRooms[TBagItem.Beer]);
     }
 
     [Fact]

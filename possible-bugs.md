@@ -6,38 +6,35 @@ behaviour, so a fix must re-pin them.
 
 ## Bugs
 
-1. Heart loot is blocked while another heart lies anywhere on the
-   ground (`Bag.Items[Heart] == 0` plus
-   `Bag.ItemRooms[Heart] == RoomAny`).
-2. `TxtRoom0_02` and `TxtRoom3_04` name the destination "hala główna
+1. `TxtRoom0_02` and `TxtRoom3_04` name the destination "hala główna
     Szkoły Życia" but both moves go to the salon (room 1; the hall is
     room 4).
 
 ## Text and data
 
-3. `TxtGeneralStoreShopLines1` is unused (and omits
+2. `TxtGeneralStoreShopLines1` is unused (and omits
     TxtGeneralStoreShop_02, which is used elsewhere).
-4. Sentinel styles mixed: line lists start with "", data tables with
+3. Sentinel styles mixed: line lists start with "", data tables with
     `null!`; consumption mixes Skip(1) and direct indexes
     (`TxtRoom1Lines1[1..3]`).
 
 ## Vestigial / dead code
 
-5. `RoomAny` is used only as the teleport sentinel now, no longer for
+4. `RoomAny` is used only as the teleport sentinel now, no longer for
     dispatch.
-6. `Crt.Sound`/`Crt.NoSound` are empty unused stubs.
-7. Flavor prose lives in lists with dummy first elements (e.g.
+5. `Crt.Sound`/`Crt.NoSound` are empty unused stubs.
+6. Flavor prose lives in lists with dummy first elements (e.g.
     TxtRoom5_01..03).
 
 ## Mechanical inconsistencies
 
-8. Abbreviation expansion is room-dependent (on: corridor, ivy, cave,
+7. Abbreviation expansion is room-dependent (on: corridor, ivy, cave,
     most concert rooms; off: start, salon, school, shops, streets, bar,
     cages 12-17, stages, roads, quest master).
-9. `ShowCharacter` has side effects: recomputes Bag.Limit and
+8. `ShowCharacter` has side effects: recomputes Bag.Limit and
     Gear.ArmorRating; ArmorRating is display-only (combat uses Armor).
-10. `Bag.Count`/`Limit` have no sanity checks.
-11. Permit bookkeeping is inconsistent: the permit is a carried item
+9. `Bag.Count`/`Limit` have no sanity checks.
+10. Permit bookkeeping is inconsistent: the permit is a carried item
     (buying a forged one adds a bag slot, so quest 1's reward adding one
     is right), but quests 2/3 and the quest-master kill grant it without
     a slot, and ZNISZCZ PRZEPUSTKA adds a slot instead of freeing one
@@ -47,15 +44,15 @@ behaviour, so a fix must re-pin them.
 
 ## Smells / architecture
 
-12. `Game.cs` is a ~3.3k-line monolith (combat, economy, shops, saves,
+11. `Game.cs` is a ~3.3k-line monolith (combat, economy, shops, saves,
     input, RNG); `Rooms.cs` ~1.36k; `Texts.cs` ~1k.
-13. Verb/rest convention (trailing space in verb consts, first-space
+12. Verb/rest convention (trailing space in verb consts, first-space
     split) is undocumented and fails silently; SplitCache is a mutable
     static dictionary.
-14. The `Command` setter throws on null (readers currently never return
+13. The `Command` setter throws on null (readers currently never return
     null).
-15. `ExpandAbbrev` allocates two lists per command; `DebugEnabled` reads
+14. `ExpandAbbrev` allocates two lists per command; `DebugEnabled` reads
     the environment on every command.
-16. `TRoom.turn` is `Action<bool>` with undocumented "entering"
+15. `TRoom.turn` is `Action<bool>` with undocumented "entering"
     semantics; some lambdas peek at `Session.Room`.
-17. Data/graph divergence has no validation (e.g. item 2).
+16. Data/graph divergence has no validation (e.g. item 1).

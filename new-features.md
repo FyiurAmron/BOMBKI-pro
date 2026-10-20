@@ -62,3 +62,4 @@
 - equipped items no longer count for carry
 - can buy already owned items now
 - can have loot drops of already carried items now
+- multiple copies of the same item can lie on the ground

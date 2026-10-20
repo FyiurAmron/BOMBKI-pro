@@ -418,7 +418,7 @@ public class UnitsArenaTests {
     static void LootSetup() {
         UnitsSeed.Reseed();
         Bag.Items[TBagItem.Heart] = 0;
-        Bag.ItemRooms[TBagItem.Heart] = Rooms.RoomAny;
+        Bag.ItemRooms[TBagItem.Heart].Clear();
         Player.MaxEnergy = 30000;
         Player.Energy = 30000;
         Player.Stats[TStat.Strength] = 127;
@@ -437,6 +437,14 @@ public class UnitsArenaTests {
         Gear.Values[TGearItem.WornCount] = 0;
         Gear.Values[TGearItem.LuckRoll] = 0;
         Bag.Count = 0;
+    }
+
+    [Fact]
+    public void HeartLootIgnoresGroundHeart() {
+        LootSetup();
+        Bag.AddGroundItem(TBagItem.Heart, 7);
+        CompositeFight(1, 0, 1, 0, 1, 0, 0, 1, 20, false, false);
+        Assert.Equal(1, Bag.Items[TBagItem.Heart]);
     }
 
     [Fact]

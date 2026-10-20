@@ -479,8 +479,8 @@ public static class Rooms {
                     if ((World.Monsters[CageWeakling] == 0) && (World.Monsters[CageAgile] == 0) &&
                     (World.Monsters[CageStrong] == 0) && (World.Monsters[CageTough] == 0) &&
                     (World.Monsters[CageHuge] == 0) && (Bag.Items[TBagItem.Diploma] == 0) &&
-                    (Bag.ItemRooms[TBagItem.Diploma] == RoomAny)) {
-                        Bag.ItemRooms[TBagItem.Diploma] = RoomCageReward;
+                    !Bag.HasGroundItem(TBagItem.Diploma)) {
+                        Bag.AddGroundItem(TBagItem.Diploma, RoomCageReward);
                     }
                 }
             },

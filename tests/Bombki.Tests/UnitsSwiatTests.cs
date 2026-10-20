@@ -39,7 +39,7 @@ public class UnitsSwiatTests {
         Bag.Items[TBagItem.Diploma] = 0;
         Bag.Items[TBagItem.Pipe] = 0;
         foreach (TBagItem item in Enum.GetValues<TBagItem>()) {
-            Bag.ItemRooms[item] = Rooms.RoomAny;
+            Bag.ItemRooms[item].Clear();
         }
         Player.Practice = 1;
     }
@@ -108,15 +108,15 @@ public class UnitsSwiatTests {
             Gear.Values[TGearItem.LuckRoll] = 0;
             World.Monsters[TMonster.CageStrong] = 13;
             PokojAt("ZABIJ POTWOR|WYJSCIE", 13);
-            if (Bag.ItemRooms[TBagItem.OldSword] != Rooms.RoomAny) {
+            if (Bag.HasGroundItem(TBagItem.OldSword)) {
                 sawSword = true;
             }
 
-            if (Bag.ItemRooms[TBagItem.SmallShield] != Rooms.RoomAny) {
+            if (Bag.HasGroundItem(TBagItem.SmallShield)) {
                 sawShield = true;
             }
 
-            if (Bag.ItemRooms[TBagItem.Heart] != Rooms.RoomAny) {
+            if (Bag.HasGroundItem(TBagItem.Heart)) {
                 sawHeart = true;
             }
 
