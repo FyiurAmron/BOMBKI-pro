@@ -22,33 +22,29 @@ behaviour, so a fix must re-pin them.
 
 5. `TxtGeneralStoreShopLines1` is unused (and omits
     TxtGeneralStoreShop_02, which is used elsewhere).
-6. Quest text "ZABIJ 50 potworów w tym LIROYA" vs 200 kill units
-    (Liroy = 150; the sheet prints `QuestKills - LiroyKills`).
-7. Sentinel styles mixed: line lists start with "", data tables with
+6. Sentinel styles mixed: line lists start with "", data tables with
     `null!`; consumption mixes Skip(1) and direct indexes
     (`TxtRoom1Lines1[1..3]`).
 
 ## Vestigial / dead code
 
-8. `RoomAny` is used only as the teleport sentinel now, no longer for
+7. `RoomAny` is used only as the teleport sentinel now, no longer for
     dispatch.
-9. `Crt.Sound`/`Crt.NoSound` are empty unused stubs.
-10. Flavor prose lives in lists with dummy first elements (e.g.
+8. `Crt.Sound`/`Crt.NoSound` are empty unused stubs.
+9. Flavor prose lives in lists with dummy first elements (e.g.
     TxtRoom5_01..03).
 
 ## Mechanical inconsistencies
 
-11. Abbreviation expansion is room-dependent (on: corridor, ivy, cave,
+10. Abbreviation expansion is room-dependent (on: corridor, ivy, cave,
     most concert rooms; off: start, salon, school, shops, streets, bar,
     cages 12-17, stages, roads, quest master).
-12. Item quantity checks mix `== -ItemUnit`, `<= -ItemUnit`, `< 0`,
+11. Item quantity checks mix `== -ItemUnit`, `<= -ItemUnit`, `< 0`,
     `== 0` across use/drop/sell/buy/loot.
-13. `ShowCharacter` has side effects: recomputes Bag.Limit and
+12. `ShowCharacter` has side effects: recomputes Bag.Limit and
     Gear.ArmorRating; ArmorRating is display-only (combat uses Armor).
-14. `Bag.Count`/`Limit` have no sanity checks.
-15. Quest prices duplicated as text (TxtRoom100_05..07) and data
-    (QuestOffers) - drift risk.
-16. Permit bookkeeping is inconsistent: the permit is a carried item
+13. `Bag.Count`/`Limit` have no sanity checks.
+14. Permit bookkeeping is inconsistent: the permit is a carried item
     (buying a forged one adds a bag slot, so quest 1's reward adding one
     is right), but quests 2/3 and the quest-master kill grant it without
     a slot, and ZNISZCZ PRZEPUSTKA adds a slot instead of freeing one
@@ -58,15 +54,15 @@ behaviour, so a fix must re-pin them.
 
 ## Smells / architecture
 
-17. `Game.cs` is a ~3.3k-line monolith (combat, economy, shops, saves,
+15. `Game.cs` is a ~3.3k-line monolith (combat, economy, shops, saves,
     input, RNG); `Rooms.cs` ~1.36k; `Texts.cs` ~1k.
-18. Verb/rest convention (trailing space in verb consts, first-space
+16. Verb/rest convention (trailing space in verb consts, first-space
     split) is undocumented and fails silently; SplitCache is a mutable
     static dictionary.
-19. The `Command` setter throws on null (readers currently never return
+17. The `Command` setter throws on null (readers currently never return
     null).
-20. `ExpandAbbrev` allocates two lists per command; `DebugEnabled` reads
+18. `ExpandAbbrev` allocates two lists per command; `DebugEnabled` reads
     the environment on every command.
-21. `TRoom.turn` is `Action<bool>` with undocumented "entering"
+19. `TRoom.turn` is `Action<bool>` with undocumented "entering"
     semantics; some lambdas peek at `Session.Room`.
-22. Data/graph divergence has no validation (e.g. item 4).
+20. Data/graph divergence has no validation (e.g. item 4).

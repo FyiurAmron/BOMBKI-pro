@@ -97,7 +97,7 @@ public static class Game {
 
     public class TWorld {
         public TEnumList<TMonster, int> Monsters = new();
-        public bool Door, OldElf;
+        public bool Door, OldElf, LiroyKilled;
         public int Quest, QuestKills;
         public int DuncanQuest;
     }
@@ -112,13 +112,12 @@ public static class Game {
 
     public class TQuestOffer {
         public string cmd = "", line = "";
-        public int quest, kills, price;
-        public TQuestOffer(string cmd, string line, int quest, int kills, int price) {
+        public int quest, kills;
+        public TQuestOffer(string cmd, string line, int quest, int kills) {
             this.cmd = cmd;
             this.line = line;
             this.quest = quest;
             this.kills = kills;
-            this.price = price;
         }
     }
 
@@ -322,13 +321,12 @@ public static class Game {
 
     public const int MaxInt = 32767;
     public const int ItemUnit = 10;
-    public const int LiroyKills = 150;
 
     public static readonly List<TQuestOffer> QuestOffers = [
         null!,
-        new(CmdKup + CmdLatwyQuest, TxtRoom100_09, 1, 75, 200),
-        new(CmdKup + CmdPrzecietnyQuest, TxtRoom100_10, 2, 200, 100),
-        new(CmdKup + CmdTrudnyQuest, TxtRoom100_11, 3, 200, 50),
+        new($"{CmdZacznij}{CmdQuest} 1", TxtRoom100_09, 1, 75),
+        new($"{CmdZacznij}{CmdQuest} 2", TxtRoom100_10, 2, 50),
+        new($"{CmdZacznij}{CmdQuest} 3", TxtRoom100_11, 3, 50),
     ];
 
     public static readonly List<TGroundItem> GroundItems = [
@@ -442,13 +440,20 @@ public static class Game {
         Out.Write("\x1b[m");
     }
 
-    public static void BuyQuest(string cmd, string line, int quest, int kills, int price) {
-        if ((Matches(cmd)) && (Player.Money >= price)) {
-            Out.WriteLine(line);
-            World.Quest = quest;
-            World.QuestKills = kills;
-            Player.Money -= price;
+    public static void StartQuest(string cmd, string line, int quest, int kills) {
+        if (!Matches(cmd)) {
+            return;
         }
+
+        if (World.Quest > 0) {
+            Out.WriteLine(TxtRoom100_17);
+            return;
+        }
+
+        Out.WriteLine(line);
+        World.Quest = quest;
+        World.QuestKills = kills;
+        World.LiroyKilled = World.Monsters[TMonster.Liroy] == 0;
     }
 
     public static readonly List<TBand> PosExpBands = [null!,
@@ -1771,10 +1776,7 @@ public static class Game {
                                 Out.WriteLine(TxtStageFights_01);
                                 Player.Money += 30;
                                 CassetteGain();
-                                if (World.Quest > 1) {
-                                    World.QuestKills -= LiroyKills;
-                                }
-
+                                World.LiroyKilled = true;
                                 World.Monsters[TMonster.Liroy] = 0;
                             }
                         }
@@ -2177,12 +2179,11 @@ public static class Game {
             + TxtShowCharacter_25 + Gear.Values[TGearItem.LuckRoll]);
         Out.WriteLine(TxtShowCharacter_12 + Player.Mana + TxtShowCharacter_03 + Player.MaxMana + TxtShowCharacter_26);
         Out.WriteLine(TxtShowCharacter_12 + Player.Energy + TxtShowCharacter_03 + Player.MaxEnergy + TxtShared_20);
-        if (World.Quest == 1) {
-            Out.WriteLine(TxtShowCharacter_27 + World.QuestKills + TxtShowCharacter_28);
-        }
-
-        if (World.Quest > 1) {
-            Out.WriteLine(TxtShowCharacter_27 + (World.QuestKills - LiroyKills) + TxtShowCharacter_28);
+        if (World.Quest > 0) {
+            bool needLiroy = (World.Quest > 1) && !World.LiroyKilled;
+            Out.WriteLine(World.QuestKills > 0
+                ? TxtShowCharacter_27 + World.QuestKills + (needLiroy ? TxtShowCharacter_31 : TxtShowCharacter_28)
+                : needLiroy ? TxtShowCharacter_32 : TxtShowCharacter_33);
         }
 
         if (World.DuncanQuest != 0) {
@@ -2494,6 +2495,7 @@ public static class Game {
         int QuestKills,
         bool Door,
         bool OldElf,
+        bool LiroyKilled,
         int DuncanQuest,
         Dictionary<string, int> Monsters);
 
@@ -2567,17 +2569,13 @@ public static class Game {
                 Skills.Values[TSkill.Comparing], Skills.Values[TSkill.Cooking],
                 Skills.Values[TSkill.Returning]),
             new SaveSession(Session.Room, Session.CheckpointStage, Session.SavedFlag),
-            new SaveWorld(World.Quest, World.QuestKills, World.Door, World.OldElf,
+            new SaveWorld(World.Quest, World.QuestKills, World.Door, World.OldElf, World.LiroyKilled,
                 World.DuncanQuest, SaveMonsters()));
         File.WriteAllText(SaveFileName(), JsonSerializer.Serialize(save, SaveFormat));
     }
 
     public static void Death() {
         WriteLines([.. TxtDeathLines1.Skip(1)]);
-        if (World.Quest > 0) {
-            World.QuestKills = QuestOffers[World.Quest].kills;
-        }
-
         Player.Energy = Player.MaxEnergy;
         Player.Experience = (Player.Experience - (250 - Roll(50) + (5 * Player.Level))).Clamp(0, MaxInt);
         MoveTo(RoomCityCentre);
@@ -3450,6 +3448,7 @@ public static class Game {
         World.QuestKills = save.World.QuestKills;
         World.Door = save.World.Door;
         World.OldElf = save.World.OldElf;
+        World.LiroyKilled = save.World.LiroyKilled;
         World.DuncanQuest = save.World.DuncanQuest;
         LoadMonsters(save.World.Monsters);
         Out.WriteLine(TxtLoadCharacter_01 + Gear.WornGarment);

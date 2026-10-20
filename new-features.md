@@ -43,3 +43,12 @@
 - handing the diploma over frees a bag slot
 - Staruch checks the return scroll before the trade
 - command history: up/down arrows scroll previously typed lines
+- Questmaster quests reworked
+  - `ZACZNIJ QUEST 1/2/3` starts a quest; `ZAKONCZ QUEST` hands it in
+  - quests are free: no money price, no practice cost for the hard one
+  - quest 2 and 3 need 50 kills including LIROY; the 150-kill LIROY
+    "bounty" bug is gone and every kill counts one
+  - LIROY must have been killed to hand in quest 2 or 3
+  - dying no longer resets quest progress
+  - the quest master comments when there is nothing to finish or the
+    job is not done

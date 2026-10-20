@@ -254,7 +254,6 @@ public static class Rooms {
                 Bag.Count -= 1;
                 Player.Stats[TStat.Wisdom]--;
                 Bag.Items[TBagItem.Pipe] += ItemUnit;
-                Player.Practice -= 1;
                 break;
         }
     }
@@ -1288,23 +1287,33 @@ public static class Rooms {
                     }
                     for (int i = 1; i < QuestOffers.Count; i++) {
                         TQuestOffer q = QuestOffers[i];
-                        BuyQuest(q.cmd, q.line, q.quest, q.kills, q.price);
+                        StartQuest(q.cmd, q.line, q.quest, q.kills);
                     }
-                    if ((Verb == CmdSprzedaj && Rest == CmdQuest) && (World.Quest > 0)) {
+                    if (Verb == CmdZakoncz && Rest == CmdQuest) {
+                        if (World.Quest == 0) {
+                            Out.WriteLine(TxtRoom100_18);
+                        }
+
                         switch (World.Quest) {
                             case 1:
                                 if (World.QuestKills < 1) {
                                     GrantQuestReward(1, 100);
+                                } else {
+                                    Out.WriteLine(TxtRoom100_19);
                                 }
                                 break;
                             case 2:
-                                if ((World.QuestKills < 1) && (Bag.Items[TBagItem.Diploma] <= -ItemUnit)) {
+                                if ((World.QuestKills < 1) && World.LiroyKilled && (Bag.Items[TBagItem.Diploma] <= -ItemUnit)) {
                                     GrantQuestReward(2, 250);
+                                } else {
+                                    Out.WriteLine(TxtRoom100_19);
                                 }
                                 break;
                             case 3:
-                                if ((World.QuestKills < 1) && (Bag.Items[TBagItem.Pipe] <= -ItemUnit) && (Player.Practice > 0)) {
+                                if ((World.QuestKills < 1) && World.LiroyKilled && (Bag.Items[TBagItem.Pipe] <= -ItemUnit)) {
                                     GrantQuestReward(3, 425);
+                                } else {
+                                    Out.WriteLine(TxtRoom100_19);
                                 }
                                 break;
                         }

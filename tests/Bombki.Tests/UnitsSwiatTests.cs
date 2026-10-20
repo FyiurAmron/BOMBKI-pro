@@ -33,6 +33,7 @@ public class UnitsSwiatTests {
         Bag.Count = 0;
         World.Quest = 0;
         World.QuestKills = 0;
+        World.LiroyKilled = false;
         Player.Money = 0;
         Bag.Permit = 0;
         Bag.Items[TBagItem.Diploma] = 0;
@@ -199,10 +200,10 @@ public class UnitsSwiatTests {
         RoomSetup();
         Player.Money = 10000;
         Bag.Permit = 0;
-        PokojAt("EXIT|LISTA|ZABIJ QUEST-MASTER|KUP LATWY QUEST|WYJSCIE", 100);
+        PokojAt("EXIT|LISTA|ZABIJ QUEST-MASTER|ZACZNIJ QUEST 1|WYJSCIE", 100);
         Assert.Equal(1, World.Quest);
         Assert.Equal(75, World.QuestKills);
-        Assert.Equal(9800, Player.Money);
+        Assert.Equal(10000, Player.Money);
         Assert.Equal(-10, Bag.Permit);
     }
 
@@ -224,23 +225,59 @@ public class UnitsSwiatTests {
     }
 
     [Fact]
-    public void Pokoj100QuestPrices() {
+    public void Pokoj100QuestStart() {
         RoomSetup();
         Player.Money = 10000;
-        PokojAt("KUP PRZECIETNY QUEST|KUP TRUDNY QUEST|WYJSCIE", 100);
-        Assert.Equal(3, World.Quest);
-        Assert.Equal(200, World.QuestKills);
-        Assert.Equal(9850, Player.Money);
+        PokojAt("ZACZNIJ QUEST 2|ZACZNIJ QUEST 3|WYJSCIE", 100);
+        Assert.Equal(2, World.Quest);
+        Assert.Equal(50, World.QuestKills);
+        Assert.Equal(10000, Player.Money);
     }
 
     [Fact]
-    public void Pokoj100SellEasy() {
+    public void Pokoj100QuestStartHard() {
+        RoomSetup();
+        PokojAt("ZACZNIJ QUEST 3|WYJSCIE", 100);
+        Assert.Equal(3, World.Quest);
+        Assert.Equal(50, World.QuestKills);
+    }
+
+    [Fact]
+    public void Pokoj100QuestStartCountsDeadLiroy() {
+        RoomSetup();
+        World.Monsters[TMonster.Liroy] = 0;
+        PokojAt("ZACZNIJ QUEST 2|WYJSCIE", 100);
+        Assert.True(World.LiroyKilled);
+    }
+
+    [Fact]
+    public void Pokoj100QuestStartRequiresLiveLiroy() {
+        RoomSetup();
+        World.Monsters[TMonster.Liroy] = Rooms.RoomStage1;
+        World.LiroyKilled = true;
+        PokojAt("ZACZNIJ QUEST 3|WYJSCIE", 100);
+        Assert.False(World.LiroyKilled);
+    }
+
+    [Fact]
+    public void Pokoj100FinishNoQuest() {
+        RoomSetup();
+        Bag.Permit = 0;
+        Player.Experience = 100;
+        PokojAt("ZAKONCZ QUEST|WYJSCIE", 100);
+        Assert.Equal(0, World.Quest);
+        Assert.Equal(100, Player.Experience);
+        Assert.Equal(0, Bag.Permit);
+    }
+
+    [Fact]
+    public void Pokoj100FinishEasy() {
         RoomSetup();
         World.Quest = 1;
         World.QuestKills = 0;
         Bag.Permit = 0;
         Player.Experience = 100;
-        PokojAt("SPRZEDAJ QUEST|WYJSCIE", 100);
+        PokojAt("ZAKONCZ QUEST|WYJSCIE", 100);
         Assert.Equal(0, World.Quest);
         Assert.Equal(0, World.QuestKills);
         Assert.Equal(-10, Bag.Permit);
@@ -249,16 +286,17 @@ public class UnitsSwiatTests {
     }
 
     [Fact]
-    public void Pokoj100SellMedium() {
+    public void Pokoj100FinishMedium() {
         RoomSetup();
         World.Quest = 2;
         World.QuestKills = 0;
+        World.LiroyKilled = true;
         Bag.Items[TBagItem.Diploma] = -10;
         Player.MaxEnergy = 50;
         Bag.Permit = 0;
         Player.Experience = 100;
         Bag.Count = 1;
-        PokojAt("SPRZEDAJ QUEST|WYJSCIE", 100);
+        PokojAt("ZAKONCZ QUEST|WYJSCIE", 100);
         Assert.Equal(0, World.Quest);
         Assert.Equal(0, Bag.Items[TBagItem.Diploma]);
         Assert.Equal(45, Player.MaxEnergy);
@@ -268,24 +306,53 @@ public class UnitsSwiatTests {
     }
 
     [Fact]
-    public void Pokoj100SellHard() {
+    public void Pokoj100FinishNeedsLiroy() {
+        RoomSetup();
+        World.Quest = 2;
+        World.QuestKills = 0;
+        World.LiroyKilled = false;
+        Bag.Items[TBagItem.Diploma] = -10;
+        Bag.Permit = 0;
+        Player.Experience = 100;
+        PokojAt("ZAKONCZ QUEST|WYJSCIE", 100);
+        Assert.Equal(2, World.Quest);
+        Assert.Equal(100, Player.Experience);
+        Assert.Equal(0, Bag.Permit);
+    }
+
+    [Fact]
+    public void Pokoj100FinishHard() {
         RoomSetup();
         World.Quest = 3;
         World.QuestKills = 0;
+        World.LiroyKilled = true;
         Bag.Items[TBagItem.Pipe] = -10;
         Player.Practice = 1;
         Bag.Permit = 0;
         Player.Experience = 100;
         Bag.Count = 0;
         Player.Stats[TStat.Wisdom] = 5;
-        PokojAt("SPRZEDAJ QUEST|WYJSCIE", 100);
+        PokojAt("ZAKONCZ QUEST|WYJSCIE", 100);
         Assert.Equal(0, World.Quest);
         Assert.Equal(0, Bag.Items[TBagItem.Pipe]);
-        Assert.Equal(0, Player.Practice);
+        Assert.Equal(1, Player.Practice);
         Assert.Equal(-10, Bag.Permit);
         Assert.Equal(525, Player.Experience);
         Assert.Equal(-1, Bag.Count);
         Assert.Equal(4, Player.Stats[TStat.Wisdom]);
+    }
+
+    [Fact]
+    public void LiroyKillCountsOnce() {
+        RoomSetup();
+        World.Quest = 2;
+        World.QuestKills = 50;
+        Session.Room = Rooms.RoomStage1;
+        World.Monsters[TMonster.Liroy] = Rooms.RoomStage1;
+        PokojAt("ZABIJ LIROY|WYJSCIE", Rooms.RoomStage1);
+        Assert.Equal(49, World.QuestKills);
+        Assert.True(World.LiroyKilled);
+        Assert.Equal(0, World.Monsters[TMonster.Liroy]);
     }
 
     [Fact]
