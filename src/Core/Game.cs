@@ -400,7 +400,7 @@ public static class Game {
     }
 
     public static void TryLoot(TBagItem item, int threshold, string foundMsg) {
-        if ((Bag.Items[item] == 0) && (Bag.ItemRooms[item] == Rooms.RoomAny)) {
+        if (Bag.ItemRooms[item] == Rooms.RoomAny) {
             Combat.Roll = Roll(20);
             if (Combat.Roll < threshold) {
                 Bag.ItemRooms[item] = Session.Room;
@@ -813,18 +813,17 @@ public static class Game {
             if (AntDoughnut) {
                 if (Verb == CmdZabij && Rest == CmdMrowka) {
                     Combat.Roll = Roll(10);
-                    if ((Combat.Roll < 7) && (Bag.Items[TBagItem.Doughnut] == 0)) {
+                    if (Combat.Roll < 7) {
                         Out.WriteLine(TxtShared_08 + TxtCompositeFight_02);
-                        Bag.Items[TBagItem.Doughnut] = 1;
+                        Bag.Items[TBagItem.Doughnut] += 1;
                         Bag.Count += 1;
                     }
                 }
-            } else if ((HeartChance > 0) && (Bag.Items[TBagItem.Heart] == 0) &&
-                (Bag.ItemRooms[TBagItem.Heart] == Rooms.RoomAny)) {
+            } else if ((HeartChance > 0) && (Bag.ItemRooms[TBagItem.Heart] == Rooms.RoomAny)) {
                 Combat.Roll = Roll(20);
-                if ((Combat.Roll < HeartChance) && (Bag.Items[TBagItem.Heart] == 0)) {
+                if (Combat.Roll < HeartChance) {
                     Out.WriteLine(TxtShared_08 + TxtCompositeFight_03);
-                    Bag.Items[TBagItem.Heart] = 1;
+                    Bag.Items[TBagItem.Heart] += 1;
                     Bag.Count += 1;
                 }
             }
@@ -2375,7 +2374,7 @@ public static class Game {
             Fight(TFoe.VeryEasyEnemy);
             World.Monsters[TMonster.Sweeper] = 0;
             Combat.Roll = Roll(100);
-            if ((Combat.Roll < 35) && (Bag.Items[TBagItem.Tracksuit] == 0)) {
+            if (Combat.Roll < 35) {
                 Out.WriteLine(TxtKillSweeper_01);
                 Bag.Items[TBagItem.Tracksuit] += 1;
                 Bag.Count += 1;
@@ -2580,19 +2579,18 @@ public static class Game {
         public TBagItem item;
         public int buyPrice, buyGate = -1, sellPrice;
         public int armor, dexterity, maxEnergy, maxMana, wisdom;
-        public bool unique;
         public string buyName = "", buyLine = "";
         public List<string> sellLines = [];
     }
 
     public static readonly List<TShopOffer> ShopOffers = [
-        new() { item = TBagItem.OldSword, buyPrice = 70, unique = true, buyName = TxtBuyOldSword_01,
+        new() { item = TBagItem.OldSword, buyPrice = 70, buyName = TxtBuyOldSword_01,
             sellPrice = 30, sellLines = [TxtSellOldSword_01, TxtSellOldSword_02], },
-        new() { item = TBagItem.SmallShield, buyPrice = 15, unique = true, buyName = TxtBuySmallShield_01,
+        new() { item = TBagItem.SmallShield, buyPrice = 15, buyName = TxtBuySmallShield_01,
             sellPrice = 8, sellLines = [TxtSellSmallShield_01], },
-        new() { item = TBagItem.Pipe, buyPrice = 480, unique = true, buyName = TxtTakeDrop_05, wisdom = 1,
+        new() { item = TBagItem.Pipe, buyPrice = 480, buyName = TxtTakeDrop_05, wisdom = 1,
             sellPrice = 120, sellLines = [$"{TxtSellVerb}{TxtSellPipe_01}"], },
-        new() { item = TBagItem.Tracksuit, buyPrice = 35, unique = true, buyName = TxtBuyTracksuit_01,
+        new() { item = TBagItem.Tracksuit, buyPrice = 35, buyName = TxtBuyTracksuit_01,
             sellPrice = 15, sellLines = [$"{TxtSellVerb}{TxtSellTracksuit_01}"], },
         new() { item = TBagItem.Cassette, buyPrice = 1999, buyName = TxtBuyCassette_01,
             sellPrice = 1000, armor = -8, dexterity = 1, maxEnergy = 5,
@@ -2628,7 +2626,6 @@ public static class Game {
     public static bool Buy(TBagItem item) {
         TShopOffer? offer = ShopOffer(item);
         if ((offer is null)
-            || (offer.unique && ((Bag.Items[item] > 0) || IsEquipped(item)))
             || (Player.Money < (offer.buyGate >= 0 ? offer.buyGate : offer.buyPrice))) {
             return false;
         }
@@ -2729,26 +2726,23 @@ public static class Game {
     }
 
     public class TShopStock {
-        public TBagItem item;
         public List<string> lines = ["", "", "", ""];
     }
 
     public static readonly List<TShopStock> ArmouryStock = [null!,
-        new() { item = TBagItem.OldSword, lines = [ "", TxtArmouryShop_01, "", "" ] },
-        new() { item = TBagItem.SmallShield, lines = [ "", TxtArmouryShop_02, "", "" ] },
+        new() { lines = [ "", TxtArmouryShop_01, "", "" ] },
+        new() { lines = [ "", TxtArmouryShop_02, "", "" ] },
     ];
 
     public static readonly List<TShopStock> GeneralStoreStock = [null!,
-        new() { item = TBagItem.Pipe, lines = [ "", TxtGeneralStoreShop_02, "", "" ] },
-        new() { item = TBagItem.Tracksuit, lines = [ "", TxtGeneralStoreShop_03, TxtGeneralStoreShop_04, TxtGeneralStoreShop_05 ] },
+        new() { lines = [ "", TxtGeneralStoreShop_02, "", "" ] },
+        new() { lines = [ "", TxtGeneralStoreShop_03, TxtGeneralStoreShop_04, TxtGeneralStoreShop_05 ] },
     ];
 
-    public static void ShowStock(TBagItem item, List<string> lines) {
-        if ((Bag.Items[item] == 0) && !IsEquipped(item)) {
-            for (int si = 0; si < lines.Count; si++) {
-                if (lines[si] != "") {
-                    Out.WriteLine(lines[si]);
-                }
+    public static void ShowStock(List<string> lines) {
+        for (int si = 0; si < lines.Count; si++) {
+            if (lines[si] != "") {
+                Out.WriteLine(lines[si]);
             }
         }
     }
@@ -2757,7 +2751,7 @@ public static class Game {
         if (Verb == CmdLista) {
             Out.WriteLine(TxtShared_24);
             for (int si2 = 1; si2 < ArmouryStock.Count; si2++) {
-                ShowStock(ArmouryStock[si2].item, [.. ArmouryStock[si2].lines.Skip(1)]);
+                ShowStock([.. ArmouryStock[si2].lines.Skip(1)]);
             }
 
             Out.WriteLine(TxtArmouryShop_03);
@@ -2770,7 +2764,7 @@ public static class Game {
         if (Verb == CmdLista) {
             Out.WriteLine(TxtGeneralStoreShop_01);
             for (int si2 = 1; si2 < GeneralStoreStock.Count; si2++) {
-                ShowStock(GeneralStoreStock[si2].item, [.. GeneralStoreStock[si2].lines.Skip(1)]);
+                ShowStock([.. GeneralStoreStock[si2].lines.Skip(1)]);
             }
         }
         RunShopRules(GeneralStoreRules);
@@ -2813,10 +2807,11 @@ public static class Game {
                 World.Monsters[monster] = 0;
                 if (bonus == TConcertBonus.cbPipe) {
                     Combat.Roll = Roll(100);
-                    if ((Combat.Roll < 5) && (Bag.Items[TBagItem.Pipe] == 0)) {
+                    if (Combat.Roll < 5) {
                         Out.WriteLine(TxtShared_08 + TxtConcertFights_01);
                         Out.WriteLine(TxtConcertFights_02);
                         Bag.Items[TBagItem.Pipe] += 1;
+                        Bag.Count += 1;
                         Player.Stats[TStat.Wisdom]++;
                     }
                 }

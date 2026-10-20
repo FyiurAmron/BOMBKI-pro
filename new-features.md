@@ -60,3 +60,5 @@
 - items can no longer be sold without owning one
 - equipped items can no longer be sold or dropped
 - equipped items no longer count for carry
+- can buy already owned items now
+- can have loot drops of already carried items now

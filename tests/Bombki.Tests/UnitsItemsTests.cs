@@ -136,6 +136,19 @@ public class UnitsItemsTests {
     }
 
     [Fact]
+    public void LootDropsWhenTheItemIsAlreadyCarried() {
+        Bag.Items[TBagItem.OldSword] = 1;
+        Bag.Count = 1;
+        Bag.ItemRooms[TBagItem.OldSword] = Rooms.RoomAny;
+        Session.Room = 7;
+        TryLoot(TBagItem.OldSword, 100, "");
+        Assert.Equal(7, Bag.ItemRooms[TBagItem.OldSword]);
+        Bag.Items[TBagItem.OldSword] = 0;
+        Bag.Count = 0;
+        Bag.ItemRooms[TBagItem.OldSword] = Rooms.RoomAny;
+    }
+
+    [Fact]
     public void BranieIgnoresMissingSword() {
         Session.OuterRoom = 7;
         Bag.Items[TBagItem.OldSword] = 0;
@@ -842,25 +855,25 @@ public class UnitsItemsTests {
     }
 
     [Fact]
-    public void KupnoMieczaWymagaBrakuMiecza() {
+    public void KupnoMieczaDzialaPrzyPosiadanym() {
         Bag.Items[TBagItem.OldSword] = 1;
         Bag.Count = 1;
         Gear.Values[TGearItem.WeaponKind] = 0;
         Player.Stats[TStat.Strength] = 0;
         Gear.Values[TGearItem.LuckRoll] = 0;
-        Player.Money = 100;
+        Player.Money = 200;
         Assert.True(Equip(TBagItem.OldSword));
-        Assert.False(Buy(TBagItem.OldSword));
-        Assert.Equal(100, Player.Money);
-        Assert.True(Unequip(TBagItem.OldSword));
-        Assert.False(Buy(TBagItem.OldSword));
-        Assert.Equal(100, Player.Money);
-        Bag.Items[TBagItem.OldSword] = 0;
-        Bag.Count = 0;
         Assert.True(Buy(TBagItem.OldSword));
-        Assert.Equal(30, Player.Money);
+        Assert.Equal(130, Player.Money);
         Assert.Equal(1, Bag.Items[TBagItem.OldSword]);
         Assert.Equal(1, Bag.Count);
+        Assert.True(Buy(TBagItem.OldSword));
+        Assert.Equal(60, Player.Money);
+        Assert.Equal(2, Bag.Items[TBagItem.OldSword]);
+        Assert.Equal(2, Bag.Count);
+        Assert.True(Unequip(TBagItem.OldSword));
+        Assert.Equal(3, Bag.Items[TBagItem.OldSword]);
+        Assert.Equal(3, Bag.Count);
     }
 
     [Fact]
