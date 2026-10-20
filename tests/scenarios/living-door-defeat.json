@@ -70,8 +70,13 @@
       "send": "DAWAJ EN"
     },
     {
-      "label": "back at the living door, try the blocked way",
+      "label": "energy 650",
       "expect": "[0-9]+%\\.-?[0-9]+>",
+      "send": "EXIT"
+    },
+    {
+      "label": "living door exit names",
+      "expect": "Dostępne\\ WYJŚCIA:[\\s\\S]*?WSCHÓD:\\ Podejrzane\\ krzaki[\\s\\S]*?ZACHÓD:\\ Domek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -86,7 +91,7 @@
     },
     {
       "label": "with the doors down the way west is open",
-      "expect": "ZACHÓD: wejście\\ do\\ domku[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "ZACHÓD: Domek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {

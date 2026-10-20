@@ -51,7 +51,7 @@
     },
     {
       "label": "room 30 exits -> 31",
-      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "WSCHÓD: Centrum\\ miasta[\\s\\S]*?ZACHÓD: Ul\\.\\ Długa\\ 2[\\s\\S]*?PÓŁNOC: Wejście\\ na\\ arenę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -61,7 +61,7 @@
     },
     {
       "label": "room 31 exits -> 30",
-      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "WSCHÓD: Ul\\.\\ Długa[\\s\\S]*?PÓŁNOC: Dolina\\ rozrywek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
@@ -71,7 +71,7 @@
     },
     {
       "label": "room 30 exits -> 32",
-      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "WSCHÓD: Centrum\\ miasta[\\s\\S]*?ZACHÓD: Ul\\.\\ Długa\\ 2[\\s\\S]*?PÓŁNOC: Wejście\\ na\\ arenę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -81,7 +81,7 @@
     },
     {
       "label": "room 32 exits -> 30",
-      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "POŁUDNIE: Ul\\.\\ Długa[\\s\\S]*?PÓŁNOC: Arena\\ 1[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
@@ -91,7 +91,7 @@
     },
     {
       "label": "room 30 exits -> 31",
-      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "WSCHÓD: Centrum\\ miasta[\\s\\S]*?ZACHÓD: Ul\\.\\ Długa\\ 2[\\s\\S]*?PÓŁNOC: Wejście\\ na\\ arenę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -101,7 +101,7 @@
     },
     {
       "label": "room 31 exits -> 60",
-      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "WSCHÓD: Ul\\.\\ Długa[\\s\\S]*?PÓŁNOC: Dolina\\ rozrywek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -111,7 +111,7 @@
     },
     {
       "label": "room 60 exits -> 61",
-      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "POŁUDNIE: Ul\\.\\ Długa[\\s\\S]*?WSCHÓD: Tłum\\ 1[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
@@ -126,7 +126,7 @@
     },
     {
       "label": "room 61 exits -> 62",
-      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "ZACHÓD: Dolina\\ rozrywek[\\s\\S]*?PÓŁNOC: Tłum\\ 3[\\s\\S]*?POŁUDNIE: Tłum\\ 2[\\s\\S]*?WSCHÓD: Tłum\\ 4[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
@@ -226,7 +226,7 @@
     },
     {
       "label": "room 67 exits -> 68",
-      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "POŁUDNIE: Tłum\\ 3[\\s\\S]*?WSCHÓD: Wejście\\ na\\ scenę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
@@ -241,7 +241,7 @@
     },
     {
       "label": "room 68 exits -> 69",
-      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "ZACHÓD: Piwiarnia[\\s\\S]*?WSCHÓD: Za\\ Kulisami[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
@@ -251,7 +251,7 @@
     },
     {
       "label": "room 69 exits -> 70",
-      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "ZACHÓD: Wejście\\ na\\ scenę[\\s\\S]*?POŁUDNIE: Scena\\ 1[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {

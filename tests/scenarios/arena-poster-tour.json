@@ -60,9 +60,24 @@
       "send": "PATRZ PLAKAT"
     },
     {
+      "label": "room 32 poster",
+      "expect": "Na\\ plakacie\\ pisze[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "send": "EXIT"
+    },
+    {
       "label": "room 32 exits",
+      "expect": "POŁUDNIE:\\ Ul\\.\\ Długa[\\s\\S]*?PÓŁNOC:\\ Arena\\ 1[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "POLNOC"
+    },
+    {
+      "label": "room 33 exits",
       "expect": "[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "EXIT"
+    },
+    {
+      "label": "room 33 names the maze exits",
+      "expect": "POŁUDNIE:\\ Wejście\\ na\\ arenę[\\s\\S]*?PÓŁNOC:\\ Arena\\ 2[\\s\\S]*?WSCHÓD:\\ Arena\\ 3[\\s\\S]*?ZACHÓD:\\ Arena\\ 4[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "WYJSCIE"
     }
   ]
 }

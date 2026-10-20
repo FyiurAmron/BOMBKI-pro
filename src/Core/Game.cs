@@ -153,6 +153,8 @@ public static class Game {
     public class TMovement {
         public string cmd = "";
         public int dest;
+        public Func<bool>? predicate = null;
+        public string? blocked = null;
     }
 
     public class TBand {
@@ -366,18 +368,12 @@ public static class Game {
         new(TBagItem.Pipe, TxtStart_11),
     ];
 
-    public static void WriteExits(List<string> items) {
-        Out.WriteLine(items[0]);
-        for (int i = 1; i <= (items.Count - 1) / 2; i++) {
-            Out.Write(items[2 * i - 1]);
-            Out.WriteLine(items[2 * i]);
-        }
-    }
-
-    public static TMovement Go(string cmd, int dest) {
+    public static TMovement Go(string cmd, int dest, Func<bool>? predicate = null, string? blocked = null) {
         TMovement result = new() {
             cmd = cmd,
             dest = dest,
+            predicate = predicate,
+            blocked = blocked,
         };
         return result;
     }
@@ -399,9 +395,17 @@ public static class Game {
 
     public static void MoveWhen(List<TMovement> moves) {
         for (int i = 0; i < moves.Count; i++) {
-            if (Matches(moves[i].cmd)) {
-                MoveTo(moves[i].dest);
+            if (!Matches(moves[i].cmd)) {
+                continue;
             }
+            if (moves[i].predicate?.Invoke() == false) {
+                string? blocked = moves[i].blocked;
+                if (blocked != null) {
+                    Out.WriteLine(blocked);
+                }
+                continue;
+            }
+            MoveTo(moves[i].dest);
         }
     }
 

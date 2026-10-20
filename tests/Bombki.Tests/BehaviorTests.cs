@@ -68,6 +68,7 @@ public class BehaviorTests {
         "cave-boss-death",
         "checkpoint-826",
         "command-history",
+        "exit-target-names",
         "concert-barricade",
         "concert-crowd",
         "concert-dispatch",

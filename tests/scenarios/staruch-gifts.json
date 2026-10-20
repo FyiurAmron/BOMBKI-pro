@@ -156,7 +156,7 @@
     },
     {
       "label": "city centre exits",
-      "expect": "Dostępne\\ WYJŚCIA[\\s\\S]*?POŁUDNIE:\\ Pokój\\ centralny[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCIA[\\s\\S]*?POŁUDNIE:\\ Salon[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "WYJSCIE"
     },
     {

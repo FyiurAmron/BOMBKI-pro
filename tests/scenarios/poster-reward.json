@@ -56,7 +56,7 @@
     },
     {
       "label": "poster room exits",
-      "expect": "GÓRA: Klatki\\ pełne\\ gajdy[\\s\\S]*?DÓŁ: Teleport!!![\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "GÓRA: Wejścia\\ do\\ klatek[\\s\\S]*?DÓŁ: Teleport!!![\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "DOL"
     },
     {

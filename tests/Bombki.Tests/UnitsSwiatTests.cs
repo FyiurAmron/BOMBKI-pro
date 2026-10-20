@@ -199,6 +199,21 @@ public class UnitsSwiatTests {
     }
 
     [Fact]
+    public void RoomNamesCoverConnectivity() {
+        var rooms = Rooms.RoomDefs;
+        Assert.All(rooms, room => Assert.False(string.IsNullOrWhiteSpace(room.name), $"room {room.number} has no name"));
+        Assert.Equal(rooms.Count, rooms.Select(room => room.name).Distinct().Count());
+        Assert.All(rooms, room => Assert.All(room.moves,
+            move => Assert.Contains(rooms, target => target.number == move.dest)));
+        List<int> mazeTargets = [
+            .. MazeMoves
+                .Skip(1)
+                .SelectMany(maze => Enum.GetValues<TMazeDir>().Select(dir => maze.dest[dir])),
+        ];
+        Assert.All(mazeTargets, target => Assert.Contains(rooms, room => room.number == target));
+    }
+
+    [Fact]
     public void Pokoj100QuestMaster() {
         RoomSetup();
         Player.Money = 10000;

@@ -1203,7 +1203,7 @@
     },
     {
       "label": "meditation room exits",
-      "expect": "Dostępne\\ WYJŚCIA:[\\s\\S]*?GÓRA:\\ Pokój\\ centralny[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCIA:[\\s\\S]*?GÓRA:\\ Salon[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "WYJSCIE"
     },
     {

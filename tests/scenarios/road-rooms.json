@@ -71,7 +71,7 @@
     },
     {
       "label": "forest exit list",
-      "expect": "Dostępne\\ WYJŚCIA[\\s\\S]*?POŁUDNIE:\\ droga[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCIA[\\s\\S]*?POŁUDNIE:\\ droga\\ 1[\\s\\S]*?[0-9]+%\\.-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {

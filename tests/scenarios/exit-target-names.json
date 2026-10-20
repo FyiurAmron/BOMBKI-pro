@@ -1,0 +1,158 @@
+{
+  "steps": [
+    {
+      "label": "intro prompt",
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
+    },
+    {
+      "label": "player-name prompt",
+      "expect": "A\\ twoje\\ imię\\ to",
+      "send": "TESTER"
+    },
+    {
+      "label": "race prompt",
+      "expect": "Napisz\\ swą\\ rasę",
+      "send": "POL-ELF"
+    },
+    {
+      "label": "start exit names",
+      "expect": "Tu\\ zaczyna\\ się\\ grę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "EXIT"
+    },
+    {
+      "label": "start north points at the salon",
+      "expect": "Dostępne\\ WYJŚCIA:[\\s\\S]*?PÓŁNOC:\\ Salon[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "POLNOC"
+    },
+    {
+      "label": "salon exit names",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "EXIT"
+    },
+    {
+      "label": "salon lists all target names",
+      "expect": "POŁUDNIE:\\ Tam\\ gdzie\\ zaczynasz\\ grę[\\s\\S]*?WSCHÓD:\\ Pokój\\ treningowy\\ \\(1\\)[\\s\\S]*?DÓŁ:\\ Poddziemny\\ pokój\\ treningowy\\ \\(2\\)[\\s\\S]*?ZACHÓD:\\ Szkoła\\ Życia[\\s\\S]*?PÓŁNOC:\\ Centrum\\ miasta[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "POLNOC"
+    },
+    {
+      "label": "city centre exits",
+      "expect": "Jesteś\\ w\\ centrum\\ miasta[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "EXIT"
+    },
+    {
+      "label": "city centre names streets and salon",
+      "expect": "POŁUDNIE:\\ Salon[\\s\\S]*?PÓŁNOC:\\ Ul\\.\\ Sklepikowa\\ 1[\\s\\S]*?ZACHÓD:\\ Ul\\.\\ Długa[\\s\\S]*?WSCHÓD:\\ Ul\\.\\ Ciemna[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "POLNOC"
+    },
+    {
+      "label": "shop street exists",
+      "expect": "Jesteś\\ na\\ ulicy\\ na\\ ulicy\\ Sklepikowej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "EXIT"
+    },
+    {
+      "label": "shop street names its neighbours",
+      "expect": "POŁUDNIE:\\ Centrum\\ miasta[\\s\\S]*?PÓŁNOC:\\ Ul\\.\\ Sklepikowa\\ 2[\\s\\S]*?WSCHÓD:\\ Piekarnia[\\s\\S]*?ZACHÓD:\\ Zbrojownia[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "POLNOC"
+    },
+    {
+      "label": "second shop street exists",
+      "expect": "Ciągnie\\ się\\ tędy\\ ulica\\ Sklepikowa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "EXIT"
+    },
+    {
+      "label": "second shop street names its neighbours",
+      "expect": "POŁUDNIE:\\ Ul\\.\\ Sklepikowa\\ 1[\\s\\S]*?WSCHÓD:\\ Sklep\\ wielobranżowy[\\s\\S]*?ZACHÓD:\\ Sklep\\ magiczny[\\s\\S]*?PÓŁNOC:\\ Rozjazd![\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "POLNOC"
+    },
+    {
+      "label": "quest master exits",
+      "expect": "Znalazłeś\\ się\\ na\\ rozjeździe\\ dróg[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "EXIT"
+    },
+    {
+      "label": "quest master names the roads",
+      "expect": "POŁUDNIE:\\ Ul\\.\\ Sklepikowa\\ 2[\\s\\S]*?WSCHÓD:\\ Droga\\ o\\ której\\ możesz\\ pomarzyć\\ \\(bo\\ jest\\ w\\ produkcji!!!\\)[\\s\\S]*?ZACHÓD:\\ droga\\ 1[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "WSCHOD"
+    },
+    {
+      "label": "future road",
+      "expect": "Ta\\ droga\\ jest\\ jeszcze\\ w\\ produkcji[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "EXIT"
+    },
+    {
+      "label": "future road returns to the crossroads",
+      "expect": "ZACHÓD: Rozjazd![\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "ZACHOD"
+    },
+    {
+      "label": "back at the quest master",
+      "expect": "Znalazłeś\\ się\\ na\\ rozjeździe\\ dróg[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "ZACHOD"
+    },
+    {
+      "label": "quest master blocks the road without a permit",
+      "expect": "QUEST-MASTER\\ mówi\\ ci:[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "POLUDNIE"
+    },
+    {
+      "label": "back on the shop street",
+      "expect": "Ciągnie\\ się\\ tędy\\ ulica\\ Sklepikowa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "POLUDNIE"
+    },
+    {
+      "label": "back on the first shop street",
+      "expect": "Jesteś\\ na\\ ulicy\\ na\\ ulicy\\ Sklepikowej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "POLUDNIE"
+    },
+    {
+      "label": "back in the city centre",
+      "expect": "Jesteś\\ w\\ centrum\\ miasta[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "POLUDNIE"
+    },
+    {
+      "label": "back in the salon",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "ZACHOD"
+    },
+    {
+      "label": "school hall exits",
+      "expect": "Jesteś\\ w\\ hallu\\ Szkoły\\ Życia[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "EXIT"
+    },
+    {
+      "label": "school hall names the orientation room",
+      "expect": "WSCHÓD:\\ Salon[\\s\\S]*?ZACHÓD:\\ Pokój\\ orientacyjny[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "ZACHOD"
+    },
+    {
+      "label": "orientation room exits",
+      "expect": "SZOK!!!\\ AAA\\ UPSI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "EXIT"
+    },
+    {
+      "label": "orientation room names all six ways",
+      "expect": "WSCHÓD:\\ Szkoła\\ Życia[\\s\\S]*?ZACHÓD:\\ Pokój\\ 1[\\s\\S]*?PÓŁNOC:\\ Pokój\\ 2[\\s\\S]*?POŁUDNIE:\\ Pokój\\ 3[\\s\\S]*?GÓRA:\\ Pokój\\ 4[\\s\\S]*?DÓŁ:\\ Pokój\\ 5[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "GORA"
+    },
+    {
+      "label": "landing exits",
+      "expect": "Jesteś\\ w\\ malutkim\\ pokoju[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "EXIT"
+    },
+    {
+      "label": "landing names the corridor and the orientation room",
+      "expect": "DÓŁ:\\ Pokój\\ orientacyjny[\\s\\S]*?GÓRA:\\ Wejścia\\ do\\ klatek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "GORA"
+    },
+    {
+      "label": "cage corridor exits",
+      "expect": "Jesteś\\ w\\ pokoju\\ prowadzącym\\ do\\ klatek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "EXIT"
+    },
+    {
+      "label": "cage corridor names every cage",
+      "expect": "WSCHÓD:\\ Klatka\\ cieniasa[\\s\\S]*?ZACHÓD:\\ Klatka\\ silnego[\\s\\S]*?PÓŁNOC:\\ Klatka\\ zręcznego[\\s\\S]*?POŁUDNIE:\\ Klatka\\ odpornego[\\s\\S]*?GÓRA:\\ Klatka\\ silnego,\\ odpornego\\ i\\ zręcznego[\\s\\S]*?DÓŁ:\\ Jedyna\\ droga\\ nie\\ prowadząca\\ do\\ klatek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "WYJSCIE"
+    }
+  ]
+}

@@ -39,6 +39,7 @@
   (could teleport you out-of-bounds and brick the game in vanilla)
 - better level-up banner
 - all rooms show their exit list
+- exit lists show the real target room name now
 - all rooms wired; no longer crashes after going into northern LAS
 - handing the diploma over frees a bag slot
 - Staruch checks the return scroll before the trade
