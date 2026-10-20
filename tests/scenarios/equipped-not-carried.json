@@ -1,0 +1,109 @@
+{
+  "steps": [
+    {
+      "label": "intro prompt",
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
+    },
+    {
+      "label": "player-name prompt",
+      "expect": "A\\ twoje\\ imię\\ to",
+      "send": "TESTER"
+    },
+    {
+      "label": "race prompt",
+      "expect": "Napisz\\ swą\\ rasę",
+      "send": "CZLOWIEK"
+    },
+    {
+      "label": "first room",
+      "expect": "Tu\\ zaczyna\\ się\\ grę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "POLNOC"
+    },
+    {
+      "label": "round salon",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "POLNOC"
+    },
+    {
+      "label": "city centre",
+      "expect": "Jesteś\\ w\\ centrum\\ miasta[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "POLNOC"
+    },
+    {
+      "label": "shopping street south",
+      "expect": "Jesteś\\ na\\ ulicy\\ na\\ ulicy\\ Sklepikowej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "ZACHOD"
+    },
+    {
+      "label": "armoury",
+      "expect": "Jesteś\\ w\\ zbrojowni[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "DAWAJ KASE"
+    },
+    {
+      "label": "ground prompt after the cheat",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
+      "send": "KUP STARY"
+    },
+    {
+      "label": "buy the sword",
+      "expect": "Kupujesz\\ Zwykły\\ mały[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "KUP MALA"
+    },
+    {
+      "label": "buy the shield",
+      "expect": "Kupujesz\\ !MAŁA!\\ Tarcza[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "JA"
+    },
+    {
+      "label": "sheet: both items are carried",
+      "expect": "W\\ sumie\\ masz\\ 2/10\\ przedmiotów"
+    },
+    {
+      "label": "sheet: money after buying both",
+      "expect": "Masz\\ 4915\\ MONET\\ i\\ 10\\ PRAKTYK",
+      "send": "UZYJ STARY"
+    },
+    {
+      "label": "sword equipped",
+      "expect": "STARY\\ zardzewiały\\ miecz\\ to\\ teraz\\ twoja\\ broń[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "JA"
+    },
+    {
+      "label": "sheet: the sword is no longer carried",
+      "expect": "W\\ sumie\\ masz\\ 1/10\\ przedmiotów"
+    },
+    {
+      "label": "sheet: money is unchanged by equipping",
+      "expect": "Masz\\ 4915\\ MONET\\ i\\ 10\\ PRAKTYK",
+      "send": "UZYJ MALA"
+    },
+    {
+      "label": "shield equipped",
+      "expect": "MAŁA\\ tarcza\\ to\\ teraz\\ twoja\\ tarcza[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "JA"
+    },
+    {
+      "label": "sheet: nothing is carried",
+      "expect": "W\\ sumie\\ masz\\ 0/10\\ przedmiotów"
+    },
+    {
+      "label": "sheet: money is unchanged by equipping the shield",
+      "expect": "Masz\\ 4915\\ MONET\\ i\\ 10\\ PRAKTYK",
+      "send": "ODLOZ STARY"
+    },
+    {
+      "label": "sword stowed",
+      "expect": "Chowasz\\ STARY\\ zardzewiały\\ miecz[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "JA"
+    },
+    {
+      "label": "sheet: the stowed sword is carried again",
+      "expect": "W\\ sumie\\ masz\\ 1/10\\ przedmiotów"
+    },
+    {
+      "label": "sheet: money is unchanged by unequipping",
+      "expect": "Masz\\ 4915\\ MONET\\ i\\ 10\\ PRAKTYK",
+      "send": "WYJSCIE"
+    }
+  ]
+}

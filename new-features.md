@@ -59,3 +59,4 @@
 - stacks are used, dropped and sold one unit at a time
 - items can no longer be sold without owning one
 - equipped items can no longer be sold or dropped
+- equipped items no longer count for carry

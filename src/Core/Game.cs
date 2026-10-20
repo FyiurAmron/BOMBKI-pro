@@ -1434,6 +1434,16 @@ public static class Game {
             _ => false,
         };
 
+    static void Uncarry(TBagItem item) {
+        Bag.Items[item] -= 1;
+        Bag.Count -= 1;
+    }
+
+    static void Carry(TBagItem item) {
+        Bag.Items[item] += 1;
+        Bag.Count += 1;
+    }
+
     public static void DropItem(string cmd, TBagItem item, string verb, string line, TTakeEffect effect) {
         if ((Matches(cmd)) && (Bag.Items[item] > 0) && !IsEquipped(item)) {
             Out.WriteLine(verb + line);
@@ -1458,11 +1468,13 @@ public static class Game {
 
         switch (item) {
             case TBagItem.OldSword:
+                Uncarry(item);
                 Gear.Values[TGearItem.WeaponKind] = 1;
                 Player.Stats[TStat.Strength] += 1;
                 Gear.Values[TGearItem.LuckRoll] += 3;
                 return true;
             case TBagItem.SmallShield:
+                Uncarry(item);
                 Gear.Values[TGearItem.ShieldKind] = 1;
                 Gear.Values[TGearItem.Armor] += 15;
                 Gear.Values[TGearItem.WornCount] += 1;
@@ -1472,6 +1484,7 @@ public static class Game {
                     return false;
                 }
 
+                Uncarry(item);
                 Gear.Values[TGearItem.Armor] += 7;
                 Gear.Values[TGearItem.Wearing] = 1;
                 Gear.WornGarment = TxtWornSyf;
@@ -1481,6 +1494,7 @@ public static class Game {
                     return false;
                 }
 
+                Uncarry(item);
                 Gear.Values[TGearItem.Wearing] = 1;
                 Gear.Values[TGearItem.WornCount] += 1;
                 Gear.Values[TGearItem.Armor] += 10;
@@ -1499,21 +1513,25 @@ public static class Game {
 
         switch (item) {
             case TBagItem.OldSword:
+                Carry(item);
                 Gear.Values[TGearItem.WeaponKind] = 0;
                 Player.Stats[TStat.Strength] -= 1;
                 Gear.Values[TGearItem.LuckRoll] -= 3;
                 return true;
             case TBagItem.SmallShield:
+                Carry(item);
                 Gear.Values[TGearItem.ShieldKind] = 0;
                 Gear.Values[TGearItem.Armor] -= 15;
                 Gear.Values[TGearItem.WornCount] -= 1;
                 return true;
             case TBagItem.Tracksuit:
+                Carry(item);
                 Gear.Values[TGearItem.Wearing] = 0;
                 Gear.Values[TGearItem.Armor] -= 7;
                 Gear.WornGarment = TxtEmpty;
                 return true;
             case TBagItem.SpikedSuit:
+                Carry(item);
                 Gear.Values[TGearItem.Wearing] = 0;
                 Gear.Values[TGearItem.WornCount] -= 1;
                 Gear.Values[TGearItem.Armor] -= 10;
@@ -2360,6 +2378,7 @@ public static class Game {
             if ((Combat.Roll < 35) && (Bag.Items[TBagItem.Tracksuit] == 0)) {
                 Out.WriteLine(TxtKillSweeper_01);
                 Bag.Items[TBagItem.Tracksuit] += 1;
+                Bag.Count += 1;
             }
         }
     }
@@ -2609,7 +2628,7 @@ public static class Game {
     public static bool Buy(TBagItem item) {
         TShopOffer? offer = ShopOffer(item);
         if ((offer is null)
-            || (offer.unique && (Bag.Items[item] > 0))
+            || (offer.unique && ((Bag.Items[item] > 0) || IsEquipped(item)))
             || (Player.Money < (offer.buyGate >= 0 ? offer.buyGate : offer.buyPrice))) {
             return false;
         }
@@ -2725,7 +2744,7 @@ public static class Game {
     ];
 
     public static void ShowStock(TBagItem item, List<string> lines) {
-        if (Bag.Items[item] == 0) {
+        if ((Bag.Items[item] == 0) && !IsEquipped(item)) {
             for (int si = 0; si < lines.Count; si++) {
                 if (lines[si] != "") {
                     Out.WriteLine(lines[si]);
@@ -2973,12 +2992,14 @@ public static class Game {
     }
 
     public static void CmdStrip() {
+        int carried = Bag.Items[TBagItem.OldSword] + Bag.Items[TBagItem.SmallShield];
         Gear.Values[TGearItem.Wearing] = 0;
         Gear.Values[TGearItem.WeaponKind] = 0;
         Gear.Values[TGearItem.ShieldKind] = 0;
         Gear.WornGarment = TxtEmpty;
         Bag.Items[TBagItem.OldSword] = 1;
         Bag.Items[TBagItem.SmallShield] = 1;
+        Bag.Count += 2 - carried;
         Player.Stats[TStat.Strength]--;
     }
 

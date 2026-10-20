@@ -17,6 +17,7 @@ public class BehaviorTests {
         "shop-item-display",
         "shop-repeat-buy",
         "shop-quirks",
+        "equipped-not-carried",
         "race-stats-czlowiek",
         "race-stats-olbrzym",
         "race-stats-nimfa",
