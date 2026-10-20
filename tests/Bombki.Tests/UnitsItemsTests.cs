@@ -1,4 +1,3 @@
-using System.Text.Json;
 using static Game;
 
 namespace Bombki.Tests;
@@ -521,28 +520,21 @@ public class UnitsItemsTests {
         Assert.Equal(1, Bag.Items[TBagItem.CompareScroll]);
     }
 
-    static void LoadSave(SaveData save) {
-        Player.Name = save.Name;
+    [Fact]
+    public void ZapisWczytujeLiczniki() {
+        Player.Name = "COUNTS";
+        Bag.Items[TBagItem.Beer] = 2;
+        Bag.Items[TBagItem.Diploma] = 0;
+        Bag.ItemRooms[TBagItem.Diploma] = 12;
         string path = SaveFileName();
-        File.WriteAllText(path, JsonSerializer.Serialize(save));
         try {
+            SaveCharacter();
+            Bag.Items[TBagItem.Beer] = 0;
+            Bag.ItemRooms[TBagItem.Diploma] = Rooms.RoomAny;
             LoadGame();
         } finally {
             File.Delete(path);
         }
-    }
-
-    [Fact]
-    public void ZapisWczytujeLiczniki() {
-        LoadSave(new(
-            "COUNTS",
-            new SavePlayer(1, 0, 50, 50, 100, 100, 0, 0,
-                new SaveStats(10, 10, 10, 15, 15, 15)),
-            new SaveBag(2, 10, 1, new() { ["Beer"] = 2 }, new() { ["Diploma"] = 12 }),
-            new SaveGear(0, 0, 0, 0, 0, 0, ""),
-            new SaveSkills(0, 0, 0, 0, 0, 0, 0, 0, 0),
-            new SaveSession(0, 0, false),
-            new SaveWorld(0, 0, false, false, false, 0, new())));
         Assert.Equal(2, Bag.Items[TBagItem.Beer]);
         Assert.Equal(0, Bag.Items[TBagItem.Diploma]);
         Assert.Equal(12, Bag.ItemRooms[TBagItem.Diploma]);

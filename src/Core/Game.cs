@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using static Texts;
 using static Rooms;
 
@@ -109,6 +110,7 @@ public static class Game {
         public int CheckpointStage;
         public bool SavedFlag;
         public int SleepHours, Overall;
+        [JsonIgnore]
         public bool ExitRequested;
     }
 
@@ -1395,8 +1397,8 @@ public static class Game {
 
     public static readonly List<TFightExpStat> FightExpStats = [null!,
         new() { playerStat = new IntSlot(() => Player.MaxEnergy, v => Player.MaxEnergy = v), enemyStat = new IntSlot(() => Combat.EnemyEnergy, v => Combat.EnemyEnergy = v), expFor = FightExpForEnergy },
-        new() { playerStat = IntSlot.Into(Player.Stats, TStat.Strength), enemyStat = new IntSlot(() => Combat.EnemyStrength, v => Combat.EnemyStrength = v), expFor = FightExpForStrength },
-        new() { playerStat = IntSlot.Into(Player.Stats, TStat.Dexterity), enemyStat = new IntSlot(() => Combat.EnemyDexterity, v => Combat.EnemyDexterity = v), expFor = FightExpForDexterity },
+        new() { playerStat = PlayerStat(TStat.Strength), enemyStat = new IntSlot(() => Combat.EnemyStrength, v => Combat.EnemyStrength = v), expFor = FightExpForStrength },
+        new() { playerStat = PlayerStat(TStat.Dexterity), enemyStat = new IntSlot(() => Combat.EnemyDexterity, v => Combat.EnemyDexterity = v), expFor = FightExpForDexterity },
     ];
 
     public static void TakeItem(string cmd, TBagItem item, string verb, string line, TTakeEffect effect) {
@@ -1480,6 +1482,10 @@ public static class Game {
 
     static IntSlot PlayerEnergy() =>
         new(() => Player.Energy, v => Player.Energy = v);
+    static IntSlot PlayerStat(TStat stat) =>
+        new(() => Player.Stats[stat], v => Player.Stats[stat] = v);
+    static IntSlot BagItemSlot(TBagItem item) =>
+        new(() => Bag.Items[item], v => Bag.Items[item] = v);
     static IntSlot PlayerMaxEnergy() =>
         new(() => Player.MaxEnergy, v => Player.MaxEnergy = v);
     static IntSlot PlayerMana() =>
@@ -2066,28 +2072,28 @@ public static class Game {
     }
 
     public static readonly List<TSheetItem> SheetItems = [null!,
-        new() { item = IntSlot.Into(Bag.Items, TBagItem.OldSword), desc = CmdStaryZardzewialyMiecz, width = 0, kind = TSheetKind.ikShown },
-        new() { item = IntSlot.Into(Bag.Items, TBagItem.SmallShield), desc = CmdOkraglaMalaTarcza, width = 0, kind = TSheetKind.ikShown },
-        new() { item = IntSlot.Into(Bag.Items, TBagItem.Heart), desc = CmdZakrwawioneSerce, width = 0, kind = TSheetKind.ikShown },
-        new() { item = IntSlot.Into(Bag.Items, TBagItem.Diploma), desc = CmdDyplomSzkolyZycia, width = 0, kind = TSheetKind.ikShown },
-        new() { item = IntSlot.Into(Bag.Items, TBagItem.Doughnut), desc = CmdSmacznyPolanyLikieremPaczek, width = 10, kind = TSheetKind.ikShown },
-        new() { item = IntSlot.Into(Bag.Items, TBagItem.Cookie), desc = CmdSmaczneCiastko, width = 10, kind = TSheetKind.ikShown },
-        new() { item = IntSlot.Into(Bag.Items, TBagItem.DryRation), desc = CmdTwardaSuchaRacje, width = 10, kind = TSheetKind.ikShown },
-        new() { item = IntSlot.Into(Bag.Items, TBagItem.BreadRoll), desc = CmdOkraglaPachnacaBulka, width = 10, kind = TSheetKind.ikShown },
-        new() { item = IntSlot.Into(Bag.Items, TBagItem.Bread), desc = CmdDuzyCieplyChleb, width = 10, kind = TSheetKind.ikShown },
-        new() { item = IntSlot.Into(Bag.Items, TBagItem.Sausage), desc = CmdDlugaISmacznaWeke, width = 10, kind = TSheetKind.ikShown },
-        new() { item = IntSlot.Into(Bag.Items, TBagItem.Bigos), desc = CmdPysznyBigosZKapustaZWroga, width = 10, kind = TSheetKind.ikShown },
-        new() { item = IntSlot.Into(Bag.Items, TBagItem.Beer), desc = CmdOrzezwiajacePiwskoZKonkretnymKlimatem, width = 0, kind = TSheetKind.ikPlain },
-        new() { item = IntSlot.Into(Bag.Items, TBagItem.Pipe), desc = CmdCiezkaFajkaOdDziadaMroza, width = 0, kind = TSheetKind.ikPlain },
-        new() { item = IntSlot.Into(Bag.Items, TBagItem.Tracksuit), desc = TxtKompletUbranFirmySyf, width = 0, kind = TSheetKind.ikPlain },
-        new() { item = IntSlot.Into(Bag.Items, TBagItem.SpikedSuit), desc = TxtGarniturZKolcami, width = 0, kind = TSheetKind.ikPlain },
-        new() { item = IntSlot.Into(Bag.Items, TBagItem.ManaBottle), desc = CmdMalaButelkeMany, width = 0, kind = TSheetKind.ikPlain },
-        new() { item = IntSlot.Into(Bag.Items, TBagItem.LuckyLeaf), desc = CmdDelikatnyChocSzorstkiListek, width = 0, kind = TSheetKind.ikPlain },
-        new() { item = IntSlot.Into(Bag.Items, TBagItem.Cassette), desc = CmdKasetaLiroyaLJakLiroy, width = 0, kind = TSheetKind.ikPlain },
-        new() { item = IntSlot.Into(Bag.Items, TBagItem.TeleportPill), desc = CmdPigulkaTransportujacaMG, width = 0, kind = TSheetKind.ikPlain },
+        new() { item = BagItemSlot(TBagItem.OldSword), desc = CmdStaryZardzewialyMiecz, width = 0, kind = TSheetKind.ikShown },
+        new() { item = BagItemSlot(TBagItem.SmallShield), desc = CmdOkraglaMalaTarcza, width = 0, kind = TSheetKind.ikShown },
+        new() { item = BagItemSlot(TBagItem.Heart), desc = CmdZakrwawioneSerce, width = 0, kind = TSheetKind.ikShown },
+        new() { item = BagItemSlot(TBagItem.Diploma), desc = CmdDyplomSzkolyZycia, width = 0, kind = TSheetKind.ikShown },
+        new() { item = BagItemSlot(TBagItem.Doughnut), desc = CmdSmacznyPolanyLikieremPaczek, width = 10, kind = TSheetKind.ikShown },
+        new() { item = BagItemSlot(TBagItem.Cookie), desc = CmdSmaczneCiastko, width = 10, kind = TSheetKind.ikShown },
+        new() { item = BagItemSlot(TBagItem.DryRation), desc = CmdTwardaSuchaRacje, width = 10, kind = TSheetKind.ikShown },
+        new() { item = BagItemSlot(TBagItem.BreadRoll), desc = CmdOkraglaPachnacaBulka, width = 10, kind = TSheetKind.ikShown },
+        new() { item = BagItemSlot(TBagItem.Bread), desc = CmdDuzyCieplyChleb, width = 10, kind = TSheetKind.ikShown },
+        new() { item = BagItemSlot(TBagItem.Sausage), desc = CmdDlugaISmacznaWeke, width = 10, kind = TSheetKind.ikShown },
+        new() { item = BagItemSlot(TBagItem.Bigos), desc = CmdPysznyBigosZKapustaZWroga, width = 10, kind = TSheetKind.ikShown },
+        new() { item = BagItemSlot(TBagItem.Beer), desc = CmdOrzezwiajacePiwskoZKonkretnymKlimatem, width = 0, kind = TSheetKind.ikPlain },
+        new() { item = BagItemSlot(TBagItem.Pipe), desc = CmdCiezkaFajkaOdDziadaMroza, width = 0, kind = TSheetKind.ikPlain },
+        new() { item = BagItemSlot(TBagItem.Tracksuit), desc = TxtKompletUbranFirmySyf, width = 0, kind = TSheetKind.ikPlain },
+        new() { item = BagItemSlot(TBagItem.SpikedSuit), desc = TxtGarniturZKolcami, width = 0, kind = TSheetKind.ikPlain },
+        new() { item = BagItemSlot(TBagItem.ManaBottle), desc = CmdMalaButelkeMany, width = 0, kind = TSheetKind.ikPlain },
+        new() { item = BagItemSlot(TBagItem.LuckyLeaf), desc = CmdDelikatnyChocSzorstkiListek, width = 0, kind = TSheetKind.ikPlain },
+        new() { item = BagItemSlot(TBagItem.Cassette), desc = CmdKasetaLiroyaLJakLiroy, width = 0, kind = TSheetKind.ikPlain },
+        new() { item = BagItemSlot(TBagItem.TeleportPill), desc = CmdPigulkaTransportujacaMG, width = 0, kind = TSheetKind.ikPlain },
         new() { item = new IntSlot(() => Bag.Permit, v => Bag.Permit = v), desc = CmdPrzepustkaWlasnoreczniePodpisanaPrzezQuestMastera, width = 0, kind = TSheetKind.ikPlain },
-        new() { item = IntSlot.Into(Bag.Items, TBagItem.CompareScroll), desc = CmdScrollZCzaremPorownywanie, width = 0, kind = TSheetKind.ikPlain },
-        new() { item = IntSlot.Into(Bag.Items, TBagItem.ReturnScroll), desc = CmdScrollZCzaremPowrot, width = 0, kind = TSheetKind.ikPlain },
+        new() { item = BagItemSlot(TBagItem.CompareScroll), desc = CmdScrollZCzaremPorownywanie, width = 0, kind = TSheetKind.ikPlain },
+        new() { item = BagItemSlot(TBagItem.ReturnScroll), desc = CmdScrollZCzaremPowrot, width = 0, kind = TSheetKind.ikPlain },
     ];
 
     public static void ShowSheetItem(TSheetKind kind, int val, string desc, int width) {
@@ -2444,117 +2450,20 @@ public static class Game {
         }
     }
 
-    public record SaveStats(
-        int Strength,
-        int Dexterity,
-        int Wisdom,
-        int MaxStrength,
-        int MaxDexterity,
-        int MaxWisdom);
-
-    public record SavePlayer(
-        int Level,
-        int Experience,
-        int Energy,
-        int MaxEnergy,
-        int Mana,
-        int MaxMana,
-        int Practice,
-        int Money,
-        SaveStats Stats);
-
-    public record SaveBag(
-        int Count,
-        int Limit,
-        int Permit,
-        Dictionary<string, int> Items,
-        Dictionary<string, int> ItemRooms);
-
-    public record SaveGear(
-        int Armor,
-        int WornCount,
-        int LuckRoll,
-        int Wearing,
-        int WeaponKind,
-        int ShieldKind,
-        string WornGarment);
-
-    public record SaveSkills(
-        int Parry,
-        int Kick,
-        int KickMinMana,
-        int KickMaxEnergy,
-        int Fleeing,
-        int FleeEnergy,
-        int Comparing,
-        int Cooking,
-        int Returning);
-
-    public record SaveSession(
-        int Room,
-        int CheckpointStage,
-        bool SavedFlag);
-
-    public record SaveWorld(
-        int Quest,
-        int QuestKills,
-        bool Door,
-        bool OldElf,
-        bool LiroyKilled,
-        int DuncanQuest,
-        Dictionary<string, int> Monsters);
-
     public record SaveData(
-        string Name,
-        SavePlayer Player,
-        SaveBag Bag,
-        SaveGear Gear,
-        SaveSkills Skills,
-        SaveSession Session,
-        SaveWorld World);
+        TPlayer Player,
+        TSkills Skills,
+        TGear Gear,
+        TBag Bag,
+        TWorld World,
+        TSession Session);
 
     static readonly JsonSerializerOptions SaveFormat = new() {
         WriteIndented = true,
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+        IncludeFields = true,
+        Converters = { new TEnumListConverterFactory() },
     };
-
-    static Dictionary<string, int> SaveItems() =>
-        Enum.GetValues<TBagItem>().ToDictionary(item => item.ToString(), item => Bag.Items[item]);
-
-    static Dictionary<string, int> SaveItemRooms() =>
-        Enum.GetValues<TBagItem>().ToDictionary(item => item.ToString(), item => Bag.ItemRooms[item]);
-
-    static Dictionary<string, int> SaveMonsters() =>
-        Enum.GetValues<TMonster>().ToDictionary(monster => monster.ToString(), monster => World.Monsters[monster]);
-
-    static void LoadItems(Dictionary<string, int> items, Dictionary<string, int> rooms) {
-        foreach (TBagItem item in Enum.GetValues<TBagItem>()) {
-            Bag.Items[item] = 0;
-            Bag.ItemRooms[item] = Rooms.RoomAny;
-        }
-        foreach (KeyValuePair<string, int> entry in items) {
-            if (Enum.TryParse(entry.Key, out TBagItem parsed)) {
-                Bag.Items[parsed] = entry.Value;
-            }
-        }
-        foreach (KeyValuePair<string, int> entry in rooms) {
-            if (Enum.TryParse(entry.Key, out TBagItem parsed)) {
-                Bag.ItemRooms[parsed] = entry.Value;
-            }
-        }
-    }
-
-    static void LoadMonsters(Dictionary<string, int> monsters) {
-        foreach (TMonster monster in Enum.GetValues<TMonster>()) {
-            World.Monsters[monster] = 0;
-        }
-
-        foreach (KeyValuePair<string, int> monster in monsters) {
-            if (Enum.TryParse(monster.Key, out TMonster parsed)) {
-                World.Monsters[parsed] = monster.Value;
-            }
-        }
-    }
 
     public static string SaveFileName() =>
         $"{Player.Name}.json";
@@ -2564,26 +2473,7 @@ public static class Game {
         Session.SavedFlag = true;
         Out.WriteLine(TxtSaveCharacter_01);
         Crt.ClrScr();
-        SaveData save = new(
-            Player.Name,
-            new SavePlayer(Player.Level, Player.Experience, Player.Energy, Player.MaxEnergy,
-                Player.Mana, Player.MaxMana, Player.Practice, Player.Money,
-                new SaveStats(Player.Stats[TStat.Strength], Player.Stats[TStat.Dexterity],
-                    Player.Stats[TStat.Wisdom], Player.Stats[TStat.MaxStrength],
-                    Player.Stats[TStat.MaxDexterity], Player.Stats[TStat.MaxWisdom])),
-            new SaveBag(Bag.Count, Bag.Limit, Bag.Permit, SaveItems(), SaveItemRooms()),
-            new SaveGear(Gear.Values[TGearItem.Armor], Gear.Values[TGearItem.WornCount],
-                Gear.Values[TGearItem.LuckRoll], Gear.Values[TGearItem.Wearing],
-                Gear.Values[TGearItem.WeaponKind], Gear.Values[TGearItem.ShieldKind],
-                Gear.WornGarment),
-            new SaveSkills(Skills.Values[TSkill.Parry], Skills.Values[TSkill.Kick],
-                Skills.Values[TSkill.KickMinMana], Skills.Values[TSkill.KickMaxEnergy],
-                Skills.Values[TSkill.Fleeing], Skills.Values[TSkill.FleeEnergy],
-                Skills.Values[TSkill.Comparing], Skills.Values[TSkill.Cooking],
-                Skills.Values[TSkill.Returning]),
-            new SaveSession(Session.Room, Session.CheckpointStage, Session.SavedFlag),
-            new SaveWorld(World.Quest, World.QuestKills, World.Door, World.OldElf, World.LiroyKilled,
-                World.DuncanQuest, SaveMonsters()));
+        SaveData save = new(Player, Skills, Gear, Bag, World, Session);
         File.WriteAllText(SaveFileName(), JsonSerializer.Serialize(save, SaveFormat));
     }
 
@@ -3406,57 +3296,16 @@ public static class Game {
     }
 
     public static void LoadGame() {
-        SaveData? save = JsonSerializer.Deserialize<SaveData>(File.ReadAllText(SaveFileName()));
+        SaveData? save = JsonSerializer.Deserialize<SaveData>(File.ReadAllText(SaveFileName()), SaveFormat);
         if (save is null) {
             return;
         }
-
-        Player.Name = save.Name;
-        Player.Level = save.Player.Level;
-        Player.Experience = save.Player.Experience;
-        Player.Energy = save.Player.Energy;
-        Player.MaxEnergy = save.Player.MaxEnergy;
-        Player.Mana = save.Player.Mana;
-        Player.MaxMana = save.Player.MaxMana;
-        Player.Practice = save.Player.Practice;
-        Player.Money = save.Player.Money;
-        Player.Stats[TStat.Strength] = save.Player.Stats.Strength;
-        Player.Stats[TStat.Dexterity] = save.Player.Stats.Dexterity;
-        Player.Stats[TStat.Wisdom] = save.Player.Stats.Wisdom;
-        Player.Stats[TStat.MaxStrength] = save.Player.Stats.MaxStrength;
-        Player.Stats[TStat.MaxDexterity] = save.Player.Stats.MaxDexterity;
-        Player.Stats[TStat.MaxWisdom] = save.Player.Stats.MaxWisdom;
-        Bag.Count = save.Bag.Count;
-        Bag.Limit = save.Bag.Limit;
-        Bag.Permit = save.Bag.Permit;
-        LoadItems(save.Bag.Items, save.Bag.ItemRooms);
-        Gear.Values[TGearItem.Armor] = save.Gear.Armor;
-        Gear.Values[TGearItem.WornCount] = save.Gear.WornCount;
-        Gear.Values[TGearItem.LuckRoll] = save.Gear.LuckRoll;
-        Gear.Values[TGearItem.Wearing] = save.Gear.Wearing;
-        Gear.Values[TGearItem.WeaponKind] = save.Gear.WeaponKind;
-        Gear.Values[TGearItem.ShieldKind] = save.Gear.ShieldKind;
-        Gear.WornGarment = save.Gear.WornGarment;
-        Skills.Values[TSkill.Parry] = save.Skills.Parry;
-        Skills.Values[TSkill.Kick] = save.Skills.Kick;
-        Skills.Values[TSkill.KickMinMana] = save.Skills.KickMinMana;
-        Skills.Values[TSkill.KickMaxEnergy] = save.Skills.KickMaxEnergy;
-        Skills.Values[TSkill.Fleeing] = save.Skills.Fleeing;
-        Skills.Values[TSkill.FleeEnergy] = save.Skills.FleeEnergy;
-        Skills.Values[TSkill.Comparing] = save.Skills.Comparing;
-        Skills.Values[TSkill.Cooking] = save.Skills.Cooking;
-        Skills.Values[TSkill.Returning] = save.Skills.Returning;
-        Session.Room = save.Session.Room;
-        Session.OuterRoom = save.Session.Room;
-        Session.CheckpointStage = save.Session.CheckpointStage;
-        Session.SavedFlag = save.Session.SavedFlag;
-        World.Quest = save.World.Quest;
-        World.QuestKills = save.World.QuestKills;
-        World.Door = save.World.Door;
-        World.OldElf = save.World.OldElf;
-        World.LiroyKilled = save.World.LiroyKilled;
-        World.DuncanQuest = save.World.DuncanQuest;
-        LoadMonsters(save.World.Monsters);
+        Player = save.Player;
+        Skills = save.Skills;
+        Gear = save.Gear;
+        Bag = save.Bag;
+        World = save.World;
+        Session = save.Session;
         Out.WriteLine(TxtLoadCharacter_01 + Gear.WornGarment);
     }
 
