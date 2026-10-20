@@ -68,6 +68,12 @@ public static class Game {
             Energy = (Energy + delta).Clamp(0, MaxEnergy);
             return Energy > 0;
         }
+
+        public bool ChangeMana(int delta) {
+            bool enough = (delta >= 0) || (Mana >= -delta);
+            Mana = (Mana + delta).Clamp(0, MaxMana);
+            return enough;
+        }
     }
 
     public class TSkills {
@@ -975,101 +981,99 @@ public static class Game {
     ];
 
     public static void CompareFoe() {
-        if (Player.Mana > 9) {
-            Combat.Roll = Roll(100);
-            Out.WriteLine(TxtCompareFoe_01);
-            Command = Crt.ReadLn();
-            Session.Overall = (Player.Level + Player.Stats[TStat.Strength] + DexterityBonus(Player.Stats[TStat.Dexterity]) + ParryBonus(Skills.Values[TSkill.Parry]) + KickBonus(Skills.Values[TSkill.Kick]));
-            switch (Verb) {
-                case CmdDzik:
-                case CmdSzczur:
-                case CmdLis:
-                case CmdKuropatwa:
-                case CmdZajac:
-                case CmdWilczur:
-                case CmdOrzel:
-                case CmdSarna:
-                case CmdDziecko:
-                case CmdDziadek:
-                    CompareFoeRules([.. BeastCompareRules.Skip(1)]);
-                    break;
-                case CmdSlon:
-                case CmdLew:
-                case CmdZyrafa:
-                case CmdWielblad:
-                case CmdStrus:
-                case CmdBoa:
-                case CmdWilk:
-                case CmdBizon:
-                case CmdPantera:
-                case CmdWariat:
-                case CmdSluchacz:
-                case CmdFan:
-                case CmdCzlowiek:
-                case CmdReporter:
-                    CompareFoeRules([.. BigBeastCompareRules.Skip(1)]);
-                    break;
-                case CmdGladiator:
-                case CmdWojownik:
-                case CmdTrener:
-                case CmdPolicjant:
-                case CmdGoryl:
-                case CmdOchroniarz:
-                    CompareFoeRules([.. FighterCompareRules.Skip(1)]);
-                    break;
-                case CmdMiniBarman:
-                case CmdGrubas:
-                case CmdDJ:
-                    CompareFoeRules([.. DrunkCompareRules.Skip(1)]);
-                    break;
-                case CmdTaksowkarz:
-                case CmdSprzedawca:
-                case CmdGitarzysta:
-                case CmdPerkusista:
-                case CmdOrganista:
-                case CmdZebrak:
-                case CmdPijak:
-                case CmdZamiatacz:
-                case CmdSzczaw:
-                case CmdStokrotka:
-                case CmdKoniczynka:
-                case CmdMlecz:
-                case CmdDmuchawiec:
-                    CompareFoeRules([.. MusicianCompareRules.Skip(1)]);
-                    break;
-                case CmdPedal:
-                case CmdPara:
-                case CmdMaciek:
-                case CmdRoza:
-                case CmdMalina:
-                case CmdTrawa:
-                case CmdAgrest:
-                case CmdJezyna:
-                    CompareFoeRules([.. IvyCompareRules.Skip(1)]);
-                    break;
-                case CmdLiroy:
-                    CompareFoeRules([.. LiroyCompareRules.Skip(1)]);
-                    break;
-                case CmdPokrzywa:
-                    CompareFoeRules([.. PokrzywaCompareRules.Skip(1)]);
-                    break;
-                case CmdSpaniel:
-                case CmdOwczarek:
-                case CmdPiesek:
-                case CmdJamnik:
-                case CmdPudel:
-                    Out.WriteLine(TxtCompareFoe_34);
-                    break;
-                case CmdBakteria:
-                    Out.WriteLine(TxtCompareFoe_36);
-                    Player.Mana += 5;
-                    break;
-            }
-            if ((Combat.Roll < 3) && (Skills.Values[TSkill.Comparing] < 100)) {
-                Out.WriteLine(TxtFightStars17 + TxtLearnVerb + TxtCompareFoe_35);
-                Skills.Values[TSkill.Comparing]++;
-                Player.Experience += 5;
-            }
+        Combat.Roll = Roll(100);
+        Out.WriteLine(TxtCompareFoe_01);
+        Command = Crt.ReadLn();
+        Session.Overall = (Player.Level + Player.Stats[TStat.Strength] + DexterityBonus(Player.Stats[TStat.Dexterity]) + ParryBonus(Skills.Values[TSkill.Parry]) + KickBonus(Skills.Values[TSkill.Kick]));
+        switch (Verb) {
+            case CmdDzik:
+            case CmdSzczur:
+            case CmdLis:
+            case CmdKuropatwa:
+            case CmdZajac:
+            case CmdWilczur:
+            case CmdOrzel:
+            case CmdSarna:
+            case CmdDziecko:
+            case CmdDziadek:
+                CompareFoeRules([.. BeastCompareRules.Skip(1)]);
+                break;
+            case CmdSlon:
+            case CmdLew:
+            case CmdZyrafa:
+            case CmdWielblad:
+            case CmdStrus:
+            case CmdBoa:
+            case CmdWilk:
+            case CmdBizon:
+            case CmdPantera:
+            case CmdWariat:
+            case CmdSluchacz:
+            case CmdFan:
+            case CmdCzlowiek:
+            case CmdReporter:
+                CompareFoeRules([.. BigBeastCompareRules.Skip(1)]);
+                break;
+            case CmdGladiator:
+            case CmdWojownik:
+            case CmdTrener:
+            case CmdPolicjant:
+            case CmdGoryl:
+            case CmdOchroniarz:
+                CompareFoeRules([.. FighterCompareRules.Skip(1)]);
+                break;
+            case CmdMiniBarman:
+            case CmdGrubas:
+            case CmdDJ:
+                CompareFoeRules([.. DrunkCompareRules.Skip(1)]);
+                break;
+            case CmdTaksowkarz:
+            case CmdSprzedawca:
+            case CmdGitarzysta:
+            case CmdPerkusista:
+            case CmdOrganista:
+            case CmdZebrak:
+            case CmdPijak:
+            case CmdZamiatacz:
+            case CmdSzczaw:
+            case CmdStokrotka:
+            case CmdKoniczynka:
+            case CmdMlecz:
+            case CmdDmuchawiec:
+                CompareFoeRules([.. MusicianCompareRules.Skip(1)]);
+                break;
+            case CmdPedal:
+            case CmdPara:
+            case CmdMaciek:
+            case CmdRoza:
+            case CmdMalina:
+            case CmdTrawa:
+            case CmdAgrest:
+            case CmdJezyna:
+                CompareFoeRules([.. IvyCompareRules.Skip(1)]);
+                break;
+            case CmdLiroy:
+                CompareFoeRules([.. LiroyCompareRules.Skip(1)]);
+                break;
+            case CmdPokrzywa:
+                CompareFoeRules([.. PokrzywaCompareRules.Skip(1)]);
+                break;
+            case CmdSpaniel:
+            case CmdOwczarek:
+            case CmdPiesek:
+            case CmdJamnik:
+            case CmdPudel:
+                Out.WriteLine(TxtCompareFoe_34);
+                break;
+            case CmdBakteria:
+                Out.WriteLine(TxtCompareFoe_36);
+                Player.ChangeMana(5);
+                break;
+        }
+        if ((Combat.Roll < 3) && (Skills.Values[TSkill.Comparing] < 100)) {
+            Out.WriteLine(TxtFightStars17 + TxtLearnVerb + TxtCompareFoe_35);
+            Skills.Values[TSkill.Comparing]++;
+            Player.Experience += 5;
         }
     }
 
@@ -1305,16 +1309,16 @@ public static class Game {
                     Crt.TextColor(14);
                     Out.WriteLine(TxtFightKickVerb + TxtFightSuperKickLabel + Combat.Roll + TxtFightTailEnergii);
                     Crt.TextColor(15);
-                    Player.Mana -= Roll(3) + 3;
+                    Player.ChangeMana(-(Roll(3) + 3));
                     Combat.EnemyEnergy -= Combat.Roll;
                 } else {
                     Out.WriteLine(TxtFightKickVerb + TxtFightSuperKickMiss);
                 }
 
-                Player.Mana -= Roll(2) + 2;
+                Player.ChangeMana(-(Roll(2) + 2));
             }
             if ((Skills.Values[TSkill.Fleeing] > 0) && (Player.Energy < Skills.Values[TSkill.FleeEnergy]) && (Player.Mana > 14)) {
-                Player.Mana -= 15;
+                Player.ChangeMana(-15);
                 Combat.Roll = Roll(100);
                 if (Combat.Roll <= Skills.Values[TSkill.Fleeing]) {
                     Combat.Fled = true;
@@ -3039,7 +3043,7 @@ public static class Game {
             Out.WriteLine(TxtCmdDrinkBeer_01);
             Bag.Count -= 1;
             Player.ChangeEnergy(10);
-            Player.Mana += 10;
+            Player.ChangeMana(10);
         }
     }
 
@@ -3111,12 +3115,15 @@ public static class Game {
     public static void CmdCompare() {
         if (Skills.Values[TSkill.Comparing] > 0) {
             Combat.Roll = Roll(100);
-            if (Skills.Values[TSkill.Comparing] > Combat.Roll) {
+            bool success = Skills.Values[TSkill.Comparing] > Combat.Roll;
+            if (!Player.ChangeMana(success ? -10 : -5)) {
+                Out.WriteLine(TxtNoMana);
+                return;
+            }
+            if (success) {
                 CompareFoe();
-                Player.Mana -= 10;
             } else {
                 Out.WriteLine(TxtCmdCompare_01);
-                Player.Mana -= 5;
             }
         }
     }
@@ -3153,29 +3160,39 @@ public static class Game {
             Combat.Roll = Roll(100);
             if (Rest == CmdScrollPowrot) {
                 Combat.Roll = Roll(1);
+            }
+            bool success = Combat.Roll <= Skills.Values[TSkill.Returning];
+            bool partial = !success && (Skills.Values[TSkill.Returning] + 30 > Combat.Roll);
+            int cost = 10;
+            if (success) {
+                cost = 15;
+            } else if (partial) {
+                cost = 5;
+            }
+            if (!Player.ChangeMana(-cost)) {
+                Out.WriteLine(TxtNoMana);
+                return;
+            }
+            if (Rest == CmdScrollPowrot) {
                 Bag.Items[TBagItem.ReturnScroll] -= 1;
                 Bag.Count -= 1;
             }
-            if (Combat.Roll <= Skills.Values[TSkill.Returning]) {
+            if (success) {
                 Out.WriteLine(TxtCmdOpenPortal_01);
-                Player.Mana -= 15;
                 MoveTo(RoomCityCentre);
-            }
-            if ((Combat.Roll > Skills.Values[TSkill.Returning]) && (Skills.Values[TSkill.Returning] + 30 > Combat.Roll)) {
-                Out.WriteLine(TxtCmdOpenPortal_02);
-                Player.Mana -= 5;
-            }
-            if (Skills.Values[TSkill.Returning] + 29 < Combat.Roll) {
-                Out.WriteLine(TxtCmdOpenPortal_03);
-                Player.Mana -= 10;
+            } else {
+                Out.WriteLine(partial ? TxtCmdOpenPortal_02 : TxtCmdOpenPortal_03);
             }
         }
     }
 
     public static void CmdUseCompareScroll() {
         if (Bag.Items[TBagItem.CompareScroll] > 0) {
+            if (!Player.ChangeMana(-10)) {
+                Out.WriteLine(TxtNoMana);
+                return;
+            }
             CompareFoe();
-            Player.Mana -= 10;
             Bag.Items[TBagItem.CompareScroll] -= 1;
             Bag.Count -= 1;
         }

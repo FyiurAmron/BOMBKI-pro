@@ -52,4 +52,7 @@
   - dying no longer resets quest progress
   - the quest master comments when there is nothing to finish or the
     job is not done
+- MANA is now clamped between 0 and max
+- spells refuse to run without enough MANA and say "Masz za mało MANY!"
+  - the return and compare scrolls are not consumed when you lack MANA
 - the JA sheet shows real item counts

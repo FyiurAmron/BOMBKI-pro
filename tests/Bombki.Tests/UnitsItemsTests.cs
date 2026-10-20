@@ -231,6 +231,33 @@ public class UnitsItemsTests {
     }
 
     [Fact]
+    public void PorownanieScrollNieDzialaBezMany() {
+        Bag.Items[TBagItem.CompareScroll] = 1;
+        Bag.Count = 1;
+        Player.MaxMana = 100;
+        Player.Mana = 0;
+        CmdUseCompareScroll();
+        Assert.Equal(0, Player.Mana);
+        Assert.Equal(1, Bag.Items[TBagItem.CompareScroll]);
+        Assert.Equal(1, Bag.Count);
+    }
+
+    [Fact]
+    public void ScrollPowrotNieDzialaBezMany() {
+        Bag.Items[TBagItem.ReturnScroll] = 1;
+        Bag.Count = 1;
+        Player.MaxMana = 100;
+        Player.Mana = 0;
+        Session.Room = Rooms.RoomCityCentre;
+        Command = "UZYJ SCROLL POWROT";
+        CmdOpenPortal();
+        Assert.Equal(Rooms.RoomCityCentre, Session.Room);
+        Assert.Equal(0, Player.Mana);
+        Assert.Equal(1, Bag.Items[TBagItem.ReturnScroll]);
+        Assert.Equal(1, Bag.Count);
+    }
+
+    [Fact]
     public void NiszczyPrzepustke() {
         Bag.Permit = 1;
         Bag.Count = 0;

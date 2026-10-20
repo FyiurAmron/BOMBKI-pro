@@ -406,6 +406,7 @@ public class UnitsArenaTests {
     public void PorownanieBonusesAndBakteria() {
         PorownanieAsk("DZIK", 0, 10, 0, 51, 11);
         PorownanieAsk("DZIK", 0, 10, 0, 76, 71);
+        Player.MaxMana = 100;
         Player.Mana = 10;
         using (FeedStdin("BAKTERIA")) {
             CompareFoe();

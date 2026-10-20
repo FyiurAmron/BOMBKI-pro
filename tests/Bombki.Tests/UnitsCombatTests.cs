@@ -321,6 +321,39 @@ public class UnitsCombatTests {
     }
 
     [Fact]
+    public void ManaClampsAtZero() {
+        Player.MaxMana = 50;
+        Player.Mana = 10;
+        Assert.False(Player.ChangeMana(-40));
+        Assert.Equal(0, Player.Mana);
+    }
+
+    [Fact]
+    public void ManaClampsAtMax() {
+        Player.MaxMana = 50;
+        Player.Mana = 10;
+        Assert.True(Player.ChangeMana(100));
+        Assert.Equal(50, Player.Mana);
+    }
+
+    [Fact]
+    public void ManaExactCostIsEnough() {
+        Player.MaxMana = 50;
+        Player.Mana = 10;
+        Assert.True(Player.ChangeMana(-10));
+        Assert.Equal(0, Player.Mana);
+    }
+
+    [Fact]
+    public void PorownanieNieDzialaBezMany() {
+        Player.MaxMana = 100;
+        Player.Mana = 0;
+        Skills.Values[TSkill.Comparing] = 1;
+        CmdCompare();
+        Assert.Equal(0, Player.Mana);
+    }
+
+    [Fact]
     public void WalkaDodge() {
         WalkaSetup(0, 30, 3, 1, 0, 2, 0, 0);
         Player.Energy = 100;

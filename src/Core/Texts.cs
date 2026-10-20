@@ -503,6 +503,7 @@ public static class Texts {
     public const string TxtCmdSleep_06 = "ENERGII";
     public const string TxtCmdSleep_07 = "Pełnowartościowy sen spowodował super zysk: ";
     public const string TxtCmdCompare_01 = "Popełniłeś pewne błędy i nie udało się wykonać czaru";
+    public const string TxtNoMana = "Masz za mało MANY!";
     public const string TxtCmdRefuseFoodDrop_01 = "Jak śmiesz wyrzucać jedzenie!!! Wstyd mi za ciebie!!! Nie pozwolę!!!";
     public const string TxtCmdOpenPortal_01 = "Otwierasz magiczny portal który przenosi cię do miasta";
     public const string TxtCmdOpenPortal_02 = "Nie udaje ci się otworzyć magicznego portalu";
