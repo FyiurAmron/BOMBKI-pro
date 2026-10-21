@@ -462,7 +462,7 @@ public static class Texts {
     public const string TxtConcertRooms_40 = "3% !!!";
     public const string TxtConcertRooms_41 = "All right - jesteś na scenie!!! Na twój widok ochroniarze coś mamroczą";
     public const string TxtConcertRooms_42 = "Tłumy cię praktycznie nie zauważają bo ich oczy skierowane są na LIROYA";
-    public const string TxtConcertRooms_43 = "Gdy nagle wsśród tłumu zauważasz niezłą lalę, jednak ona kocha LIROYA :(";
+    public const string TxtConcertRooms_43 = "Gdy nagle wśród tłumu zauważasz niezłą lalę, jednak ona kocha LIROYA :(";
     public const string TxtConcertRooms_46 = "Ludzie się na ciebie gapią, jesteś na środku sceny!!! Któś ci mówi:";
     public const string TxtConcertRooms_47 = "Hey man it's cool yeah! A ty na to: je je kul kul...";
     public const string TxtConcertRooms_48 = "Ufff przebiegłeś przez środek sceny więc trema cię już nie dręczy";
