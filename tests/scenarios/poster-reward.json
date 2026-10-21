@@ -40,9 +40,34 @@
       "send": "GORA"
     },
     {
-      "label": "cage hall to poster room",
-      "expect": "Jesteś\\ w\\ pokoju\\ prowadzącym\\ do\\ klatek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
-      "send": "DOL"
+      "label": "cage hall energy +200",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
+      "send": "DAWAJ EN"
+    },
+    {
+      "label": "cage hall energy +400",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
+      "send": "DAWAJ EN"
+    },
+    {
+      "label": "cage hall energy +600",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
+      "send": "DAWAJ EN"
+    },
+    {
+      "label": "cage hall energy +800",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
+      "send": "DAWAJ EN"
+    },
+    {
+      "label": "cage hall to cage 16",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
+      "send": "GORA"
+    },
+    {
+      "label": "cage 16 fight",
+      "expect": "Ten\\ pokój\\ jest\\ cały\\ obryzgany\\ krwią[\\s\\S]*?wyciągasz [0-9]+\\ MONET\\ z\\ ciała\\ potwora[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "GORA"
     },
     {
       "label": "poster room and poster text",
@@ -56,12 +81,13 @@
     },
     {
       "label": "poster room exits",
-      "expect": "GÓRA: Wejścia\\ do\\ klatek[\\s\\S]*?DÓŁ: Teleport!!![\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "DÓŁ: Klatka\\ silnego,\\ odpornego\\ i\\ zręcznego[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "DOL"
     },
     {
-      "label": "teleport room returns to room 1",
-      "expect": "T\\*\\*\\*E\\*\\*\\*L\\*\\*\\*E\\*\\*\\*P\\*\\*\\*O\\*\\*\\*R\\*\\*\\*T\\*\\*\\*O\\*\\*\\*W\\*\\*\\*A\\*\\*\\*Ł\\*\\*\\*E\\*\\*\\*Ś[\\s\\S]*?Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>"
+      "label": "back in the cage 16 room",
+      "expect": "Ten\\ pokój\\ jest\\ cały\\ obryzgany\\ krwią[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "WYJSCIE"
     }
   ]
 }

@@ -205,6 +205,35 @@ public class UnitsSwiatTests {
         Assert.DoesNotContain(throne.moves, move => move.cmd == Texts.CmdPolodnie && move.dest == Rooms.RoomCaveMouth);
     }
 
+    static string Opposite(string cmd) =>
+        cmd switch {
+            Texts.CmdPolnoc => Texts.CmdPolodnie,
+            Texts.CmdPolodnie => Texts.CmdPolnoc,
+            Texts.CmdWschod => Texts.CmdZachod,
+            Texts.CmdZachod => Texts.CmdWschod,
+            Texts.CmdGora => Texts.CmdDol,
+            Texts.CmdDol => Texts.CmdGora,
+            _ => "",
+        };
+
+    [Fact]
+    public void RoomMovesAreTwoWay() {
+        var rooms = Rooms.RoomDefs.ToDictionary(room => room.number);
+        foreach (var room in rooms.Values) {
+            foreach (var move in room.moves) {
+                if ((room.number == Rooms.RoomArenaEntrance) && (move.dest == Rooms.RoomArena33)) {
+                    continue;
+                }
+                string reverse = Opposite(move.cmd);
+                Assert.Contains(rooms[move.dest].moves,
+                    back => (back.cmd == reverse) && (back.dest == room.number));
+            }
+        }
+
+        var arena = MazeMoves.Skip(1).Single(move => move.room == Rooms.RoomArena33);
+        Assert.Equal(Rooms.RoomArenaEntrance, arena.dest[TMazeDir.mdPolodnie]);
+    }
+
     [Fact]
     public void RoomNamesCoverConnectivity() {
         var rooms = Rooms.RoomDefs;

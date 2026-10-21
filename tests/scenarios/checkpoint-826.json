@@ -210,23 +210,28 @@
       "send": "POLNOC"
     },
     {
-      "label": "the poster room",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
+      "label": "the cage corridor",
+      "expect": "Jesteś\\ w\\ pokoju\\ prowadzącym\\ do\\ klatek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "DOL"
     },
     {
-      "label": "the teleport room",
-      "expect": "Jesteś\\ w\\ pokoju\\ w\\ którym",
+      "label": "the landing",
+      "expect": "Jesteś\\ w\\ malutkim\\ pokoju[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "DOL"
     },
     {
-      "label": "teleport animation",
-      "expect": "BBBBBBBBZBZBZBZBZZZZZZZzzzzzzzzzbbzbBb",
-      "send": "TELEPORT"
+      "label": "the orientation room",
+      "expect": "SZOK!!!\\ AAA\\ UPSI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "WSCHOD"
     },
     {
-      "label": "salon after teleport",
-      "expect": "Jesteś\\ w\\ okrągłym\\ salonie",
+      "label": "the school hall",
+      "expect": "Jesteś\\ w\\ hallu\\ Szkoły\\ Życia[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "WSCHOD"
+    },
+    {
+      "label": "the salon after the cages",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {

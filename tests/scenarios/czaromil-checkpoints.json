@@ -217,25 +217,40 @@
     {
       "label": "cage 16 is over before the door shuts",
       "expect": "Ten pokój jest cały obryzgany krwi[\\s\\S]*?Zabiłeś go[\\s\\S]*?wyciągasz [0-9]+\\ MONET\\ z\\ ciała\\ potwora[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
-      "send": "DOL"
+      "send": "GORA"
     },
     {
       "label": "the poster room: the first checkpoint fires",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "DOL"
-    },
-    {
-      "label": "the teleport room",
       "expect": "Jesteś\\ w\\ pokoju\\ w\\ którym[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "DOL"
     },
     {
-      "label": "teleport to the salon",
-      "expect": "BBBBBBBBZBZBZBZBZZZZZZZzzzzzzzzzbbzbBb",
-      "send": "TELEPORT"
+      "label": "back in cage 16",
+      "expect": "Ten\\ pokój\\ jest\\ cały\\ obryzgany\\ krwią[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "DOL"
     },
     {
-      "label": "the city centre again",
+      "label": "the cage corridor",
+      "expect": "Jesteś\\ w\\ pokoju\\ prowadzącym\\ do\\ klatek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "DOL"
+    },
+    {
+      "label": "the landing",
+      "expect": "Jesteś\\ w\\ malutkim\\ pokoju[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "DOL"
+    },
+    {
+      "label": "the orientation room",
+      "expect": "SZOK!!!\\ AAA\\ UPSI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "WSCHOD"
+    },
+    {
+      "label": "the school hall",
+      "expect": "Jesteś\\ w\\ hallu\\ Szkoły\\ Życia[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "WSCHOD"
+    },
+    {
+      "label": "the salon after the cages",
       "expect": "Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },

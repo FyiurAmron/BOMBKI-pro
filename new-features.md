@@ -41,6 +41,7 @@
 - all rooms show their exit list
 - exit lists show the real target room name now
 - all rooms wired; no longer crashes after going into northern LAS
+- the cage wing is fully two-way; the teleporter is gone
 - handing the diploma over frees a bag slot
 - Staruch checks the return scroll before the trade
 - command history: up/down arrows scroll previously typed lines

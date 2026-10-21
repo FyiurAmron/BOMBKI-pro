@@ -151,7 +151,7 @@
     },
     {
       "label": "cage corridor names every cage",
-      "expect": "WSCHÓD:\\ Klatka\\ cieniasa[\\s\\S]*?ZACHÓD:\\ Klatka\\ silnego[\\s\\S]*?PÓŁNOC:\\ Klatka\\ zręcznego[\\s\\S]*?POŁUDNIE:\\ Klatka\\ odpornego[\\s\\S]*?GÓRA:\\ Klatka\\ silnego,\\ odpornego\\ i\\ zręcznego[\\s\\S]*?DÓŁ:\\ Jedyna\\ droga\\ nie\\ prowadząca\\ do\\ klatek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "WSCHÓD:\\ Klatka\\ cieniasa[\\s\\S]*?ZACHÓD:\\ Klatka\\ silnego[\\s\\S]*?PÓŁNOC:\\ Klatka\\ zręcznego[\\s\\S]*?POŁUDNIE:\\ Klatka\\ odpornego[\\s\\S]*?GÓRA:\\ Klatka\\ silnego,\\ odpornego\\ i\\ zręcznego[\\s\\S]*?DÓŁ:\\ Pokój\\ 4[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WYJSCIE"
     }
   ]

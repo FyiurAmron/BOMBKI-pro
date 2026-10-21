@@ -7,7 +7,6 @@ using static Texts;
 
 public static class Rooms {
 
-    public const int RoomAny = -1;
     public const int RoomStart = 0;
     public const int RoomSalon = 1;
     public const int RoomTraining = 2;
@@ -26,7 +25,6 @@ public static class Rooms {
     public const int RoomCageTough = 15;
     public const int RoomCageHuge = 16;
     public const int RoomCageReward = 17;
-    public const int RoomTeleport = 18;
     public const int RoomCityCentre = 20;
     public const int RoomShopStreet = 21;
     public const int RoomShopStreet2 = 22;
@@ -120,7 +118,6 @@ public static class Rooms {
         public List<TRoomPoster> posters = [];
         public bool expand = false;
         public bool maze = false;
-        public int teleport = RoomAny;
         public Action<bool>? turn = null;
     }
 
@@ -359,7 +356,7 @@ public static class Rooms {
                      Go(CmdPolnoc, RoomCageAgile),
                      Go(CmdPolodnie, RoomCageTough),
                      Go(CmdGora, RoomCageHuge),
-                     Go(CmdDol, RoomCageReward), ],
+                     Go(CmdDol, RoomSchoolLanding), ],
             posters = [new(CmdPatrz + CmdPlakat, [..TxtRoom11Lines2.Skip(1)])],
             expand = true,
         },
@@ -414,7 +411,7 @@ public static class Rooms {
         new() {
             number = RoomCageHuge,
             name = TxtPlaceKlatkaSilnegoOdpornegoIZrecznego,
-            moves = [Go(CmdDol, RoomCageCorridor)],
+            moves = [Go(CmdDol, RoomCageCorridor), Go(CmdGora, RoomCageReward)],
             turn = entering => {
                 if (entering) {
                     DescribeCage(CageHuge, RoomCageHuge, TxtRoom16_01, TxtShared_07);
@@ -441,7 +438,7 @@ public static class Rooms {
             number = RoomCageReward,
             name = TxtPlaceJedynaDrogaNieProwadzacaDoKlatek,
             intro = [TxtYouAreIn + TxtRoom17_01],
-            moves = [Go(CmdGora, RoomCageCorridor), Go(CmdDol, RoomTeleport)],
+            moves = [Go(CmdDol, RoomCageHuge)],
             turn = entering => {
                 if (entering) {
                     return;
@@ -456,12 +453,6 @@ public static class Rooms {
                     }
                 }
             },
-        },
-        new() {
-            number = RoomTeleport,
-            name = TxtPlaceTeleport,
-            intro = [..TxtRoom18Lines1.Skip(1)],
-            teleport = RoomSalon,
         },
         new() {
             number = RoomCityCentre,
@@ -1266,10 +1257,6 @@ public static class Rooms {
     static void RunRoom(TRoom room) {
         WriteLines(room.intro);
         room.turn?.Invoke(true);
-        if (room.teleport != RoomAny) {
-            MoveTo(room.teleport);
-            return;
-        }
         do {
             ReadCommand();
             if (room.expand) {

@@ -150,9 +150,39 @@
       "send": "EXIT"
     },
     {
-      "label": "room 11 exits -> 17",
+      "label": "room 11 exits; energy +200",
       "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
-      "send": "DOL"
+      "send": "DAWAJ EN"
+    },
+    {
+      "label": "room 11 energy +400",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
+      "send": "DAWAJ EN"
+    },
+    {
+      "label": "room 11 energy +600",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
+      "send": "DAWAJ EN"
+    },
+    {
+      "label": "room 11 energy +800",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
+      "send": "DAWAJ EN"
+    },
+    {
+      "label": "room 11 exits -> 16",
+      "expect": "[0-9]+%\\.-?[0-9]+>",
+      "send": "GORA"
+    },
+    {
+      "label": "room 16 fight",
+      "expect": "Ten\\ pokój\\ jest\\ cały\\ obryzgany\\ krwią[\\s\\S]*?wyciągasz [0-9]+\\ MONET\\ z\\ ciała\\ potwora[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "EXIT"
+    },
+    {
+      "label": "room 16 exits -> 17",
+      "expect": "DÓŁ: Wejścia\\ do\\ klatek[\\s\\S]*?GÓRA: Jedyna\\ droga\\ nie\\ prowadząca\\ do\\ klatek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "GORA"
     },
     {
       "label": "room 17 (JESTES W POKOJU W KT)",
@@ -160,14 +190,14 @@
       "send": "EXIT"
     },
     {
-      "label": "room 17 exits -> 18",
+      "label": "room 17 exits -> 16",
       "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "DOL"
     },
     {
-      "label": "room 1 (JESTES W OKROGLYM SA)",
-      "expect": "Jesteś\\ w\\ okrągłym\\ salonie\\ wypełnionym\\ [\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
-      "send": "EXIT"
+      "label": "room 16 after the fight",
+      "expect": "Ten\\ pokój\\ jest\\ cały\\ obryzgany\\ krwią[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "WYJSCIE"
     }
   ]
 }

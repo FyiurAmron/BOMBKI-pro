@@ -71,7 +71,6 @@ public static class Texts {
     public const string TxtSimpleRoom_01 = "dosyć ciasnym pokoju i niczego tu nie ma";
     public const string TxtSimpleRoom_02 = ": ";
     public const string TxtRoom11_01 = "pokoju prowadzącym do klatek";
-    public const string TxtRoom11_02 = "DRZWI pod tobą się zatrzasnęły i nie masz odwrotu";
     public const string TxtRoom11_03 = "We wszystkich kierunkach są klatki i ujadające się w nich potwory";
     public const string TxtShared_13 = "Na plakacie pisze:";
     public const string TxtRoom11_10 = "W klatkach są potworki - ZABIJ je! Komenda: ZABIJ [coś] - zabija";
@@ -523,11 +522,7 @@ public static class Texts {
     public const string TxtRoom17_01 = "pokoju w którym jest PLAKAT (i śmierdzi tu)";
     public const string TxtRoom17_03 = "Sorry że nie umyłem pokoju ale nie mam na to czasu";
     public const string TxtRoom17_04 = "Jeśli byłeś aktywny to powinieneś liczyć na nagrodę";
-    public const string TxtRoom17_05 = "Sprawdź czy leży tu coś, potem możesz zejść do teleportu";
-    public const string TxtRoom18_01 = "BBBBBBBBZBZBZBZBZZZZZZZzzzzzzzzzbbzbBbzbzbzBZZZ";
-    public const string TxtRoom18_02 = "===-------......_________.....----------....._______....-------======";
-    public const string TxtRoom18_03 = "T***E***L***E***P***O***R***T***O***W***A***Ł***E***Ś*** ***S***I***Ę!";
-    public const string TxtRoom18_04 = "==========================================================================";
+    public const string TxtRoom17_05 = "Sprawdź czy leży tu coś, potem możesz wrócić do klatek";
     public const string TxtRoom20_01 = "centrum miasta: na ścianie jest PLAKAT (duży ruch)";
     public const string TxtRoom20_02 = "To jest miasto: radź sobie sam!";
     public const string TxtRoom76_01 = "barze \"POD DWOMA PEDAŁAMI\". Chcąc rozwikłać tę dziwną nazwę";
@@ -811,7 +806,6 @@ public static class Texts {
     public const string TxtPlaceWejscieNaScene = "Wejście na scenę";
     public const string TxtPlaceZaKulisami = "Za Kulisami";
     public const string TxtPlaceSrodekSceny = "Środek sceny";
-    public const string TxtPlaceTeleport = "Teleport!!!";
     public const string TxtPlaceUlCiemna = "Ul. Ciemna";
     public const string TxtPlaceUlDluga = "Ul. Długa";
     public const string TxtPlaceUlDluga2 = "Ul. Długa 2";
@@ -956,7 +950,7 @@ public static class Texts {
     public static readonly List<string> TxtRoom5Lines1 = ["", TxtRoom5_01, TxtRoom5_02, TxtRoom5_03];
     public static readonly List<string> TxtRoom1Lines1 = ["", TxtRoom1_02, TxtShared_04, TxtRoom1_03];
     public static readonly List<string> TxtRoom4Lines1 = ["", TxtRoom4_05, TxtRoom4_06, TxtRoom4_07, TxtRoom4_08, TxtRoom4_09];
-    public static readonly List<string> TxtRoom11Lines1 = ["", TxtRoom11_02, TxtRoom11_03, TxtShared_04];
+    public static readonly List<string> TxtRoom11Lines1 = ["", TxtRoom11_03, TxtShared_04];
     public static readonly List<string> TxtRoom11Lines2 = ["", TxtShared_13, TxtRoom11_10, TxtRoom11_11];
     public static readonly List<string> TxtRoom75Lines1 = ["", TxtRoom75_01, TxtRoom75_02, TxtRoom75_03];
     public static readonly List<string> TxtRoom83Lines1 = ["", TxtRoom83_01, TxtRoom83_02, TxtRoom83_03];
@@ -970,7 +964,6 @@ public static class Texts {
     public static readonly List<string> TxtConcertRoomsLines1 = ["", TxtConcertRooms_01, TxtConcertRooms_02, TxtConcertRooms_03];
     public static readonly List<string> TxtConcertRoomsLines2 = ["", TxtConcertRooms_41, TxtConcertRooms_42, TxtConcertRooms_43];
     public static readonly List<string> TxtRoom17Lines1 = ["", TxtShared_13, TxtRoom17_03, TxtRoom17_04, TxtRoom17_05];
-    public static readonly List<string> TxtRoom18Lines1 = ["", TxtRoom18_01, TxtRoom18_02, TxtRoom18_03, TxtRoom18_04];
     public static readonly List<string> TxtRoom76Lines1 = ["", TxtRoom76_02, TxtRoom76_03, TxtRoom76_04];
     public static readonly List<string> TxtRoom76Lines2 = ["", TxtRoom76_09, TxtRoom76_10, TxtRoom76_11, TxtRoom76_12];
     public static readonly List<string> TxtRoom80Lines1 = ["", TxtRoom80_01, TxtRoom80_02, TxtRoom80_03];

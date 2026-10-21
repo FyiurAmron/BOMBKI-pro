@@ -240,43 +240,28 @@
       "send": "JA"
     },
     {
-      "label": "cage 16: leave for the corridor",
+      "label": "cage 16: leave for the reward room",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "DOL"
+      "send": "GORA"
     },
     {
       "label": "the poster room",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "DOL"
-    },
-    {
-      "label": "read the poster",
       "expect": "Jesteś\\ w\\ pokoju\\ w\\ którym[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "PATRZ PLAKAT"
     },
     {
-      "label": "the ground context shows the diploma",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
+      "label": "the poster text",
+      "expect": "Sorry\\ że\\ nie\\ umyłem\\ pokoju[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "BIERZ DYPLOM"
     },
     {
-      "label": "the teleport room",
+      "label": "the ground context shows the diploma",
       "expect": "Podnosisz\\ DYPLOM[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "DOL"
     },
     {
-      "label": "teleport back to the salon",
-      "expect": "BBBBBBBBZBZBZBZBZZZZZZZzzzzzzzzzbbzbBb",
-      "send": "TELEPORT"
-    },
-    {
-      "label": "the salon once more",
-      "expect": "Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
-      "send": "EXIT"
-    },
-    {
-      "label": "out of the game",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
+      "label": "back in the cage 16 room",
+      "expect": "Ten\\ pokój\\ jest\\ cały\\ obryzgany\\ krwią[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WYJSCIE"
     }
   ]

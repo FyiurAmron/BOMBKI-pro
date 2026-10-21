@@ -90,23 +90,8 @@
       "send": "ZACHOD"
     },
     {
-      "label": "corridor to poster",
+      "label": "corridor to exit",
       "expect": "Jesteś\\ w\\ pokoju\\ prowadzącym\\ do\\ kla",
-      "send": "DOL"
-    },
-    {
-      "label": "poster room",
-      "expect": "Jesteś\\ w\\ pokoju\\ w\\ którym",
-      "send": "DOL"
-    },
-    {
-      "label": "teleport",
-      "expect": "BBBBBBBBZBZBZBZBZZZZZZZzzzzzzzzzbbzbBb",
-      "send": "TELEPORT"
-    },
-    {
-      "label": "exit",
-      "expect": "[0-9]+%\\.-?[0-9]+>",
       "send": "WYJSCIE"
     }
   ]
