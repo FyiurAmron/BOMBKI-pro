@@ -199,6 +199,13 @@ public class UnitsSwiatTests {
     }
 
     [Fact]
+    public void NettleThroneReturnsToCaveMouth() {
+        var throne = Rooms.RoomDefs.Single(room => room.number == Rooms.RoomNettleThrone);
+        Assert.Contains(throne.moves, move => move.cmd == Texts.CmdPolnoc && move.dest == Rooms.RoomCaveMouth);
+        Assert.DoesNotContain(throne.moves, move => move.cmd == Texts.CmdPolodnie && move.dest == Rooms.RoomCaveMouth);
+    }
+
+    [Fact]
     public void RoomNamesCoverConnectivity() {
         var rooms = Rooms.RoomDefs;
         Assert.All(rooms, room => Assert.False(string.IsNullOrWhiteSpace(room.name), $"room {room.number} has no name"));

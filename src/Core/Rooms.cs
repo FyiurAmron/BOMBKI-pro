@@ -1041,7 +1041,7 @@ public static class Rooms {
             number = RoomNettleThrone,
             name = TxtPlaceGrota,
             intro = [..TxtRoom88Lines1.Skip(1)],
-            moves = [Go(CmdPolodnie, RoomCaveMouth)],
+            moves = [Go(CmdPolnoc, RoomCaveMouth)],
             turn = entering => {
                 if (!entering) {
                     return;

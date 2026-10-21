@@ -146,7 +146,7 @@
     },
     {
       "label": "the grota exit list",
-      "expect": "Dostępne\\ WYJŚCIA[\\s\\S]*?POŁUDNIE: Wejście\\ do\\ groty[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Dostępne\\ WYJŚCIA[\\s\\S]*?PÓŁNOC: Wejście\\ do\\ groty[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WYJSCIE"
     },
     {
