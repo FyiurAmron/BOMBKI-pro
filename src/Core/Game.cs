@@ -368,16 +368,6 @@ public static class Game {
         new(TBagItem.Pipe, TxtStart_11),
     ];
 
-    public static TMovement Go(string cmd, int dest, Func<bool>? predicate = null, string? blocked = null) {
-        TMovement result = new() {
-            cmd = cmd,
-            dest = dest,
-            predicate = predicate,
-            blocked = blocked,
-        };
-        return result;
-    }
-
     public static void MoveTo(int room) {
         Session.Room = room;
         Session.OuterRoom = room;
@@ -752,14 +742,14 @@ public static class Game {
             SpawnGroup(MonstersOf(TMonster.Cabman, TMonster.Vendor, TMonster.Sweeper, TMonster.Drunkard, TMonster.SickMan), 7, RoomCityCentre);
         } while (!PastLimit(MonstersOf(TMonster.Cabman, TMonster.Vendor, TMonster.Sweeper, TMonster.Drunkard, TMonster.SickMan), 19));
         do {
-            SpawnGroup(MonstersOf(TMonster.Kid), 7, RoomValley);
-            SpawnGroup(MonstersOf(TMonster.Lunatic, TMonster.Listener, TMonster.Fan, TMonster.Man), 8, RoomValley);
-        } while (!PastLimit(MonstersOf(TMonster.Kid, TMonster.Lunatic, TMonster.Listener, TMonster.Fan, TMonster.Man), RoomValley));
+            SpawnGroup(MonstersOf(TMonster.Kid), 7, RoomEntertainmentCave);
+            SpawnGroup(MonstersOf(TMonster.Lunatic, TMonster.Listener, TMonster.Fan, TMonster.Man), 8, RoomEntertainmentCave);
+        } while (!PastLimit(MonstersOf(TMonster.Kid, TMonster.Lunatic, TMonster.Listener, TMonster.Fan, TMonster.Man), RoomEntertainmentCave));
         do {
-            SpawnGroup(MonstersOf(TMonster.Policeman, TMonster.Bouncer, TMonster.Gorilla), 9, RoomValley);
-            SpawnGroup(MonstersOf(TMonster.OldMan), 8, RoomValley);
-            SpawnGroup(MonstersOf(TMonster.Reporter), 7, RoomValley);
-        } while (!PastLimit(MonstersOf(TMonster.Policeman, TMonster.Bouncer, TMonster.Gorilla, TMonster.OldMan, TMonster.Reporter), RoomValley));
+            SpawnGroup(MonstersOf(TMonster.Policeman, TMonster.Bouncer, TMonster.Gorilla), 9, RoomEntertainmentCave);
+            SpawnGroup(MonstersOf(TMonster.OldMan), 8, RoomEntertainmentCave);
+            SpawnGroup(MonstersOf(TMonster.Reporter), 7, RoomEntertainmentCave);
+        } while (!PastLimit(MonstersOf(TMonster.Policeman, TMonster.Bouncer, TMonster.Gorilla, TMonster.OldMan, TMonster.Reporter), RoomEntertainmentCave));
         SpawnGroup(MonstersOf(TMonster.Guitarist, TMonster.Drummer, TMonster.Keyboardist, TMonster.Liroy), 3, RoomStage1);
         SpawnAt([.. PubSpawns.Skip(1)]);
         World.Door = true;
@@ -1821,47 +1811,55 @@ public static class Game {
 
     public class TMazeMove {
         public int room;
-        public TEnumList<TMazeDir, int> dest = new();
+        public List<TMazeDir> exits = [];
     }
 
     public static readonly List<TMazeMove> MazeMoves = [null!,
-        new() { room = RoomArena33, dest = new([ RoomArenaEntrance, RoomArena34, RoomArena35, RoomArena36 ]) },
-        new() { room = RoomArena34, dest = new([ RoomArena33, RoomArena37, RoomArena38, RoomArena39 ]) },
-        new() { room = RoomArena35, dest = new([ RoomArena35, RoomArena38, RoomArena40, RoomArena33 ]) },
-        new() { room = RoomArena36, dest = new([ RoomArena36, RoomArena39, RoomArena33, RoomArena41 ]) },
-        new() { room = RoomArena37, dest = new([ RoomArena34, RoomArena42, RoomArena43, RoomArena44 ]) },
-        new() { room = RoomArena38, dest = new([ RoomArena35, RoomArena43, RoomArena45, RoomArena34 ]) },
-        new() { room = RoomArena39, dest = new([ RoomArena36, RoomArena44, RoomArena34, RoomArena46 ]) },
-        new() { room = RoomArena40, dest = new([ RoomArena40, RoomArena45, RoomArena40, RoomArena35 ]) },
-        new() { room = RoomArena41, dest = new([ RoomArena41, RoomArena46, RoomArena36, RoomArena41 ]) },
-        new() { room = RoomArena42, dest = new([ RoomArena37, RoomArena47, RoomArena48, RoomArena49 ]) },
-        new() { room = RoomArena43, dest = new([ RoomArena38, RoomArena48, RoomArena50, RoomArena37 ]) },
-        new() { room = RoomArena44, dest = new([ RoomArena39, RoomArena49, RoomArena37, RoomArena51 ]) },
-        new() { room = RoomArena45, dest = new([ RoomArena40, RoomArena50, RoomArena45, RoomArena38 ]) },
-        new() { room = RoomArena46, dest = new([ RoomArena41, RoomArena51, RoomArena39, RoomArena46 ]) },
-        new() { room = RoomArena47, dest = new([ RoomArena42, RoomArena47, RoomArena52, RoomArena53 ]) },
-        new() { room = RoomArena48, dest = new([ RoomArena43, RoomArena52, RoomArena54, RoomArena42 ]) },
-        new() { room = RoomArena49, dest = new([ RoomArena44, RoomArena53, RoomArena42, RoomArena55 ]) },
-        new() { room = RoomArena50, dest = new([ RoomArena45, RoomArena54, RoomArena50, RoomArena43 ]) },
-        new() { room = RoomArena51, dest = new([ RoomArena46, RoomArena55, RoomArena44, RoomArena51 ]) },
-        new() { room = RoomArena52, dest = new([ RoomArena48, RoomArena52, RoomArena56, RoomArena47 ]) },
-        new() { room = RoomArena53, dest = new([ RoomArena49, RoomArena53, RoomArena47, RoomArena57 ]) },
-        new() { room = RoomArena54, dest = new([ RoomArena50, RoomArena56, RoomArena54, RoomArena48 ]) },
-        new() { room = RoomArena55, dest = new([ RoomArena51, RoomArena57, RoomArena49, RoomArena55 ]) },
-        new() { room = RoomArena56, dest = new([ RoomArena54, RoomArena56, RoomArena56, RoomArena52 ]) },
-        new() { room = RoomArena57, dest = new([ RoomArena55, RoomArena57, RoomArena53, RoomArena57 ]) },
+        new() { room = RoomArena33, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
+        new() { room = RoomArena34, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
+        new() { room = RoomArena35, exits = [TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
+        new() { room = RoomArena36, exits = [TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
+        new() { room = RoomArena37, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
+        new() { room = RoomArena38, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
+        new() { room = RoomArena39, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
+        new() { room = RoomArena40, exits = [TMazeDir.mdPolnoc, TMazeDir.mdZachod] },
+        new() { room = RoomArena41, exits = [TMazeDir.mdPolnoc, TMazeDir.mdWschod] },
+        new() { room = RoomArena42, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
+        new() { room = RoomArena43, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
+        new() { room = RoomArena44, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
+        new() { room = RoomArena45, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdZachod] },
+        new() { room = RoomArena46, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod] },
+        new() { room = RoomArena47, exits = [TMazeDir.mdPolodnie, TMazeDir.mdWschod, TMazeDir.mdZachod] },
+        new() { room = RoomArena48, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
+        new() { room = RoomArena49, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
+        new() { room = RoomArena50, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdZachod] },
+        new() { room = RoomArena51, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod] },
+        new() { room = RoomArena52, exits = [TMazeDir.mdPolodnie, TMazeDir.mdWschod, TMazeDir.mdZachod] },
+        new() { room = RoomArena53, exits = [TMazeDir.mdPolodnie, TMazeDir.mdWschod, TMazeDir.mdZachod] },
+        new() { room = RoomArena54, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdZachod] },
+        new() { room = RoomArena55, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod] },
+        new() { room = RoomArena56, exits = [TMazeDir.mdPolodnie, TMazeDir.mdZachod] },
+        new() { room = RoomArena57, exits = [TMazeDir.mdPolodnie, TMazeDir.mdWschod] },
     ];
 
-    public static void MazeMove(TMazeDir dir) {
-        for (int mi = 1; mi < MazeMoves.Count; mi++) {
-            TMazeMove m = MazeMoves[mi];
-            if (Session.Room == m.room) {
-                if (m.dest[dir] != m.room) {
-                    MoveTo(m.dest[dir]);
-                }
+    public static string MazeDirectionCommand(TMazeDir dir) =>
+        dir switch {
+            TMazeDir.mdPolodnie => CmdPolodnie,
+            TMazeDir.mdPolnoc => CmdPolnoc,
+            TMazeDir.mdWschod => CmdWschod,
+            TMazeDir.mdZachod => CmdZachod,
+            _ => throw new ArgumentOutOfRangeException(nameof(dir)),
+        };
 
-                break;
-            }
+    public static void MazeMove(TMazeDir dir) {
+        TMazeMove? maze = MazeMoves.Skip(1).FirstOrDefault(move => move.room == Session.Room);
+        if (maze?.exits.Contains(dir) != true) {
+            return;
+        }
+
+        int? destination = Rooms.RoomInDirection(Session.Room, MazeDirectionCommand(dir));
+        if (destination is int room) {
+            MoveTo(room);
         }
     }
 

@@ -80,6 +80,11 @@
       "send": "ZACHOD"
     },
     {
+      "label": "school gate",
+      "expect": "Jesteś\\ w\\ przejściu\\ do\\ Szkoły\\ Życia\\.[\\s\\S]*?WITAJ\\ PRZYGODO!!![\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "ZACHOD"
+    },
+    {
       "label": "room 4 (school of life hall)",
       "expect": "Jesteś\\ w\\ hallu\\ Szkoły\\ Życia\\ \\-\\ ogarnia\\ cię[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"

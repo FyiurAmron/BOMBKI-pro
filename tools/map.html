@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BOMBKI room map</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+      background: #0e151f;
+      color: #edf3fa;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      display: grid;
+      grid-template-columns: 238px minmax(0, 1fr);
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    #layer-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      min-height: 0;
+      padding: 20px 14px;
+      overflow: auto;
+      background: #151f2d;
+      border-right: 1px solid #2a3a50;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 1.15rem;
+    }
+
+    .brand p,
+    .menu-note {
+      margin: 7px 0 0;
+      color: #9fb0c4;
+      font-size: .78rem;
+      line-height: 1.4;
+    }
+
+    #layer-list {
+      display: grid;
+      gap: 7px;
+    }
+
+    .layer-toggle {
+      display: grid;
+      grid-template-columns: 15px 1fr auto;
+      align-items: center;
+      gap: 9px;
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #35475d;
+      border-radius: 8px;
+      background: #1a2736;
+      color: #d9e3ee;
+      text-align: left;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .layer-toggle:hover { background: #24364a; }
+
+    .layer-toggle[aria-pressed="true"] {
+      border-color: #57c6bc;
+      background: #1d454b;
+      color: #fff;
+      box-shadow: inset 3px 0 #57c6bc;
+    }
+
+    .layer-dot {
+      width: 13px;
+      height: 13px;
+      border: 1px solid #ffffff70;
+      border-radius: 4px;
+      background: var(--layer-color);
+    }
+
+    .layer-count {
+      color: #9fb0c4;
+      font-size: .75rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .menu-note {
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px solid #2a3a50;
+    }
+
+    #map-area {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      min-height: 0;
+    }
+
+    #map-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 22px;
+      padding: 12px 18px;
+      background: #151f2d;
+      border-bottom: 1px solid #2a3a50;
+    }
+
+    #map-status {
+      margin-right: auto;
+      color: #c0cddd;
+      font-size: .88rem;
+    }
+
+    #map-status strong { color: #fff; }
+
+    #legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      color: #c0cddd;
+      font-size: .76rem;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .legend-line {
+      position: relative;
+      width: 24px;
+      border-top: 2px solid #a9bfd8;
+    }
+
+    .legend-line.one-way::after {
+      position: absolute;
+      top: -5px;
+      right: -1px;
+      content: "▶";
+      color: #a9bfd8;
+      font-size: 9px;
+    }
+
+    .legend-line.conditional { border-top: 2px dashed #efbd56; }
+    .legend-vertical { color: #82d4c9; font-weight: 800; }
+
+    #map-shell {
+      flex: 1;
+      min-width: 0;
+      min-height: 0;
+      overflow: auto;
+      padding: 20px;
+      background: #0e151f;
+    }
+
+    #map-canvas {
+      position: relative;
+      margin: 0 auto;
+      border: 1px solid #53647a;
+      border-radius: 8px;
+      background-color: #111b28;
+      background-image:
+        linear-gradient(to right, #73849a38 1px, transparent 1px),
+        linear-gradient(to bottom, #73849a38 1px, transparent 1px);
+    }
+
+    #connections {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      overflow: visible;
+      pointer-events: none;
+    }
+
+    .connection {
+      fill: none;
+      stroke: #a9bfd8;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+    }
+
+    .connection.conditional {
+      stroke: #efbd56;
+      stroke-dasharray: 5 4;
+    }
+
+    .room {
+      position: absolute;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      padding: 6px;
+      overflow: hidden;
+      border: 1px solid #8fc5d5;
+      border-radius: 8px;
+      background: #205b72;
+      color: #fff;
+      text-align: center;
+      box-shadow: 0 4px 10px #0008;
+    }
+
+    .room-name {
+      max-width: 100%;
+      font-size: .76rem;
+      font-weight: 750;
+      line-height: 1.1;
+      overflow-wrap: anywhere;
+    }
+
+    .room-coordinates {
+      color: #c7d9e6;
+      font-size: .58rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .vertical-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2px;
+      max-width: 100%;
+    }
+
+    .vertical-link {
+      display: block;
+      flex: 1 1 100%;
+      max-width: 100%;
+      padding: 2px 4px;
+      border: 1px solid var(--target-layer-color);
+      border-radius: 4px;
+      background: color-mix(in srgb, var(--target-layer-color) 18%, #173f43);
+      color: #e4edf4;
+      font-size: .61rem;
+      font-family: inherit;
+      line-height: 1.15;
+      overflow-wrap: anywhere;
+      white-space: normal;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .vertical-link:hover { filter: brightness(1.25); }
+    .vertical-link:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+    .vertical-link.conditional {
+      outline: 1px dashed #efbd56;
+      outline-offset: -2px;
+    }
+
+    .vertical-direction {
+      color: var(--target-layer-color);
+      font-weight: 850;
+    }
+
+    #empty-state {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: #9fb0c4;
+      font-size: 1rem;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    @media (max-width: 760px) {
+      body { grid-template-columns: 185px minmax(0, 1fr); }
+      #layer-menu { padding: 14px 10px; }
+      #map-header { padding: 10px 12px; }
+      #map-shell { padding: 12px; }
+      #legend { gap: 7px 10px; }
+    }
+  </style>
+</head>
+<body>
+  <aside id="layer-menu">
+    <div class="brand">
+      <h1>BOMBKI map</h1>
+      <p>Room layers by Z coordinate</p>
+    </div>
+    <nav id="layer-list" aria-label="Map layers"></nav>
+    <p class="menu-note">Select a layer to view its rooms and exits. Click the selected layer again to hide it. Vertical exits are marked on room tiles.</p>
+  </aside>
+  <main id="map-area">
+    <header id="map-header">
+      <div id="map-status" aria-live="polite">Loading map...</div>
+      <div id="legend" aria-label="Connection legend">
+        <span class="legend-item"><span class="legend-line"></span>Two-way exit</span>
+        <span class="legend-item"><span class="legend-line one-way"></span>One-way exit</span>
+        <span class="legend-item"><span class="legend-line conditional"></span>Conditional exit</span>
+        <span class="legend-item"><span class="legend-vertical">UP to room</span>Vertical exit target</span>
+      </div>
+    </header>
+    <section id="map-shell" aria-label="Room map">
+      <div id="map-canvas">
+        <svg id="connections" aria-label="Room connections" role="img">
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#a9bfd8"></path>
+            </marker>
+            <marker id="conditional-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#efbd56"></path>
+            </marker>
+          </defs>
+        </svg>
+        <div id="empty-state" hidden></div>
+      </div>
+    </section>
+  </main>
+  <script>
+    const mapData = {"rooms":[{"id":10,"name":"Pokój 5","entry":"Jesteś w dosyć ciasnym pokoju i niczego tu nie ma","x":-3,"y":-1,"z":-1},{"id":3,"name":"Poddziemny pokój treningowy (2)","entry":"Zszedłeś na DÓŁ gdzie trenuje się medytując\nNa środku na wielki materac przeznaczony do medytacji\nNa ściance jest piękniutki PLAKAT","x":0,"y":-1,"z":-1},{"id":62,"name":"Tłum 2","entry":"Na brzegach tłum jest mniejszy, mimo to uczucie ścisku irytuje cię","x":-1,"y":0,"z":-1},{"id":65,"name":"Tłum 5","entry":"Jesteś z boku ale przy balustradkach ludzie wpychają cię na te balustradki\nNie można oddychać w takim tłumie - lepiej szybko stąd idź","x":0,"y":0,"z":-1},{"id":72,"name":"Scena 3","entry":"Ufff przebiegłeś przez środek sceny więc trema cię już nie dręczy\nDalej pisać nie ma o czym więc możesz mi naskoczyć","x":1,"y":0,"z":-1},{"id":60,"name":"Jaskinia Rozrywek","entry":"Jesteś w Jaskini Rozrywek. Jaskinia ciągnie się na PÓŁNOC, na WSCHODZIE\njest słyszalny jakiś dziwny hałas, na zachodzie zaś \"la la la la\" \nZawsze możesz wrócić się idąc na GÓRĘ ;)","x":-2,"y":1,"z":-1},{"id":61,"name":"Tłum 1","entry":"Kiedy podszedłeś bliżej zbaraniałeś - to sala koncertowa!!!\nWokół tłumy słuchają muzyki, dziwna to muzyka - właściwie same słowa\nNa ścianie jest PLAKAT","x":-1,"y":1,"z":-1},{"id":64,"name":"Tłum 4","entry":"Jesteś w środku tłumu a do tego przy balustradkach - co za tłok\nNie można oddychać w takim tłumie - lepiej szybko stąd idź","x":0,"y":1,"z":-1},{"id":71,"name":"Środek sceny","entry":"Ludzie się na ciebie gapią, jesteś na środku sceny!!! Któś ci mówi:\nHey man it's cool yeah! A ty na to: je je kul kul...","x":1,"y":1,"z":-1},{"id":63,"name":"Tłum 3","entry":"Na brzegach tłum jest rzadszy, boisz się pomyśleć co się dzieje w środku","x":-1,"y":2,"z":-1},{"id":66,"name":"Tłum 6","entry":"Jesteś przy balustradkach - nie będę się rozwodził jak ci jest ciasno","x":0,"y":2,"z":-1},{"id":70,"name":"Scena 1","entry":"All right - jesteś na scenie!!! Na twój widok ochroniarze coś mamroczą\nTłumy cię praktycznie nie zauważają bo ich oczy skierowane są na LIROYA\nGdy nagle wśród tłumu zauważasz niezłą lalę, jednak ona kocha LIROYA :(","x":1,"y":2,"z":-1},{"id":67,"name":"Piwiarnia","entry":"Jesteś w piwiarni - wokół ciebie unosi się zapach piwa, ty nie pijasz piwa\nTy pijasz jabola!!! Nie rezygnując ze swych przyzwyczajeń rozglądasz się","x":-1,"y":3,"z":-1},{"id":68,"name":"Wejście na scenę","entry":"To jest wejście na scenę na której tańczy LIROY - uważaj\nNa ścianie wisi TABLICZKA","x":0,"y":3,"z":-1},{"id":69,"name":"Za Kulisami","entry":"Jesteś na scenie, właściwie to dopiero początek sceny\nWłaściwie jesteś jeszcze za kulisami bo widzowie cię nie widzą","x":1,"y":3,"z":-1},{"id":8,"name":"Pokój 3","entry":"Jesteś w dosyć ciasnym pokoju i niczego tu nie ma","x":-3,"y":-2,"z":0},{"id":0,"name":"Tam gdzie zaczynasz grę","entry":"Tu zaczyna się grę","x":0,"y":-2,"z":0},{"id":6,"name":"Pokój 1","entry":"Jesteś w dosyć ciasnym pokoju i niczego tu nie ma","x":-4,"y":-1,"z":0},{"id":5,"name":"Pokój orientacyjny","entry":"SZOK!!! AAA UPSI O NIE FUJ ACH AJ OCH NEIN EEE UGH!\nStwierdzasz że w tym pokoju jest no, dużo pokoi! O nie!!! Jak się wydostać?!?\nAha (na ścianie jest PLAKAT)","x":-3,"y":-1,"z":0},{"id":4,"name":"Szkoła Życia","entry":"Jesteś w hallu Szkoły Życia - ogarnia cię cykoria\nNo a poza tym na ścianie jest AFISZ","x":-2,"y":-1,"z":0},{"id":19,"name":"Przejście do Szkoły","entry":"Jesteś w przejściu do Szkoły Życia.\nWITAJ PRZYGODO!!!","x":-1,"y":-1,"z":0},{"id":1,"name":"Salon","entry":"Jesteś w okrągłym salonie wypełnionym witrażami\nW powietrzu unoszą się zapachy i są to zapachy OK\nNo a poza tym na ścianie jest PLAKAT\nNapisz PATRZ PLAKAT aby go odczytać","x":0,"y":-1,"z":0},{"id":2,"name":"Pokój treningowy (1)","entry":"Jesteś w pokoju gdzie Rambo trenuje swych uczniów (teraz go tu nie ma)\nWszędzie są przedmioty do różnych rodzajów ćwiczeń\nNo a poza tym na ścianie jest PLAKAT","x":1,"y":-1,"z":0},{"id":7,"name":"Pokój 2","entry":"Jesteś w dosyć ciasnym pokoju i niczego tu nie ma","x":-3,"y":0,"z":0},{"id":31,"name":"Ul. Długa 2","entry":"Idąc ulicą długą na PÓŁNOC spostrzegasz Jaskinię Rozrywek\nA na POŁUDNIE baśniowy gaj...","x":-2,"y":0,"z":0},{"id":30,"name":"Ul. Długa","entry":"Ulica Długa ciągnie się w nieskończoność, sorki\nNa GÓRZE prowadzą kręte schody na arenę przeznaczoną do walki","x":-1,"y":0,"z":0},{"id":20,"name":"Centrum miasta","entry":"Jesteś w centrum miasta: na ścianie jest PLAKAT (duży ruch)","x":0,"y":0,"z":0},{"id":89,"name":"Przejście na Ciemną","entry":"Jesteś w przejściu na Ulicę Ciemną.\nJest tam ciemno.","x":1,"y":0,"z":0},{"id":73,"name":"Droga do Jaskini Rozrywek","entry":"Jesteś na drodze prowadzącej do Jaskini Rozrywek.\nDalej wiedzie strome zejście, a z dołu dziwna muzyka.","x":-2,"y":1,"z":0},{"id":24,"name":"Zbrojownia","entry":"Jesteś w zbrojowni - sklep niedawno został otwarty\nSPRZEDAWCA (brzydka aura) STARA się wciśnąć ci jakiś towar \nNa ścianie wisi PLAKAT","x":-1,"y":1,"z":0},{"id":21,"name":"Ul. Sklepikowa 1","entry":"Jesteś na ulicy na ulicy Sklepikowej - jak sama nazwa wskazuje\nJest tu parę sklepików które być może ci się przydadzą","x":0,"y":1,"z":0},{"id":23,"name":"Piekarnia","entry":"Jesteś w piekarni, sklep przesiąknięty jest przyjemnym zapachem chleba\nPiekarz miło się na ciebie patrzy wycierając mąkę z twarzy\nNa ścianie jest PLAKAT cały w mące","x":1,"y":1,"z":0},{"id":26,"name":"Sklep magiczny","entry":"Wchodzisz do sklepu ale niczego tu nie ma poza SPRZEDAWCĄ i jego towarem","x":-1,"y":2,"z":0},{"id":22,"name":"Ul. Sklepikowa 2","entry":"Ciągnie się tędy ulica Sklepikowa. Jest tu jeszcze parę\ninteresujących sklepów. Dalej jest jeszcze kilka nieistotnych ulic.","x":0,"y":2,"z":0},{"id":25,"name":"Sklep wielobranżowy","entry":"Wszedłeś do sklepu wielobranżowego, stwierdzasz obecność SPRZEDAWCY\nNa drzwiach została wywieszona WYWIESZKA","x":1,"y":2,"z":0},{"id":109,"name":"Las 6","entry":"Wiele wskazuje na to, że jesteś w lesie, ale ciężko to stwierdzić jednoznacznie, bo cały widok zasłaniają ci drzewa.","x":-3,"y":3,"z":0},{"id":107,"name":"Las 4","entry":"Wiele wskazuje na to, że jesteś w lesie, ale ciężko to stwierdzić jednoznacznie, bo cały widok zasłaniają ci drzewa.","x":-2,"y":3,"z":0},{"id":105,"name":"Las 2","entry":"Wiele wskazuje na to, że jesteś w lesie, ale ciężko to stwierdzić jednoznacznie, bo cały widok zasłaniają ci drzewa.","x":-1,"y":3,"z":0},{"id":99,"name":"Brama na Trakt","entry":"Jesteś przy bramie prowadzącej na Trakt.\nBrama jak szklanka - w połowie otwarta, w połowie zamknięta. Nie, to bez sensu.","x":0,"y":3,"z":0},{"id":103,"name":"droga 3","entry":"Co to za głupota? Droga skręca trochę w lewo, trochę w prawo. Ale\nprzecież równie dobrze mogła by iść środkiem, zyskali by na tym wszyscy\nA szczególnie ty, bo bolą cię nogi od tego chodzenia niemożebnie\nUps. Droga się kończy na tej przepastnej rzece. O dalszej podróży nie ma mowy","x":-3,"y":4,"z":0},{"id":102,"name":"droga 2","entry":"Idziesz dalej kamienistą drogą, przydała by ci się jaka bryczka najlepiej \nale cóż, konie są tylko dla najbogatszych. Dla biedoty nogi.","x":-2,"y":4,"z":0},{"id":101,"name":"droga 1","entry":"Idziesz drogą do miasta po drodze mijasz DROGOWSKAZ. Jest tu o wiele \nniebezpieczniej niż w mieście pełno tu zezimierzkow różnego rodzaju\nJeśli nie chcesz mieć kłopotów lepiej dobrze trzymaj się drogi...","x":-1,"y":4,"z":0},{"id":100,"name":"Rozjazd!","entry":"Znalazłeś się na rozjeździe dróg, drogi pilnuje QUEST-MASTER \nQUEST-MASTER nie puści cię dalej dopóki nie zaczniesz i nie rozwiążesz QUESTa","x":0,"y":4,"z":0},{"id":110,"name":"Droga o której możesz pomarzyć (bo jest w produkcji!!!)","entry":"Ta droga jest jeszcze w produkcji.","x":1,"y":4,"z":0},{"id":108,"name":"Las 5","entry":"Wiele wskazuje na to, że jesteś w lesie, ale ciężko to stwierdzić jednoznacznie, bo cały widok zasłaniają ci drzewa.","x":-3,"y":5,"z":0},{"id":106,"name":"Las 3","entry":"Wiele wskazuje na to, że jesteś w lesie, ale ciężko to stwierdzić jednoznacznie, bo cały widok zasłaniają ci drzewa.","x":-2,"y":5,"z":0},{"id":104,"name":"Las 1","entry":"Wiele wskazuje na to, że jesteś w lesie, ale ciężko to stwierdzić jednoznacznie, bo cały widok zasłaniają ci drzewa.","x":-1,"y":5,"z":0},{"id":88,"name":"Grota","entry":"Jeżu, coż to jest! Na tronie siedzi 20 razy większa od ciebie POKRZYWA\nWokół niej uwijają się pracowite mlecze dostarczając jej świeżego\nmięsa ludzkiego!!! Uwielbia ona mózgi które wysysa jak pyszny pudding\nW pewnym momecie zauważa ciebie: \"Witaj wędrowcze, podobam ci się?\" (TAK, NIE)","x":0,"y":-5,"z":1},{"id":87,"name":"Wejście do groty","entry":"Mlask, mlask, ktoś rzeczywiście się obżera. Czy jesteś 100% pewnym, że\nchcesz się zagłębić w te niebadane czeluście piekielne? Może lepiej wróć!","x":0,"y":-4,"z":1},{"id":86,"name":"Domek","entry":"Dobra, jesteś w środku. Brak oświetlenia cię nie wzrusza, dookoła różne GARNKI","x":-2,"y":-3,"z":1},{"id":85,"name":"Budynek","entry":"Do dobra, wygląda to na jakiś dom, wejdźmy do środka?\nGod damn, a niech mnie ma bób w swojej opiece, te DRZWI żyją!!!","x":-1,"y":-3,"z":1},{"id":84,"name":"Podejrzane krzaki","entry":"To ciekawe, że wcześniej nie zauważyłeś tych krzaków. Przedzierasz\nsię przez ich gąszcz. Wygląda to na niezbyt miłą krainę\nDalej na ZACHÓD widzisz jakieś podejrzane budowle, a na POŁUDNIE... brrrr.\nNa POŁUDNIE jak gdyby któś się obżerał, ale bardzo głośno i niebezpiecznie","x":0,"y":-3,"z":1},{"id":83,"name":"Polana","entry":"............................. PIERDUT......... PIERDUT...... PIERDUT...\nDopiero teraz się zorientowałeś że na środku stoi wielkie drzewo\nHmmm, ale zaraz... Te krzaki na ZACHÓD wyglądają bardzo podejrzanie...","x":1,"y":-3,"z":1},{"id":81,"name":"Bluszcz 5","entry":"Przedzierasz się przez cały ten syf i najchętniej byś\nteraz pożyczył kosiarki od swego kolegi Tomka","x":0,"y":-2,"z":1},{"id":80,"name":"Bluszcz 4","entry":"Choć to mało prawdopodobne tutaj jest jeszcze ciemniej\nPonadto w niektórych miejscach znajduje się błoto i inne bzdury\nNa środku znajduje się STUDNIA i mało czytelny NAPIS","x":1,"y":-2,"z":1},{"id":82,"name":"Bluszcz 6","entry":"W tej komnacie jest znacznie jaśniej a to dlatego że napromieniowane\ni zmutowane rośliny idą w twym kierunku","x":2,"y":-2,"z":1},{"id":9,"name":"Pokój 4","entry":"Jesteś w malutkim pokoju ale widzisz WYJŚCIA w dwie strony \nSkądś słyszysz dziwne niepokojące wrzaski","x":-3,"y":-1,"z":1},{"id":17,"name":"Jedyna droga nie prowadząca do klatek","entry":"Jesteś w pokoju w którym jest PLAKAT (i śmierdzi tu)","x":-2,"y":-1,"z":1},{"id":79,"name":"Bluszcz 3","entry":"Słyszysz pokrzywę którą pożera bezbronny szczaw... Ohyda\nWokół tak ciemno, że gdyby nie ja już dawno byś zginął","x":0,"y":-1,"z":1},{"id":77,"name":"Bluszcz 1","entry":"Znalazłeś się wśród bluszczu, wokół ciebie tajemnicze rośliny \nMusisz bardzo uważać, tu nawet stokrotka może być zabójcza","x":1,"y":-1,"z":1},{"id":78,"name":"Bluszcz 2","entry":"Wszedłeś w gąszcz roślin i kwiatów\nNie ma co opisywać, wystarczy powiedzieć, że jest tu bydło chwastów","x":2,"y":-1,"z":1},{"id":58,"name":"Droga na arenę","entry":"Jesteś na drodze prowadzącej na arenę.\nKręte schody wiją się przed tobą jak robaki po deszczu.","x":-1,"y":0,"z":1},{"id":75,"name":"Ul. Ciemna","entry":"Jesteś na ulicy Ciemnej, właściwie na razie nie jest tu jeszcze tak ciemno \nTa ulica wygląda na remontowaną, na PÓŁNOC widzisz jakiś bar \nNa POŁUDNIE przebiegają cię dreszcze, jest tam naprawdę ciemno","x":1,"y":0,"z":1},{"id":32,"name":"Wejście na arenę","entry":"To arena. Przychodzą tu tacy jak ty po to, aby mordować\n!!! O nie!!!!!! To straszne!!! (Heh. dał się nabrać) (napisz PATRZ PLAKAT)","x":-1,"y":1,"z":1},{"id":76,"name":"Bar \"POD DWOMA PEDAŁAMI\"","entry":"Jesteś w barze \"POD DWOMA PEDAŁAMI\". Chcąc rozwikłać tę dziwną nazwę\npytasz się barmana: przepraszam, dlaczego ten bar nazywa się  \n\"POD DWOMA PEDAŁAMI\"? A on na to: \"Właściwie to nie wiem,\nale spytam się żony: Mareeek!!!\"","x":1,"y":1,"z":1},{"id":41,"name":"Arena 9","entry":"Jesteś na arenie i czujesz potrzebę zabijania","x":-3,"y":2,"z":1},{"id":36,"name":"Arena 4","entry":"Jesteś na arenie i czujesz potrzebę zabijania","x":-2,"y":2,"z":1},{"id":33,"name":"Arena 1","entry":"Jesteś na arenie i czujesz potrzebę zabijania","x":-1,"y":2,"z":1},{"id":35,"name":"Arena 3","entry":"Jesteś na arenie i czujesz potrzebę zabijania","x":0,"y":2,"z":1},{"id":40,"name":"Arena 8","entry":"Jesteś na arenie i czujesz potrzebę zabijania","x":1,"y":2,"z":1},{"id":46,"name":"Arena 14","entry":"Jesteś na arenie i czujesz potrzebę zabijania","x":-3,"y":3,"z":1},{"id":39,"name":"Arena 7","entry":"Jesteś na arenie i czujesz potrzebę zabijania","x":-2,"y":3,"z":1},{"id":34,"name":"Arena 2","entry":"Jesteś na arenie i czujesz potrzebę zabijania","x":-1,"y":3,"z":1},{"id":38,"name":"Arena 6","entry":"Jesteś na arenie i czujesz potrzebę zabijania","x":0,"y":3,"z":1},{"id":45,"name":"Arena 13","entry":"Jesteś na arenie i czujesz potrzebę zabijania","x":1,"y":3,"z":1},{"id":51,"name":"Arena 19","entry":"Jesteś na arenie i czujesz potrzebę zabijania","x":-3,"y":4,"z":1},{"id":44,"name":"Arena 12","entry":"Jesteś na arenie i czujesz potrzebę zabijania","x":-2,"y":4,"z":1},{"id":37,"name":"Arena 5","entry":"Jesteś na arenie i czujesz potrzebę zabijania","x":-1,"y":4,"z":1},{"id":43,"name":"Arena 11","entry":"Jesteś na arenie i czujesz potrzebę zabijania","x":0,"y":4,"z":1},{"id":50,"name":"Arena 18","entry":"Jesteś na arenie i czujesz potrzebę zabijania","x":1,"y":4,"z":1},{"id":55,"name":"Arena 23","entry":"Jesteś na arenie i czujesz potrzebę zabijania","x":-3,"y":5,"z":1},{"id":49,"name":"Arena 17","entry":"Jesteś na arenie i czujesz potrzebę zabijania","x":-2,"y":5,"z":1},{"id":42,"name":"Arena 10","entry":"Jesteś na arenie i czujesz potrzebę zabijania","x":-1,"y":5,"z":1},{"id":48,"name":"Arena 16","entry":"Jesteś na arenie i czujesz potrzebę zabijania","x":0,"y":5,"z":1},{"id":54,"name":"Arena 22","entry":"Jesteś na arenie i czujesz potrzebę zabijania","x":1,"y":5,"z":1},{"id":57,"name":"Arena 25","entry":"Jesteś na arenie i czujesz potrzebę zabijania","x":-3,"y":6,"z":1},{"id":53,"name":"Arena 21","entry":"Jesteś na arenie i czujesz potrzebę zabijania","x":-2,"y":6,"z":1},{"id":47,"name":"Arena 15","entry":"Jesteś na arenie i czujesz potrzebę zabijania","x":-1,"y":6,"z":1},{"id":52,"name":"Arena 20","entry":"Jesteś na arenie i czujesz potrzebę zabijania","x":0,"y":6,"z":1},{"id":56,"name":"Arena 24","entry":"Jesteś na arenie i czujesz potrzebę zabijania","x":1,"y":6,"z":1},{"id":15,"name":"Klatka odpornego","entry":"Ten pokój jest cały obryzgany krwią na ścianach flaki i mózgi ludzkie\nPowolny acz odporny na ból POTWÓR spokojnie leży pod ścianą\nParujące wnętrzności potwora są rozwleczone dookoła","x":-3,"y":-2,"z":2},{"id":13,"name":"Klatka silnego","entry":"Ten pokój jest cały obryzgany krwią na ścianach flaki i mózgi ludzkie\nSilny, napakowany POTWÓR stoi pod ścianą\nParujące wnętrzności potwora są rozwleczone dookoła","x":-4,"y":-1,"z":2},{"id":11,"name":"Wejścia do klatek","entry":"Jesteś w pokoju prowadzącym do klatek\nWe wszystkich kierunkach są klatki i ujadające się w nich potwory\nNo a poza tym na ścianie jest PLAKAT","x":-3,"y":-1,"z":2},{"id":12,"name":"Klatka cieniasa","entry":"Ten pokój jest cały obryzgany krwią na ścianach flaki i mózgi ludzkie\nPOTWÓR (cienias) stoi na jednej nodze pod ścianą\nParujące wnętrzności potwora są rozwleczone dookoła","x":-2,"y":-1,"z":2},{"id":14,"name":"Klatka zręcznego","entry":"Ten pokój jest cały obryzgany krwią na ścianach flaki i mózgi ludzkie\nZręczny POTWÓR śmiga między ścianami\nParujące wnętrzności potwora śmierdzą dosyć mocno","x":-3,"y":0,"z":2},{"id":16,"name":"Klatka silnego, odpornego i zręcznego","entry":"Ten pokój jest cały obryzgany krwią na ścianach flaki i mózgi ludzkie\nOgromny POTWÓR widząc mięso rzuca się na ciebie\nParujące wnętrzności potwora są rozwleczone dookoła","x":-3,"y":-1,"z":3}],"edges":[{"from":0,"to":1,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":1,"to":3,"command":"DOL","conditional":false,"blocked":null,"kind":"room"},{"from":1,"to":20,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":1,"to":0,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":1,"to":2,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":1,"to":19,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"room"},{"from":2,"to":1,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"room"},{"from":3,"to":1,"command":"GORA","conditional":false,"blocked":null,"kind":"room"},{"from":4,"to":19,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":4,"to":5,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"room"},{"from":5,"to":10,"command":"DOL","conditional":false,"blocked":null,"kind":"room"},{"from":5,"to":9,"command":"GORA","conditional":false,"blocked":null,"kind":"room"},{"from":5,"to":7,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":5,"to":8,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":5,"to":4,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":5,"to":6,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"room"},{"from":6,"to":5,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":7,"to":5,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":8,"to":5,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":9,"to":5,"command":"DOL","conditional":false,"blocked":null,"kind":"room"},{"from":9,"to":11,"command":"GORA","conditional":false,"blocked":null,"kind":"room"},{"from":9,"to":17,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":10,"to":5,"command":"GORA","conditional":false,"blocked":null,"kind":"room"},{"from":11,"to":9,"command":"DOL","conditional":false,"blocked":null,"kind":"room"},{"from":11,"to":16,"command":"GORA","conditional":false,"blocked":null,"kind":"room"},{"from":11,"to":14,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":11,"to":15,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":11,"to":12,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":11,"to":13,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"room"},{"from":12,"to":11,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"room"},{"from":13,"to":11,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":14,"to":11,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":15,"to":11,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":16,"to":11,"command":"DOL","conditional":false,"blocked":null,"kind":"room"},{"from":17,"to":9,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"room"},{"from":19,"to":1,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":19,"to":4,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"room"},{"from":20,"to":21,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":20,"to":1,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":20,"to":89,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":20,"to":30,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"room"},{"from":21,"to":22,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":21,"to":20,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":21,"to":23,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":21,"to":24,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"room"},{"from":22,"to":99,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":22,"to":21,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":22,"to":25,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":22,"to":26,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"room"},{"from":23,"to":21,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"room"},{"from":24,"to":21,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":25,"to":22,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"room"},{"from":26,"to":22,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":30,"to":58,"command":"GORA","conditional":false,"blocked":null,"kind":"room"},{"from":30,"to":20,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":30,"to":31,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"room"},{"from":31,"to":73,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":31,"to":30,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":32,"to":33,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":32,"to":58,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":33,"to":34,"command":"POLNOC","conditional":false,"blocked":null,"kind":"maze"},{"from":33,"to":32,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"maze"},{"from":33,"to":35,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":33,"to":36,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":34,"to":37,"command":"POLNOC","conditional":false,"blocked":null,"kind":"maze"},{"from":34,"to":33,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"maze"},{"from":34,"to":38,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":34,"to":39,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":35,"to":38,"command":"POLNOC","conditional":false,"blocked":null,"kind":"maze"},{"from":35,"to":40,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":35,"to":33,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":36,"to":39,"command":"POLNOC","conditional":false,"blocked":null,"kind":"maze"},{"from":36,"to":33,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":36,"to":41,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":37,"to":42,"command":"POLNOC","conditional":false,"blocked":null,"kind":"maze"},{"from":37,"to":34,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"maze"},{"from":37,"to":43,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":37,"to":44,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":38,"to":43,"command":"POLNOC","conditional":false,"blocked":null,"kind":"maze"},{"from":38,"to":35,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"maze"},{"from":38,"to":45,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":38,"to":34,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":39,"to":44,"command":"POLNOC","conditional":false,"blocked":null,"kind":"maze"},{"from":39,"to":36,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"maze"},{"from":39,"to":34,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":39,"to":46,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":40,"to":45,"command":"POLNOC","conditional":false,"blocked":null,"kind":"maze"},{"from":40,"to":35,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":41,"to":46,"command":"POLNOC","conditional":false,"blocked":null,"kind":"maze"},{"from":41,"to":36,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":42,"to":47,"command":"POLNOC","conditional":false,"blocked":null,"kind":"maze"},{"from":42,"to":37,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"maze"},{"from":42,"to":48,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":42,"to":49,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":43,"to":48,"command":"POLNOC","conditional":false,"blocked":null,"kind":"maze"},{"from":43,"to":38,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"maze"},{"from":43,"to":50,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":43,"to":37,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":44,"to":49,"command":"POLNOC","conditional":false,"blocked":null,"kind":"maze"},{"from":44,"to":39,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"maze"},{"from":44,"to":37,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":44,"to":51,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":45,"to":50,"command":"POLNOC","conditional":false,"blocked":null,"kind":"maze"},{"from":45,"to":40,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"maze"},{"from":45,"to":38,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":46,"to":51,"command":"POLNOC","conditional":false,"blocked":null,"kind":"maze"},{"from":46,"to":41,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"maze"},{"from":46,"to":39,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":47,"to":42,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"maze"},{"from":47,"to":52,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":47,"to":53,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":48,"to":52,"command":"POLNOC","conditional":false,"blocked":null,"kind":"maze"},{"from":48,"to":43,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"maze"},{"from":48,"to":54,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":48,"to":42,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":49,"to":53,"command":"POLNOC","conditional":false,"blocked":null,"kind":"maze"},{"from":49,"to":44,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"maze"},{"from":49,"to":42,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":49,"to":55,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":50,"to":54,"command":"POLNOC","conditional":false,"blocked":null,"kind":"maze"},{"from":50,"to":45,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"maze"},{"from":50,"to":43,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":51,"to":55,"command":"POLNOC","conditional":false,"blocked":null,"kind":"maze"},{"from":51,"to":46,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"maze"},{"from":51,"to":44,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":52,"to":48,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"maze"},{"from":52,"to":56,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":52,"to":47,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":53,"to":49,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"maze"},{"from":53,"to":47,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":53,"to":57,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":54,"to":56,"command":"POLNOC","conditional":false,"blocked":null,"kind":"maze"},{"from":54,"to":50,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"maze"},{"from":54,"to":48,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":55,"to":57,"command":"POLNOC","conditional":false,"blocked":null,"kind":"maze"},{"from":55,"to":51,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"maze"},{"from":55,"to":49,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":56,"to":54,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"maze"},{"from":56,"to":52,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":57,"to":55,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"maze"},{"from":57,"to":53,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"maze"},{"from":58,"to":30,"command":"DOL","conditional":false,"blocked":null,"kind":"room"},{"from":58,"to":32,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":60,"to":73,"command":"GORA","conditional":false,"blocked":null,"kind":"room"},{"from":60,"to":61,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":61,"to":63,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":61,"to":62,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":61,"to":64,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":61,"to":60,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"room"},{"from":62,"to":61,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":62,"to":65,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":63,"to":67,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":63,"to":61,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":63,"to":66,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":64,"to":66,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":64,"to":65,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":64,"to":61,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"room"},{"from":65,"to":64,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":65,"to":62,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"room"},{"from":66,"to":64,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":66,"to":63,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"room"},{"from":67,"to":63,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":67,"to":68,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":68,"to":69,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":68,"to":67,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"room"},{"from":69,"to":70,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":69,"to":68,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"room"},{"from":70,"to":69,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":70,"to":71,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":71,"to":70,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":71,"to":72,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":72,"to":71,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":73,"to":60,"command":"DOL","conditional":false,"blocked":null,"kind":"room"},{"from":73,"to":31,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":75,"to":89,"command":"DOL","conditional":false,"blocked":null,"kind":"room"},{"from":75,"to":76,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":75,"to":77,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":76,"to":75,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":77,"to":75,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":77,"to":80,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":77,"to":78,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":77,"to":79,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"room"},{"from":78,"to":77,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"room"},{"from":79,"to":77,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":80,"to":77,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":80,"to":83,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":80,"to":82,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":80,"to":81,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"room"},{"from":81,"to":80,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":82,"to":80,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"room"},{"from":83,"to":80,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":83,"to":84,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"room"},{"from":84,"to":87,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":84,"to":83,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":84,"to":85,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"room"},{"from":85,"to":84,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":85,"to":86,"command":"ZACHOD","conditional":true,"blocked":"Spróbuj ominąć te mega-przypakowane DRZWI których by się He-man nie powstydził!","kind":"room"},{"from":86,"to":85,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":87,"to":84,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":87,"to":88,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":88,"to":87,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":89,"to":75,"command":"GORA","conditional":false,"blocked":null,"kind":"room"},{"from":89,"to":20,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"room"},{"from":99,"to":100,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":99,"to":22,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":100,"to":99,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":100,"to":110,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":100,"to":101,"command":"ZACHOD","conditional":true,"blocked":"QUEST-MASTER mówi ci: bardzo mi przykro ale musisz mieć PRZEPUSTKĘ","kind":"room"},{"from":101,"to":104,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":101,"to":105,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":101,"to":100,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":101,"to":102,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"room"},{"from":102,"to":106,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":102,"to":107,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":102,"to":101,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":102,"to":103,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"room"},{"from":103,"to":108,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":103,"to":109,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":103,"to":102,"command":"WSCHOD","conditional":false,"blocked":null,"kind":"room"},{"from":104,"to":101,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":105,"to":101,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":106,"to":102,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":107,"to":102,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":108,"to":103,"command":"POLUDNIE","conditional":false,"blocked":null,"kind":"room"},{"from":109,"to":103,"command":"POLNOC","conditional":false,"blocked":null,"kind":"room"},{"from":110,"to":100,"command":"ZACHOD","conditional":false,"blocked":null,"kind":"room"}]};
+    const { rooms, edges } = mapData;
+    const roomById = new Map(rooms.map(room => [room.id, room]));
+    const cellSize = 108;
+    const roomSize = 92;
+    const padding = cellSize / 2;
+    const minX = Math.min(...rooms.map(room => room.x));
+    const maxX = Math.max(...rooms.map(room => room.x));
+    const minY = Math.min(...rooms.map(room => room.y));
+    const maxY = Math.max(...rooms.map(room => room.y));
+    const canvasWidth = (maxX - minX + 1) * cellSize;
+    const canvasHeight = (maxY - minY + 1) * cellSize;
+    const canvas = document.getElementById("map-canvas");
+    const connectionSvg = document.getElementById("connections");
+    const layerList = document.getElementById("layer-list");
+    const mapStatus = document.getElementById("map-status");
+    const emptyState = document.getElementById("empty-state");
+    const layers = [...new Set(rooms.map(room => room.z))].sort((a, b) => a - b);
+    const layerColors = ["#e0a33b", "#39a5c3", "#49b58c", "#9c78d6", "#dd7181", "#74a5dc"];
+    let activeZ = 0;
+
+    canvas.style.width = `${canvasWidth}px`;
+    canvas.style.height = `${canvasHeight}px`;
+    canvas.style.backgroundSize = `${cellSize}px ${cellSize}px`;
+    canvas.style.backgroundPosition = `${padding}px ${padding}px`;
+    connectionSvg.setAttribute("viewBox", `0 0 ${canvasWidth} ${canvasHeight}`);
+    connectionSvg.setAttribute("width", canvasWidth);
+    connectionSvg.setAttribute("height", canvasHeight);
+
+    function layerColor(z) {
+      return layerColors[layers.indexOf(z) % layerColors.length];
+    }
+
+    function position(room) {
+      return {
+        x: padding + (room.x - minX) * cellSize,
+        y: padding + (maxY - room.y) * cellSize,
+      };
+    }
+
+    function appendSvgLine(fromId, toId, conditional, arrowEnd, offset, description) {
+      const from = roomById.get(fromId);
+      const to = roomById.get(toId);
+      const a = position(from);
+      const b = position(to);
+      const length = Math.hypot(b.x - a.x, b.y - a.y);
+      if (!length) return;
+
+      const ux = (b.x - a.x) / length;
+      const uy = (b.y - a.y) / length;
+      const px = -uy * offset;
+      const py = ux * offset;
+      const inset = roomSize / 2 + 2;
+      const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      line.setAttribute("x1", a.x + ux * inset + px);
+      line.setAttribute("y1", a.y + uy * inset + py);
+      line.setAttribute("x2", b.x - ux * inset + px);
+      line.setAttribute("y2", b.y - uy * inset + py);
+      line.setAttribute("class", conditional ? "connection conditional" : "connection");
+      if (arrowEnd) line.setAttribute("marker-end", `url(#${conditional ? "conditional-arrow" : "arrow"})`);
+      const title = document.createElementNS("http://www.w3.org/2000/svg", "title");
+      title.textContent = description;
+      line.append(title);
+      connectionSvg.append(line);
+    }
+
+    function addSameLayerConnections(z) {
+      const visibleEdges = edges.filter(edge =>
+        roomById.get(edge.from).z === z && roomById.get(edge.to).z === z);
+      const groups = new Map();
+      for (const edge of visibleEdges) {
+        const key = [Math.min(edge.from, edge.to), Math.max(edge.from, edge.to)].join(":");
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(edge);
+      }
+
+      for (const group of groups.values()) {
+        const a = group[0].from;
+        const b = group[0].to;
+        const forward = group.filter(edge => edge.from === a && edge.to === b);
+        const reverse = group.filter(edge => edge.from === b && edge.to === a);
+        const clearForward = forward.some(edge => !edge.conditional);
+        const clearReverse = reverse.some(edge => !edge.conditional);
+        const pairName = `${roomById.get(a).name} <-> ${roomById.get(b).name}`;
+
+        if (clearForward && clearReverse) {
+          appendSvgLine(a, b, false, false, 0, `Two-way exit: ${pairName}`);
+        } else {
+          for (const edge of group.filter(item => !item.conditional)) {
+            appendSvgLine(edge.from, edge.to, false, true, 0, `${roomById.get(edge.from).name} exits to ${roomById.get(edge.to).name}`);
+          }
+        }
+
+        const conditionalEdges = group.filter(edge => edge.conditional);
+        for (let index = 0; index < conditionalEdges.length; index++) {
+          const edge = conditionalEdges[index];
+          const offset = conditionalEdges.length > 1 ? (index === 0 ? -3 : 3) : 0;
+          const detail = edge.blocked ? ` (blocked: ${edge.blocked})` : "";
+          appendSvgLine(edge.from, edge.to, true, true, offset,
+            `Conditional exit: ${roomById.get(edge.from).name} to ${roomById.get(edge.to).name}${detail}`);
+        }
+      }
+    }
+
+    function verticalLinks(roomId) {
+      const groups = new Map();
+      for (const edge of edges) {
+        const from = roomById.get(edge.from);
+        const to = roomById.get(edge.to);
+        if (from.z === to.z || edge.from !== roomId) continue;
+        const key = String(edge.to);
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(edge);
+      }
+
+      return [...groups.values()].map(group => {
+        const edge = group[0];
+        const from = roomById.get(roomId);
+        const other = roomById.get(edge.to);
+        const direction = other.z > from.z ? "UP" : "DOWN";
+        return {
+          direction,
+          destination: other.name,
+          destinationZ: other.z,
+          conditional: group.some(item => item.conditional),
+          detail: `Exit from ${from.name} via ${group.map(item => item.command).join(", ")} to ${other.name}${group.some(item => item.conditional) ? " (conditional)" : ""}`,
+        };
+      }).sort((left, right) =>
+        Number(left.direction !== "UP") - Number(right.direction !== "UP"));
+    }
+
+    function addRoom(room) {
+      const point = position(room);
+      const tile = document.createElement("article");
+      tile.className = "room";
+      tile.style.width = `${roomSize}px`;
+      tile.style.height = `${roomSize}px`;
+      tile.style.left = `${point.x - roomSize / 2}px`;
+      tile.style.top = `${point.y - roomSize / 2}px`;
+      tile.style.borderColor = layerColor(room.z);
+      tile.style.background = `color-mix(in srgb, ${layerColor(room.z)} 72%, #14202d)`;
+      tile.title = room.entry || "No room-entry text available.";
+      tile.setAttribute("aria-label", `${room.name}. ${room.entry}`);
+      const name = document.createElement("span");
+      name.className = "room-name";
+      name.textContent = room.name;
+      const coordinates = document.createElement("span");
+      coordinates.className = "room-coordinates";
+      coordinates.textContent = `(${room.x}, ${room.y}, ${room.z})`;
+      const vertical = document.createElement("div");
+      vertical.className = "vertical-links";
+      for (const link of verticalLinks(room.id)) {
+        const chip = document.createElement("button");
+        chip.type = "button";
+        chip.className = link.conditional ? "vertical-link conditional" : "vertical-link";
+        chip.style.setProperty("--target-layer-color", layerColor(link.destinationZ));
+        chip.title = link.detail;
+        chip.setAttribute("aria-label", `${link.direction} to ${link.destination}; switch to destination layer`);
+        chip.addEventListener("click", () => {
+          activeZ = link.destinationZ;
+          render();
+        });
+        const direction = document.createElement("strong");
+        direction.className = "vertical-direction";
+        direction.textContent = link.direction;
+        const destination = document.createElement("span");
+        destination.textContent = ` to: ${link.destination}`;
+        chip.append(direction, destination);
+        vertical.append(chip);
+      }
+      tile.append(name, coordinates, vertical);
+      canvas.append(tile);
+    }
+
+    function render() {
+      for (const oldLine of connectionSvg.querySelectorAll("line")) oldLine.remove();
+      for (const oldRoom of canvas.querySelectorAll(".room")) oldRoom.remove();
+      const buttons = layerList.querySelectorAll("button");
+      for (const button of buttons) {
+        const selected = Number(button.dataset.z) === activeZ;
+        button.setAttribute("aria-pressed", String(selected));
+      }
+
+      if (activeZ === null) {
+        mapStatus.textContent = "No layer selected";
+        emptyState.hidden = false;
+        return;
+      }
+
+      const visibleRooms = rooms.filter(room => room.z === activeZ);
+      addSameLayerConnections(activeZ);
+      for (const room of visibleRooms) addRoom(room);
+      const linkCount = new Set(edges
+        .filter(edge => roomById.get(edge.from).z === activeZ && roomById.get(edge.to).z === activeZ)
+        .map(edge => [Math.min(edge.from, edge.to), Math.max(edge.from, edge.to)].join(":"))).size;
+      const verticalCount = new Set(edges
+        .filter(edge => {
+          const from = roomById.get(edge.from);
+          const to = roomById.get(edge.to);
+          return from.z !== to.z && (from.z === activeZ || to.z === activeZ);
+        })
+        .map(edge => [Math.min(edge.from, edge.to), Math.max(edge.from, edge.to)].join(":"))).size;
+      mapStatus.innerHTML = `<strong>Z = ${activeZ}</strong> - ${visibleRooms.length} rooms, ${linkCount} same-layer connections, ${verticalCount} vertical links`;
+      emptyState.hidden = true;
+    }
+
+    for (const z of layers) {
+      const button = document.createElement("button");
+      button.className = "layer-toggle";
+      button.type = "button";
+      button.dataset.z = z;
+      button.setAttribute("aria-pressed", String(z === activeZ));
+      const dot = document.createElement("span");
+      dot.className = "layer-dot";
+      dot.style.setProperty("--layer-color", layerColor(z));
+      const label = document.createElement("span");
+      label.textContent = `Z = ${z}`;
+      const count = document.createElement("span");
+      count.className = "layer-count";
+      count.textContent = rooms.filter(room => room.z === z).length;
+      button.append(dot, label, count);
+      button.addEventListener("click", () => {
+        activeZ = activeZ === z ? null : z;
+        render();
+      });
+      layerList.append(button);
+    }
+
+    render();
+  </script>
+</body>
+</html>

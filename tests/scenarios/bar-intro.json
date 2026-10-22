@@ -30,6 +30,11 @@
       "send": "WSCHOD"
     },
     {
+      "label": "ivy gate",
+      "expect": "Jesteś\\ w\\ przejściu\\ na\\ Ulicę\\ Ciemną\\.[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "GORA"
+    },
+    {
       "label": "dark street to bar",
       "expect": "Jesteś\\ na\\ ulicy\\ Ciemnej[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"

@@ -25,6 +25,11 @@
       "send": "ZACHOD"
     },
     {
+      "label": "school gate",
+      "expect": "Jesteś\\ w\\ przejściu\\ do\\ Szkoły\\ Życia\\.[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "ZACHOD"
+    },
+    {
       "label": "school of life hall",
       "expect": "Jesteś\\ w\\ hallu\\ Szkoły\\ Życia[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
@@ -66,8 +71,18 @@
     },
     {
       "label": "room 16 exits",
-      "expect": "DÓŁ: Wejścia\\ do\\ klatek[\\s\\S]*?GÓRA: Jedyna\\ droga\\ nie\\ prowadząca\\ do\\ klatek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
-      "send": "GORA"
+      "expect": "DÓŁ: Wejścia\\ do\\ klatek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "DOL"
+    },
+    {
+      "label": "back in the cage corridor",
+      "expect": "Jesteś\\ w\\ pokoju\\ prowadzącym\\ do\\ klatek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "DOL"
+    },
+    {
+      "label": "Pokój 4",
+      "expect": "Jesteś\\ w\\ malutkim\\ pokoju\\ ale\\ widzisz\\ WYJŚCIA\\ w\\ dwie\\ strony[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "WSCHOD"
     },
     {
       "label": "poster room",

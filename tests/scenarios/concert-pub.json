@@ -36,12 +36,17 @@
     },
     {
       "label": "ulica długa (31)",
-      "expect": "Idąc\\ ulicą\\ długą\\ na\\ PÓŁNOC\\ spostrzegasz\\ dolinę\\ rozrywek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Idąc\\ ulicą\\ długą\\ na\\ PÓŁNOC\\ spostrzegasz\\ Jaskinię\\ Rozrywek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
-      "label": "dolina rozrywek (60)",
-      "expect": "Jesteś\\ w\\ dolinie\\ rozrywek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "label": "concert gate",
+      "expect": "Jesteś\\ na\\ drodze\\ prowadzącej\\ do\\ Jaskini\\ Rozrywek\\.[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "DOL"
+    },
+    {
+      "label": "Jaskinia Rozrywek (60)",
+      "expect": "Jesteś\\ w\\ Jaskini\\ Rozrywek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
@@ -100,18 +105,23 @@
       "send": "POLUDNIE"
     },
     {
-      "label": "back to dolina (60)",
+      "label": "back to Jaskinia Rozrywek (60)",
       "expect": "Kiedy\\ podszedłeś\\ bliżej\\ zbaraniałeś\\ \\-\\ to\\ sala\\ koncertowa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
       "label": "back to ulica długa (31)",
-      "expect": "Jesteś\\ w\\ dolinie\\ rozrywek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ Jaskini\\ Rozrywek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "GORA"
+    },
+    {
+      "label": "concert gate",
+      "expect": "Jesteś\\ na\\ drodze\\ prowadzącej\\ do\\ Jaskini\\ Rozrywek\\.[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {
       "label": "back to ulica długa (30)",
-      "expect": "Idąc\\ ulicą\\ długą\\ na\\ PÓŁNOC\\ spostrzegasz\\ dolinę\\ rozrywek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Idąc\\ ulicą\\ długą\\ na\\ PÓŁNOC\\ spostrzegasz\\ Jaskinię\\ Rozrywek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {

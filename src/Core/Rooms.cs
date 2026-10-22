@@ -25,6 +25,7 @@ public static class Rooms {
     public const int RoomCageTough = 15;
     public const int RoomCageHuge = 16;
     public const int RoomCageReward = 17;
+    public const int RoomSchoolGate = 19;
     public const int RoomCityCentre = 20;
     public const int RoomShopStreet = 21;
     public const int RoomShopStreet2 = 22;
@@ -60,7 +61,8 @@ public static class Rooms {
     public const int RoomArena55 = 55;
     public const int RoomArena56 = 56;
     public const int RoomArena57 = 57;
-    public const int RoomValley = 60;
+    public const int RoomArenaGate = 58;
+    public const int RoomEntertainmentCave = 60;
     public const int RoomCrowd1 = 61;
     public const int RoomCrowd2 = 62;
     public const int RoomCrowd3 = 63;
@@ -73,6 +75,7 @@ public static class Rooms {
     public const int RoomStage1 = 70;
     public const int RoomStage2 = 71;
     public const int RoomStage3 = 72;
+    public const int RoomConcertGate = 73;
     public const int RoomDarkStreet = 75;
     public const int RoomBar = 76;
     public const int RoomIvy1 = 77;
@@ -87,6 +90,8 @@ public static class Rooms {
     public const int RoomHut = 86;
     public const int RoomCaveMouth = 87;
     public const int RoomNettleThrone = 88;
+    public const int RoomIvyGate = 89;
+    public const int RoomRoadsGate = 99;
     public const int RoomQuestMaster = 100;
     public const int RoomRoad1 = 101;
     public const int RoomRoad2 = 102;
@@ -110,10 +115,24 @@ public static class Rooms {
         }
     }
 
+    public readonly record struct TCoordinate(int X, int Y, int Z);
+
+    public class TRoomExit {
+        public string cmd = "";
+        public bool enabled = true;
+        public Predicate<bool>? predicate;
+        public Func<bool>? state;
+        public string? blocked;
+        public bool IsOpen() =>
+            predicate?.Invoke(state?.Invoke() ?? enabled) ?? enabled;
+    }
+
     public class TRoom {
         public int number;
+        public TCoordinate position;
         public string name = "";
         public List<string> intro = [];
+        public List<TRoomExit> exits = [];
         public List<TMovement> moves = [];
         public List<TRoomPoster> posters = [];
         public bool expand = false;
@@ -259,17 +278,19 @@ public static class Rooms {
         }
     }
 
-    static TRoom SideRoom(int number, int dest, string direction, string name) =>
+    static TRoom SideRoom(int number, TCoordinate position, string direction, string name) =>
         new() {
             number = number,
+            position = position,
             name = name,
             intro = [TxtYouAreIn + TxtSimpleRoom_01],
-            moves = [Go(direction, dest)],
+            exits = [Exit(direction, true)],
         };
 
-    static TRoom ArenaRoom(int number) =>
+    static TRoom ArenaRoom(int number, TCoordinate position) =>
         new() {
             number = number,
+            position = position,
             name = $"{TxtPlaceArena} {number - RoomArena33 + 1}",
             intro = [TxtArenaMaze_01],
             maze = true,
@@ -280,26 +301,29 @@ public static class Rooms {
     public static readonly List<TRoom> RoomDefs = [
         new() {
             number = RoomStart,
+            position = new(0, -2, 0),
             name = TxtPlaceTamGdzieZaczynaszGre,
             intro = [TxtRoom0_01],
-            moves = [Go(CmdPolnoc, RoomSalon)],
+            exits = [Exit(CmdPolnoc, true)],
         },
         new() {
             number = RoomSalon,
+            position = new(0, -1, 0),
             name = TxtPlaceSalon,
             intro = [TxtYouAreIn + TxtRoom1_01, TxtRoom1Lines1[1], TxtRoom1Lines1[2], TxtRoom1Lines1[3]],
-            moves = [Go(CmdPolodnie, RoomStart),
-                     Go(CmdWschod, RoomTraining),
-                     Go(CmdDol, RoomMeditation),
-                     Go(CmdZachod, RoomSchoolHall),
-                     Go(CmdPolnoc, RoomCityCentre), ],
+            exits = [Exit(CmdPolodnie, true),
+                     Exit(CmdWschod, true),
+                     Exit(CmdDol, true),
+                     Exit(CmdZachod, true),
+                     Exit(CmdPolnoc, true), ],
             posters = [new(CmdPatrz + CmdPlakat, [..TxtRoom1Lines2.Skip(1)])],
         },
         new() {
             number = RoomTraining,
+            position = new(1, -1, 0),
             name = TxtPlacePokojTreningowy1,
             intro = [TxtYouAreIn + TxtRoom2_01, TxtRoom2_02, TxtShared_04],
-            moves = [Go(CmdZachod, RoomSalon)],
+            exits = [Exit(CmdZachod, true)],
             posters = [new(CmdPatrz + CmdPlakat, [..TxtRoom2Lines1.Skip(1)])],
             turn = entering => {
                 if (!entering) {
@@ -309,9 +333,10 @@ public static class Rooms {
         },
         new() {
             number = RoomMeditation,
+            position = new(0, -1, -1),
             name = TxtPlacePoddziemnyPokojTreningowy2,
             intro = [..TxtRoom3Lines1.Skip(1)],
-            moves = [Go(CmdGora, RoomSalon)],
+            exits = [Exit(CmdGora, true)],
             turn = entering => {
                 if (!entering) {
                     Training();
@@ -320,50 +345,58 @@ public static class Rooms {
         },
         new() {
             number = RoomSchoolHall,
+            position = new(-2, -1, 0),
             name = TxtPlaceSzkolaZycia,
             intro = [TxtYouAreIn + TxtRoom4_01, TxtRoom4_02],
-            moves = [Go(CmdWschod, RoomSalon), Go(CmdZachod, RoomLost)],
+            exits = [Exit(CmdWschod, true),
+                     Exit(CmdZachod, true), ],
             posters = [new(CmdPatrz + CmdAfisz, [..TxtRoom4Lines1.Skip(1)])],
         },
         new() {
             number = RoomLost,
+            position = new(-3, -1, 0),
             name = TxtPlacePokojOrientacyjny,
             intro = [..TxtRoom5Lines1.Skip(1)],
-            moves = [Go(CmdWschod, RoomSchoolHall),
-                     Go(CmdZachod, RoomSchoolSide1),
-                     Go(CmdPolnoc, RoomSchoolSide2),
-                     Go(CmdPolodnie, RoomSchoolSide3),
-                     Go(CmdGora, RoomSchoolLanding),
-                     Go(CmdDol, RoomSchoolSide4), ],
+            exits = [Exit(CmdWschod, true),
+                     Exit(CmdZachod, true),
+                     Exit(CmdPolnoc, true),
+                     Exit(CmdPolodnie, true),
+                     Exit(CmdGora, true),
+                     Exit(CmdDol, true), ],
             posters = [new(CmdPatrz + CmdPlakat, [TxtRoom5_10, TxtRoom5_11])],
         },
-        SideRoom(RoomSchoolSide1, RoomLost, CmdWschod, $"{TxtPlacePokoj} 1"),
-        SideRoom(RoomSchoolSide3, RoomLost, CmdPolnoc, $"{TxtPlacePokoj} 3"),
-        SideRoom(RoomSchoolSide2, RoomLost, CmdPolodnie, $"{TxtPlacePokoj} 2"),
-        SideRoom(RoomSchoolSide4, RoomLost, CmdGora, $"{TxtPlacePokoj} 5"),
+        SideRoom(RoomSchoolSide1, new(-4, -1, 0), CmdWschod, $"{TxtPlacePokoj} 1"),
+        SideRoom(RoomSchoolSide3, new(-3, -2, 0), CmdPolnoc, $"{TxtPlacePokoj} 3"),
+        SideRoom(RoomSchoolSide2, new(-3, 0, 0), CmdPolodnie, $"{TxtPlacePokoj} 2"),
+        SideRoom(RoomSchoolSide4, new(-3, -1, -1), CmdGora, $"{TxtPlacePokoj} 5"),
         new() {
             number = RoomSchoolLanding,
+            position = new(-3, -1, 1),
             name = $"{TxtPlacePokoj} 4",
             intro = [TxtYouAreIn + TxtRoom9_01, TxtRoom9_02],
-            moves = [Go(CmdDol, RoomLost), Go(CmdGora, RoomCageCorridor)],
+            exits = [Exit(CmdDol, true),
+                     Exit(CmdGora, true),
+                     Exit(CmdWschod, true), ],
         },
         new() {
             number = RoomCageCorridor,
+            position = new(-3, -1, 2),
             name = TxtPlaceWejsciaDoKlatek,
             intro = [TxtYouAreIn + TxtRoom11_01, ..TxtRoom11Lines1.Skip(1)],
-            moves = [Go(CmdWschod, RoomCageWeakling),
-                     Go(CmdZachod, RoomCageStrong),
-                     Go(CmdPolnoc, RoomCageAgile),
-                     Go(CmdPolodnie, RoomCageTough),
-                     Go(CmdGora, RoomCageHuge),
-                     Go(CmdDol, RoomSchoolLanding), ],
+            exits = [Exit(CmdWschod, true),
+                     Exit(CmdZachod, true),
+                     Exit(CmdPolnoc, true),
+                     Exit(CmdPolodnie, true),
+                     Exit(CmdGora, true),
+                     Exit(CmdDol, true), ],
             posters = [new(CmdPatrz + CmdPlakat, [..TxtRoom11Lines2.Skip(1)])],
             expand = true,
         },
         new() {
             number = RoomCageWeakling,
+            position = new(-2, -1, 2),
             name = TxtPlaceKlatkaCieniasa,
-            moves = [Go(CmdZachod, RoomCageCorridor)],
+            exits = [Exit(CmdZachod, true)],
             turn = entering => {
                 if (entering) {
                     DescribeCage(CageWeakling, RoomCageWeakling, TxtRoom12_01, TxtShared_07);
@@ -374,8 +407,9 @@ public static class Rooms {
         },
         new() {
             number = RoomCageStrong,
+            position = new(-4, -1, 2),
             name = TxtPlaceKlatkaSilnego,
-            moves = [Go(CmdWschod, RoomCageCorridor)],
+            exits = [Exit(CmdWschod, true)],
             turn = entering => {
                 if (entering) {
                     DescribeCage(CageStrong, RoomCageStrong, TxtRoom13_01, TxtShared_07);
@@ -386,8 +420,9 @@ public static class Rooms {
         },
         new() {
             number = RoomCageAgile,
+            position = new(-3, 0, 2),
             name = TxtPlaceKlatkaZrecznego,
-            moves = [Go(CmdPolodnie, RoomCageCorridor)],
+            exits = [Exit(CmdPolodnie, true)],
             turn = entering => {
                 if (entering) {
                     DescribeCage(CageAgile, RoomCageAgile, TxtRoom14_01, TxtRoom14_02);
@@ -398,8 +433,9 @@ public static class Rooms {
         },
         new() {
             number = RoomCageTough,
+            position = new(-3, -2, 2),
             name = TxtPlaceKlatkaOdpornego,
-            moves = [Go(CmdPolnoc, RoomCageCorridor)],
+            exits = [Exit(CmdPolnoc, true)],
             turn = entering => {
                 if (entering) {
                     DescribeCage(CageTough, RoomCageTough, TxtRoom15_01, TxtShared_07);
@@ -410,8 +446,9 @@ public static class Rooms {
         },
         new() {
             number = RoomCageHuge,
+            position = new(-3, -1, 3),
             name = TxtPlaceKlatkaSilnegoOdpornegoIZrecznego,
-            moves = [Go(CmdDol, RoomCageCorridor), Go(CmdGora, RoomCageReward)],
+            exits = [Exit(CmdDol, true), ],
             turn = entering => {
                 if (entering) {
                     DescribeCage(CageHuge, RoomCageHuge, TxtRoom16_01, TxtShared_07);
@@ -436,9 +473,10 @@ public static class Rooms {
         },
         new() {
             number = RoomCageReward,
+            position = new(-2, -1, 1),
             name = TxtPlaceJedynaDrogaNieProwadzacaDoKlatek,
             intro = [TxtYouAreIn + TxtRoom17_01],
-            moves = [Go(CmdDol, RoomCageHuge)],
+            exits = [Exit(CmdZachod, true)],
             turn = entering => {
                 if (entering) {
                     return;
@@ -455,41 +493,53 @@ public static class Rooms {
             },
         },
         new() {
+            number = RoomSchoolGate,
+            position = new(-1, -1, 0),
+            name = TxtPlacePrzejscieDoSzkoly,
+            intro = [TxtRoom19_01, TxtRoom19_02],
+            exits = [Exit(CmdWschod, true),
+                     Exit(CmdZachod, true), ],
+        },
+        new() {
             number = RoomCityCentre,
+            position = new(0, 0, 0),
             name = TxtPlaceCentrumMiasta,
             intro = [TxtYouAreIn + TxtRoom20_01],
-            moves = [Go(CmdPolodnie, RoomSalon),
-                     Go(CmdPolnoc, RoomShopStreet),
-                     Go(CmdZachod, RoomLongStreet),
-                     Go(CmdWschod, RoomDarkStreet), ],
+            exits = [Exit(CmdPolodnie, true),
+                     Exit(CmdPolnoc, true),
+                     Exit(CmdZachod, true),
+                     Exit(CmdWschod, true), ],
             posters = [new(CmdPatrz + CmdPlakat, [TxtRoom20_02])],
             turn = StreetTurn,
         },
         new() {
             number = RoomShopStreet,
+            position = new(0, 1, 0),
             name = TxtPlaceUlSklepikowa,
             intro = [TxtRoom21_01, TxtRoom21_02],
-            moves = [Go(CmdPolodnie, RoomCityCentre),
-                     Go(CmdPolnoc, RoomShopStreet2),
-                     Go(CmdWschod, RoomBakery),
-                     Go(CmdZachod, RoomArmoury), ],
+            exits = [Exit(CmdPolodnie, true),
+                     Exit(CmdPolnoc, true),
+                     Exit(CmdWschod, true),
+                     Exit(CmdZachod, true), ],
             turn = StreetTurn,
         },
         new() {
             number = RoomShopStreet2,
+            position = new(0, 2, 0),
             name = TxtPlaceUlSklepikowa2,
             intro = [TxtRoom22_01, TxtRoom22_02],
-            moves = [Go(CmdPolodnie, RoomShopStreet),
-                     Go(CmdWschod, RoomGeneralStore),
-                     Go(CmdZachod, RoomMagicShop),
-                     Go(CmdPolnoc, RoomQuestMaster), ],
+            exits = [Exit(CmdPolodnie, true),
+                     Exit(CmdWschod, true),
+                     Exit(CmdZachod, true),
+                     Exit(CmdPolnoc, true), ],
             turn = StreetTurn,
         },
         new() {
             number = RoomBakery,
+            position = new(1, 1, 0),
             name = TxtPlacePiekarnia,
             intro = [TxtYouAreIn + TxtRoom23_01, TxtRoom23_02, TxtRoom23_03],
-            moves = [Go(CmdZachod, RoomShopStreet)],
+            exits = [Exit(CmdZachod, true)],
             posters = [new(CmdPatrz + CmdPlakat, [TxtRoom23_04, TxtRoom23_05])],
             turn = entering => {
                 if (entering) {
@@ -501,9 +551,10 @@ public static class Rooms {
         },
         new() {
             number = RoomArmoury,
+            position = new(-1, 1, 0),
             name = TxtPlaceZbrojownia,
             intro = [TxtYouAreIn + TxtRoom24_01, TxtRoom24_02, TxtRoom24_03],
-            moves = [Go(CmdWschod, RoomShopStreet)],
+            exits = [Exit(CmdWschod, true)],
             posters = [new(CmdPatrz + CmdPlakat, [TxtRoom24_04])],
             turn = entering => {
                 if (entering) {
@@ -516,9 +567,10 @@ public static class Rooms {
         },
         new() {
             number = RoomGeneralStore,
+            position = new(1, 2, 0),
             name = TxtPlaceSklepWielobranzowy,
             intro = [TxtRoom25_01, TxtRoom25_02],
-            moves = [Go(CmdZachod, RoomShopStreet2)],
+            exits = [Exit(CmdZachod, true)],
             posters = [new(CmdPatrz + CmdWywieszka, [TxtRoom25_03]),
                        new(CmdPatrz + CmdPoster, [TxtGeneralStoreShop_06]), ],
             turn = entering => {
@@ -532,9 +584,10 @@ public static class Rooms {
         },
         new() {
             number = RoomMagicShop,
+            position = new(-1, 2, 0),
             name = TxtPlaceSklepMagiczny,
             intro = [TxtRoom26_01],
-            moves = [Go(CmdWschod, RoomShopStreet2)],
+            exits = [Exit(CmdWschod, true)],
             posters = [new(CmdPatrz + CmdPlakat, [TxtRoom26_02])],
             turn = entering => {
                 if (entering) {
@@ -547,112 +600,142 @@ public static class Rooms {
         },
         new() {
             number = RoomLongStreet,
+            position = new(-1, 0, 0),
             name = TxtPlaceUlDluga,
             intro = [TxtRoom30_01, TxtRoom30_02],
-            moves = [Go(CmdWschod, RoomCityCentre),
-                     Go(CmdZachod, RoomLongStreet2),
-                     Go(CmdPolnoc, RoomArenaEntrance), ],
+            exits = [Exit(CmdWschod, true),
+                     Exit(CmdZachod, true),
+                     Exit(CmdGora, true), ],
         },
         new() {
             number = RoomLongStreet2,
+            position = new(-2, 0, 0),
             name = TxtPlaceUlDluga2,
             intro = [TxtRoom31_01, TxtRoom31_02],
-            moves = [Go(CmdWschod, RoomLongStreet), Go(CmdPolnoc, RoomValley)],
+            exits = [Exit(CmdWschod, true),
+                     Exit(CmdPolnoc, true), ],
         },
         new() {
             number = RoomArenaEntrance,
+            position = new(-1, 1, 1),
             name = TxtPlaceWejscieNaArene,
             intro = [TxtRoom32_01, TxtRoom32_02],
-            moves = [Go(CmdPolodnie, RoomLongStreet), Go(CmdPolnoc, RoomArena33)],
+            exits = [Exit(CmdPolodnie, true),
+                     Exit(CmdPolnoc, true), ],
             posters = [new(CmdPatrz + CmdPlakat, [TxtRoom32_03, TxtRoom32_04])],
         },
-        ArenaRoom(RoomArena33),
-        ArenaRoom(RoomArena34),
-        ArenaRoom(RoomArena35),
-        ArenaRoom(RoomArena36),
-        ArenaRoom(RoomArena37),
-        ArenaRoom(RoomArena38),
-        ArenaRoom(RoomArena39),
-        ArenaRoom(RoomArena40),
-        ArenaRoom(RoomArena41),
-        ArenaRoom(RoomArena42),
-        ArenaRoom(RoomArena43),
-        ArenaRoom(RoomArena44),
-        ArenaRoom(RoomArena45),
-        ArenaRoom(RoomArena46),
-        ArenaRoom(RoomArena47),
-        ArenaRoom(RoomArena48),
-        ArenaRoom(RoomArena49),
-        ArenaRoom(RoomArena50),
-        ArenaRoom(RoomArena51),
-        ArenaRoom(RoomArena52),
-        ArenaRoom(RoomArena53),
-        ArenaRoom(RoomArena54),
-        ArenaRoom(RoomArena55),
-        ArenaRoom(RoomArena56),
-        ArenaRoom(RoomArena57),
+        ArenaRoom(RoomArena33, new(-1, 2, 1)),
+        ArenaRoom(RoomArena34, new(-1, 3, 1)),
+        ArenaRoom(RoomArena35, new(0, 2, 1)),
+        ArenaRoom(RoomArena36, new(-2, 2, 1)),
+        ArenaRoom(RoomArena37, new(-1, 4, 1)),
+        ArenaRoom(RoomArena38, new(0, 3, 1)),
+        ArenaRoom(RoomArena39, new(-2, 3, 1)),
+        ArenaRoom(RoomArena40, new(1, 2, 1)),
+        ArenaRoom(RoomArena41, new(-3, 2, 1)),
+        ArenaRoom(RoomArena42, new(-1, 5, 1)),
+        ArenaRoom(RoomArena43, new(0, 4, 1)),
+        ArenaRoom(RoomArena44, new(-2, 4, 1)),
+        ArenaRoom(RoomArena45, new(1, 3, 1)),
+        ArenaRoom(RoomArena46, new(-3, 3, 1)),
+        ArenaRoom(RoomArena47, new(-1, 6, 1)),
+        ArenaRoom(RoomArena48, new(0, 5, 1)),
+        ArenaRoom(RoomArena49, new(-2, 5, 1)),
+        ArenaRoom(RoomArena50, new(1, 4, 1)),
+        ArenaRoom(RoomArena51, new(-3, 4, 1)),
+        ArenaRoom(RoomArena52, new(0, 6, 1)),
+        ArenaRoom(RoomArena53, new(-2, 6, 1)),
+        ArenaRoom(RoomArena54, new(1, 5, 1)),
+        ArenaRoom(RoomArena55, new(-3, 5, 1)),
+        ArenaRoom(RoomArena56, new(1, 6, 1)),
+        ArenaRoom(RoomArena57, new(-3, 6, 1)),
         new() {
-            number = RoomValley,
-            name = TxtPlaceDolinaRozrywek,
+            number = RoomArenaGate,
+            position = new(-1, 0, 1),
+            name = TxtPlaceDrogaNaArene,
+            intro = [TxtRoom58_01, TxtRoom58_02],
+            exits = [Exit(CmdDol, true),
+                     Exit(CmdPolnoc, true), ],
+        },
+        new() {
+            number = RoomEntertainmentCave,
+            position = new(-2, 1, -1),
+            name = TxtPlaceJaskiniaRozrywek,
             intro = [TxtYouAreIn + TxtRoom60_01, TxtRoom60_02, TxtRoom60_03],
-            moves = [Go(CmdPolodnie, RoomLongStreet2), Go(CmdWschod, RoomCrowd1)],
+            exits = [Exit(CmdGora, true),
+                     Exit(CmdWschod, true), ],
         },
         new() {
             number = RoomCrowd1,
+            position = new(-1, 1, -1),
             name = $"{TxtPlaceTlum} 1",
             intro = [..TxtConcertRoomsLines1.Skip(1)],
-            moves = [Go(CmdZachod, RoomValley),
-                     Go(CmdPolnoc, RoomCrowd3),
-                     Go(CmdPolodnie, RoomCrowd2),
-                     Go(CmdWschod, RoomCrowd4), ],
+            exits = [Exit(CmdZachod, true),
+                     Exit(CmdPolnoc, true),
+                     Exit(CmdPolodnie, true),
+                     Exit(CmdWschod, true), ],
             posters = [new(CmdPatrz + CmdPlakat, [TxtConcertRooms_07, TxtConcertRooms_08])],
             turn = CrowdTurn,
         },
         new() {
             number = RoomCrowd2,
+            position = new(-1, 0, -1),
             name = $"{TxtPlaceTlum} 2",
             intro = [TxtConcertRooms_09],
-            moves = [Go(CmdPolnoc, RoomCrowd1), Go(CmdWschod, RoomCrowd5)],
+            exits = [Exit(CmdPolnoc, true),
+                     Exit(CmdWschod, true), ],
             turn = CrowdTurn,
             expand = true,
         },
         new() {
             number = RoomCrowd3,
+            position = new(-1, 2, -1),
             name = $"{TxtPlaceTlum} 3",
             intro = [TxtConcertRooms_11],
-            moves = [Go(CmdPolodnie, RoomCrowd1), Go(CmdWschod, RoomCrowd6), Go(CmdPolnoc, RoomPub)],
+            exits = [Exit(CmdPolodnie, true),
+                     Exit(CmdWschod, true),
+                     Exit(CmdPolnoc, true), ],
             turn = CrowdTurn,
             expand = true,
         },
         new() {
             number = RoomCrowd4,
+            position = new(0, 1, -1),
             name = $"{TxtPlaceTlum} 4",
             intro = [TxtYouAreIn + TxtConcertRooms_13, TxtConcertRooms_14],
-            moves = [Go(CmdPolnoc, RoomCrowd6), Go(CmdZachod, RoomCrowd1), Go(CmdPolodnie, RoomCrowd5)],
+            exits = [Exit(CmdPolnoc, true),
+                     Exit(CmdZachod, true),
+                     Exit(CmdPolodnie, true), ],
             turn = CrowdTurn,
             expand = true,
         },
         new() {
             number = RoomCrowd5,
+            position = new(0, 0, -1),
             name = $"{TxtPlaceTlum} 5",
             intro = [TxtConcertRooms_16, TxtConcertRooms_14],
-            moves = [Go(CmdPolnoc, RoomCrowd4), Go(CmdZachod, RoomCrowd2)],
+            exits = [Exit(CmdPolnoc, true),
+                     Exit(CmdZachod, true), ],
             turn = CrowdTurn,
             expand = true,
         },
         new() {
             number = RoomCrowd6,
+            position = new(0, 2, -1),
             name = $"{TxtPlaceTlum} 6",
             intro = [TxtConcertRooms_17],
-            moves = [Go(CmdPolodnie, RoomCrowd4), Go(CmdZachod, RoomCrowd3)],
+            exits = [Exit(CmdPolodnie, true),
+                     Exit(CmdZachod, true), ],
             turn = CrowdTurn,
             expand = true,
         },
         new() {
             number = RoomPub,
+            position = new(-1, 3, -1),
             name = TxtPlacePiwiarnia,
             intro = [TxtYouAreIn + TxtConcertRooms_18, TxtConcertRooms_19],
-            moves = [Go(CmdPolodnie, RoomCrowd3), Go(CmdWschod, RoomStageEntrance)],
+            exits = [Exit(CmdPolodnie, true),
+                     Exit(CmdWschod, true), ],
             turn = entering => {
                 if (entering) {
                     if (World.Monsters[Minibarman] == 67) {
@@ -705,9 +788,11 @@ public static class Rooms {
         },
         new() {
             number = RoomStageEntrance,
+            position = new(0, 3, -1),
             name = TxtPlaceWejscieNaScene,
             intro = [TxtConcertRooms_27, TxtConcertRooms_28],
-            moves = [Go(CmdZachod, RoomPub), Go(CmdWschod, RoomBackstage)],
+            exits = [Exit(CmdZachod, true),
+                     Exit(CmdWschod, true), ],
             posters = [new(CmdPatrz + CmdTabliczka, [TxtConcertRooms_32])],
             turn = entering => {
                 if (entering) {
@@ -723,9 +808,11 @@ public static class Rooms {
         },
         new() {
             number = RoomBackstage,
+            position = new(1, 3, -1),
             name = TxtPlaceZaKulisami,
             intro = [TxtConcertRooms_33, TxtConcertRooms_34],
-            moves = [Go(CmdZachod, RoomStageEntrance), Go(CmdPolodnie, RoomStage1)],
+            exits = [Exit(CmdZachod, true),
+                     Exit(CmdPolodnie, true), ],
             turn = entering => {
                 if (entering) {
                     if (World.Monsters[DJ] == 69) {
@@ -760,36 +847,53 @@ public static class Rooms {
         },
         new() {
             number = RoomStage1,
+            position = new(1, 2, -1),
             name = $"{TxtPlaceScena} 1",
             intro = [..TxtConcertRoomsLines2.Skip(1)],
-            moves = [Go(CmdPolnoc, RoomBackstage), Go(CmdPolodnie, RoomStage2)],
+            exits = [Exit(CmdPolnoc, true),
+                     Exit(CmdPolodnie, true), ],
             turn = StageTurn,
         },
         new() {
             number = RoomStage2,
+            position = new(1, 1, -1),
             name = TxtPlaceSrodekSceny,
             intro = [TxtConcertRooms_46, TxtConcertRooms_47],
-            moves = [Go(CmdPolnoc, RoomStage1), Go(CmdPolodnie, RoomStage3)],
+            exits = [Exit(CmdPolnoc, true),
+                     Exit(CmdPolodnie, true), ],
             turn = StageTurn,
         },
         new() {
             number = RoomStage3,
+            position = new(1, 0, -1),
             name = $"{TxtPlaceScena} 3",
             intro = [TxtConcertRooms_48, TxtConcertRooms_49],
-            moves = [Go(CmdPolnoc, RoomStage2)],
+            exits = [Exit(CmdPolnoc, true)],
             turn = StageTurn,
         },
         new() {
+            number = RoomConcertGate,
+            position = new(-2, 1, 0),
+            name = TxtPlaceDrogaDoJaskini,
+            intro = [TxtRoom73_01, TxtRoom73_02],
+            exits = [Exit(CmdPolodnie, true),
+                     Exit(CmdDol, true), ],
+        },
+        new() {
             number = RoomDarkStreet,
+            position = new(1, 0, 1),
             name = TxtPlaceUlCiemna,
             intro = [..TxtRoom75Lines1.Skip(1)],
-            moves = [Go(CmdZachod, RoomCityCentre), Go(CmdPolnoc, RoomBar), Go(CmdPolodnie, RoomIvy1)],
+            exits = [Exit(CmdDol, true),
+                     Exit(CmdPolnoc, true),
+                     Exit(CmdPolodnie, true), ],
         },
         new() {
             number = RoomBar,
+            position = new(1, 1, 1),
             name = TxtPlaceBarPodDwomaPedalami,
             intro = [TxtYouAreIn + TxtRoom76_01, ..TxtRoom76Lines1.Skip(1)],
-            moves = [Go(CmdPolodnie, RoomDarkStreet)],
+            exits = [Exit(CmdPolodnie, true)],
             turn = entering => {
                 if (entering) {
                     if (World.Monsters[Maciek] == 76) {
@@ -835,39 +939,43 @@ public static class Rooms {
         },
         new() {
             number = RoomIvy1,
+            position = new(1, -1, 1),
             name = $"{TxtPlaceBluszcz} 1",
             intro = [TxtRoom77_01, TxtRoom77_02],
-            moves = [Go(CmdPolnoc, RoomDarkStreet),
-                     Go(CmdWschod, RoomIvy2),
-                     Go(CmdZachod, RoomIvy3),
-                     Go(CmdPolodnie, RoomIvy4), ],
+            exits = [Exit(CmdPolnoc, true),
+                     Exit(CmdWschod, true),
+                     Exit(CmdZachod, true),
+                     Exit(CmdPolodnie, true), ],
             turn = PlantTurn,
             expand = true,
         },
         new() {
             number = RoomIvy2,
+            position = new(2, -1, 1),
             name = $"{TxtPlaceBluszcz} 2",
             intro = [TxtRoom78_01, TxtRoom78_02],
-            moves = [Go(CmdZachod, RoomIvy1)],
+            exits = [Exit(CmdZachod, true)],
             turn = PlantTurn,
             expand = true,
         },
         new() {
             number = RoomIvy3,
+            position = new(0, -1, 1),
             name = $"{TxtPlaceBluszcz} 3",
             intro = [TxtRoom79_01, TxtRoom79_02],
-            moves = [Go(CmdWschod, RoomIvy1)],
+            exits = [Exit(CmdWschod, true)],
             turn = PlantTurn,
             expand = true,
         },
         new() {
             number = RoomIvy4,
+            position = new(1, -2, 1),
             name = $"{TxtPlaceBluszcz} 4",
             intro = [..TxtRoom80Lines1.Skip(1)],
-            moves = [Go(CmdPolnoc, RoomIvy1),
-                     Go(CmdZachod, RoomIvy5),
-                     Go(CmdWschod, RoomIvy6),
-                     Go(CmdPolodnie, RoomClearing), ],
+            exits = [Exit(CmdPolnoc, true),
+                     Exit(CmdZachod, true),
+                     Exit(CmdWschod, true),
+                     Exit(CmdPolodnie, true), ],
             posters = [new(CmdPatrz + CmdNapis, [TxtRoom80_04])],
             turn = entering => {
                 if (entering) {
@@ -898,42 +1006,50 @@ public static class Rooms {
         },
         new() {
             number = RoomIvy5,
+            position = new(0, -2, 1),
             name = $"{TxtPlaceBluszcz} 5",
             intro = [TxtRoom81_01, TxtRoom81_02],
-            moves = [Go(CmdWschod, RoomIvy4)],
+            exits = [Exit(CmdWschod, true)],
             turn = PlantTurn,
             expand = true,
         },
         new() {
             number = RoomIvy6,
+            position = new(2, -2, 1),
             name = $"{TxtPlaceBluszcz} 6",
             intro = [TxtRoom82_01, TxtRoom82_02],
-            moves = [Go(CmdZachod, RoomIvy4)],
+            exits = [Exit(CmdZachod, true)],
             turn = PlantTurn,
             expand = true,
         },
         new() {
             number = RoomClearing,
+            position = new(1, -3, 1),
             name = TxtPlacePolana,
             intro = [..TxtRoom83Lines1.Skip(1)],
-            moves = [Go(CmdPolnoc, RoomIvy4), Go(CmdZachod, RoomCavePath)],
+            exits = [Exit(CmdPolnoc, true),
+                     Exit(CmdZachod, true), ],
             turn = PlantTurn,
             expand = true,
         },
         new() {
             number = RoomCavePath,
+            position = new(0, -3, 1),
             name = TxtPlacePodejrzaneKrzaki,
             intro = [..TxtRoom84Lines1.Skip(1)],
-            moves = [Go(CmdWschod, RoomClearing), Go(CmdZachod, RoomLivingDoor), Go(CmdPolodnie, RoomCaveMouth)],
+            exits = [Exit(CmdWschod, true),
+                     Exit(CmdZachod, true),
+                     Exit(CmdPolodnie, true), ],
             turn = PlantTurn,
             expand = true,
         },
         new() {
             number = RoomLivingDoor,
+            position = new(-1, -3, 1),
             name = TxtPlaceBudynek,
             intro = [TxtRoom85_01, TxtRoom85_02],
-            moves = [Go(CmdWschod, RoomCavePath),
-                     Go(CmdZachod, RoomHut, () => !World.Door, TxtRoom85_07), ],
+            exits = [Exit(CmdWschod, true),
+                      Exit(CmdZachod, static doorClosed => !doorClosed, () => World.Door, TxtRoom85_07), ],
             turn = entering => {
                 if (entering) {
                     if (World.Door) {
@@ -955,9 +1071,10 @@ public static class Rooms {
         },
         new() {
             number = RoomHut,
+            position = new(-2, -3, 1),
             name = TxtPlaceDomek,
             intro = [TxtRoom86_01],
-            moves = [Go(CmdWschod, RoomLivingDoor)],
+            exits = [Exit(CmdWschod, true)],
             turn = entering => {
                 if (entering) {
                     if (World.OldElf) {
@@ -1010,9 +1127,11 @@ public static class Rooms {
         },
         new() {
             number = RoomCaveMouth,
+            position = new(0, -4, 1),
             name = TxtPlaceWejscieDoGroty,
             intro = [TxtRoom87_01, TxtRoom87_02],
-            moves = [Go(CmdPolnoc, RoomCavePath), Go(CmdPolodnie, RoomNettleThrone)],
+            exits = [Exit(CmdPolnoc, true),
+                     Exit(CmdPolodnie, true), ],
             turn = entering => {
                 if (!entering) {
                     return;
@@ -1030,9 +1149,10 @@ public static class Rooms {
         },
         new() {
             number = RoomNettleThrone,
+            position = new(0, -5, 1),
             name = TxtPlaceGrota,
             intro = [..TxtRoom88Lines1.Skip(1)],
-            moves = [Go(CmdPolnoc, RoomCaveMouth)],
+            exits = [Exit(CmdPolnoc, true)],
             turn = entering => {
                 if (!entering) {
                     return;
@@ -1062,12 +1182,29 @@ public static class Rooms {
             expand = true,
         },
         new() {
+            number = RoomIvyGate,
+            position = new(1, 0, 0),
+            name = TxtPlacePrzejscieNaCiemna,
+            intro = [TxtRoom89_01, TxtRoom89_02],
+            exits = [Exit(CmdZachod, true),
+                     Exit(CmdGora, true), ],
+        },
+        new() {
+            number = RoomRoadsGate,
+            position = new(0, 3, 0),
+            name = TxtPlaceBramaNaTrakt,
+            intro = [TxtRoom99_01, TxtRoom99_02],
+            exits = [Exit(CmdPolodnie, true),
+                     Exit(CmdPolnoc, true), ],
+        },
+        new() {
             number = RoomQuestMaster,
+            position = new(0, 4, 0),
             name = TxtPlaceRozjazd,
             intro = [TxtRoom100_01, TxtRoom100_02],
-            moves = [Go(CmdPolodnie, RoomShopStreet2),
-                     Go(CmdWschod, RoomFutureRoad),
-                     Go(CmdZachod, RoomRoad1, () => Bag.Permit > 0, TxtRoom100_16), ],
+            exits = [Exit(CmdPolodnie, true),
+                     Exit(CmdWschod, true),
+                     Exit(CmdZachod, static allowed => allowed, () => Bag.Permit > 0, TxtRoom100_16), ],
             turn = entering => {
                 if (entering) {
                     DescribeStreet();
@@ -1128,81 +1265,153 @@ public static class Rooms {
         },
         new() {
             number = RoomRoad1,
+            position = new(-1, 4, 0),
             name = $"{TxtPlaceDroga} 1",
             intro = [..TxtRoom101Lines1.Skip(1)],
-            moves = [Go(CmdWschod, RoomQuestMaster), Go(CmdZachod, RoomRoad2),
-                     Go(CmdPolnoc, RoomForest), Go(CmdPolodnie, RoomForest1), ],
+            exits = [Exit(CmdWschod, true),
+                     Exit(CmdZachod, true),
+                     Exit(CmdPolnoc, true),
+                     Exit(CmdPolodnie, true), ],
             posters = [new(CmdPatrz + CmdDrogowskaz, [TxtRoom101_05])],
         },
         new() {
             number = RoomRoad2,
+            position = new(-2, 4, 0),
             name = $"{TxtPlaceDroga} 2",
             intro = [TxtRoom102_01, TxtRoom102_02],
-            moves = [Go(CmdWschod, RoomRoad1), Go(CmdZachod, RoomRoad3),
-                     Go(CmdPolnoc, RoomForest2), Go(CmdPolodnie, RoomForest3), ],
+            exits = [Exit(CmdWschod, true),
+                     Exit(CmdZachod, true),
+                     Exit(CmdPolnoc, true),
+                     Exit(CmdPolodnie, true), ],
         },
         new() {
             number = RoomRoad3,
+            position = new(-3, 4, 0),
             name = $"{TxtPlaceDroga} 3",
             intro = [..TxtRoom103Lines1.Skip(1)],
-            moves = [Go(CmdWschod, RoomRoad2),
-                     Go(CmdPolnoc, RoomForest4), Go(CmdPolodnie, RoomForest5), ],
+            exits = [Exit(CmdWschod, true),
+                     Exit(CmdPolnoc, true),
+                     Exit(CmdPolodnie, true), ],
         },
         new() {
             number = RoomFutureRoad,
+            position = new(1, 4, 0),
             name = TxtPlaceDrogaWProdukcji,
             intro = [TxtRoom110_01],
-            moves = [Go(CmdZachod, RoomQuestMaster)],
+            exits = [Exit(CmdZachod, true)],
         },
         new() {
             number = RoomForest,
+            position = new(-1, 5, 0),
             name = $"{TxtPlaceLas} 1",
             intro = [TxtForest_01],
-            moves = [Go(CmdPolodnie, RoomRoad1)],
+            exits = [Exit(CmdPolodnie, true)],
         },
         new() {
             number = RoomForest1,
+            position = new(-1, 3, 0),
             name = $"{TxtPlaceLas} 2",
             intro = [TxtForest_01],
-            moves = [Go(CmdPolnoc, RoomRoad1)],
+            exits = [Exit(CmdPolnoc, true)],
         },
         new() {
             number = RoomForest2,
+            position = new(-2, 5, 0),
             name = $"{TxtPlaceLas} 3",
             intro = [TxtForest_01],
-            moves = [Go(CmdPolodnie, RoomRoad2)],
+            exits = [Exit(CmdPolodnie, true)],
         },
         new() {
             number = RoomForest3,
+            position = new(-2, 3, 0),
             name = $"{TxtPlaceLas} 4",
             intro = [TxtForest_01],
-            moves = [Go(CmdPolnoc, RoomRoad2)],
+            exits = [Exit(CmdPolnoc, true)],
         },
         new() {
             number = RoomForest4,
+            position = new(-3, 5, 0),
             name = $"{TxtPlaceLas} 5",
             intro = [TxtForest_01],
-            moves = [Go(CmdPolodnie, RoomRoad3)],
+            exits = [Exit(CmdPolodnie, true)],
         },
         new() {
             number = RoomForest5,
+            position = new(-3, 3, 0),
             name = $"{TxtPlaceLas} 6",
             intro = [TxtForest_01],
-            moves = [Go(CmdPolnoc, RoomRoad3)],
+            exits = [Exit(CmdPolnoc, true)],
         },
     ];
 
     static readonly Dictionary<int, TRoom> RoomIndex = BuildRoomIndex();
+    static readonly Dictionary<TCoordinate, TRoom> RoomGrid = BuildRoomGrid();
 
-    static readonly List<(TMazeDir dir, string label)> MazeExitLabels = [
-        (TMazeDir.mdPolodnie, TxtExitPolodnie),
-        (TMazeDir.mdPolnoc, TxtExitPolnoc),
-        (TMazeDir.mdWschod, TxtExitWschod),
-        (TMazeDir.mdZachod, TxtExitZachod),
+    static Rooms() {
+        foreach (TRoom room in RoomDefs) {
+            room.moves = [.. room.exits.Select(exit => ResolveMove(room, exit))];
+        }
+    }
+
+    static readonly List<(TMazeDir dir, string cmd, string label)> MazeExitLabels = [
+        (TMazeDir.mdPolodnie, CmdPolodnie, TxtExitPolodnie),
+        (TMazeDir.mdPolnoc, CmdPolnoc, TxtExitPolnoc),
+        (TMazeDir.mdWschod, CmdWschod, TxtExitWschod),
+        (TMazeDir.mdZachod, CmdZachod, TxtExitZachod),
     ];
 
     static Dictionary<int, TRoom> BuildRoomIndex() =>
         RoomDefs.ToDictionary(room => room.number);
+
+    static Dictionary<TCoordinate, TRoom> BuildRoomGrid() =>
+        RoomDefs.ToDictionary(room => room.position);
+
+    static TCoordinate DirectionDelta(string cmd) =>
+        cmd switch {
+            CmdPolnoc => new(0, 1, 0),
+            CmdPolodnie => new(0, -1, 0),
+            CmdWschod => new(1, 0, 0),
+            CmdZachod => new(-1, 0, 0),
+            CmdGora => new(0, 0, 1),
+            CmdDol => new(0, 0, -1),
+            _ => throw new ArgumentOutOfRangeException(nameof(cmd)),
+        };
+
+    static TCoordinate Neighbor(TCoordinate position, string cmd) {
+        TCoordinate delta = DirectionDelta(cmd);
+        return new(position.X + delta.X, position.Y + delta.Y, position.Z + delta.Z);
+    }
+
+    public static int? RoomInDirection(int number, string cmd) =>
+        RoomGrid.TryGetValue(Neighbor(RoomIndex[number].position, cmd), out TRoom? adjacent)
+            ? adjacent.number
+            : null;
+
+    static TMovement ResolveMove(TRoom room, TRoomExit exit) {
+        int destination = RoomInDirection(room.number, exit.cmd)
+            ?? throw new InvalidOperationException($"room {room.number} exits {exit.cmd} into an empty coordinate");
+        return new() {
+            cmd = exit.cmd,
+            dest = destination,
+            predicate = exit.IsOpen,
+            blocked = exit.blocked,
+        };
+    }
+
+    static TRoomExit Exit(string cmd, bool enabled = true, string? blocked = null) =>
+        new() {
+            cmd = cmd,
+            enabled = enabled,
+            blocked = blocked,
+        };
+
+    static TRoomExit Exit(string cmd, Predicate<bool> predicate, Func<bool> state, string? blocked = null) =>
+        new() {
+            cmd = cmd,
+            predicate = predicate,
+            state = state,
+            blocked = blocked,
+        };
 
     static string ExitLabel(string cmd) =>
         cmd switch {
@@ -1224,11 +1433,10 @@ public static class Rooms {
             return;
         }
         Out.WriteLine(TxtShared_03);
-        foreach ((TMazeDir dir, string label) in MazeExitLabels) {
-            int dest = maze.dest[dir];
-            if (dest != number) {
+        foreach ((TMazeDir dir, string cmd, string label) in MazeExitLabels) {
+            if (maze.exits.Contains(dir) && RoomInDirection(number, cmd) is int destination) {
                 Out.Write(label);
-                Out.WriteLine(RoomName(dest));
+                Out.WriteLine(RoomName(destination));
             }
         }
     }

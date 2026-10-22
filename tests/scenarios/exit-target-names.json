@@ -31,7 +31,7 @@
     },
     {
       "label": "salon lists all target names",
-      "expect": "POŁUDNIE:\\ Tam\\ gdzie\\ zaczynasz\\ grę[\\s\\S]*?WSCHÓD:\\ Pokój\\ treningowy\\ \\(1\\)[\\s\\S]*?DÓŁ:\\ Poddziemny\\ pokój\\ treningowy\\ \\(2\\)[\\s\\S]*?ZACHÓD:\\ Szkoła\\ Życia[\\s\\S]*?PÓŁNOC:\\ Centrum\\ miasta[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "POŁUDNIE:\\ Tam\\ gdzie\\ zaczynasz\\ grę[\\s\\S]*?WSCHÓD:\\ Pokój\\ treningowy\\ \\(1\\)[\\s\\S]*?DÓŁ:\\ Poddziemny\\ pokój\\ treningowy\\ \\(2\\)[\\s\\S]*?ZACHÓD:\\ Przejście\\ do\\ Szkoły[\\s\\S]*?PÓŁNOC:\\ Centrum\\ miasta[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -41,7 +41,7 @@
     },
     {
       "label": "city centre names streets and salon",
-      "expect": "POŁUDNIE:\\ Salon[\\s\\S]*?PÓŁNOC:\\ Ul\\.\\ Sklepikowa\\ 1[\\s\\S]*?ZACHÓD:\\ Ul\\.\\ Długa[\\s\\S]*?WSCHÓD:\\ Ul\\.\\ Ciemna[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "POŁUDNIE:\\ Salon[\\s\\S]*?PÓŁNOC:\\ Ul\\.\\ Sklepikowa\\ 1[\\s\\S]*?ZACHÓD:\\ Ul\\.\\ Długa[\\s\\S]*?WSCHÓD:\\ Przejście\\ na\\ Ciemną[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -61,7 +61,12 @@
     },
     {
       "label": "second shop street names its neighbours",
-      "expect": "POŁUDNIE:\\ Ul\\.\\ Sklepikowa\\ 1[\\s\\S]*?WSCHÓD:\\ Sklep\\ wielobranżowy[\\s\\S]*?ZACHÓD:\\ Sklep\\ magiczny[\\s\\S]*?PÓŁNOC:\\ Rozjazd![\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "POŁUDNIE:\\ Ul\\.\\ Sklepikowa\\ 1[\\s\\S]*?WSCHÓD:\\ Sklep\\ wielobranżowy[\\s\\S]*?ZACHÓD:\\ Sklep\\ magiczny[\\s\\S]*?PÓŁNOC:\\ Brama\\ na\\ Trakt[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "POLNOC"
+    },
+    {
+      "label": "roads gate",
+      "expect": "Jesteś\\ przy\\ bramie\\ prowadzącej\\ na\\ Trakt\\.[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -71,7 +76,7 @@
     },
     {
       "label": "quest master names the roads",
-      "expect": "POŁUDNIE:\\ Ul\\.\\ Sklepikowa\\ 2[\\s\\S]*?WSCHÓD:\\ Droga\\ o\\ której\\ możesz\\ pomarzyć\\ \\(bo\\ jest\\ w\\ produkcji!!!\\)[\\s\\S]*?ZACHÓD:\\ droga\\ 1[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "POŁUDNIE:\\ Brama\\ na\\ Trakt[\\s\\S]*?WSCHÓD:\\ Droga\\ o\\ której\\ możesz\\ pomarzyć\\ \\(bo\\ jest\\ w\\ produkcji!!!\\)[\\s\\S]*?ZACHÓD:\\ droga\\ 1[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
@@ -95,6 +100,11 @@
       "send": "POLUDNIE"
     },
     {
+      "label": "roads gate",
+      "expect": "Jesteś\\ przy\\ bramie\\ prowadzącej\\ na\\ Trakt\\.[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "POLUDNIE"
+    },
+    {
       "label": "back on the shop street",
       "expect": "Ciągnie\\ się\\ tędy\\ ulica\\ Sklepikowa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
@@ -115,13 +125,18 @@
       "send": "ZACHOD"
     },
     {
+      "label": "school gate",
+      "expect": "Jesteś\\ w\\ przejściu\\ do\\ Szkoły\\ Życia\\.[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "ZACHOD"
+    },
+    {
       "label": "school hall exits",
       "expect": "Jesteś\\ w\\ hallu\\ Szkoły\\ Życia[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "school hall names the orientation room",
-      "expect": "WSCHÓD:\\ Salon[\\s\\S]*?ZACHÓD:\\ Pokój\\ orientacyjny[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "WSCHÓD:\\ Przejście\\ do\\ Szkoły[\\s\\S]*?ZACHÓD:\\ Pokój\\ orientacyjny[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {

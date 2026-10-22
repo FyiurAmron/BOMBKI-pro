@@ -35,6 +35,11 @@
       "send": "ZACHOD"
     },
     {
+      "label": "school gate",
+      "expect": "Jesteś\\ w\\ przejściu\\ do\\ Szkoły\\ Życia\\.[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "ZACHOD"
+    },
+    {
       "label": "the school hall",
       "expect": "Jesteś\\ w\\ hallu\\ Szkoły\\ Życia[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
@@ -240,9 +245,19 @@
       "send": "JA"
     },
     {
-      "label": "cage 16: leave for the reward room",
+      "label": "cage 16: return to the corridor",
       "expect": "[0-9]+%\\.-?[0-9]+>",
-      "send": "GORA"
+      "send": "DOL"
+    },
+    {
+      "label": "cage corridor",
+      "expect": "Jesteś\\ w\\ pokoju\\ prowadzącym\\ do\\ klatek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "DOL"
+    },
+    {
+      "label": "Pokój 4",
+      "expect": "Jesteś\\ w\\ malutkim\\ pokoju\\ ale\\ widzisz\\ WYJŚCIA\\ w\\ dwie\\ strony[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "WSCHOD"
     },
     {
       "label": "the poster room",
@@ -257,11 +272,16 @@
     {
       "label": "the ground context shows the diploma",
       "expect": "Podnosisz\\ DYPLOM[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "ZACHOD"
+    },
+    {
+      "label": "back in Pokój 4",
+      "expect": "Jesteś\\ w\\ malutkim\\ pokoju\\ ale\\ widzisz\\ WYJŚCIA\\ w\\ dwie\\ strony[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "DOL"
     },
     {
-      "label": "back in the cage 16 room",
-      "expect": "Ten\\ pokój\\ jest\\ cały\\ obryzgany\\ krwią[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "label": "back in the school orientation room",
+      "expect": "SZOK!!!\\ AAA\\ UPSI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WYJSCIE"
     }
   ]

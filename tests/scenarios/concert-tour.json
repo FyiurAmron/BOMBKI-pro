@@ -51,7 +51,7 @@
     },
     {
       "label": "room 30 exits -> 31",
-      "expect": "WSCHÓD: Centrum\\ miasta[\\s\\S]*?ZACHÓD: Ul\\.\\ Długa\\ 2[\\s\\S]*?PÓŁNOC: Wejście\\ na\\ arenę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "WSCHÓD: Centrum\\ miasta[\\s\\S]*?ZACHÓD: Ul\\.\\ Długa\\ 2[\\s\\S]*?GÓRA: Droga\\ na\\ arenę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -61,7 +61,7 @@
     },
     {
       "label": "room 31 exits -> 30",
-      "expect": "WSCHÓD: Ul\\.\\ Długa[\\s\\S]*?PÓŁNOC: Dolina\\ rozrywek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "WSCHÓD: Ul\\.\\ Długa[\\s\\S]*?PÓŁNOC: Droga\\ do\\ Jaskini\\ Rozrywek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
@@ -71,7 +71,12 @@
     },
     {
       "label": "room 30 exits -> 32",
-      "expect": "WSCHÓD: Centrum\\ miasta[\\s\\S]*?ZACHÓD: Ul\\.\\ Długa\\ 2[\\s\\S]*?PÓŁNOC: Wejście\\ na\\ arenę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "WSCHÓD: Centrum\\ miasta[\\s\\S]*?ZACHÓD: Ul\\.\\ Długa\\ 2[\\s\\S]*?GÓRA: Droga\\ na\\ arenę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "GORA"
+    },
+    {
+      "label": "arena gate",
+      "expect": "Jesteś\\ na\\ drodze\\ prowadzącej\\ na\\ arenę\\.[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -81,8 +86,13 @@
     },
     {
       "label": "room 32 exits -> 30",
-      "expect": "POŁUDNIE: Ul\\.\\ Długa[\\s\\S]*?PÓŁNOC: Arena\\ 1[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "POŁUDNIE: Droga\\ na\\ arenę[\\s\\S]*?PÓŁNOC: Arena\\ 1[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
+    },
+    {
+      "label": "arena gate",
+      "expect": "Jesteś\\ na\\ drodze\\ prowadzącej\\ na\\ arenę\\.[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "DOL"
     },
     {
       "label": "room 30 (ULICA DLUGA CIAGNIE )",
@@ -91,7 +101,7 @@
     },
     {
       "label": "room 30 exits -> 31",
-      "expect": "WSCHÓD: Centrum\\ miasta[\\s\\S]*?ZACHÓD: Ul\\.\\ Długa\\ 2[\\s\\S]*?PÓŁNOC: Wejście\\ na\\ arenę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "WSCHÓD: Centrum\\ miasta[\\s\\S]*?ZACHÓD: Ul\\.\\ Długa\\ 2[\\s\\S]*?GÓRA: Droga\\ na\\ arenę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -101,17 +111,22 @@
     },
     {
       "label": "room 31 exits -> 60",
-      "expect": "WSCHÓD: Ul\\.\\ Długa[\\s\\S]*?PÓŁNOC: Dolina\\ rozrywek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "WSCHÓD: Ul\\.\\ Długa[\\s\\S]*?PÓŁNOC: Droga\\ do\\ Jaskini\\ Rozrywek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
-      "label": "room 60 (JESTES W DOLINIE ROZ)",
-      "expect": "Jesteś\\ w\\ dolinie\\ rozrywek\\.\\ Dolina\\ ciągn[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "label": "concert gate",
+      "expect": "Jesteś\\ na\\ drodze\\ prowadzącej\\ do\\ Jaskini\\ Rozrywek\\.[\\s\\S]*?Dalej\\ wiedzie\\ strome\\ zejście,\\ a\\ z\\ dołu\\ dziwna\\ muzyka\\.[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "DOL"
+    },
+    {
+      "label": "room 60 (Jaskinia Rozrywek)",
+      "expect": "Jesteś\\ w\\ Jaskini\\ Rozrywek\\.\\ Jaskinia\\ ciągn[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
     },
     {
       "label": "room 60 exits -> 61",
-      "expect": "POŁUDNIE: Ul\\.\\ Długa[\\s\\S]*?WSCHÓD: Tłum\\ 1[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "GÓRA: Droga\\ do\\ Jaskini\\ Rozrywek[\\s\\S]*?WSCHÓD: Tłum\\ 1[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
@@ -126,7 +141,7 @@
     },
     {
       "label": "room 61 exits -> 62",
-      "expect": "ZACHÓD: Dolina\\ rozrywek[\\s\\S]*?PÓŁNOC: Tłum\\ 3[\\s\\S]*?POŁUDNIE: Tłum\\ 2[\\s\\S]*?WSCHÓD: Tłum\\ 4[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "ZACHÓD: Jaskinia\\ Rozrywek[\\s\\S]*?PÓŁNOC: Tłum\\ 3[\\s\\S]*?POŁUDNIE: Tłum\\ 2[\\s\\S]*?WSCHÓD: Tłum\\ 4[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {

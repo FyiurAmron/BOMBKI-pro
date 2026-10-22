@@ -216,6 +216,15 @@ public class UnitsSwiatTests {
             _ => "",
         };
 
+    static TMazeDir Opposite(TMazeDir dir) =>
+        dir switch {
+            TMazeDir.mdPolnoc => TMazeDir.mdPolodnie,
+            TMazeDir.mdPolodnie => TMazeDir.mdPolnoc,
+            TMazeDir.mdWschod => TMazeDir.mdZachod,
+            TMazeDir.mdZachod => TMazeDir.mdWschod,
+            _ => throw new ArgumentOutOfRangeException(nameof(dir)),
+        };
+
     [Fact]
     public void RoomMovesAreTwoWay() {
         var rooms = Rooms.RoomDefs.ToDictionary(room => room.number);
@@ -231,7 +240,24 @@ public class UnitsSwiatTests {
         }
 
         var arena = MazeMoves.Skip(1).Single(move => move.room == Rooms.RoomArena33);
-        Assert.Equal(Rooms.RoomArenaEntrance, arena.dest[TMazeDir.mdPolodnie]);
+        Assert.Contains(TMazeDir.mdPolodnie, arena.exits);
+        Assert.Equal(Rooms.RoomArenaEntrance,
+            Rooms.RoomInDirection(Rooms.RoomArena33, MazeDirectionCommand(TMazeDir.mdPolodnie)));
+
+        var mazeRooms = MazeMoves.Skip(1).ToDictionary(move => move.room);
+        foreach (var maze in mazeRooms.Values) {
+            foreach (TMazeDir dir in maze.exits) {
+                int? destination = Rooms.RoomInDirection(maze.room, MazeDirectionCommand(dir));
+                Assert.NotNull(destination);
+                if (destination == Rooms.RoomArenaEntrance) {
+                    Assert.Equal(Rooms.RoomArena33, maze.room);
+                    Assert.Equal(TMazeDir.mdPolodnie, dir);
+                    continue;
+                }
+
+                Assert.Contains(Opposite(dir), mazeRooms[destination.Value].exits);
+            }
+        }
     }
 
     [Fact]
@@ -241,12 +267,50 @@ public class UnitsSwiatTests {
         Assert.Equal(rooms.Count, rooms.Select(room => room.name).Distinct().Count());
         Assert.All(rooms, room => Assert.All(room.moves,
             move => Assert.Contains(rooms, target => target.number == move.dest)));
-        List<int> mazeTargets = [
-            .. MazeMoves
-                .Skip(1)
-                .SelectMany(maze => Enum.GetValues<TMazeDir>().Select(dir => maze.dest[dir])),
-        ];
-        Assert.All(mazeTargets, target => Assert.Contains(rooms, room => room.number == target));
+        Assert.All(rooms, room => Assert.All(room.moves,
+            move => Assert.Equal(move.dest, Rooms.RoomInDirection(room.number, move.cmd))));
+        Assert.All(MazeMoves.Skip(1), maze => Assert.All(maze.exits, dir => {
+            int? target = Rooms.RoomInDirection(maze.room, MazeDirectionCommand(dir));
+            Assert.NotNull(target);
+            Assert.Contains(rooms, room => room.number == target);
+        }));
+    }
+
+    [Fact]
+    public void CageRewardConnectsEastOfSchoolLanding() {
+        var landing = Rooms.RoomDefs.Single(room => room.number == Rooms.RoomSchoolLanding);
+        var reward = Rooms.RoomDefs.Single(room => room.number == Rooms.RoomCageReward);
+        var hugeCage = Rooms.RoomDefs.Single(room => room.number == Rooms.RoomCageHuge);
+
+        Assert.Equal(new Rooms.TCoordinate(-2, -1, 1), reward.position);
+        Assert.Contains(landing.moves, move => move.cmd == Texts.CmdWschod && move.dest == reward.number);
+        Assert.Contains(reward.moves, move => move.cmd == Texts.CmdZachod && move.dest == landing.number);
+        Assert.DoesNotContain(hugeCage.moves, move => move.cmd == Texts.CmdGora);
+    }
+
+    [Fact]
+    public void MapCoordinatesAreUniqueAndPartitionLayoutIsFixed() {
+        var rooms = Rooms.RoomDefs;
+        Assert.Equal(rooms.Count, rooms.Select(room => room.position).Distinct().Count());
+
+        Dictionary<int, Rooms.TCoordinate> fixedCells = new() {
+            [Rooms.RoomCityCentre] = new(0, 0, 0),
+            [Rooms.RoomSchoolHall] = new(-2, -1, 0),
+            [Rooms.RoomSchoolGate] = new(-1, -1, 0),
+            [Rooms.RoomArenaEntrance] = new(-1, 1, 1),
+            [Rooms.RoomArenaGate] = new(-1, 0, 1),
+            [Rooms.RoomEntertainmentCave] = new(-2, 1, -1),
+            [Rooms.RoomConcertGate] = new(-2, 1, 0),
+            [Rooms.RoomCageReward] = new(-2, -1, 1),
+            [Rooms.RoomDarkStreet] = new(1, 0, 1),
+            [Rooms.RoomIvyGate] = new(1, 0, 0),
+            [Rooms.RoomRoadsGate] = new(0, 3, 0),
+            [Rooms.RoomQuestMaster] = new(0, 4, 0),
+        };
+
+        Assert.All(fixedCells, entry =>
+            Assert.Equal(entry.Value, rooms.Single(room => room.number == entry.Key).position));
+        Assert.Equal(Rooms.RoomFutureRoad, Rooms.RoomInDirection(Rooms.RoomQuestMaster, Texts.CmdWschod));
     }
 
     [Fact]

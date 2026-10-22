@@ -35,6 +35,11 @@
       "send": "ZACHOD"
     },
     {
+      "label": "school gate",
+      "expect": "Jesteś\\ w\\ przejściu\\ do\\ Szkoły\\ Życia\\.[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "ZACHOD"
+    },
+    {
       "label": "room 4 (school of life hall)",
       "expect": "Jesteś\\ w\\ hallu\\ Szkoły\\ Życia\\ \\-\\ ogarnia\\ cię[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
@@ -180,9 +185,19 @@
       "send": "EXIT"
     },
     {
-      "label": "room 16 exits -> 17",
-      "expect": "DÓŁ: Wejścia\\ do\\ klatek[\\s\\S]*?GÓRA: Jedyna\\ droga\\ nie\\ prowadząca\\ do\\ klatek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
-      "send": "GORA"
+      "label": "room 16 exits -> 11",
+      "expect": "DÓŁ: Wejścia\\ do\\ klatek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "DOL"
+    },
+    {
+      "label": "room 11 from room 16",
+      "expect": "Jesteś\\ w\\ pokoju\\ prowadzącym\\ do\\ klatek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "DOL"
+    },
+    {
+      "label": "Pokój 4 from the cage corridor",
+      "expect": "Jesteś\\ w\\ malutkim\\ pokoju\\ ale\\ widzisz\\ WYJŚCIA\\ w\\ dwie\\ strony[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "WSCHOD"
     },
     {
       "label": "room 17 (JESTES W POKOJU W KT)",
@@ -190,9 +205,19 @@
       "send": "EXIT"
     },
     {
-      "label": "room 17 exits -> 16",
-      "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
-      "send": "DOL"
+      "label": "room 17 exits -> Pokój 4",
+      "expect": "ZACHÓD:\\ Pokój\\ 4[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "ZACHOD"
+    },
+    {
+      "label": "Pokój 4 after room 17",
+      "expect": "Jesteś\\ w\\ malutkim\\ pokoju\\ ale\\ widzisz\\ WYJŚCIA\\ w\\ dwie\\ strony[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "GORA"
+    },
+    {
+      "label": "room 11 after room 17",
+      "expect": "Jesteś\\ w\\ pokoju\\ prowadzącym\\ do\\ klatek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "GORA"
     },
     {
       "label": "room 16 after the fight",

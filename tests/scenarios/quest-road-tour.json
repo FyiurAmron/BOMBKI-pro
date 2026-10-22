@@ -65,6 +65,11 @@
       "send": "POLNOC"
     },
     {
+      "label": "roads gate",
+      "expect": "Jesteś\\ przy\\ bramie\\ prowadzącej\\ na\\ Trakt\\.[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "POLNOC"
+    },
+    {
       "label": "room 100 (ZNALAZLES SIE NA ROZ)",
       "expect": "Znalazłeś\\ się\\ na\\ rozjeździe\\ dróg,\\ dro[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"

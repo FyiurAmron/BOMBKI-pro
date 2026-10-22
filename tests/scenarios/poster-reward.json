@@ -25,6 +25,11 @@
       "send": "ZACHOD"
     },
     {
+      "label": "school gate",
+      "expect": "Jesteś\\ w\\ przejściu\\ do\\ Szkoły\\ Życia\\.[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "ZACHOD"
+    },
+    {
       "label": "school of life hall to shock room",
       "expect": "Jesteś\\ w\\ hallu\\ Szkoły\\ Życia[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
@@ -67,7 +72,17 @@
     {
       "label": "cage 16 fight",
       "expect": "Ten\\ pokój\\ jest\\ cały\\ obryzgany\\ krwią[\\s\\S]*?wyciągasz [0-9]+\\ MONET\\ z\\ ciała\\ potwora[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
-      "send": "GORA"
+      "send": "DOL"
+    },
+    {
+      "label": "cage corridor from cage 16",
+      "expect": "Jesteś\\ w\\ pokoju\\ prowadzącym\\ do\\ klatek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "DOL"
+    },
+    {
+      "label": "Pokój 4 on the way to the poster",
+      "expect": "Jesteś\\ w\\ malutkim\\ pokoju\\ ale\\ widzisz\\ WYJŚCIA\\ w\\ dwie\\ strony[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "WSCHOD"
     },
     {
       "label": "poster room and poster text",
@@ -81,8 +96,18 @@
     },
     {
       "label": "poster room exits",
-      "expect": "DÓŁ: Klatka\\ silnego,\\ odpornego\\ i\\ zręcznego[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
-      "send": "DOL"
+      "expect": "ZACHÓD:\\ Pokój\\ 4[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "ZACHOD"
+    },
+    {
+      "label": "Pokój 4 after the poster",
+      "expect": "Jesteś\\ w\\ malutkim\\ pokoju\\ ale\\ widzisz\\ WYJŚCIA\\ w\\ dwie\\ strony[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "GORA"
+    },
+    {
+      "label": "cage corridor after the poster",
+      "expect": "Jesteś\\ w\\ pokoju\\ prowadzącym\\ do\\ klatek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "GORA"
     },
     {
       "label": "back in the cage 16 room",

@@ -1,6 +1,6 @@
 # New features
 
-- Intro cleanup
+- intro cleanup
   - new ASCII banner from `data/banner.aa`
   - no ticks, no keypress wait
   - name before race, validated and stored
@@ -10,19 +10,19 @@
   - name shown on the JA sheet
   - rainbow version line
   - trimmed start sequence
-- Removed MODE/UNMODE ceremony
+- removed MODE/UNMODE ceremony
   - all commands run from the normal context
   - ground items listed on room entry
-- Debugging improvements
+- debugging improvements
   - all debugging commands are now available in all rooms
   - debug commands and env vars need BOMBKI_DEBUG=2137 in env
-- Save functionality improvements
-- Polish orthography pass
+- save functionality improvements
+- polish orthography pass
   - diacritics restored throughout the game texts
   - console output and input switched to UTF-8
   - typed input matches regardless of case and diacritics
   - punctuation and spacing normalized across the texts
-- Sentence-case texts
+- sentence-case texts
   - game texts read as normal sentences
   - command, item and enemy names stay uppercase
 - WYJSCIE always quits
@@ -65,3 +65,6 @@
 - can buy already owned items now
 - can have loot drops of already carried items now
 - multiple copies of the same item can lie on the ground
+- co-ordinate-based world map
+  - each room is now (x,y,z)-located, and room exists follow the map structure
+  - added some glue rooms and moved/removed some blocking ones

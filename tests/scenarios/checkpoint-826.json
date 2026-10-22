@@ -35,6 +35,11 @@
       "send": "ZACHOD"
     },
     {
+      "label": "school gate",
+      "expect": "Jesteś\\ w\\ przejściu\\ do\\ Szkoły\\ Życia\\.[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "ZACHOD"
+    },
+    {
       "label": "the school hall",
       "expect": "Jesteś\\ w\\ hallu\\ Szkoły\\ Życia[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
@@ -230,6 +235,11 @@
       "send": "WSCHOD"
     },
     {
+      "label": "school gate",
+      "expect": "Jesteś\\ w\\ przejściu\\ do\\ Szkoły\\ Życia\\.[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "WSCHOD"
+    },
+    {
       "label": "the salon after the cages",
       "expect": "Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
@@ -246,12 +256,17 @@
     },
     {
       "label": "ulica dluga (31)",
-      "expect": "Idąc\\ ulicą\\ długą\\ na\\ PÓŁNOC\\ spostrzegasz\\ dolinę\\ rozrywek",
+      "expect": "Idąc\\ ulicą\\ długą\\ na\\ PÓŁNOC\\ spostrzegasz\\ Jaskinię\\ Rozrywek",
       "send": "POLNOC"
     },
     {
-      "label": "dolina rozrywek (60)",
-      "expect": "Jesteś\\ w\\ dolinie\\ rozrywek",
+      "label": "concert gate",
+      "expect": "Jesteś\\ na\\ drodze\\ prowadzącej\\ do\\ Jaskini\\ Rozrywek\\.[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "DOL"
+    },
+    {
+      "label": "Jaskinia Rozrywek (60)",
+      "expect": "Jesteś\\ w\\ Jaskini\\ Rozrywek",
       "send": "WSCHOD"
     },
     {

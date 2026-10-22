@@ -52,6 +52,11 @@
     {
       "label": "crossroads again, now with a pass",
       "expect": "[0-9]+%\\.-?[0-9]+>",
+      "send": "POLNOC"
+    },
+    {
+      "label": "quest master",
+      "expect": "Znalazłeś\\ się\\ na\\ rozjeździe[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "ZACHOD"
     },
     {
@@ -167,6 +172,11 @@
     {
       "label": "back at the crossroads",
       "expect": "Znalazłeś\\ się\\ na\\ rozje[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "POLUDNIE"
+    },
+    {
+      "label": "roads gate",
+      "expect": "Jesteś\\ przy\\ bramie\\ prowadzącej\\ na\\ Trakt\\.[\\s\\S]*?Brama\\ jak\\ szklanka\\ -\\ w\\ połowie\\ otwarta,\\ w\\ połowie\\ zamknięta\\.\\ Nie,\\ to\\ bez\\ sensu\\.[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLUDNIE"
     },
     {

@@ -52,6 +52,11 @@
     {
       "label": "room 30 exits -> 32",
       "expect": "Dostępne\\ WYJŚCI[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "GORA"
+    },
+    {
+      "label": "arena gate",
+      "expect": "Jesteś\\ na\\ drodze\\ prowadzącej\\ na\\ arenę\\.[\\s\\S]*?Kręte\\ schody\\ wiją\\ się\\ przed\\ tobą\\ jak\\ robaki\\ po\\ deszczu\\.[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -66,7 +71,7 @@
     },
     {
       "label": "room 32 exits",
-      "expect": "POŁUDNIE:\\ Ul\\.\\ Długa[\\s\\S]*?PÓŁNOC:\\ Arena\\ 1[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "POŁUDNIE:\\ Droga\\ na\\ arenę[\\s\\S]*?PÓŁNOC:\\ Arena\\ 1[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {

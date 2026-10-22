@@ -40,8 +40,13 @@
       "send": "POLNOC"
     },
     {
+      "label": "concert gate",
+      "expect": "Jesteś\\ na\\ drodze\\ prowadzącej\\ do\\ Jaskini\\ Rozrywek\\.[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "DOL"
+    },
+    {
       "label": "context 60",
-      "expect": "Jesteś\\ w\\ dolinie\\ rozrywek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "Jesteś\\ w\\ Jaskini\\ Rozrywek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {

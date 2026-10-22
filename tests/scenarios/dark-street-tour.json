@@ -45,6 +45,11 @@
       "send": "WSCHOD"
     },
     {
+      "label": "ivy gate",
+      "expect": "Jesteś\\ w\\ przejściu\\ na\\ Ulicę\\ Ciemną\\.[\\s\\S]*?Jest\\ tam\\ ciemno\\.[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "GORA"
+    },
+    {
       "label": "room 75 (JESTES NA ULICY CIEM)",
       "expect": "Jesteś\\ na\\ ulicy\\ Ciemnej,\\ właściwie\\ na[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "EXIT"
