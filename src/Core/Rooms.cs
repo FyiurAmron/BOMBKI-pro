@@ -303,13 +303,13 @@ public static class Rooms {
             number = RoomSalon,
             position = new(0, -1, 0),
             name = TxtPlaceSalon,
-            intro = [TxtYouAreIn + TxtRoom1_01, TxtRoom1Lines1[1], TxtRoom1Lines1[2], TxtRoom1Lines1[3]],
+            intro = [TxtYouAreIn + TxtRoom1_01, TxtRoom1_02, TxtShared_04, TxtRoom1_03],
             exits = [Exit(CmdPolodnie, true),
                      Exit(CmdWschod, true),
                      Exit(CmdDol, true),
                      Exit(CmdZachod, true),
                      Exit(CmdPolnoc, true), ],
-            posters = [new(CmdPatrz + CmdPlakat, [..TxtRoom1Lines2.Skip(1)])],
+            posters = [new(CmdPatrz + CmdPlakat, [TxtShared_05, TxtRoom1_09, TxtRoom1_10, TxtRoom1_11, TxtRoom1_12, TxtRoom1_16, TxtRoom1_17, TxtRoom1_18])],
         },
         new() {
             number = RoomTraining,
@@ -317,7 +317,7 @@ public static class Rooms {
             name = TxtPlacePokojTreningowy1,
             intro = [TxtYouAreIn + TxtRoom2_01, TxtRoom2_02, TxtShared_04],
             exits = [Exit(CmdZachod, true)],
-            posters = [new(CmdPatrz + CmdPlakat, [..TxtRoom2Lines1.Skip(1)])],
+            posters = [new(CmdPatrz + CmdPlakat, [TxtShared_05, TxtRoom2_04, TxtRoom2_05])],
             turn = entering => {
                 if (!entering) {
                     HandleTrain();
@@ -328,7 +328,7 @@ public static class Rooms {
             number = RoomMeditation,
             position = new(0, -1, -1),
             name = TxtPlacePoddziemnyPokojTreningowy2,
-            intro = [..TxtRoom3Lines1.Skip(1)],
+            intro = [TxtRoom3_01, TxtRoom3_02, TxtRoom3_03],
             exits = [Exit(CmdGora, true)],
             turn = entering => {
                 if (!entering) {
@@ -343,13 +343,13 @@ public static class Rooms {
             intro = [TxtYouAreIn + TxtRoom4_01, TxtRoom4_02],
             exits = [Exit(CmdWschod, true),
                      Exit(CmdZachod, true), ],
-            posters = [new(CmdPatrz + CmdAfisz, [..TxtRoom4Lines1.Skip(1)])],
+            posters = [new(CmdPatrz + CmdAfisz, [TxtRoom4_05, TxtRoom4_06, TxtRoom4_07, TxtRoom4_08, TxtRoom4_09])],
         },
         new() {
             number = RoomLost,
             position = new(-3, -1, 0),
             name = TxtPlacePokojOrientacyjny,
-            intro = [..TxtRoom5Lines1.Skip(1)],
+            intro = [TxtRoom5_01, TxtRoom5_02, TxtRoom5_03],
             exits = [Exit(CmdWschod, true),
                      Exit(CmdZachod, true),
                      Exit(CmdPolnoc, true),
@@ -375,14 +375,14 @@ public static class Rooms {
             number = RoomCageCorridor,
             position = new(-3, -1, 2),
             name = TxtPlaceWejsciaDoKlatek,
-            intro = [TxtYouAreIn + TxtRoom11_01, ..TxtRoom11Lines1.Skip(1)],
+            intro = [TxtYouAreIn + TxtRoom11_01, TxtRoom11_03, TxtShared_04],
             exits = [Exit(CmdWschod, true),
                      Exit(CmdZachod, true),
                      Exit(CmdPolnoc, true),
                      Exit(CmdPolodnie, true),
                      Exit(CmdGora, true),
                      Exit(CmdDol, true), ],
-            posters = [new(CmdPatrz + CmdPlakat, [..TxtRoom11Lines2.Skip(1)])],
+            posters = [new(CmdPatrz + CmdPlakat, [TxtShared_13, TxtRoom11_10, TxtRoom11_11])],
             expand = true,
         },
         new() {
@@ -475,7 +475,7 @@ public static class Rooms {
                     return;
                 }
                 if (Verb == CmdPatrz && Rest == CmdPlakat) {
-                    WriteLines([.. TxtRoom17Lines1.Skip(1)]);
+                    WriteLines([TxtShared_13, TxtRoom17_03, TxtRoom17_04, TxtRoom17_05]);
                     if ((World.Monsters[CageWeakling] == 0) && (World.Monsters[CageAgile] == 0) &&
                     (World.Monsters[CageStrong] == 0) && (World.Monsters[CageTough] == 0) &&
                     (World.Monsters[CageHuge] == 0) && (Bag.Items[TBagItem.Diploma] == 0) &&
@@ -662,7 +662,7 @@ public static class Rooms {
             number = RoomCrowd1,
             position = new(-1, 1, -1),
             name = $"{TxtPlaceTlum} 1",
-            intro = [..TxtConcertRoomsLines1.Skip(1)],
+            intro = [TxtConcertRooms_01, TxtConcertRooms_02, TxtConcertRooms_03],
             exits = [Exit(CmdZachod, true),
                      Exit(CmdPolnoc, true),
                      Exit(CmdPolodnie, true),
@@ -835,7 +835,7 @@ public static class Rooms {
             number = RoomStage1,
             position = new(1, 2, -1),
             name = $"{TxtPlaceScena} 1",
-            intro = [..TxtConcertRoomsLines2.Skip(1)],
+            intro = [TxtConcertRooms_41, TxtConcertRooms_42, TxtConcertRooms_43],
             exits = [Exit(CmdPolnoc, true),
                      Exit(CmdPolodnie, true), ],
             turn = StageTurn,
@@ -869,7 +869,7 @@ public static class Rooms {
             number = RoomDarkStreet,
             position = new(1, 0, 1),
             name = TxtPlaceUlCiemna,
-            intro = [..TxtRoom75Lines1.Skip(1)],
+            intro = [TxtRoom75_01, TxtRoom75_02, TxtRoom75_03],
             exits = [Exit(CmdDol, true),
                      Exit(CmdPolnoc, true),
                      Exit(CmdPolodnie, true), ],
@@ -878,7 +878,7 @@ public static class Rooms {
             number = RoomBar,
             position = new(1, 1, 1),
             name = TxtPlaceBarPodDwomaPedalami,
-            intro = [TxtYouAreIn + TxtRoom76_01, ..TxtRoom76Lines1.Skip(1)],
+            intro = [TxtYouAreIn + TxtRoom76_01, TxtRoom76_02, TxtRoom76_03, TxtRoom76_04],
             exits = [Exit(CmdPolodnie, true)],
             turn = entering => {
                 if (entering) {
@@ -895,7 +895,7 @@ public static class Rooms {
                 }
                 switch (Verb) {
                     case CmdLista:
-                        WriteLines([.. TxtRoom76Lines2.Skip(1)]);
+                        WriteLines([TxtRoom76_09, TxtRoom76_10, TxtRoom76_11, TxtRoom76_12]);
                         break;
                     case CmdZabij:
                         switch (Rest) {
@@ -957,7 +957,7 @@ public static class Rooms {
             number = RoomIvy4,
             position = new(1, -2, 1),
             name = $"{TxtPlaceBluszcz} 4",
-            intro = [..TxtRoom80Lines1.Skip(1)],
+            intro = [TxtRoom80_01, TxtRoom80_02, TxtRoom80_03],
             exits = [Exit(CmdPolnoc, true),
                      Exit(CmdZachod, true),
                      Exit(CmdWschod, true),
@@ -1012,7 +1012,7 @@ public static class Rooms {
             number = RoomClearing,
             position = new(1, -3, 1),
             name = TxtPlacePolana,
-            intro = [..TxtRoom83Lines1.Skip(1)],
+            intro = [TxtRoom83_01, TxtRoom83_02, TxtRoom83_03],
             exits = [Exit(CmdPolnoc, true),
                      Exit(CmdZachod, true), ],
             turn = PlantTurn,
@@ -1022,7 +1022,7 @@ public static class Rooms {
             number = RoomCavePath,
             position = new(0, -3, 1),
             name = TxtPlacePodejrzaneKrzaki,
-            intro = [..TxtRoom84Lines1.Skip(1)],
+            intro = [TxtRoom84_01, TxtRoom84_02, TxtRoom84_03, TxtRoom84_04],
             exits = [Exit(CmdWschod, true),
                      Exit(CmdZachod, true),
                      Exit(CmdPolodnie, true), ],
@@ -1083,9 +1083,9 @@ public static class Rooms {
                                 Out.WriteLine(TxtRoom86_13);
                                 MoveTo(RoomCageHuge);
                             } else if ((Bag.Items[TBagItem.Sausage] < 3) && (Player.Money < StaruchPrice) && (Bag.Items[TBagItem.ReturnScroll] == 0)) {
-                                WriteLines([.. TxtRoom86Lines1.Skip(1)]);
+                                WriteLines([TxtRoom86_05, TxtRoom86_06, TxtRoom86_07]);
                             } else if ((Bag.Items[TBagItem.Sausage] > 3) && (Player.Money >= StaruchPrice)) {
-                                WriteLines([.. TxtRoom86Lines2.Skip(1)]);
+                                WriteLines([TxtRoom86_08, TxtRoom86_09, TxtRoom86_10, TxtRoom86_11, TxtRoom86_12]);
                                 MoveTo(RoomCityCentre);
                                 AcquireItem(TBagItem.Beer);
                                 LoseItem(TBagItem.Sausage, 4);
@@ -1136,7 +1136,7 @@ public static class Rooms {
             number = RoomNettleThrone,
             position = new(0, -5, 1),
             name = TxtPlaceGrota,
-            intro = [..TxtRoom88Lines1.Skip(1)],
+            intro = [TxtRoom88_01, TxtRoom88_02, TxtRoom88_03, TxtRoom88_04],
             exits = [Exit(CmdPolnoc, true)],
             turn = entering => {
                 if (!entering) {
@@ -1195,7 +1195,7 @@ public static class Rooms {
                     DescribeStreet();
                 } else {
                     if (Verb == CmdLista) {
-                        WriteLines([.. TxtRoom100Lines1.Skip(1)]);
+                        WriteLines([TxtRoom100_05, TxtRoom100_06, TxtRoom100_07, TxtRoom100_08]);
                     }
                     for (int i = 1; i < QuestOffers.Count; i++) {
                         TQuestOffer q = QuestOffers[i];
@@ -1252,7 +1252,7 @@ public static class Rooms {
             number = RoomRoad1,
             position = new(-1, 4, 0),
             name = $"{TxtPlaceDroga} 1",
-            intro = [..TxtRoom101Lines1.Skip(1)],
+            intro = [TxtRoom101_01, TxtRoom101_02, TxtRoom101_03],
             exits = [Exit(CmdWschod, true),
                      Exit(CmdZachod, true),
                      Exit(CmdPolnoc, true),
@@ -1273,7 +1273,7 @@ public static class Rooms {
             number = RoomRoad3,
             position = new(-3, 4, 0),
             name = $"{TxtPlaceDroga} 3",
-            intro = [..TxtRoom103Lines1.Skip(1)],
+            intro = [TxtRoom103_01, TxtRoom103_02, TxtRoom103_03, TxtRoom103_04],
             exits = [Exit(CmdWschod, true),
                      Exit(CmdPolnoc, true),
                      Exit(CmdPolodnie, true), ],

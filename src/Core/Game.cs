@@ -1658,7 +1658,19 @@ public static class Game {
                         break;
                     case CmdDyplom:
                         if (Bag.Items[TBagItem.Diploma] > 0) {
-                            WriteLines([.. TxtUseItemsLines1.Skip(1)]);
+                            WriteLines([
+                                TxtUseItems_03,
+                                TxtUseItems_04,
+                                TxtUseItems_05,
+                                TxtUseItems_06,
+                                TxtUseItems_06,
+                                TxtUseItems_06,
+                                TxtUseItems_07,
+                                TxtUseItems_08,
+                                TxtUseItems_09,
+                                TxtUseItems_10,
+                                TxtUseItems_11,
+                            ]);
                         }
 
                         break;
@@ -1714,7 +1726,15 @@ public static class Game {
                 break;
             case CmdPatrz:
                 if ((Rest == CmdPrzepustka) && (Bag.Permit > 0)) {
-                    WriteLines([.. TxtUseItemsLines2.Skip(1)]);
+                    WriteLines([
+                        TxtUseItems_17,
+                        TxtUseItems_18,
+                        TxtUseItems_19,
+                        TxtUseItems_20,
+                        TxtUseItems_21,
+                        TxtUseItems_22,
+                        TxtUseItems_17,
+                    ]);
                 }
 
                 break;
@@ -1983,7 +2003,12 @@ public static class Game {
                 break;
             case CmdSecret:
                 if ((Rest == CmdLista) && (World.Monsters[TMonster.Duncan] == Session.Room)) {
-                    WriteLines([.. TxtPlantFightsLines1.Skip(1)]);
+                    WriteLines([
+                        TxtPlantFights_01,
+                        TxtPlantFights_02,
+                        TxtPlantFights_03,
+                        TxtPlantFights_04,
+                    ]);
                 }
 
                 break;
@@ -2008,7 +2033,14 @@ public static class Game {
             case CmdRozmawiaj:
                 if ((Rest == CmdDuncan) && (World.Monsters[TMonster.Duncan] == Session.Room)) {
                     if (World.DuncanQuest == 0) {
-                        WriteLines([.. TxtPlantFightsLines2.Skip(1)]);
+                        WriteLines([
+                            TxtPlantFights_07,
+                            TxtPlantFights_08,
+                            TxtPlantFights_09,
+                            TxtPlantFights_10,
+                            TxtPlantFights_11,
+                            TxtPlantFights_12,
+                        ]);
                         World.DuncanQuest = 75;
                     }
                     if (World.DuncanQuest != 0) {
@@ -2358,7 +2390,12 @@ public static class Game {
         Player.Mana = Player.MaxMana;
         SpawnMonsters();
         Bag.AddGroundItem(TBagItem.OldSword, RoomStart);
-        WriteLines([.. TxtChooseRaceLines1.Skip(1)]);
+        WriteLines([
+            TxtChooseRace_03,
+            TxtChooseRace_10,
+            TxtChooseRace_11,
+            TxtChooseRace_12,
+        ]);
     }
 
     public static void KillStreetFoe(string cmd, IntSlot target, bool extra, TStreetKind kind) {
@@ -2375,7 +2412,7 @@ public static class Game {
             if (extra) {
                 switch (kind) {
                     case TStreetKind.skDog:
-                        WriteLines([.. TxtKillDogLines1.Skip(1)]);
+                        WriteLines([TxtKillDog_01, TxtKillDog_02, TxtKillDog_03]);
                         break;
                     case TStreetKind.skFolk:
                         SuitGain();
@@ -2580,7 +2617,15 @@ public static class Game {
     }
 
     public static void Death() {
-        WriteLines([.. TxtDeathLines1.Skip(1)]);
+        WriteLines([
+            TxtDeath_01,
+            TxtDeath_02,
+            TxtDeath_03,
+            TxtDeath_04,
+            TxtDeath_05,
+            TxtDeath_06,
+            TxtDeath_07,
+        ]);
         Player.Energy = Player.MaxEnergy;
         Player.Experience = (Player.Experience - (250 - Roll(50) + (5 * Player.Level))).Clamp(0, MaxInt);
         MoveTo(RoomCityCentre);
@@ -2743,7 +2788,15 @@ public static class Game {
 
     public static void BakeryShop() {
         if (Verb == CmdLista) {
-            WriteLines([.. TxtBakeryShopLines1.Skip(1)]);
+            WriteLines([
+                TxtShared_24,
+                TxtBakeryShop_01,
+                TxtBakeryShop_02,
+                TxtBakeryShop_03,
+                TxtBakeryShop_04,
+                TxtBakeryShop_05,
+                TxtBakeryShop_06,
+            ]);
         }
 
         StreetFights();
@@ -2797,7 +2850,16 @@ public static class Game {
 
     public static void MagicShop() {
         if (Verb == CmdLista) {
-            WriteLines([.. TxtMagicShopLines1.Skip(1)]);
+            WriteLines([
+                TxtMagicShop_01,
+                TxtMagicShop_02,
+                TxtMagicShop_03,
+                TxtMagicShop_04,
+                TxtMagicShop_05,
+                TxtMagicShop_06,
+                TxtMagicShop_07,
+                TxtMagicShop_08,
+            ]);
         }
 
         RunShopRules(MagicShopRules);
