@@ -323,6 +323,7 @@ public class UnitsSwiatTests {
         Assert.Equal(75, World.QuestKills);
         Assert.Equal(10000, Player.Money);
         Assert.Equal(1, Bag.Permit);
+        Assert.Equal(1, Bag.Count);
     }
 
     [Fact]
@@ -337,6 +338,7 @@ public class UnitsSwiatTests {
     public void Pokoj100OpenRoad() {
         RoomSetup();
         Bag.Permit = 1;
+        Bag.Count = 1;
         PokojAt("EXIT|ZACHOD", 100);
         Assert.Equal(101, Session.Room);
         Assert.Equal(101, Session.OuterRoom);
@@ -410,17 +412,17 @@ public class UnitsSwiatTests {
         World.QuestKills = 0;
         World.LiroyKilled = true;
         Bag.Items[TBagItem.Diploma] = 1;
-        Player.MaxEnergy = 50;
+        Player.MaxEnergy = 55;
         Bag.Permit = 0;
         Player.Experience = 100;
         Bag.Count = 1;
         PokojAt("ZAKONCZ QUEST|WYJSCIE", 100);
         Assert.Equal(0, World.Quest);
         Assert.Equal(0, Bag.Items[TBagItem.Diploma]);
-        Assert.Equal(45, Player.MaxEnergy);
+        Assert.Equal(50, Player.MaxEnergy);
         Assert.Equal(1, Bag.Permit);
         Assert.Equal(350, Player.Experience);
-        Assert.Equal(0, Bag.Count);
+        Assert.Equal(1, Bag.Count);
     }
 
     [Fact]
@@ -449,15 +451,18 @@ public class UnitsSwiatTests {
         Bag.Permit = 0;
         Player.Experience = 100;
         Bag.Count = 1;
-        Player.Stats[TStat.Wisdom] = 5;
+        Player.Stats[TStat.Wisdom] = 6;
+        Player.Stats[TStat.MaxWisdom] = 10;
         PokojAt("ZAKONCZ QUEST|WYJSCIE", 100);
         Assert.Equal(0, World.Quest);
         Assert.Equal(0, Bag.Items[TBagItem.Pipe]);
         Assert.Equal(1, Player.Practice);
         Assert.Equal(1, Bag.Permit);
         Assert.Equal(525, Player.Experience);
-        Assert.Equal(0, Bag.Count);
-        Assert.Equal(4, Player.Stats[TStat.Wisdom]);
+        Assert.Equal(1, Bag.Count);
+        Assert.Equal(5, Player.Stats[TStat.Wisdom]);
+        Player.Stats[TStat.Wisdom] = 0;
+        Player.Stats[TStat.MaxWisdom] = 0;
     }
 
     [Fact]

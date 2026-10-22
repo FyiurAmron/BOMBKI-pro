@@ -48,8 +48,6 @@ public static class Game {
         Gooseberry, Raspberry, Grass, Duncan,
     }
 
-    public enum TGainBonus { gbNone, gbMana, gbCassette }
-    public enum TTakeEffect { teNone, teDiploma, tePipe }
     public enum TSheetKind { ikShown, ikPlain }
     public enum TMazeDir { mdPolodnie, mdPolnoc, mdWschod, mdZachod }
     public enum TStreetKind { skDog, skFolk }
@@ -822,16 +820,14 @@ public static class Game {
                     Combat.Roll = Roll(10);
                     if (Combat.Roll < 7) {
                         Out.WriteLine(TxtShared_08 + TxtCompositeFight_02);
-                        Bag.Items[TBagItem.Doughnut] += 1;
-                        Bag.Count += 1;
+                        AcquireItem(TBagItem.Doughnut);
                     }
                 }
             } else if (HeartChance > 0) {
                 Combat.Roll = Roll(20);
                 if (Combat.Roll < HeartChance) {
                     Out.WriteLine(TxtShared_08 + TxtCompositeFight_03);
-                    Bag.Items[TBagItem.Heart] += 1;
-                    Bag.Count += 1;
+                    AcquireItem(TBagItem.Heart);
                 }
             }
         }
@@ -1099,12 +1095,11 @@ public static class Game {
                 Out.WriteLine(TxtUniqeItem + line2);
             }
 
-            Bag.Items[item] += 1;
-            Bag.Count += 1;
+            AcquireItem(item);
         }
     }
 
-    public static void GainLoot100(int threshold, string line1, string line2, TBagItem item, TGainBonus bonus) {
+    public static void GainLoot100(int threshold, string line1, string line2, TBagItem item) {
         Combat.Roll = Roll(100);
         if ((Combat.Roll < threshold) && (Session.Room != DeadRoom)) {
             Out.WriteLine(TxtShared_08 + line1);
@@ -1112,18 +1107,7 @@ public static class Game {
                 Out.WriteLine(TxtBang + TxtUniqeItem + line2);
             }
 
-            Bag.Items[item] += 1;
-            switch (bonus) {
-                case TGainBonus.gbMana:
-                    Player.MaxMana += 40;
-                    break;
-                case TGainBonus.gbCassette:
-                    Player.MaxEnergy += 5;
-                    Gear.Values[TGearItem.Armor] -= 8;
-                    Player.Stats[TStat.Dexterity] += 1;
-                    break;
-            }
-            Bag.Count += 1;
+            AcquireItem(item);
         }
     }
 
@@ -1132,11 +1116,11 @@ public static class Game {
     public static void PillGain() =>
         GainLoot1000(42, TxtPillGain_01, "", TBagItem.TeleportPill);
     public static void CassetteGain() =>
-        GainLoot100(2, TxtCassetteGain_01, TxtCassetteGain_02, TBagItem.Cassette, TGainBonus.gbCassette);
+        GainLoot100(2, TxtCassetteGain_01, TxtCassetteGain_02, TBagItem.Cassette);
     public static void LeafGain() =>
-        GainLoot100(6, TxtLeafGain_01, TxtLeafGain_02, TBagItem.LuckyLeaf, TGainBonus.gbMana);
+        GainLoot100(6, TxtLeafGain_01, TxtLeafGain_02, TBagItem.LuckyLeaf);
     public static void ScrollGain() =>
-        GainLoot100(10, TxtScrollGain_01, "", TBagItem.CompareScroll, TGainBonus.gbNone);
+        GainLoot100(10, TxtScrollGain_01, "", TBagItem.CompareScroll);
 
     public static void DescribeStage() {
         for (int i = 1; i < StageSpots.Count; i++) {
@@ -1381,8 +1365,7 @@ public static class Game {
                 Combat.Roll = Roll(100);
                 if (Skills.Values[TSkill.Cooking] > Combat.Roll) {
                     Out.WriteLine(TxtFightMadeBigos);
-                    Bag.Items[TBagItem.Bigos] += 1;
-                    Bag.Count += 1;
+                    AcquireItem(TBagItem.Bigos);
                     if ((Combat.Roll < 1) && (Skills.Values[TSkill.Cooking] < 100)) {
                         Out.WriteLine(TxtFightCookingLearn);
                         Skills.Values[TSkill.Cooking]++;
@@ -1411,22 +1394,10 @@ public static class Game {
         new() { playerStat = PlayerStat(TStat.Dexterity), enemyStat = new IntSlot(() => Combat.EnemyDexterity, v => Combat.EnemyDexterity = v), expFor = FightExpForDexterity },
     ];
 
-    public static void TakeItem(string cmd, TBagItem item, string verb, string line, TTakeEffect effect) {
+    public static void TakeItem(string cmd, TBagItem item, string verb, string line) {
         if ((Matches(cmd)) && Bag.TakeGroundItem(item, Session.OuterRoom)) {
             Out.WriteLine(verb + line);
-            Bag.Items[item] += 1;
-            Bag.Count += 1;
-            switch (effect) {
-                case TTakeEffect.teDiploma:
-                    Player.MaxEnergy += 5;
-                    break;
-                case TTakeEffect.tePipe:
-                    if (Player.Stats[TStat.Wisdom] < Player.Stats[TStat.MaxWisdom]) {
-                        Player.Stats[TStat.Wisdom]++;
-                    }
-
-                    break;
-            }
+            AcquireItem(item);
         }
     }
 
@@ -1439,30 +1410,68 @@ public static class Game {
             _ => false,
         };
 
-    static void Uncarry(TBagItem item) {
-        Bag.Items[item] -= 1;
-        Bag.Count -= 1;
+    static void AddInventoryItem(TBagItem item, int quantity) {
+        Bag.Items[item] += quantity;
+        Bag.Count += quantity;
     }
 
-    static void Carry(TBagItem item) {
-        Bag.Items[item] += 1;
-        Bag.Count += 1;
+    static void RemoveInventoryItem(TBagItem item, int quantity) {
+        Bag.Items[item] -= quantity;
+        Bag.Count -= quantity;
     }
 
-    public static void DropItem(string cmd, TBagItem item, string verb, string line, TTakeEffect effect) {
+    public static void AcquireItem(TBagItem item, int quantity = 1) {
+        if (quantity < 1) {
+            throw new ArgumentOutOfRangeException(nameof(quantity));
+        }
+
+        bool newlyCarried = Bag.Items[item] == 0;
+        AddInventoryItem(item, quantity);
+        if (newlyCarried) {
+            ApplyItemCarryModifiers(item, 1);
+        }
+    }
+
+    public static bool LoseItem(TBagItem item, int quantity = 1) {
+        if ((quantity < 1) || (Bag.Items[item] < quantity)) {
+            return false;
+        }
+
+        RemoveInventoryItem(item, quantity);
+        if (Bag.Items[item] == 0) {
+            ApplyItemCarryModifiers(item, -1);
+        }
+        return true;
+    }
+
+    static void SetInventoryItemCount(TBagItem item, int count) {
+        if (count > Bag.Items[item]) {
+            AcquireItem(item, count - Bag.Items[item]);
+        } else if (count < Bag.Items[item]) {
+            LoseItem(item, Bag.Items[item] - count);
+        }
+    }
+
+    public static void AcquirePermit() {
+        Bag.Permit++;
+        Bag.Count++;
+    }
+
+    public static bool LosePermit() {
+        if (Bag.Permit < 1) {
+            return false;
+        }
+
+        Bag.Permit--;
+        Bag.Count--;
+        return true;
+    }
+
+    public static void DropItem(string cmd, TBagItem item, string verb, string line) {
         if ((Matches(cmd)) && (Bag.Items[item] > 0) && !IsEquipped(item)) {
             Out.WriteLine(verb + line);
-            Bag.Items[item] -= 1;
+            LoseItem(item);
             Bag.AddGroundItem(item, Session.OuterRoom);
-            Bag.Count -= 1;
-            switch (effect) {
-                case TTakeEffect.teDiploma:
-                    Player.MaxEnergy -= 5;
-                    break;
-                case TTakeEffect.tePipe:
-                    Player.Stats[TStat.Wisdom]--;
-                    break;
-            }
         }
     }
 
@@ -1473,13 +1482,13 @@ public static class Game {
 
         switch (item) {
             case TBagItem.OldSword:
-                Uncarry(item);
+                LoseItem(item);
                 Gear.Values[TGearItem.WeaponKind] = 1;
                 Player.Stats[TStat.Strength] += 1;
                 Gear.Values[TGearItem.LuckRoll] += 3;
                 return true;
             case TBagItem.SmallShield:
-                Uncarry(item);
+                LoseItem(item);
                 Gear.Values[TGearItem.ShieldKind] = 1;
                 Gear.Values[TGearItem.Armor] += 15;
                 Gear.Values[TGearItem.WornCount] += 1;
@@ -1489,7 +1498,7 @@ public static class Game {
                     return false;
                 }
 
-                Uncarry(item);
+                LoseItem(item);
                 Gear.Values[TGearItem.Armor] += 7;
                 Gear.Values[TGearItem.Wearing] = 1;
                 Gear.WornGarment = TxtWornSyf;
@@ -1499,7 +1508,7 @@ public static class Game {
                     return false;
                 }
 
-                Uncarry(item);
+                LoseItem(item);
                 Gear.Values[TGearItem.Wearing] = 1;
                 Gear.Values[TGearItem.WornCount] += 1;
                 Gear.Values[TGearItem.Armor] += 10;
@@ -1518,25 +1527,25 @@ public static class Game {
 
         switch (item) {
             case TBagItem.OldSword:
-                Carry(item);
+                AcquireItem(item);
                 Gear.Values[TGearItem.WeaponKind] = 0;
                 Player.Stats[TStat.Strength] -= 1;
                 Gear.Values[TGearItem.LuckRoll] -= 3;
                 return true;
             case TBagItem.SmallShield:
-                Carry(item);
+                AcquireItem(item);
                 Gear.Values[TGearItem.ShieldKind] = 0;
                 Gear.Values[TGearItem.Armor] -= 15;
                 Gear.Values[TGearItem.WornCount] -= 1;
                 return true;
             case TBagItem.Tracksuit:
-                Carry(item);
+                AcquireItem(item);
                 Gear.Values[TGearItem.Wearing] = 0;
                 Gear.Values[TGearItem.Armor] -= 7;
                 Gear.WornGarment = TxtEmpty;
                 return true;
             case TBagItem.SpikedSuit:
-                Carry(item);
+                AcquireItem(item);
                 Gear.Values[TGearItem.Wearing] = 0;
                 Gear.Values[TGearItem.WornCount] -= 1;
                 Gear.Values[TGearItem.Armor] -= 10;
@@ -1551,33 +1560,32 @@ public static class Game {
     public class TTakeDrop {
         public string cmd = "", verb = "", line = "";
         public TBagItem item;
-        public TTakeEffect effect;
     }
 
     public static readonly List<TTakeDrop> TakeItems = [null!,
-        new() { cmd = CmdBierz + CmdStary, item = TBagItem.OldSword, verb = TxtPickUpVerb, line = TxtTakeDrop_01, effect = TTakeEffect.teNone },
-        new() { cmd = CmdBierz + CmdMala, item = TBagItem.SmallShield, verb = TxtPickUpVerb, line = TxtTakeDrop_02, effect = TTakeEffect.teNone },
-        new() { cmd = CmdBierz + CmdSerce, item = TBagItem.Heart, verb = TxtPickUpVerb, line = TxtTakeDrop_03, effect = TTakeEffect.teNone },
-        new() { cmd = CmdBierz + CmdDyplom, item = TBagItem.Diploma, verb = TxtPickUpVerb, line = TxtTakeDrop_04, effect = TTakeEffect.teDiploma },
-        new() { cmd = CmdBierz + CmdFajka, item = TBagItem.Pipe, verb = TxtPickUpVerb, line = TxtTakeDrop_05, effect = TTakeEffect.tePipe },
+        new() { cmd = CmdBierz + CmdStary, item = TBagItem.OldSword, verb = TxtPickUpVerb, line = TxtTakeDrop_01 },
+        new() { cmd = CmdBierz + CmdMala, item = TBagItem.SmallShield, verb = TxtPickUpVerb, line = TxtTakeDrop_02 },
+        new() { cmd = CmdBierz + CmdSerce, item = TBagItem.Heart, verb = TxtPickUpVerb, line = TxtTakeDrop_03 },
+        new() { cmd = CmdBierz + CmdDyplom, item = TBagItem.Diploma, verb = TxtPickUpVerb, line = TxtTakeDrop_04 },
+        new() { cmd = CmdBierz + CmdFajka, item = TBagItem.Pipe, verb = TxtPickUpVerb, line = TxtTakeDrop_05 },
     ];
 
     public static readonly List<TTakeDrop> DropItems = [null!,
-        new() { cmd = CmdOdrzuc + CmdStary, item = TBagItem.OldSword, verb = TxtDropVerb, line = TxtTakeDrop_06, effect = TTakeEffect.teNone },
-        new() { cmd = CmdOdrzuc + CmdFajka, item = TBagItem.Pipe, verb = "", line = TxtTakeDrop_07, effect = TTakeEffect.tePipe },
-        new() { cmd = CmdOdrzuc + CmdMala, item = TBagItem.SmallShield, verb = TxtDropVerb, line = TxtTakeDrop_08, effect = TTakeEffect.teNone },
-        new() { cmd = CmdOdrzuc + CmdSerce, item = TBagItem.Heart, verb = TxtDropVerb, line = CmdZakrwawioneSerce, effect = TTakeEffect.teNone },
-        new() { cmd = CmdOdrzuc + CmdDyplom, item = TBagItem.Diploma, verb = TxtDropVerb, line = TxtTakeDrop_10, effect = TTakeEffect.teDiploma },
+        new() { cmd = CmdOdrzuc + CmdStary, item = TBagItem.OldSword, verb = TxtDropVerb, line = TxtTakeDrop_06 },
+        new() { cmd = CmdOdrzuc + CmdFajka, item = TBagItem.Pipe, verb = "", line = TxtTakeDrop_07 },
+        new() { cmd = CmdOdrzuc + CmdMala, item = TBagItem.SmallShield, verb = TxtDropVerb, line = TxtTakeDrop_08 },
+        new() { cmd = CmdOdrzuc + CmdSerce, item = TBagItem.Heart, verb = TxtDropVerb, line = CmdZakrwawioneSerce },
+        new() { cmd = CmdOdrzuc + CmdDyplom, item = TBagItem.Diploma, verb = TxtDropVerb, line = TxtTakeDrop_10 },
     ];
 
     public static void TakeDrop() {
         for (int ti = 1; ti < TakeItems.Count; ti++) {
             TTakeDrop t = TakeItems[ti];
-            TakeItem(t.cmd, t.item, t.verb, t.line, t.effect);
+            TakeItem(t.cmd, t.item, t.verb, t.line);
         }
         for (int ti = 1; ti < DropItems.Count; ti++) {
             TTakeDrop t = DropItems[ti];
-            DropItem(t.cmd, t.item, t.verb, t.line, t.effect);
+            DropItem(t.cmd, t.item, t.verb, t.line);
         }
     }
 
@@ -1619,9 +1627,7 @@ public static class Game {
     }
 
     public static void EatFood(string cmd, TBagItem item, string verb, string line, int gain, IntSlot stat, IntSlot cap) {
-        if ((Matches(cmd)) && (Bag.Items[item] > 0)) {
-            Bag.Count -= 1;
-            Bag.Items[item] -= 1;
+        if (Matches(cmd) && LoseItem(item)) {
             Out.WriteLine(verb + line);
             stat.Set((stat.Get() + gain));
             int tmp = stat.Get();
@@ -1645,11 +1651,9 @@ public static class Game {
 
                         break;
                     case CmdSerce:
-                        if (Bag.Items[TBagItem.Heart] > 0) {
-                            Bag.Items[TBagItem.Heart] -= 1;
+                        if (LoseItem(TBagItem.Heart)) {
                             Out.WriteLine(TxtEatVerb + TxtUseItems_02);
                             Player.ChangeEnergy(5);
-                            Bag.Count -= 1;
                         }
                         break;
                     case CmdDyplom:
@@ -1680,7 +1684,7 @@ public static class Game {
                     case CmdPigulka:
                         if (Bag.Items[TBagItem.TeleportPill] > 0) {
                             Out.WriteLine(TxtUseItems_32);
-                            Bag.Items[TBagItem.TeleportPill] -= 1;
+                            LoseItem(TBagItem.TeleportPill);
                             SpawnMonsters();
                             if (Player.Stats[TStat.Wisdom] < 10) {
                                 Out.WriteLine(TxtUseItems_33);
@@ -1704,10 +1708,8 @@ public static class Game {
                 }
                 break;
             case CmdZniszcz:
-                if ((Rest == CmdPrzepustka) && (Bag.Permit > 0)) {
+                if ((Rest == CmdPrzepustka) && LosePermit()) {
                     Out.WriteLine(TxtUseItems_16);
-                    Bag.Permit -= 1;
-                    Bag.Count += 1;
                 }
                 break;
             case CmdPatrz:
@@ -1990,17 +1992,15 @@ public static class Game {
                     case CmdDokument:
                         if (Player.Money > 399) {
                             Out.WriteLine(TxtPlantFights_05);
-                            Bag.Permit += 1;
+                            AcquirePermit();
                             Player.Money -= 400;
-                            Bag.Count += 1;
                         }
                         break;
                     case CmdPlecak:
                         if ((World.Monsters[TMonster.Duncan] == Session.Room) && (Player.Money > 4799)) {
                             Out.WriteLine(TxtPlantFights_06);
                             Player.Money -= 4800;
-                            Bag.Items[TBagItem.Backpack] += 1;
-                            Bag.Count += 1;
+                            AcquireItem(TBagItem.Backpack);
                         }
                         break;
                 }
@@ -2209,7 +2209,9 @@ public static class Game {
         }
     }
 
-    public static void RecalcBagLimit() {
+    public static void RecalcBag() {
+        Bag.Count = Enum.GetValues<TBagItem>().Sum(item => Bag.Items[item]) + Bag.Permit;
+        Bag.Limit = DexterityItemLimits[1].limit;
         for (int i = DexterityItemLimits.Count - 1; i >= 1; i--) {
             if (Player.Stats[TStat.Dexterity] >= DexterityItemLimits[i].gate) {
                 Bag.Limit = DexterityItemLimits[i].limit;
@@ -2223,7 +2225,7 @@ public static class Game {
     }
 
     public static void ShowCharacter() {
-        RecalcBagLimit();
+        RecalcBag();
         Out.WriteLine($"{TxtShowCharacter_30}{Player.Name}");
         Out.WriteLine(TxtShowCharacter_01);
         for (int si = 1; si < SheetItems.Count; si++) {
@@ -2390,8 +2392,7 @@ public static class Game {
             Combat.Roll = Roll(100);
             if (Combat.Roll < 35) {
                 Out.WriteLine(TxtKillSweeper_01);
-                Bag.Items[TBagItem.Tracksuit] += 1;
-                Bag.Count += 1;
+                AcquireItem(TBagItem.Tracksuit);
             }
         }
     }
@@ -2592,27 +2593,37 @@ public static class Game {
     public class TShopOffer {
         public TBagItem item;
         public int buyPrice, buyGate = -1, sellPrice;
-        public int armor, dexterity, maxEnergy, maxMana, wisdom;
         public string buyName = "", buyLine = "";
         public List<string> sellLines = [];
     }
+
+    public class TItemCarryModifiers {
+        public int armor, dexterity, maxEnergy, maxMana, wisdom;
+    }
+
+    public static readonly Dictionary<TBagItem, TItemCarryModifiers> ItemCarryModifiers = new() {
+        [TBagItem.Diploma] = new() { maxEnergy = 5 },
+        [TBagItem.Pipe] = new() { wisdom = 1 },
+        [TBagItem.Cassette] = new() { armor = -8, dexterity = 1, maxEnergy = 5 },
+        [TBagItem.LuckyLeaf] = new() { maxMana = 40 },
+    };
 
     public static readonly List<TShopOffer> ShopOffers = [
         new() { item = TBagItem.OldSword, buyPrice = 70, buyName = TxtBuyOldSword_01,
             sellPrice = 30, sellLines = [TxtSellOldSword_01, TxtSellOldSword_02], },
         new() { item = TBagItem.SmallShield, buyPrice = 15, buyName = TxtBuySmallShield_01,
             sellPrice = 8, sellLines = [TxtSellSmallShield_01], },
-        new() { item = TBagItem.Pipe, buyPrice = 480, buyName = TxtTakeDrop_05, wisdom = 1,
+        new() { item = TBagItem.Pipe, buyPrice = 480, buyName = TxtTakeDrop_05,
             sellPrice = 120, sellLines = [$"{TxtSellVerb}{TxtSellPipe_01}"], },
         new() { item = TBagItem.Tracksuit, buyPrice = 35, buyName = TxtBuyTracksuit_01,
             sellPrice = 15, sellLines = [$"{TxtSellVerb}{TxtSellTracksuit_01}"], },
         new() { item = TBagItem.Cassette, buyPrice = 1999, buyName = TxtBuyCassette_01,
-            sellPrice = 1000, armor = -8, dexterity = 1, maxEnergy = 5,
+            sellPrice = 1000,
             sellLines = [$"{TxtSellVerb}{TxtSellCassette_01}"], },
         new() { item = TBagItem.SpikedSuit, buyPrice = 1000, buyLine = TxtBuySpikedSuit_01,
             sellPrice = 500, sellLines = [$"{TxtSellVerb}{TxtSellSpikedSuit_01}"], },
         new() { item = TBagItem.ManaBottle, buyPrice = 20, buyGate = 15, buyLine = TxtBuyManaBottle_01 },
-        new() { item = TBagItem.LuckyLeaf, buyPrice = 830, buyGate = 820, buyLine = TxtBuyLuckyLeaf_01, maxMana = 40,
+        new() { item = TBagItem.LuckyLeaf, buyPrice = 830, buyGate = 820, buyLine = TxtBuyLuckyLeaf_01,
             sellPrice = 400, sellLines = [$"{TxtSellVerb}{TxtSellLuckyLeaf_01}"], },
         new() { item = TBagItem.TeleportPill, buyPrice = 235, buyName = TxtBuyTeleportPill_01,
             sellPrice = 170, sellLines = [TxtSellTeleportPill_01], },
@@ -2629,12 +2640,17 @@ public static class Game {
     public static TShopOffer? ShopOffer(TBagItem item) =>
         ShopOffers.FirstOrDefault(o => o.item == item);
 
-    public static void ApplyShopStats(TShopOffer offer, int sign) {
-        Gear.Values[TGearItem.Armor] += sign * offer.armor;
-        Player.MaxEnergy += sign * offer.maxEnergy;
-        Player.Stats[TStat.Dexterity] += sign * offer.dexterity;
-        Player.Stats[TStat.Wisdom] += sign * offer.wisdom;
-        Player.MaxMana += sign * offer.maxMana;
+    static void ApplyItemCarryModifiers(TBagItem item, int sign) {
+        if (!ItemCarryModifiers.TryGetValue(item, out TItemCarryModifiers? modifiers)
+            || modifiers is null) {
+            return;
+        }
+
+        Gear.Values[TGearItem.Armor] += sign * modifiers.armor;
+        Player.MaxEnergy += sign * modifiers.maxEnergy;
+        Player.Stats[TStat.Dexterity] += sign * modifiers.dexterity;
+        Player.Stats[TStat.Wisdom] += sign * modifiers.wisdom;
+        Player.MaxMana += sign * modifiers.maxMana;
     }
 
     public static bool Buy(TBagItem item) {
@@ -2648,23 +2664,18 @@ public static class Game {
             ? offer.buyLine
             : $"{TxtShopVerb}{offer.buyName}{TxtSpaceZa}{offer.buyPrice}{TxtSpaceMonet}");
         Player.Money -= offer.buyPrice;
-        Bag.Items[item] += 1;
-        Bag.Count += 1;
-        ApplyShopStats(offer, 1);
+        AcquireItem(item);
         return true;
     }
 
     public static bool Sell(TBagItem item) {
         TShopOffer? offer = ShopOffer(item);
-        if ((offer is null) || IsEquipped(item) || (Bag.Items[item] < 1)) {
+        if ((offer is null) || IsEquipped(item) || !LoseItem(item)) {
             return false;
         }
 
         offer.sellLines.ForEach(Out.WriteLine);
         Player.Money += offer.sellPrice;
-        Bag.Items[item] = (Bag.Items[item] - 1).Clamp(0, MaxInt);
-        Bag.Count -= 1;
-        ApplyShopStats(offer, -1);
         return true;
     }
 
@@ -2824,9 +2835,7 @@ public static class Game {
                     if (Combat.Roll < 5) {
                         Out.WriteLine(TxtShared_08 + TxtConcertFights_01);
                         Out.WriteLine(TxtConcertFights_02);
-                        Bag.Items[TBagItem.Pipe] += 1;
-                        Bag.Count += 1;
-                        Player.Stats[TStat.Wisdom]++;
+                        AcquireItem(TBagItem.Pipe);
                     }
                 }
             }
@@ -3001,14 +3010,12 @@ public static class Game {
     }
 
     public static void CmdStrip() {
-        int carried = Bag.Items[TBagItem.OldSword] + Bag.Items[TBagItem.SmallShield];
         Gear.Values[TGearItem.Wearing] = 0;
         Gear.Values[TGearItem.WeaponKind] = 0;
         Gear.Values[TGearItem.ShieldKind] = 0;
         Gear.WornGarment = TxtEmpty;
-        Bag.Items[TBagItem.OldSword] = 1;
-        Bag.Items[TBagItem.SmallShield] = 1;
-        Bag.Count += 2 - carried;
+        SetInventoryItemCount(TBagItem.OldSword, 1);
+        SetInventoryItemCount(TBagItem.SmallShield, 1);
         Player.Stats[TStat.Strength]--;
     }
 
@@ -3020,10 +3027,8 @@ public static class Game {
     }
 
     public static void CmdDrinkBeer() {
-        if (Bag.Items[TBagItem.Beer] > 0) {
-            Bag.Items[TBagItem.Beer] -= 1;
+        if (LoseItem(TBagItem.Beer)) {
             Out.WriteLine(TxtCmdDrinkBeer_01);
-            Bag.Count -= 1;
             Player.ChangeEnergy(10);
             Player.ChangeMana(10);
         }
@@ -3144,8 +3149,7 @@ public static class Game {
                 return;
             }
             if (Rest == CmdScrollPowrot) {
-                Bag.Items[TBagItem.ReturnScroll] -= 1;
-                Bag.Count -= 1;
+                LoseItem(TBagItem.ReturnScroll);
             }
             if (success) {
                 Out.WriteLine(TxtCmdOpenPortal_01);
@@ -3163,8 +3167,7 @@ public static class Game {
                 return;
             }
             CompareFoe();
-            Bag.Items[TBagItem.CompareScroll] -= 1;
-            Bag.Count -= 1;
+            LoseItem(TBagItem.CompareScroll);
         }
     }
 
@@ -3179,7 +3182,7 @@ public static class Game {
     }
 
     public static void CmdSpeede() =>
-        Bag.Permit += 1;
+        AcquirePermit();
 
     public class TSkillLine {
         public int wisdom, strength, dexterity;
@@ -3245,7 +3248,7 @@ public static class Game {
             Checkpoints();
             CheckLevelUp();
 
-            RecalcBagLimit();
+            RecalcBag();
             if (Bag.Count > Bag.Limit) {
                 Out.WriteLine(TxtStart_01 + (Bag.Count - Bag.Limit) + TxtStart_02);
                 Out.WriteLine(TxtStart_03 + ((Bag.Count - Bag.Limit) * 10) + TxtFightTailEnergii);
@@ -3293,6 +3296,7 @@ public static class Game {
         Bag = save.Bag;
         World = save.World;
         Session = save.Session;
+        RecalcBag();
         Out.WriteLine(TxtLoadCharacter_01 + Gear.WornGarment);
     }
 

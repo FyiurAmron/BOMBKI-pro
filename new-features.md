@@ -65,6 +65,10 @@
 - can buy already owned items now
 - can have loot drops of already carried items now
 - multiple copies of the same item can lie on the ground
+- consistent inventory acquisition and loss
+  - carried-item bonuses apply once while at least one copy is held
+  - permits correctly update bag slots while retaining stacking
+  - bag count is recomputed alongside the carry limit, including after loading
 - co-ordinate-based world map
   - each room is now (x,y,z)-located, and room exists follow the map structure
   - added some glue rooms and moved/removed some blocking ones

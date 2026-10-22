@@ -286,6 +286,50 @@ public class UnitsItemsTests {
     }
 
     [Fact]
+    public void PipeModifiersRoundTripAtWisdomCap() {
+        Session.OuterRoom = 7;
+        Bag.Items[TBagItem.Pipe] = 0;
+        Bag.ItemRooms[TBagItem.Pipe].Clear();
+        Bag.Count = 0;
+        Bag.AddGroundItem(TBagItem.Pipe, 7);
+        Player.Stats[TStat.Wisdom] = 5;
+        Player.Stats[TStat.MaxWisdom] = 5;
+        Command = "BIERZ FAJKA";
+        TakeDrop();
+        Assert.Equal(6, Player.Stats[TStat.Wisdom]);
+        Assert.Equal(1, Bag.Count);
+        Command = "ODRZUC FAJKA";
+        TakeDrop();
+        Assert.Equal(5, Player.Stats[TStat.Wisdom]);
+        Assert.Equal(0, Bag.Count);
+        Bag.ItemRooms[TBagItem.Pipe].Clear();
+        Player.Stats[TStat.Wisdom] = 0;
+        Player.Stats[TStat.MaxWisdom] = 0;
+    }
+
+    [Fact]
+    public void PipeBonusAppliesOnceForAStack() {
+        Bag.Items[TBagItem.Pipe] = 0;
+        Bag.Count = 0;
+        Player.Stats[TStat.Wisdom] = 5;
+        Player.Stats[TStat.MaxWisdom] = 5;
+        AcquireItem(TBagItem.Pipe, 2);
+        Assert.Equal(2, Bag.Items[TBagItem.Pipe]);
+        Assert.Equal(2, Bag.Count);
+        Assert.Equal(6, Player.Stats[TStat.Wisdom]);
+        Assert.True(LoseItem(TBagItem.Pipe));
+        Assert.Equal(1, Bag.Items[TBagItem.Pipe]);
+        Assert.Equal(1, Bag.Count);
+        Assert.Equal(6, Player.Stats[TStat.Wisdom]);
+        Assert.True(LoseItem(TBagItem.Pipe));
+        Assert.Equal(0, Bag.Items[TBagItem.Pipe]);
+        Assert.Equal(0, Bag.Count);
+        Assert.Equal(5, Player.Stats[TStat.Wisdom]);
+        Player.Stats[TStat.Wisdom] = 0;
+        Player.Stats[TStat.MaxWisdom] = 0;
+    }
+
+    [Fact]
     public void UzywaSerce() {
         Bag.Items[TBagItem.Heart] = 1;
         Player.Energy = 10;
@@ -442,21 +486,40 @@ public class UnitsItemsTests {
     [Fact]
     public void NiszczyPrzepustke() {
         Bag.Permit = 1;
-        Bag.Count = 0;
+        Bag.Count = 1;
         Command = "ZNISZCZ PRZEPUSTKA";
         UseItems();
         Assert.Equal(0, Bag.Permit);
+        Assert.Equal(0, Bag.Count);
+    }
+
+    [Fact]
+    public void PrzepustkiStackAndEachUsesOneBagSlot() {
+        Bag.Permit = 0;
+        Bag.Count = 0;
+        AcquirePermit();
+        AcquirePermit();
+        Assert.Equal(2, Bag.Permit);
+        Assert.Equal(2, Bag.Count);
+        Assert.True(LosePermit());
+        Assert.Equal(1, Bag.Permit);
         Assert.Equal(1, Bag.Count);
+        Assert.True(LosePermit());
+        Assert.Equal(0, Bag.Permit);
+        Assert.Equal(0, Bag.Count);
+        Assert.False(LosePermit());
     }
 
     [Fact]
     public void PatrzPrzepustke() {
         Bag.Permit = 1;
-        Bag.Count = 0;
+        Bag.Count = 1;
         Command = "PATRZ PRZEPUSTKA";
         UseItems();
         Assert.Equal(1, Bag.Permit);
-        Assert.Equal(0, Bag.Count);
+        Assert.Equal(1, Bag.Count);
+        Bag.Permit = 0;
+        Bag.Count = 0;
     }
 
     [Fact]
@@ -569,6 +632,7 @@ public class UnitsItemsTests {
     [Fact]
     public void UzywaPigulkaHigh() {
         Bag.Items[TBagItem.TeleportPill] = 1;
+        Bag.Count = 1;
         Player.Stats[TStat.Wisdom] = 20;
         Player.MaxEnergy = 100;
         Player.Energy = 100;
@@ -576,6 +640,7 @@ public class UnitsItemsTests {
         Command = "UZYJ PIGULKA";
         UseItems();
         Assert.Equal(0, Bag.Items[TBagItem.TeleportPill]);
+        Assert.Equal(0, Bag.Count);
         Assert.Equal(100, Player.Energy);
         Assert.Equal(100, Player.Experience);
     }
@@ -784,7 +849,16 @@ public class UnitsItemsTests {
         Assert.Equal(1, Bag.Items[TBagItem.Pipe]);
         Assert.Equal(1, Bag.Count);
         Assert.Equal(120, Player.Money);
+        Assert.Equal(10, Player.Stats[TStat.Wisdom]);
+        Assert.True(Sell(TBagItem.Pipe));
+        Assert.Equal(0, Bag.Items[TBagItem.Pipe]);
+        Assert.Equal(0, Bag.Count);
+        Assert.Equal(240, Player.Money);
         Assert.Equal(9, Player.Stats[TStat.Wisdom]);
+        Player.Stats[TStat.Wisdom] = 0;
+        Bag.Permit = 0;
+        Bag.Count = 0;
+        Player.Money = 0;
     }
 
     [Fact]
@@ -799,6 +873,23 @@ public class UnitsItemsTests {
         Assert.True(Sell(TBagItem.LuckyLeaf));
         Assert.Equal(1400, Player.Money);
         Assert.Equal(0, Player.MaxMana);
+    }
+
+    [Fact]
+    public void SprzedazKasetyRevertsCarryModifiers() {
+        Bag.Items[TBagItem.Cassette] = 1;
+        Bag.Count = 1;
+        Player.Money = 0;
+        Player.MaxEnergy = 55;
+        Player.Stats[TStat.Dexterity] = 11;
+        Gear.Values[TGearItem.Armor] = -8;
+        Assert.True(Sell(TBagItem.Cassette));
+        Assert.Equal(0, Bag.Items[TBagItem.Cassette]);
+        Assert.Equal(0, Bag.Count);
+        Assert.Equal(1000, Player.Money);
+        Assert.Equal(50, Player.MaxEnergy);
+        Assert.Equal(10, Player.Stats[TStat.Dexterity]);
+        Assert.Equal(0, Gear.Values[TGearItem.Armor]);
     }
 
     [Fact]
@@ -942,11 +1033,17 @@ public class UnitsItemsTests {
         Bag.Count = 0;
         Player.Money = 480;
         Player.Stats[TStat.Wisdom] = 10;
+        Player.Stats[TStat.MaxWisdom] = 10;
         Assert.True(Buy(TBagItem.Pipe));
         Assert.Equal(0, Player.Money);
         Assert.Equal(1, Bag.Items[TBagItem.Pipe]);
         Assert.Equal(11, Player.Stats[TStat.Wisdom]);
+        Assert.Equal(1, Bag.Count);
         Player.Stats[TStat.Wisdom] = 0;
+        Player.Stats[TStat.MaxWisdom] = 0;
+        Bag.Items[TBagItem.Pipe] = 0;
+        Bag.Count = 0;
+        Player.Money = 0;
     }
 
     [Fact]
@@ -990,16 +1087,48 @@ public class UnitsItemsTests {
     public void BagLimitFollowsDexterity() {
         Player.Stats[TStat.Dexterity] = 10;
         Bag.Items[TBagItem.Backpack] = 0;
-        RecalcBagLimit();
+        RecalcBag();
         Assert.Equal(10, Bag.Limit);
         Player.Stats[TStat.Dexterity] = 12;
-        RecalcBagLimit();
+        RecalcBag();
         Assert.Equal(11, Bag.Limit);
         Player.Stats[TStat.Dexterity] = 25;
-        RecalcBagLimit();
+        RecalcBag();
         Assert.Equal(16, Bag.Limit);
         Bag.Items[TBagItem.Backpack] = 1;
-        RecalcBagLimit();
+        RecalcBag();
         Assert.Equal(20, Bag.Limit);
+    }
+
+    [Fact]
+    public void RecalcBagRecomputesCount() {
+        Enum.GetValues<TBagItem>().ToList().ForEach(item => Bag.Items[item] = 0);
+        Player.Stats[TStat.Dexterity] = 10;
+        Bag.Permit = 0;
+        Bag.Items[TBagItem.Beer] = 2;
+        Bag.Items[TBagItem.Backpack] = 1;
+        Bag.Count = 99;
+        RecalcBag();
+        Assert.Equal(3, Bag.Count);
+        Assert.Equal(14, Bag.Limit);
+    }
+
+    [Fact]
+    public void WczytaniePrzeliczaPlecak() {
+        Player.Name = "RECALC";
+        Enum.GetValues<TBagItem>().ToList().ForEach(item => Bag.Items[item] = 0);
+        Bag.Items[TBagItem.Beer] = 2;
+        Bag.Permit = 1;
+        Bag.Count = 0;
+        string path = SaveFileName();
+        try {
+            SaveCharacter();
+            Bag.Count = 99;
+            LoadGame();
+        } finally {
+            File.Delete(path);
+            Session.SavedFlag = false;
+        }
+        Assert.Equal(3, Bag.Count);
     }
 }

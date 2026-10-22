@@ -258,22 +258,15 @@ public static class Rooms {
         Player.Experience += exp;
         World.Quest = 0;
         World.QuestKills = 0;
-        Bag.Permit += 1;
+        AcquirePermit();
         switch (quest) {
             case 1:
-                Bag.Count += 1;
                 break;
             case 2:
-                Unequip(TBagItem.Diploma);
-                Bag.Items[TBagItem.Diploma] -= 1;
-                Bag.Count -= 1;
-                Player.MaxEnergy -= 5;
+                LoseItem(TBagItem.Diploma);
                 break;
             case 3:
-                Unequip(TBagItem.Pipe);
-                Bag.Count -= 1;
-                Player.Stats[TStat.Wisdom]--;
-                Bag.Items[TBagItem.Pipe] -= 1;
+                LoseItem(TBagItem.Pipe);
                 break;
         }
     }
@@ -761,8 +754,7 @@ public static class Rooms {
                                         Combat.Roll = Roll(100);
                                         if (Combat.Roll < 15) {
                                             Out.WriteLine(TxtConcertRooms_25 + TxtShared_08 + TxtPiwoTail);
-                                            Bag.Items[TBagItem.Beer] += 1;
-                                            Bag.Count += 1;
+                                            AcquireItem(TBagItem.Beer);
                                         }
                                     }
                                 }
@@ -774,8 +766,7 @@ public static class Rooms {
                                         World.Monsters[Fatso] = 0;
                                         if (Combat.Roll < 15) {
                                             Out.WriteLine(TxtConcertRooms_26 + TxtShared_08 + TxtPiwoTail);
-                                            Bag.Items[TBagItem.Beer] += 1;
-                                            Bag.Count += 1;
+                                            AcquireItem(TBagItem.Beer);
                                         }
                                     }
                                 }
@@ -828,17 +819,12 @@ public static class Rooms {
                             Combat.Roll = Roll(100);
                             if (Combat.Roll < 25) {
                                 Out.WriteLine(TxtShared_08 + TxtConcertRooms_38);
-                                Bag.Items[TBagItem.DryRation] += 1;
-                                Bag.Count += 1;
+                                AcquireItem(TBagItem.DryRation);
                             }
                             if (Combat.Roll < 3) {
                                 Out.WriteLine(TxtShared_08 + TxtConcertRooms_39);
                                 Out.WriteLine(TxtBang + TxtUniqeItem + TxtConcertRooms_40);
-                                Bag.Items[TBagItem.Cassette] += 1;
-                                Player.MaxEnergy += 5;
-                                Gear.Values[TGearItem.Armor] -= 8;
-                                Bag.Count += 1;
-                                Player.Stats[TStat.Dexterity]++;
+                                AcquireItem(TBagItem.Cassette);
                             }
                         }
                     }
@@ -1101,12 +1087,11 @@ public static class Rooms {
                             } else if ((Bag.Items[TBagItem.Sausage] > 3) && (Player.Money >= StaruchPrice)) {
                                 WriteLines([.. TxtRoom86Lines2.Skip(1)]);
                                 MoveTo(RoomCityCentre);
-                                Bag.Items[TBagItem.Beer] += 1;
-                                Bag.Items[TBagItem.Sausage] -= 4;
+                                AcquireItem(TBagItem.Beer);
+                                LoseItem(TBagItem.Sausage, 4);
                                 Player.Money -= StaruchPrice;
-                                Bag.Items[TBagItem.ReturnScroll] += 1;
+                                AcquireItem(TBagItem.ReturnScroll);
                                 Player.Experience += 50;
-                                Bag.Count -= 2;
                             }
                         }
                         break;
@@ -1255,7 +1240,7 @@ public static class Rooms {
                                 Combat.EnemyEnergy = 188;
                                 DoFight();
                                 if (Combat.EnemyEnergy < 1) {
-                                    Bag.Permit += 1;
+                                    AcquirePermit();
                                 }
                             }
                             break;
