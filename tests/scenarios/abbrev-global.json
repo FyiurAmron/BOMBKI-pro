@@ -1,0 +1,32 @@
+{
+  "steps": [
+    {
+      "label": "intro prompt",
+      "expect": "Dużo\\ poprawek\\ więc\\ się\\ ciesz\\ i\\ graj"
+    },
+    {
+      "label": "player-name prompt",
+      "expect": "A\\ twoje\\ imię\\ to",
+      "send": "TESTER"
+    },
+    {
+      "label": "race prompt",
+      "expect": "Napisz\\ swą\\ rasę",
+      "send": "CZLOWIEK"
+    },
+    {
+      "label": "start room accepts the PN abbreviation",
+      "expect": "Tu\\ zaczyna\\ się\\ grę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "PN"
+    },
+    {
+      "label": "salon after PN",
+      "expect": "Jesteś\\ w\\ okrągłym\\ salonie[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "send": "PD"
+    },
+    {
+      "label": "start room after PD",
+      "expect": "Tu\\ zaczyna\\ się\\ grę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>"
+    }
+  ]
+}

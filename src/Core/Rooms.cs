@@ -135,7 +135,6 @@ public static class Rooms {
         public List<TRoomExit> exits = [];
         public List<TMovement> moves = [];
         public List<TRoomPoster> posters = [];
-        public bool expand = false;
         public bool maze = false;
         public Action<bool>? turn = null;
     }
@@ -288,7 +287,6 @@ public static class Rooms {
             intro = [TxtArenaMaze_01],
             maze = true,
             turn = ArenaTurn,
-            expand = true,
         };
 
     public static readonly List<TRoom> RoomDefs = [
@@ -383,7 +381,6 @@ public static class Rooms {
                      Exit(CmdGora, true),
                      Exit(CmdDol, true), ],
             posters = [new(CmdPatrz + CmdPlakat, [TxtShared_13, TxtRoom11_10, TxtRoom11_11])],
-            expand = true,
         },
         new() {
             number = RoomCageWeakling,
@@ -678,7 +675,6 @@ public static class Rooms {
             exits = [Exit(CmdPolnoc, true),
                      Exit(CmdWschod, true), ],
             turn = CrowdTurn,
-            expand = true,
         },
         new() {
             number = RoomCrowd3,
@@ -689,7 +685,6 @@ public static class Rooms {
                      Exit(CmdWschod, true),
                      Exit(CmdPolnoc, true), ],
             turn = CrowdTurn,
-            expand = true,
         },
         new() {
             number = RoomCrowd4,
@@ -700,7 +695,6 @@ public static class Rooms {
                      Exit(CmdZachod, true),
                      Exit(CmdPolodnie, true), ],
             turn = CrowdTurn,
-            expand = true,
         },
         new() {
             number = RoomCrowd5,
@@ -710,7 +704,6 @@ public static class Rooms {
             exits = [Exit(CmdPolnoc, true),
                      Exit(CmdZachod, true), ],
             turn = CrowdTurn,
-            expand = true,
         },
         new() {
             number = RoomCrowd6,
@@ -720,7 +713,6 @@ public static class Rooms {
             exits = [Exit(CmdPolodnie, true),
                      Exit(CmdZachod, true), ],
             turn = CrowdTurn,
-            expand = true,
         },
         new() {
             number = RoomPub,
@@ -775,7 +767,6 @@ public static class Rooms {
                         break;
                 }
             },
-            expand = true,
         },
         new() {
             number = RoomStageEntrance,
@@ -795,7 +786,6 @@ public static class Rooms {
                 }
                 ConcertFights();
             },
-            expand = true,
         },
         new() {
             number = RoomBackstage,
@@ -933,7 +923,6 @@ public static class Rooms {
                      Exit(CmdZachod, true),
                      Exit(CmdPolodnie, true), ],
             turn = PlantTurn,
-            expand = true,
         },
         new() {
             number = RoomIvy2,
@@ -942,7 +931,6 @@ public static class Rooms {
             intro = [TxtRoom78_01, TxtRoom78_02],
             exits = [Exit(CmdZachod, true)],
             turn = PlantTurn,
-            expand = true,
         },
         new() {
             number = RoomIvy3,
@@ -951,7 +939,6 @@ public static class Rooms {
             intro = [TxtRoom79_01, TxtRoom79_02],
             exits = [Exit(CmdWschod, true)],
             turn = PlantTurn,
-            expand = true,
         },
         new() {
             number = RoomIvy4,
@@ -988,7 +975,6 @@ public static class Rooms {
                     }
                 }
             },
-            expand = true,
         },
         new() {
             number = RoomIvy5,
@@ -997,7 +983,6 @@ public static class Rooms {
             intro = [TxtRoom81_01, TxtRoom81_02],
             exits = [Exit(CmdWschod, true)],
             turn = PlantTurn,
-            expand = true,
         },
         new() {
             number = RoomIvy6,
@@ -1006,7 +991,6 @@ public static class Rooms {
             intro = [TxtRoom82_01, TxtRoom82_02],
             exits = [Exit(CmdZachod, true)],
             turn = PlantTurn,
-            expand = true,
         },
         new() {
             number = RoomClearing,
@@ -1016,7 +1000,6 @@ public static class Rooms {
             exits = [Exit(CmdPolnoc, true),
                      Exit(CmdZachod, true), ],
             turn = PlantTurn,
-            expand = true,
         },
         new() {
             number = RoomCavePath,
@@ -1027,7 +1010,6 @@ public static class Rooms {
                      Exit(CmdZachod, true),
                      Exit(CmdPolodnie, true), ],
             turn = PlantTurn,
-            expand = true,
         },
         new() {
             number = RoomLivingDoor,
@@ -1053,7 +1035,6 @@ public static class Rooms {
                 }
 
             },
-            expand = true,
         },
         new() {
             number = RoomHut,
@@ -1108,7 +1089,6 @@ public static class Rooms {
                         break;
                 }
             },
-            expand = true,
         },
         new() {
             number = RoomCaveMouth,
@@ -1130,7 +1110,6 @@ public static class Rooms {
                     }
                 }
             },
-            expand = true,
         },
         new() {
             number = RoomNettleThrone,
@@ -1164,7 +1143,6 @@ public static class Rooms {
                     MoveTo(RoomCaveMouth);
                 }
             },
-            expand = true,
         },
         new() {
             number = RoomIvyGate,
@@ -1452,9 +1430,6 @@ public static class Rooms {
         room.turn?.Invoke(true);
         do {
             ReadCommand();
-            if (room.expand) {
-                ExpandAbbrev();
-            }
 
             if (Verb == CmdExit) {
                 WriteExits(room);

@@ -25,6 +25,7 @@ public class BehaviorTests {
         "race-stats-ufok",
         "race-stats-czaromil",
         "zre-limits",
+        "abbrev-global",
         "mode",
         "mode-save-load",
         "test_save_load_roundtrip",

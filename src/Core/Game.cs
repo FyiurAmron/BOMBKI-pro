@@ -2082,6 +2082,7 @@ public static class Game {
         }
         RefuseCheats();
         HandleGround();
+        ExpandAbbrev();
     }
 
     public static void RefuseCheats() {
