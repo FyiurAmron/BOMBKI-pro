@@ -13,7 +13,7 @@ public class Game {
     public TSkills Skills = new();
     public TGear Gear = new();
     public TBag Bag = new();
-    public TCombat Combat = new();
+    public Combat Combat { get; }
     public TWorld World = new();
     public TSession Session = new();
     public Character Character { get; }
@@ -21,10 +21,109 @@ public class Game {
     public Rooms Rooms { get; }
 
     public Game() {
+        Combat = new Combat(this);
         Character = new Character(this);
         Inventory = new Inventory(this);
         Rooms = new Rooms(this);
     }
+
+    public void TryLoot(TBagItem item, int threshold, string foundMsg) =>
+        Combat.TryLoot(item, threshold, foundMsg);
+
+    public void TryCageLoot(int threshold) =>
+        Combat.TryCageLoot(threshold);
+
+    public int FightExpForEnergy(int diff) =>
+        Combat.FightExpForEnergy(diff);
+
+    public int FightExpForStrength(int diff) =>
+        Combat.FightExpForStrength(diff);
+
+    public int FightExpForDexterity(int diff) =>
+        Combat.FightExpForDexterity(diff);
+
+    public TDodgeBound DodgeBoundRow(int chance) =>
+        Combat.DodgeBoundRow(chance);
+
+    public int DodgeBound(int chance) =>
+        Combat.DodgeBound(chance);
+
+    public int EnemyDodgeBound(int chance) =>
+        Combat.EnemyDodgeBound(chance);
+
+    public int DexterityBonus(int value) =>
+        Combat.DexterityBonus(value);
+
+    public int ParryBonus(int value) =>
+        Combat.ParryBonus(value);
+
+    public int KickBonus(int value) =>
+        Combat.KickBonus(value);
+
+    public void FightDog() =>
+        Combat.FightDog();
+
+    public void CompositeFight(int EnemyEnergyBase, int EnemyEnergyRand, int EnemyDexterityBase, int EnemyDexterityRand, int EnemyStrengthBase, int EnemyStrengthRand,
+        int LootBase, int LootRand, int HeartChance, bool RequireEnergy, bool AntDoughnut) =>
+        Combat.CompositeFight(EnemyEnergyBase, EnemyEnergyRand, EnemyDexterityBase, EnemyDexterityRand, EnemyStrengthBase, EnemyStrengthRand,
+            LootBase, LootRand, HeartChance, RequireEnergy, AntDoughnut);
+
+    public void Fight(TFoe foe) =>
+        Combat.Fight(foe);
+
+    public void KillBeast(string cmd, IntSlot beast, TFoe foe) =>
+        Combat.KillBeast(cmd, beast, foe);
+
+    public void KillBeastUnlessFled(string cmd, IntSlot beast, TFoe foe) =>
+        Combat.KillBeastUnlessFled(cmd, beast, foe);
+
+    public void CompareFoeRules(List<TCompareFoeRule> rules) =>
+        Combat.CompareFoeRules(rules);
+
+    public void CompareFoe() =>
+        Combat.CompareFoe();
+
+    public void ShieldBlock() =>
+        Combat.ShieldBlock();
+
+    public void DoFight() =>
+        Combat.DoFight();
+
+    public void ArenaKill(string cmd, TMonster monster, bool pills) =>
+        Combat.ArenaKill(cmd, monster, pills);
+
+    public void StageFights() =>
+        Combat.StageFights();
+
+    public void KillPlant(string cmd, IntSlot Plant) =>
+        Combat.KillPlant(cmd, Plant);
+
+    public void KillPlantIfAlive(string cmd, IntSlot Plant) =>
+        Combat.KillPlantIfAlive(cmd, Plant);
+
+    public void KillPlantEasyIfAlive(string cmd, IntSlot Plant) =>
+        Combat.KillPlantEasyIfAlive(cmd, Plant);
+
+    public void PlantFights() =>
+        Combat.PlantFights();
+
+    public void KillStreetFoe(string cmd, IntSlot target, bool extra, TStreetKind kind) =>
+        Combat.KillStreetFoe(cmd, target, extra, kind);
+
+    public void KillSweeper() =>
+        Combat.KillSweeper();
+
+    public void KillSickMan() =>
+        Combat.KillSickMan();
+
+    public void StreetFights() =>
+        Combat.StreetFights();
+
+    public void ConcertKill(string cmd, TMonster monster, TFoe foe, TConcertBonus bonus) =>
+        Combat.ConcertKill(cmd, monster, foe, bonus);
+
+    public void ConcertFights() =>
+        Combat.ConcertFights();
 
     public void TrainAttribute(IntSlot Attribute, IntSlot MaxAttribute, int MinPractice, int PracticeCost, string cmdForm, string nounForm) =>
         Character.TrainAttribute(Attribute, MaxAttribute, MinPractice, PracticeCost, cmdForm, nounForm);
@@ -308,19 +407,7 @@ public class Game {
         }
     }
 
-    public void TryLoot(TBagItem item, int threshold, string foundMsg) {
-        Combat.Roll = Roll(20);
-        if (Combat.Roll < threshold) {
-            Bag.AddGroundItem(item, Session.Room);
-            Out.WriteLine(TxtShared_08 + foundMsg);
-        }
-    }
 
-    public void TryCageLoot(int threshold) {
-        TryLoot(TBagItem.OldSword, threshold, TxtShared_10);
-        TryLoot(TBagItem.SmallShield, threshold, TxtShared_11);
-        TryLoot(TBagItem.Heart, 6, TxtShared_12);
-    }
 
     public void ShowIntro() {
         Crt.ClrScr();
@@ -392,98 +479,16 @@ public class Game {
         return 0;
     }
 
-    public int FightExpForEnergy(int diff) =>
-        diff > 0
-            ? BandAmount(PosExpBands, diff)
-            : diff < 0 ? BandAmount(NegExpBands, (-diff)) : 11;
-
-    public int FightExpForStrength(int diff) {
-        if (diff > 0) {
-            return diff >= 10 ? 1 : 11 - diff;
-        } else if (diff < 0) {
-            diff = (-diff);
-            return diff >= 10 ? 21 : 11 + diff;
-        } else {
-            return 11;
-        }
-    }
-
-    public int FightExpForDexterity(int diff) {
-        int step;
-        if (diff > 0) {
-            step = ((diff + 1) / 2);
-            return step >= 10 ? 1 : 11 - step;
-        } else if (diff < 0) {
-            diff = (-diff);
-            step = ((diff + 1) / 2);
-            return step >= 10 ? 21 : 11 + step;
-        } else {
-            return 11;
-        }
-    }
 
 
-    public List<TDodgeBound> DodgeBounds => _dodgeBounds ??= [
-        new(30, 12, 60), new(27, 13, 58), new(24, 14, 56),
-        new(20, 15, 54), new(18, 16, 52), new(16, 17, 51),
-        new(12, 18, 48), new(9, 19, 46), new(6, 20, 42),
-        new(4, 21, 40), new(2, 22, 38), new(0, 23, 35),
-    ];
-    List<TDodgeBound>? _dodgeBounds;
 
-    public TDodgeBound DodgeBoundRow(int chance) {
-        int i = 0;
-        while ((i < DodgeBounds.Count - 1) && (chance <= DodgeBounds[i].limit)) {
-            i++;
-        }
 
-        return DodgeBounds[i];
-    }
 
-    public int DodgeBound(int chance) =>
-        DodgeBoundRow(chance).player;
-    public int EnemyDodgeBound(int chance) =>
-        DodgeBoundRow(chance).enemy;
 
-    public int DexterityBonus(int value) =>
-        value >= 8 ? value / 2 : 0;
 
-    public int ParryBonus(int value) {
-        int bonus = 0;
-        if (value > 75) {
-            bonus++;
-        }
 
-        if (value > 50) {
-            bonus++;
-        }
 
-        return bonus;
-    }
 
-    public int KickBonus(int value) {
-        int bonus = 0;
-        if (value > 70) {
-            bonus += 2;
-        }
-
-        if (value > 10) {
-            bonus += 2;
-        }
-
-        return bonus;
-    }
-
-    public void FightDog() {
-        Combat.EnemyEnergy = 10;
-        Combat.EnemyDexterity = 10;
-        Combat.EnemyStrength = 5;
-        DoFight();
-        Combat.Loot = Roll(15);
-        Out.WriteLine(TxtShared_08 + Combat.Loot + TxtFightDog_01);
-        Player.Money += Combat.Loot;
-        TryLoot(TBagItem.Heart, 5, TxtFightDog_02);
-    }
 
     public List<TSpawnedAt> CageInits => _cageInits ??= [
         new(TMonster.CageWeakling, RoomCageWeakling),
@@ -668,277 +673,25 @@ public class Game {
         }
     }
 
-    public void CompositeFight(int EnemyEnergyBase, int EnemyEnergyRand, int EnemyDexterityBase, int EnemyDexterityRand, int EnemyStrengthBase, int EnemyStrengthRand,
-        int LootBase, int LootRand, int HeartChance, bool RequireEnergy, bool AntDoughnut) {
-        Combat.EnemyEnergy = EnemyEnergyRand > 0 ? Roll(EnemyEnergyRand) + EnemyEnergyBase : EnemyEnergyBase;
-
-        Combat.EnemyDexterity = EnemyDexterityRand > 0 ? Roll(EnemyDexterityRand) + EnemyDexterityBase : EnemyDexterityBase;
-
-        Combat.EnemyStrength = EnemyStrengthRand > 0 ? Roll(EnemyStrengthRand) + EnemyStrengthBase : EnemyStrengthBase;
-
-        DoFight();
-        if (!Combat.Fled && (!RequireEnergy || (Player.Energy > 0))) {
-            Combat.Loot = (Roll(LootRand) + LootBase);
-            Out.WriteLine(TxtShared_08 + Combat.Loot + TxtCompositeFight_01);
-            Player.Money += Combat.Loot;
-            if (AntDoughnut) {
-                if (Verb == CmdZabij && Rest == CmdMrowka) {
-                    Combat.Roll = Roll(10);
-                    if (Combat.Roll < 7) {
-                        Out.WriteLine(TxtShared_08 + TxtCompositeFight_02);
-                        AcquireItem(TBagItem.Doughnut);
-                    }
-                }
-            } else if (HeartChance > 0) {
-                Combat.Roll = Roll(20);
-                if (Combat.Roll < HeartChance) {
-                    Out.WriteLine(TxtShared_08 + TxtCompositeFight_03);
-                    AcquireItem(TBagItem.Heart);
-                }
-            }
-        }
-    }
 
 
-    public TEnumList<TFoe, TFoeStats> Foes => _foes ??= new([
-        new() { energyBase = 1, energyRand = 0, dexterityBase = 1, dexterityRand = 0,
-            strengthBase = 2, strengthRand = 0, lootBase = 0, lootRand = 3,
-            heartChance = 0, requireEnergy = false, antDoughnut = true, },
-        new() { energyBase = 34, energyRand = 3, dexterityBase = 8, dexterityRand = 4,
-            strengthBase = 10, strengthRand = 0, lootBase = 10, lootRand = 21,
-            heartChance = 5, requireEnergy = false, antDoughnut = false, },
-        new() { energyBase = 50, energyRand = 5, dexterityBase = 10, dexterityRand = 5,
-            strengthBase = 13, strengthRand = 2, lootBase = 30, lootRand = 30,
-            heartChance = 7, requireEnergy = false, antDoughnut = false, },
-        new() { energyBase = 60, energyRand = 6, dexterityBase = 12, dexterityRand = 3,
-            strengthBase = 15, strengthRand = 3, lootBase = 20, lootRand = 40,
-            heartChance = 7, requireEnergy = false, antDoughnut = false, },
-        new() { energyBase = 90, energyRand = 10, dexterityBase = 14, dexterityRand = 2,
-            strengthBase = 17, strengthRand = 2, lootBase = 10, lootRand = 55,
-            heartChance = 4, requireEnergy = true, antDoughnut = false, },
-        new() { energyBase = 100, energyRand = 20, dexterityBase = 16, dexterityRand = 0,
-            strengthBase = 18, strengthRand = 2, lootBase = 30, lootRand = 30,
-            heartChance = 4, requireEnergy = true, antDoughnut = false, },
-        new() { energyBase = 130, energyRand = 20, dexterityBase = 20, dexterityRand = 0,
-            strengthBase = 19, strengthRand = 2, lootBase = 20, lootRand = 45,
-            heartChance = 4, requireEnergy = true, antDoughnut = false, },
-        new() { energyBase = 72, energyRand = 3, dexterityBase = 13, dexterityRand = 2,
-            strengthBase = 16, strengthRand = 2, lootBase = 15, lootRand = 50,
-            heartChance = 5, requireEnergy = false, antDoughnut = false, },
-    ]);
-    TEnumList<TFoe, TFoeStats>? _foes;
 
 
-    public TCageStats CageWeaklingStats => _cageWeaklingStats ??= new() { energy = 20, dexterity = 3, strength = 3, lootRand = 10, lootThreshold = 4, };
-    TCageStats? _cageWeaklingStats;
-    public TCageStats CageStrongStats => _cageStrongStats ??= new() { energy = 20, dexterity = 3, strength = 10, lootRand = 15, lootThreshold = 7, };
-    TCageStats? _cageStrongStats;
-    public TCageStats CageAgileStats => _cageAgileStats ??= new() { energy = 20, dexterity = 30, strength = 3, lootRand = 15, lootThreshold = 7, };
-    TCageStats? _cageAgileStats;
-    public TCageStats CageToughStats => _cageToughStats ??= new() { energy = 40, dexterity = 3, strength = 3, lootRand = 15, lootThreshold = 7, };
-    TCageStats? _cageToughStats;
-    public TCageStats CageHugeStats => _cageHugeStats ??= new() { energy = 40, dexterity = 11, strength = 10, lootRand = 30, lootThreshold = 10, };
-    TCageStats? _cageHugeStats;
-
-    public void Fight(TFoe foe) {
-        TFoeStats f = Foes[foe];
-        CompositeFight(f.energyBase, f.energyRand, f.dexterityBase, f.dexterityRand,
-            f.strengthBase, f.strengthRand, f.lootBase, f.lootRand, f.heartChance,
-            f.requireEnergy, f.antDoughnut);
-    }
-
-    public void KillBeast(string cmd, IntSlot beast, TFoe foe) {
-        if ((Matches(cmd)) && (Session.Room == beast.Get())) {
-            Fight(foe);
-            beast.Set(0);
-        }
-    }
-
-    public void KillBeastUnlessFled(string cmd, IntSlot beast, TFoe foe) {
-        if ((Matches(cmd)) && (Session.Room == beast.Get())) {
-            Fight(foe);
-            if (!Combat.Fled) {
-                beast.Set(0);
-            }
-        }
-    }
 
 
-    public void CompareFoeRules(List<TCompareFoeRule> rules) {
-        for (int i = 0; i < rules.Count; i++) {
-            TCompareFoeRule rule = rules[i];
-            if ((rule.stat.Get() >= rule.lo) && (rule.stat.Get() <= rule.hi)) {
-                Out.WriteLine(rule.line);
-            }
-        }
-    }
 
-    IntSlot SessionOverall() =>
-        new(() =>
-            Session.Overall, v => Session.Overall = v);
-    IntSlot PlayerStrength() =>
-        IntSlot.Into(Player.Stats, TStat.Strength);
 
-    public List<TCompareFoeRule> BeastCompareRules => _beastCompareRules ??= [
-        new(SessionOverall(), -MaxInt - 1, 15, TxtCompareFoe_02),
-        new(PlayerStrength(), 16, 18, TxtEnemy + TxtCompareFoe_03),
-        new(PlayerStrength(), 19, MaxInt, TxtCompareFoe_04),
-    ];
-    List<TCompareFoeRule>? _beastCompareRules;
 
-    public List<TCompareFoeRule> BigBeastCompareRules => _bigBeastCompareRules ??= [
-        new(SessionOverall(), -MaxInt - 1, 15, TxtCompareFoe_05),
-        new(PlayerStrength(), 16, 20, TxtCompareFoe_06),
-        new(PlayerStrength(), 21, 22, TxtCompareFoe_07),
-        new(PlayerStrength(), 23, MaxInt, TxtCompareFoe_08),
-    ];
-    List<TCompareFoeRule>? _bigBeastCompareRules;
 
-    public List<TCompareFoeRule> FighterCompareRules => _fighterCompareRules ??= [
-        new(SessionOverall(), -MaxInt - 1, 14, TxtCompareFoe_09),
-        new(SessionOverall(), 15, 17, TxtCompareFoe_10),
-        new(SessionOverall(), 18, 22, TxtCompareFoe_11),
-        new(SessionOverall(), 23, 25, TxtCompareFoe_12),
-        new(SessionOverall(), 26, MaxInt, TxtCompareFoe_13),
-    ];
-    List<TCompareFoeRule>? _fighterCompareRules;
 
-    public List<TCompareFoeRule> DrunkCompareRules => _drunkCompareRules ??= [
-        new(SessionOverall(), -MaxInt - 1, 23, TxtCompareFoe_14),
-        new(SessionOverall(), 24, 25, TxtCompareFoe_15),
-        new(SessionOverall(), 26, 28, TxtCompareFoe_16),
-        new(SessionOverall(), 29, MaxInt, TxtCompareFoe_17),
-        new(SessionOverall(), 35, MaxInt, TxtCompareFoe_18),
-    ];
-    List<TCompareFoeRule>? _drunkCompareRules;
 
-    public List<TCompareFoeRule> MusicianCompareRules => _musicianCompareRules ??= [
-        new(SessionOverall(), -MaxInt - 1, 20, TxtCompareFoe_19),
-        new(SessionOverall(), 23, 27, TxtCompareFoe_20),
-        new(SessionOverall(), 28, MaxInt, TxtCompareFoe_21),
-    ];
-    List<TCompareFoeRule>? _musicianCompareRules;
 
-    public List<TCompareFoeRule> IvyCompareRules => _ivyCompareRules ??= [
-        new(SessionOverall(), -MaxInt - 1, 19, TxtCompareFoe_22),
-        new(SessionOverall(), 20, 25, TxtCompareFoe_23),
-        new(SessionOverall(), 26, 29, TxtCompareFoe_24),
-        new(SessionOverall(), 30, MaxInt, TxtCompareFoe_25),
-        new(SessionOverall(), 36, MaxInt, TxtCompareFoe_26),
-    ];
-    List<TCompareFoeRule>? _ivyCompareRules;
 
-    public List<TCompareFoeRule> LiroyCompareRules => _liroyCompareRules ??= [
-        new(SessionOverall(), -MaxInt - 1, 27, TxtCompareFoe_27),
-        new(SessionOverall(), 28, 32, TxtCompareFoe_28),
-        new(SessionOverall(), 33, 43, TxtCompareFoe_29),
-        new(SessionOverall(), 44, 47, TxtCompareFoe_30),
-        new(SessionOverall(), 48, MaxInt, TxtCompareFoe_31),
-    ];
-    List<TCompareFoeRule>? _liroyCompareRules;
 
-    public List<TCompareFoeRule> PokrzywaCompareRules => _pokrzywaCompareRules ??= [
-        new(SessionOverall(), -MaxInt - 1, 39, TxtCompareFoe_32),
-        new(SessionOverall(), 40, MaxInt, TxtCompareFoe_33),
-    ];
-    List<TCompareFoeRule>? _pokrzywaCompareRules;
 
-    public void CompareFoe() {
-        Combat.Roll = Roll(100);
-        Out.WriteLine(TxtCompareFoe_01);
-        Command = Crt.ReadLn();
-        Session.Overall = (Player.Level + Player.Stats[TStat.Strength] + DexterityBonus(Player.Stats[TStat.Dexterity]) + ParryBonus(Skills.Values[TSkill.Parry]) + KickBonus(Skills.Values[TSkill.Kick]));
-        switch (Verb) {
-            case CmdDzik:
-            case CmdSzczur:
-            case CmdLis:
-            case CmdKuropatwa:
-            case CmdZajac:
-            case CmdWilczur:
-            case CmdOrzel:
-            case CmdSarna:
-            case CmdDziecko:
-            case CmdDziadek:
-                CompareFoeRules(BeastCompareRules);
-                break;
-            case CmdSlon:
-            case CmdLew:
-            case CmdZyrafa:
-            case CmdWielblad:
-            case CmdStrus:
-            case CmdBoa:
-            case CmdWilk:
-            case CmdBizon:
-            case CmdPantera:
-            case CmdWariat:
-            case CmdSluchacz:
-            case CmdFan:
-            case CmdCzlowiek:
-            case CmdReporter:
-                CompareFoeRules(BigBeastCompareRules);
-                break;
-            case CmdGladiator:
-            case CmdWojownik:
-            case CmdTrener:
-            case CmdPolicjant:
-            case CmdGoryl:
-            case CmdOchroniarz:
-                CompareFoeRules(FighterCompareRules);
-                break;
-            case CmdMiniBarman:
-            case CmdGrubas:
-            case CmdDJ:
-                CompareFoeRules(DrunkCompareRules);
-                break;
-            case CmdTaksowkarz:
-            case CmdSprzedawca:
-            case CmdGitarzysta:
-            case CmdPerkusista:
-            case CmdOrganista:
-            case CmdZebrak:
-            case CmdPijak:
-            case CmdZamiatacz:
-            case CmdSzczaw:
-            case CmdStokrotka:
-            case CmdKoniczynka:
-            case CmdMlecz:
-            case CmdDmuchawiec:
-                CompareFoeRules(MusicianCompareRules);
-                break;
-            case CmdPedal:
-            case CmdPara:
-            case CmdMaciek:
-            case CmdRoza:
-            case CmdMalina:
-            case CmdTrawa:
-            case CmdAgrest:
-            case CmdJezyna:
-                CompareFoeRules(IvyCompareRules);
-                break;
-            case CmdLiroy:
-                CompareFoeRules(LiroyCompareRules);
-                break;
-            case CmdPokrzywa:
-                CompareFoeRules(PokrzywaCompareRules);
-                break;
-            case CmdSpaniel:
-            case CmdOwczarek:
-            case CmdPiesek:
-            case CmdJamnik:
-            case CmdPudel:
-                Out.WriteLine(TxtCompareFoe_34);
-                break;
-            case CmdBakteria:
-                Out.WriteLine(TxtCompareFoe_36);
-                Player.ChangeMana(5);
-                break;
-        }
-        if ((Combat.Roll < 3) && (Skills.Values[TSkill.Comparing] < 100)) {
-            Out.WriteLine(TxtFightStars17 + TxtLearnVerb + TxtCompareFoe_35);
-            Skills.Values[TSkill.Comparing]++;
-            Player.Experience += 5;
-        }
-    }
+
+
+
 
     public void DescribeStreet() {
         for (int i = 0; i < StreetSpots.Count; i++) {
@@ -975,249 +728,9 @@ public class Game {
         }
     }
 
-    public void ShieldBlock() {
-        Combat.Roll = Roll(100);
-        if (Combat.Roll <= Gear.Values[TGearItem.Armor]) {
-            Combat.Damage -= Gear.Values[TGearItem.WornCount];
-            if (Combat.Damage < 0) {
-                Combat.Damage = 0;
-            }
-
-            Out.WriteLine(TxtShieldBlock_01 + Combat.Damage + TxtShared_20);
-        }
-    }
-
-    public void DoFight() {
-        for (int i = 0; i < FightExpStats.Count; i++) {
-            TFightExpStat s = FightExpStats[i];
-            Combat.FightExperience += s.expFor((s.playerStat.Get() - s.enemyStat.Get()));
-        }
-
-        do {
-            Combat.EnemyDodged = false;
-            Combat.PlayerDodged = false;
-            Out.WriteLine(TxtFightEngagedEnemy + Combat.EnemyEnergy + TxtFightEngagedYou + Player.Energy + TxtFightEngagedEnd);
-            if (Player.Stats[TStat.Dexterity] > Combat.EnemyDexterity) {
-                Combat.DodgeChance = (Player.Stats[TStat.Dexterity] - Combat.EnemyDexterity);
-                Combat.Roll = Roll(DodgeBound(Combat.DodgeChance));
-                if (Combat.Roll < 10) {
-                    Out.WriteLine(TxtFightYouDodgeMocking);
-                    Combat.PlayerDodged = true;
-                }
-                Combat.Roll = Roll(EnemyDodgeBound(Combat.DodgeChance));
-                if (Combat.Roll < 10) {
-                    Out.WriteLine(TxtEnemy + TxtFightEnemyDodgesLamersAttack);
-                    Combat.EnemyDodged = true;
-                }
-            }
-            if (Combat.EnemyDexterity > Player.Stats[TStat.Dexterity]) {
-                Combat.DodgeChance = (Combat.EnemyDexterity - Player.Stats[TStat.Dexterity]);
-                Combat.Roll = Roll(DodgeBound(Combat.DodgeChance));
-                if (Combat.Roll < 10) {
-                    Out.WriteLine(TxtEnemy + TxtFightEnemyDodgesWithGrace);
-                    Combat.EnemyDodged = true;
-                }
-                Combat.Roll = Roll(EnemyDodgeBound(Combat.DodgeChance));
-                if (Combat.Roll < 10) {
-                    Out.WriteLine(TxtFightYouDodgeWithoutPardon);
-                    Combat.PlayerDodged = true;
-                }
-            }
-            if (!Combat.PlayerDodged) {
-                Combat.Damage = Roll(Combat.EnemyStrength);
-                switch (Combat.Damage) {
-                    case >= 0 and <= 5:
-                        Out.WriteLine(TxtEnemy + TxtFightScratchedLabel + Combat.Damage + TxtFightTailEnergii);
-                        break;
-                    case >= 6 and <= 20:
-                        Out.WriteLine(TxtFightTakenLabel + Combat.Damage + TxtFightTailEnergii);
-                        break;
-                    case >= 21 and <= 50:
-                        Out.WriteLine(TxtEnemy + TxtFightMassacredYouLabel + Combat.Damage + TxtFightTailEnergii);
-                        break;
-                    default:
-                        Out.WriteLine(TxtEnemy + TxtFightGougedYouLabel + Combat.Damage + TxtFightTailEnergii);
-                        break;
-                }
-                Combat.FightExperience += 1;
-                ShieldBlock();
-                if ((Skills.Values[TSkill.Parry] > 0) && (Combat.Damage > 0)) {
-                    Combat.Roll = Roll(140);
-                    if (Combat.Roll <= Skills.Values[TSkill.Parry]) {
-                        switch (Combat.Damage) {
-                            case >= 0 and <= 2:
-                                Out.WriteLine(TxtFightParryLabel + TxtFightParryZeroTail);
-                                Combat.Damage = 0;
-                                break;
-                            case >= 3 and <= 9:
-                                Combat.Damage -= 2;
-                                Out.WriteLine(TxtFightParryLabel + Combat.Damage + TxtFightTailEnergii);
-                                break;
-                            default:
-                                Combat.Damage -= 3;
-                                Out.WriteLine(TxtFightParryLabel + Combat.Damage + TxtFightTailEnergii);
-                                break;
-                        }
-                        if ((Combat.Roll < 1) && (Skills.Values[TSkill.Parry] < 100)) {
-                            Out.WriteLine(TxtFightStars15 + TxtLearnVerb + TxtFightParryLearn);
-                            Skills.Values[TSkill.Parry]++;
-                            Combat.FightExperience += 5;
-                        }
-                    }
-                }
-                if (Combat.Damage > 0) {
-                    Player.ChangeEnergy(-Combat.Damage);
-                }
-                if (Combat.FireballCharges > 0) {
-                    Combat.Roll = Roll(100);
-                    if (Combat.Roll < 10) {
-                        Crt.TextColor(14);
-                        Combat.Roll = Roll(20);
-                        Out.WriteLine(TxtEnemy + TxtFightFireballLabel + Combat.Roll + TxtFightTailEnergii);
-                        Player.ChangeEnergy(-Combat.Roll);
-                        Combat.FireballCharges -= 1;
-                        Crt.TextColor(15);
-                    }
-                }
-                if (Combat.PoisonCharges > 0) {
-                    Combat.Roll = Roll(100);
-                    if (Combat.Roll < 10) {
-                        Crt.TextColor(4);
-                        Out.WriteLine(TxtEnemy + TxtFightCastsPoison);
-                        Combat.PoisonCharges -= 1;
-                        Crt.TextColor(15);
-                        Combat.PoisonRounds += 10;
-                    }
-                }
-                if (Combat.PoisonRounds > 0) {
-                    Combat.Roll = Roll(5);
-                    Out.WriteLine(TxtFightPoisonedLabel + Combat.Roll + TxtFightTailEnergii);
-                    Player.ChangeEnergy(-Combat.Roll);
-                    Combat.PoisonRounds -= 1;
-                }
-            }
-            if (!Combat.EnemyDodged) {
-                Combat.Damage = Roll(Player.Stats[TStat.Strength]);
-                if (Combat.Damage * 10 < Gear.Values[TGearItem.LuckRoll]) {
-                    do {
-                        Combat.Damage = Roll(Player.Stats[TStat.Strength]);
-                        Out.WriteLine(TxtFightLuckRoll);
-                    } while (!((Combat.Damage * 10) > Gear.Values[TGearItem.LuckRoll]));
-                }
-                Combat.EnemyEnergy -= Combat.Damage;
-                switch (Combat.Damage) {
-                    case >= 0 and <= 5:
-                        Out.WriteLine(TxtFightPushedLabel + Combat.Damage + TxtFightTailEnergii);
-                        break;
-                    case >= 6 and <= 20:
-                        Out.WriteLine(TxtFightHitLabel + Combat.Damage + TxtFightTailEnergii);
-                        break;
-                    case >= 21 and <= 50:
-                        Out.WriteLine(TxtFightMassacredHimLabel + Combat.Damage + TxtFightTailEnergii);
-                        break;
-                    default:
-                        Out.WriteLine(TxtFightGougedHimLabel + Combat.Damage + TxtFightTailEnergii);
-                        break;
-                }
-            }
-            Crt.Delay(2000);
-            if ((Skills.Values[TSkill.Kick] > 0) && (Player.Mana > Skills.Values[TSkill.KickMinMana]) && (Player.Energy < Skills.Values[TSkill.KickMaxEnergy])) {
-                Combat.Roll = Roll(100);
-                if (Combat.Roll <= Skills.Values[TSkill.Kick] - 10) {
-                    Combat.Roll = (Roll(10) + Roll(Player.Level));
-                    Crt.TextColor(14);
-                    Out.WriteLine(TxtFightKickVerb + TxtFightSuperKickLabel + Combat.Roll + TxtFightTailEnergii);
-                    Crt.TextColor(15);
-                    Player.ChangeMana(-(Roll(3) + 3));
-                    Combat.EnemyEnergy -= Combat.Roll;
-                } else {
-                    Out.WriteLine(TxtFightKickVerb + TxtFightSuperKickMiss);
-                }
-
-                Player.ChangeMana(-(Roll(2) + 2));
-            }
-            if ((Skills.Values[TSkill.Fleeing] > 0) && (Player.Energy < Skills.Values[TSkill.FleeEnergy]) && (Player.Mana > 14)) {
-                Player.ChangeMana(-15);
-                Combat.Roll = Roll(100);
-                if (Combat.Roll <= Skills.Values[TSkill.Fleeing]) {
-                    Combat.Fled = true;
-                    Out.WriteLine(TxtFightFled);
-                    Player.Experience -= 20;
-                } else {
-                    Out.WriteLine(TxtFightFleeFailed);
-                }
-            }
-        } while (!((Player.Energy < 1) || (Combat.EnemyEnergy < 1) || Combat.Fled));
-        if ((Combat.EnemyEnergy < 1) && (Player.Energy > 0)) {
-            if (Player.MaxEnergy > 75) {
-                Combat.FightExperience -= 2;
-            }
-
-            if (Player.MaxEnergy > 115) {
-                Combat.FightExperience -= 3;
-            }
-
-            if (Skills.Values[TSkill.Parry] > 50) {
-                Combat.FightExperience -= 2;
-            }
-
-            if (Skills.Values[TSkill.Parry] > 75) {
-                Combat.FightExperience -= 2;
-            }
-
-            if (Skills.Values[TSkill.Parry] > 95) {
-                Combat.FightExperience -= 1;
-            }
-
-            if (Skills.Values[TSkill.Kick] > 50) {
-                Combat.FightExperience -= 5;
-            }
-
-            if (Skills.Values[TSkill.Kick] > 95) {
-                Combat.FightExperience -= 2;
-            }
-
-            if (Combat.FightExperience < 0) {
-                Combat.FightExperience = 0;
-            }
-
-            Out.WriteLine(TxtFightVictoryLabel + Combat.FightExperience + TxtShared_22);
-            Player.Experience = (Combat.FightExperience + Player.Experience);
-            Combat.FireballCharges = 0;
-            Combat.PoisonCharges = 0;
-
-            if (World.Quest > 0) {
-                World.QuestKills -= 1;
-            }
-
-            if (Skills.Values[TSkill.Cooking] > 0) {
-                Combat.Roll = Roll(100);
-                if (Skills.Values[TSkill.Cooking] > Combat.Roll) {
-                    Out.WriteLine(TxtFightMadeBigos);
-                    AcquireItem(TBagItem.Bigos);
-                    if ((Combat.Roll < 1) && (Skills.Values[TSkill.Cooking] < 100)) {
-                        Out.WriteLine(TxtFightCookingLearn);
-                        Skills.Values[TSkill.Cooking]++;
-                        Player.Experience += 10;
-                    }
-                }
-            }
-        }
-        if (Player.Energy < 1) {
-            Out.WriteLine(TxtFightKilled);
-            Crt.Delay(3000);
-            Session.Room = DeadRoom;
-        }
-        Combat.FightExperience = 0;
-    }
 
 
-    public List<TFightExpStat> FightExpStats => _fightExpStats ??= [
-        new() { playerStat = new IntSlot(() => Player.MaxEnergy, v => Player.MaxEnergy = v), enemyStat = new IntSlot(() => Combat.EnemyEnergy, v => Combat.EnemyEnergy = v), expFor = FightExpForEnergy },
-        new() { playerStat = PlayerStat(TStat.Strength), enemyStat = new IntSlot(() => Combat.EnemyStrength, v => Combat.EnemyStrength = v), expFor = FightExpForStrength },
-        new() { playerStat = PlayerStat(TStat.Dexterity), enemyStat = new IntSlot(() => Combat.EnemyDexterity, v => Combat.EnemyDexterity = v), expFor = FightExpForDexterity },
-    ];
-    List<TFightExpStat>? _fightExpStats;
+
 
 
 
@@ -1238,8 +751,6 @@ public class Game {
 
     internal IntSlot PlayerEnergy() =>
         new(() => Player.Energy, v => Player.Energy = v);
-    IntSlot PlayerStat(TStat stat) =>
-        new(() => Player.Stats[stat], v => Player.Stats[stat] = v);
     internal IntSlot PlayerMaxEnergy() =>
         new(() => Player.MaxEnergy, v => Player.MaxEnergy = v);
     internal IntSlot PlayerMana() =>
@@ -1271,52 +782,9 @@ public class Game {
     }
 
 
-    public List<TBeastKill> BeastKills => _beastKills ??= [
-        new() { cmd = CmdZabij + CmdSlimak, beast = TMonster.Snail, foe = TFoe.WeakEnemy, unlessFled = true },
-        new() { cmd = CmdZabij + CmdKornik, beast = TMonster.Woodworm, foe = TFoe.WeakEnemy, unlessFled = true },
-        new() { cmd = CmdZabij + CmdMucha, beast = TMonster.Fly, foe = TFoe.WeakEnemy, unlessFled = true },
-        new() { cmd = CmdZabij + CmdZuk, beast = TMonster.Beetle, foe = TFoe.WeakEnemy, unlessFled = true },
-        new() { cmd = CmdZabij + CmdKaraluch, beast = TMonster.Cockroach, foe = TFoe.WeakEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdMrowka, beast = TMonster.Ant, foe = TFoe.WeakEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdPajak, beast = TMonster.Spider, foe = TFoe.WeakEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdDzik, beast = TMonster.Boar, foe = TFoe.WeakishEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdSzczur, beast = TMonster.Rat, foe = TFoe.WeakishEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdLis, beast = TMonster.Fox, foe = TFoe.WeakishEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdKuropatwa, beast = TMonster.Partridge, foe = TFoe.WeakishEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdZajac, beast = TMonster.Hare, foe = TFoe.WeakishEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdOrzel, beast = TMonster.Eagle, foe = TFoe.WeakishEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdSarna, beast = TMonster.Deer, foe = TFoe.WeakishEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdSlon, beast = TMonster.Elephant, foe = TFoe.MediumEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdLew, beast = TMonster.Lion, foe = TFoe.MediumEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdZyrafa, beast = TMonster.Giraffe, foe = TFoe.MediumEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdWilk, beast = TMonster.Wolf, foe = TFoe.MediumEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdWielblad, beast = TMonster.Camel, foe = TFoe.MediumEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdStrus, beast = TMonster.Ostrich, foe = TFoe.MediumEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdBoa, beast = TMonster.Boa, foe = TFoe.MediumEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdBizon, beast = TMonster.Bison, foe = TFoe.MediumEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdPantera, beast = TMonster.Panther, foe = TFoe.MediumEnemy, unlessFled = false },
-    ];
-    List<TBeastKill>? _beastKills;
 
 
-    public List<TArenaKill> ArenaKills => _arenaKills ??= [
-        new() { cmd = CmdZabij + CmdGladiator, monster = TMonster.Gladiator, pills = true },
-        new() { cmd = CmdZabij + CmdWojownik, monster = TMonster.Warrior, pills = true },
-        new() { cmd = CmdZabij + CmdTrener, monster = TMonster.Tamer, pills = false },
-    ];
-    List<TArenaKill>? _arenaKills;
 
-    public void ArenaKill(string cmd, TMonster monster, bool pills) {
-        if ((Matches(cmd)) && (Session.Room == World.Monsters[monster])) {
-            Fight(TFoe.HardEnemy);
-            World.Monsters[monster] = 0;
-            if (pills) {
-                PillGain();
-            } else {
-                SuitGain();
-            }
-        }
-    }
 
 
     public List<TMazeMove> MazeMoves => _mazeMoves ??= [
@@ -1369,187 +837,13 @@ public class Game {
         }
     }
 
-    public void StageFights() {
-        switch (Verb) {
-            case CmdZabij:
-                switch (Rest) {
-                    case CmdPerkusista:
-                        if (World.Monsters[TMonster.Drummer] == Session.Room) {
-                            Fight(TFoe.VeryEasyEnemy);
-                            World.Monsters[TMonster.Drummer] = 0;
-                            CassetteGain();
-                        }
-                        break;
-                    case CmdGitarzysta:
-                        if (World.Monsters[TMonster.Guitarist] == Session.Room) {
-                            Fight(TFoe.VeryEasyEnemy);
-                            World.Monsters[TMonster.Guitarist] = 0;
-                            CassetteGain();
-                        }
-                        break;
-                    case CmdLiroy:
-                        if (World.Monsters[TMonster.Liroy] == Session.Room) {
-                            Fight(TFoe.NotEasyEnemy);
-                            if ((Session.Room != DeadRoom) && (Player.Energy > 0) && !Combat.Fled) {
-                                Out.WriteLine(TxtStageFights_01);
-                                Player.Money += 30;
-                                CassetteGain();
-                                World.LiroyKilled = true;
-                                World.Monsters[TMonster.Liroy] = 0;
-                            }
-                        }
-                        break;
-                    case CmdOrganista:
-                        if (World.Monsters[TMonster.Keyboardist] == Session.Room) {
-                            Fight(TFoe.VeryEasyEnemy);
-                            World.Monsters[TMonster.Keyboardist] = 0;
-                            CassetteGain();
-                        }
-                        break;
-                }
-                break;
-        }
-    }
-
-    public void KillPlant(string cmd, IntSlot Plant) {
-        if ((Matches(cmd)) && (Plant.Get() == Session.Room)) {
-            Fight(TFoe.VeryEasyEnemy);
-            Plant.Set(0);
-        }
-    }
-
-    public void KillPlantIfAlive(string cmd, IntSlot Plant) {
-        if ((Matches(cmd)) && (Plant.Get() == Session.Room)) {
-            Fight(TFoe.VeryEasyEnemy);
-            if (Player.Energy > 0) {
-                Plant.Set(0);
-            }
-        }
-    }
-
-    public void KillPlantEasyIfAlive(string cmd, IntSlot Plant) {
-        if ((Matches(cmd)) && (Plant.Get() == Session.Room)) {
-            Fight(TFoe.EasyEnemy);
-            if (Player.Energy > 0) {
-                Plant.Set(0);
-            }
-        }
-    }
 
 
-    public List<TPlantKill> PlantKills => _plantKills ??= [
-        new() { cmd = CmdZabij + CmdSzczaw, plant = TMonster.Sorrel },
-        new() { cmd = CmdZabij + CmdKoniczynka, plant = TMonster.Clover },
-        new() { cmd = CmdZabij + CmdMlecz, plant = TMonster.SowThistle },
-        new() { cmd = CmdZabij + CmdDmuchawiec, plant = TMonster.Dandelion },
-    ];
-    List<TPlantKill>? _plantKills;
 
-    public List<TPlantKill> EasyPlantKills => _easyPlantKills ??= [
-        new() { cmd = CmdZabij + CmdRoza, plant = TMonster.Rose },
-        new() { cmd = CmdZabij + CmdOset, plant = TMonster.Thistle },
-        new() { cmd = CmdZabij + CmdMalina, plant = TMonster.Raspberry },
-        new() { cmd = CmdZabij + CmdAgrest, plant = TMonster.Gooseberry },
-        new() { cmd = CmdZabij + CmdJezyna, plant = TMonster.Blackberry },
-    ];
-    List<TPlantKill>? _easyPlantKills;
 
-    public void PlantFights() {
-        switch (Verb) {
-            case CmdZabij:
-                switch (Rest) {
-                    case CmdDuncan:
-                        if (World.Monsters[TMonster.Duncan] == Session.Room) {
-                            Fight(TFoe.EasyEnemy);
-                            if (Combat.EnemyEnergy < 1) {
-                                World.Monsters[TMonster.Duncan] = 0;
-                            }
-                        }
-                        break;
-                    case CmdTrawa:
-                        if (World.Monsters[TMonster.Grass] == Session.Room) {
-                            Out.WriteLine(TxtPlantFights_17);
-                            Fight(TFoe.HardEnemy);
-                            for (int i = 2; i <= 4; i++) {
-                                if (Player.Energy > 0) {
-                                    Fight(TFoe.HardEnemy);
-                                }
-                            }
 
-                            if ((Player.Energy > 0) && !Combat.Fled) {
-                                Out.WriteLine(TxtPlantFights_18);
-                            }
-                        }
-                        break;
-                }
-                break;
-            case CmdSecret:
-                if ((Rest == CmdLista) && (World.Monsters[TMonster.Duncan] == Session.Room)) {
-                    WriteLines([
-                        TxtPlantFights_01,
-                        TxtPlantFights_02,
-                        TxtPlantFights_03,
-                        TxtPlantFights_04,
-                    ]);
-                }
 
-                break;
-            case CmdKup:
-                switch (Rest) {
-                    case CmdDokument:
-                        if (Player.Money > 399) {
-                            Out.WriteLine(TxtPlantFights_05);
-                            AcquirePermit();
-                            Player.Money -= 400;
-                        }
-                        break;
-                    case CmdPlecak:
-                        if ((World.Monsters[TMonster.Duncan] == Session.Room) && (Player.Money > 4799)) {
-                            Out.WriteLine(TxtPlantFights_06);
-                            Player.Money -= 4800;
-                            AcquireItem(TBagItem.Backpack);
-                        }
-                        break;
-                }
-                break;
-            case CmdRozmawiaj:
-                if ((Rest == CmdDuncan) && (World.Monsters[TMonster.Duncan] == Session.Room)) {
-                    if (World.DuncanQuest == 0) {
-                        WriteLines([
-                            TxtPlantFights_07,
-                            TxtPlantFights_08,
-                            TxtPlantFights_09,
-                            TxtPlantFights_10,
-                            TxtPlantFights_11,
-                            TxtPlantFights_12,
-                        ]);
-                        World.DuncanQuest = 75;
-                    }
-                    if (World.DuncanQuest != 0) {
-                        Out.WriteLine(TxtPlantFights_13);
-                    }
 
-                    if (World.DuncanQuest == -125) {
-                        Out.WriteLine(TxtPlantFights_14);
-                        Out.WriteLine(TxtPlantFights_15);
-                        World.DuncanQuest = 0;
-                        Player.Experience += 125;
-                        Out.WriteLine(TxtPlantFights_16);
-                    }
-                }
-                break;
-        }
-
-        for (int i = 0; i < PlantKills.Count; i++) {
-            KillPlant(PlantKills[i].cmd, IntSlot.Into(World.Monsters, PlantKills[i].plant));
-        }
-
-        KillPlantIfAlive(CmdZabij + CmdStokrotka, IntSlot.Into(World.Monsters, TMonster.Daisy));
-
-        for (int i = 0; i < EasyPlantKills.Count; i++) {
-            KillPlantEasyIfAlive(EasyPlantKills[i].cmd, IntSlot.Into(World.Monsters, EasyPlantKills[i].plant));
-        }
-    }
 
     public void ReadCommand() {
         Out.Write(Player.Energy + TxtShared_01 + Player.Experience + TxtShared_02);
@@ -1648,75 +942,11 @@ public class Game {
 
 
 
-    public void KillStreetFoe(string cmd, IntSlot target, bool extra, TStreetKind kind) {
-        if ((Matches(cmd)) && (target.Get() == Session.Room)) {
-            switch (kind) {
-                case TStreetKind.skDog:
-                    FightDog();
-                    break;
-                case TStreetKind.skFolk:
-                    Fight(TFoe.VeryEasyEnemy);
-                    break;
-            }
-            target.Set(0);
-            if (extra) {
-                switch (kind) {
-                    case TStreetKind.skDog:
-                        WriteLines([TxtKillDog_01, TxtKillDog_02, TxtKillDog_03]);
-                        break;
-                    case TStreetKind.skFolk:
-                        SuitGain();
-                        break;
-                }
-            }
-        }
-    }
-
-    public void KillSweeper() {
-        if ((Verb == CmdZabij && Rest == CmdZamiatacz) && (World.Monsters[TMonster.Sweeper] == Session.Room)) {
-            Fight(TFoe.VeryEasyEnemy);
-            World.Monsters[TMonster.Sweeper] = 0;
-            Combat.Roll = Roll(100);
-            if (Combat.Roll < 35) {
-                Out.WriteLine(TxtKillSweeper_01);
-                AcquireItem(TBagItem.Tracksuit);
-            }
-        }
-    }
-
-    public void KillSickMan() {
-        if ((Verb == CmdZabij && Rest == CmdZebrak) && (World.Monsters[TMonster.SickMan] == Session.Room)) {
-            Fight(TFoe.VeryEasyEnemy);
-            if (Player.Energy > 0) {
-                Combat.Roll = Roll(10);
-                Out.WriteLine(TxtKillSickMan_01 + Combat.Roll + TxtShared_23);
-                Player.Money += Combat.Roll;
-                World.Monsters[TMonster.SickMan] = 0;
-            }
-        }
-    }
 
 
-    public List<TStreetKill> StreetKills => _streetKills ??= [
-        new() { cmd = CmdZabij + CmdOwczarek, target = TMonster.Shepherd, extra = false, kind = TStreetKind.skDog },
-        new() { cmd = CmdZabij + CmdPiesek, target = TMonster.Pooch, extra = false, kind = TStreetKind.skDog },
-        new() { cmd = CmdZabij + CmdJamnik, target = TMonster.Dachshund, extra = false, kind = TStreetKind.skDog },
-        new() { cmd = CmdZabij + CmdSpaniel, target = TMonster.Spaniel, extra = true, kind = TStreetKind.skDog },
-        new() { cmd = CmdZabij + CmdPudel, target = TMonster.Poodle, extra = false, kind = TStreetKind.skDog },
-        new() { cmd = CmdZabij + CmdTaksowkarz, target = TMonster.Cabman, extra = true, kind = TStreetKind.skFolk },
-        new() { cmd = CmdZabij + CmdSprzedawca, target = TMonster.Vendor, extra = true, kind = TStreetKind.skFolk },
-        new() { cmd = CmdZabij + CmdPijak, target = TMonster.Drunkard, extra = false, kind = TStreetKind.skFolk },
-    ];
-    List<TStreetKill>? _streetKills;
 
-    public void StreetFights() {
-        for (int ki = 0; ki < StreetKills.Count; ki++) {
-            TStreetKill k = StreetKills[ki];
-            KillStreetFoe(k.cmd, IntSlot.Into(World.Monsters, k.target), k.extra, k.kind);
-        }
-        KillSweeper();
-        KillSickMan();
-    }
+
+
 
 
 
@@ -1955,46 +1185,8 @@ public class Game {
 
 
 
-    public List<TConcertKill> ConcertKills => _concertKills ??= [
-        new() { cmd = CmdZabij + CmdDziecko, monster = TMonster.Kid, foe = TFoe.WeakishEnemy, bonus = TConcertBonus.cbNone },
-        new() { cmd = CmdZabij + CmdDziadek, monster = TMonster.OldMan, foe = TFoe.WeakishEnemy, bonus = TConcertBonus.cbPipe },
-        new() { cmd = CmdZabij + CmdWariat, monster = TMonster.Lunatic, foe = TFoe.MediumEnemy, bonus = TConcertBonus.cbNone },
-        new() { cmd = CmdZabij + CmdSluchacz, monster = TMonster.Listener, foe = TFoe.MediumEnemy, bonus = TConcertBonus.cbNone },
-        new() { cmd = CmdZabij + CmdCzlowiek, monster = TMonster.Man, foe = TFoe.MediumEnemy, bonus = TConcertBonus.cbNone },
-        new() { cmd = CmdZabij + CmdFan, monster = TMonster.Fan, foe = TFoe.MediumEnemy, bonus = TConcertBonus.cbNone },
-        new() { cmd = CmdZabij + CmdReporter, monster = TMonster.Reporter, foe = TFoe.MediumEnemy, bonus = TConcertBonus.cbNone },
-        new() { cmd = CmdZabij + CmdPolicjant, monster = TMonster.Policeman, foe = TFoe.HardEnemy, bonus = TConcertBonus.cbNone },
-        new() { cmd = CmdZabij + CmdGoryl, monster = TMonster.Gorilla, foe = TFoe.HardEnemy, bonus = TConcertBonus.cbSuit },
-        new() { cmd = CmdZabij + CmdOchroniarz, monster = TMonster.Bouncer, foe = TFoe.HardEnemy, bonus = TConcertBonus.cbSuit },
-    ];
-    List<TConcertKill>? _concertKills;
 
-    public void ConcertKill(string cmd, TMonster monster, TFoe foe, TConcertBonus bonus) {
-        if ((Matches(cmd)) && (Session.Room == World.Monsters[monster])) {
-            Fight(foe);
-            if (Combat.EnemyEnergy < 1) {
-                World.Monsters[monster] = 0;
-                if (bonus == TConcertBonus.cbPipe) {
-                    Combat.Roll = Roll(100);
-                    if (Combat.Roll < 5) {
-                        Out.WriteLine(TxtShared_08 + TxtConcertFights_01);
-                        Out.WriteLine(TxtConcertFights_02);
-                        AcquireItem(TBagItem.Pipe);
-                    }
-                }
-            }
-            if (bonus == TConcertBonus.cbSuit) {
-                SuitGain();
-            }
-        }
-    }
 
-    public void ConcertFights() {
-        for (int ci = 0; ci < ConcertKills.Count; ci++) {
-            TConcertKill c = ConcertKills[ci];
-            ConcertKill(c.cmd, c.monster, c.foe, c.bonus);
-        }
-    }
 
     public List<TCheckpoint> CheckpointRules => _checkpointRules ??= [
         new(400, 0, 1, (-MaxInt - 1), 19),

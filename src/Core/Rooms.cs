@@ -209,16 +209,16 @@ public class Rooms {
                 }
                 break;
         }
-        for (int bi = 0; bi < game.BeastKills.Count; bi++) {
-            TBeastKill b = game.BeastKills[bi];
+        for (int bi = 0; bi < game.Combat.BeastKills.Count; bi++) {
+            TBeastKill b = game.Combat.BeastKills[bi];
             if (b.unlessFled) {
                 game.KillBeastUnlessFled(b.cmd, IntSlot.Into(game.World.Monsters, b.beast), b.foe);
             } else {
                 game.KillBeast(b.cmd, IntSlot.Into(game.World.Monsters, b.beast), b.foe);
             }
         }
-        for (int ai = 0; ai < game.ArenaKills.Count; ai++) {
-            TArenaKill a = game.ArenaKills[ai];
+        for (int ai = 0; ai < game.Combat.ArenaKills.Count; ai++) {
+            TArenaKill a = game.Combat.ArenaKills[ai];
             game.ArenaKill(a.cmd, a.monster, a.pills);
         }
         switch (game.Verb) {
@@ -404,7 +404,7 @@ public class Rooms {
                 if (phase == TRoomPhase.Enter) {
                     DescribeCage(CageWeakling, RoomCageWeakling, TxtRoom12_01, TxtShared_07);
                 } else {
-                    CageMonsterFight(IntSlot.Into(game.World.Monsters, CageWeakling), RoomCageWeakling, game.CageWeaklingStats);
+                    CageMonsterFight(IntSlot.Into(game.World.Monsters, CageWeakling), RoomCageWeakling, game.Combat.CageWeaklingStats);
                 }
             },
         },
@@ -417,7 +417,7 @@ public class Rooms {
                 if (phase == TRoomPhase.Enter) {
                     DescribeCage(CageStrong, RoomCageStrong, TxtRoom13_01, TxtShared_07);
                 } else {
-                    CageMonsterFight(IntSlot.Into(game.World.Monsters, CageStrong), RoomCageStrong, game.CageStrongStats);
+                    CageMonsterFight(IntSlot.Into(game.World.Monsters, CageStrong), RoomCageStrong, game.Combat.CageStrongStats);
                 }
             },
         },
@@ -430,7 +430,7 @@ public class Rooms {
                 if (phase == TRoomPhase.Enter) {
                     DescribeCage(CageAgile, RoomCageAgile, TxtRoom14_01, TxtRoom14_02);
                 } else {
-                    CageMonsterFight(IntSlot.Into(game.World.Monsters, CageAgile), RoomCageAgile, game.CageAgileStats);
+                    CageMonsterFight(IntSlot.Into(game.World.Monsters, CageAgile), RoomCageAgile, game.Combat.CageAgileStats);
                 }
             },
         },
@@ -443,7 +443,7 @@ public class Rooms {
                 if (phase == TRoomPhase.Enter) {
                     DescribeCage(CageTough, RoomCageTough, TxtRoom15_01, TxtShared_07);
                 } else {
-                    CageMonsterFight(IntSlot.Into(game.World.Monsters, CageTough), RoomCageTough, game.CageToughStats);
+                    CageMonsterFight(IntSlot.Into(game.World.Monsters, CageTough), RoomCageTough, game.Combat.CageToughStats);
                 }
             },
         },
@@ -457,19 +457,19 @@ public class Rooms {
                     DescribeCage(CageHuge, RoomCageHuge, TxtRoom16_01, TxtShared_07);
                 }
                 if (game.World.Monsters[CageHuge] == RoomCageHuge) {
-                    game.Combat.EnemyEnergy = game.CageHugeStats.energy;
-                    game.Combat.EnemyDexterity = game.CageHugeStats.dexterity;
-                    game.Combat.EnemyStrength = game.CageHugeStats.strength;
+                    game.Combat.EnemyEnergy = game.Combat.CageHugeStats.energy;
+                    game.Combat.EnemyDexterity = game.Combat.CageHugeStats.dexterity;
+                    game.Combat.EnemyStrength = game.Combat.CageHugeStats.strength;
                     game.DoFight();
                     if (game.Combat.Fled) {
                         game.Combat.Fled = false;
                         game.MoveTo(RoomCageCorridor);
                     } else {
                         game.World.Monsters[CageHuge] = 0;
-                        game.Combat.Loot = game.Roll(game.CageHugeStats.lootRand);
+                        game.Combat.Loot = game.Roll(game.Combat.CageHugeStats.lootRand);
                         Out.WriteLine(TxtShared_08 + game.Combat.Loot + TxtShared_09);
                         game.Player.Money += game.Combat.Loot;
-                        game.TryCageLoot(game.CageHugeStats.lootThreshold);
+                        game.TryCageLoot(game.Combat.CageHugeStats.lootThreshold);
                     }
                 }
             },
