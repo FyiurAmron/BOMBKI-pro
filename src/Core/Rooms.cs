@@ -1,8 +1,8 @@
 
 using static Game;
-using static Game.TMonster;
-using static Game.TFoe;
-using static Game.TStreetKind;
+using static TMonster;
+using static TFoe;
+using static TStreetKind;
 using static Texts;
 
 public static class Rooms {
