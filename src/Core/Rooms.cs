@@ -197,7 +197,7 @@ public static class Rooms {
                 }
                 break;
         }
-        for (int bi = 1; bi < BeastKills.Count; bi++) {
+        for (int bi = 0; bi < BeastKills.Count; bi++) {
             TBeastKill b = BeastKills[bi];
             if (b.unlessFled) {
                 KillBeastUnlessFled(b.cmd, IntSlot.Into(World.Monsters, b.beast), b.foe);
@@ -205,7 +205,7 @@ public static class Rooms {
                 KillBeast(b.cmd, IntSlot.Into(World.Monsters, b.beast), b.foe);
             }
         }
-        for (int ai = 1; ai < ArenaKills.Count; ai++) {
+        for (int ai = 0; ai < ArenaKills.Count; ai++) {
             TArenaKill a = ArenaKills[ai];
             ArenaKill(a.cmd, a.monster, a.pills);
         }
@@ -1197,7 +1197,7 @@ public static class Rooms {
                     if (Verb == CmdLista) {
                         WriteLines([TxtRoom100_05, TxtRoom100_06, TxtRoom100_07, TxtRoom100_08]);
                     }
-                    for (int i = 1; i < QuestOffers.Count; i++) {
+                    for (int i = 0; i < QuestOffers.Count; i++) {
                         TQuestOffer q = QuestOffers[i];
                         StartQuest(q.cmd, q.line, q.quest, q.kills);
                     }

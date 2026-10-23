@@ -550,7 +550,7 @@
     },
     {
       "label": "just-saved tax",
-      "expect": "Hurra!\\ To\\ już\\ dwunasty\\ poziom",
+      "expect": "Hurra!\\ To\\ już\\ 12\\ poziom",
       "send": ""
     },
     {

@@ -515,7 +515,7 @@
     },
     {
       "label": "level 12: grant 1/2",
-      "expect": "Hurra!\\ To\\ już\\ dwunasty\\ poziom[\\s\\S]*?Masz teraz",
+      "expect": "Hurra!\\ To\\ już\\ 12\\ poziom[\\s\\S]*?Masz teraz",
       "send": "DAWAJ KUNSZT"
     },
     {
@@ -559,7 +559,7 @@
     },
     {
       "label": "second trip through 12, max strength on top",
-      "expect": "Hurra!\\ To\\ już\\ dwunasty\\ poziom[\\s\\S]*?Masz teraz",
+      "expect": "Hurra!\\ To\\ już\\ 12\\ poziom[\\s\\S]*?Masz teraz",
       "send": "DAWAJ KUNSZT"
     },
     {

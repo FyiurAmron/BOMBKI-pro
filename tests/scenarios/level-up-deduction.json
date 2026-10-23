@@ -146,7 +146,7 @@
     },
     {
       "label": "sheet shows the level-2 line",
-      "expect": "Jesteś na drugim levelu a do następnego brakuje ci -?[0-9]+\\ KUNSZTU",
+      "expect": "Jesteś na 2 levelu a do następnego brakuje ci -?[0-9]+\\ KUNSZTU",
       "send": "WYJSCIE"
     }
   ]

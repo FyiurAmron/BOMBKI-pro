@@ -239,12 +239,12 @@ public class UnitsSwiatTests {
             }
         }
 
-        var arena = MazeMoves.Skip(1).Single(move => move.room == Rooms.RoomArena33);
+        var arena = MazeMoves.Single(move => move.room == Rooms.RoomArena33);
         Assert.Contains(TMazeDir.mdPolodnie, arena.exits);
         Assert.Equal(Rooms.RoomArenaEntrance,
             Rooms.RoomInDirection(Rooms.RoomArena33, MazeDirectionCommand(TMazeDir.mdPolodnie)));
 
-        var mazeRooms = MazeMoves.Skip(1).ToDictionary(move => move.room);
+        var mazeRooms = MazeMoves.ToDictionary(move => move.room);
         foreach (var maze in mazeRooms.Values) {
             foreach (TMazeDir dir in maze.exits) {
                 int? destination = Rooms.RoomInDirection(maze.room, MazeDirectionCommand(dir));
@@ -269,7 +269,7 @@ public class UnitsSwiatTests {
             move => Assert.Contains(rooms, target => target.number == move.dest)));
         Assert.All(rooms, room => Assert.All(room.moves,
             move => Assert.Equal(move.dest, Rooms.RoomInDirection(room.number, move.cmd))));
-        Assert.All(MazeMoves.Skip(1), maze => Assert.All(maze.exits, dir => {
+        Assert.All(MazeMoves, maze => Assert.All(maze.exits, dir => {
             int? target = Rooms.RoomInDirection(maze.room, MazeDirectionCommand(dir));
             Assert.NotNull(target);
             Assert.Contains(rooms, room => room.number == target);

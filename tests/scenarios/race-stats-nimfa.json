@@ -39,7 +39,7 @@
     },
     {
       "label": "first level gap at zero KUNSZT",
-      "expect": "Jesteś\\ na\\ pierwszym\\ levelu\\ a\\ do\\ następnego\\ brakuje\\ ci\\ 700\\ KUNSZTU"
+      "expect": "Jesteś\\ na\\ 1\\ levelu\\ a\\ do\\ następnego\\ brakuje\\ ci\\ 700\\ KUNSZTU"
     },
     {
       "label": "starting attributes",

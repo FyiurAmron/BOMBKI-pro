@@ -38,6 +38,7 @@
 - very failed portal no longer teleports you randomly
   (could teleport you out-of-bounds and brick the game in vanilla)
 - better level-up banner
+  - level messages use numeric levels instead of ordinal names
 - all rooms show their exit list
 - exit lists show the real target room name now
 - all rooms wired; no longer crashes after going into northern LAS

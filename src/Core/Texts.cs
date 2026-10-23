@@ -309,7 +309,6 @@ public static class Texts {
     public const string TxtShowCharacter_12 = "Masz ";
     public const string TxtShowCharacter_13 = " MONET i ";
     public const string TxtShared_22 = " KUNSZTU";
-    public const string TxtShowCharacter_17 = "KUNSZTU";
     public const string TxtShowCharacter_18 = "Jesteś na ";
     public const string TxtShowCharacter_19 = " levelu a do następnego brakuje ci ";
     public const string TxtShowCharacter_21 = "Twoje parametry: SIŁA: ";
@@ -476,7 +475,7 @@ public static class Texts {
     public const string TxtCheckLevelUp_04 = " maximum ENERGII >>>>>>>>>>>>>";
     public const string TxtCheckLevelUp_05 = "<<<<<<<<<<<<<<Zyskałeś ";
     public const string TxtCheckLevelUp_06 = "MANY >>>>>>>>>>>>>>>>>";
-    public const string TxtCheckLevelUp_07 = "Hurra! To już dwunasty poziom, czas podwyższyć maksymalne parametry";
+    public const string TxtCheckLevelUp_07 = "Hurra! To już 12 poziom, czas podwyższyć maksymalne parametry";
     public const string TxtCheckLevelUp_08 = "☻☻☻☻☻☻☻☻☻☻☻☻☻ Masz teraz ";
     public const string TxtCheckLevelUp_09 = "SIŁY ☻☻☻☻☻☻☻☻☻☻☻☻☻";
     public const string TxtCheckLevelUp_10 = "ZRĘCZNOŚCI ☻☻☻☻☻☻☻☻☻☻☻☻☻";
@@ -736,16 +735,6 @@ public static class Texts {
     public const string CmdPolElf = "POL-ELF";
     public const string CmdUfok = "UFOK";
     public const string CmdCzaromil = "CZAROMIL";
-    public const string TxtLvlName4 = "Czwartym";
-    public const string TxtLvlName5 = "Piątym";
-    public const string TxtLvlName6 = "Szóstym";
-    public const string TxtLvlName7 = "Siódmym";
-    public const string TxtLvlName8 = "Ósmym";
-    public const string TxtLvlName9 = "Dziewiątym";
-    public const string TxtLvlName10 = "Dziesiątym";
-    public const string TxtLvlName11 = "Jedenastym";
-    public const string TxtLvlName12 = "Dwunastym";
-    public const string TxtLvlName13 = "Trzynastym";
     public const string CmdStaryZardzewialyMiecz = "STARY zardzewiały miecz";
     public const string CmdOkraglaMalaTarcza = "Okrągła MAŁA tarcza";
     public const string CmdZakrwawioneSerce = "Zakrwawione SERCE";
@@ -848,11 +837,6 @@ public static class Texts {
     public const string TxtFightStars17 = "*****************";
     public const string TxtLearnVerb = " uczysz się ZDOLNOŚCI ";
     public const string TxtFightKickVerb = "Twój super KOP ";
-    public const string TxtLevelFirst = "pierwszym";
-    public const string TxtLevelSecond = "drugim";
-    public const string TxtLevelThird = "trzecim";
-    public const string TxtLevelVeryHigh = "bardzo wysokim";
-    public const string TxtLevelTylko = "tylko";
     public const string TxtTrainingThreshold = " - prawdopodobienstwo jest teraz ";
     public const string TxtTrainingDigging = "Kopanie";
     public const string TxtTrainingFleeing = "Uciekanie";
