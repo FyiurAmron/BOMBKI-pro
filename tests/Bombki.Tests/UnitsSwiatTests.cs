@@ -1,122 +1,122 @@
-using static Game;
 
 namespace Bombki.Tests;
 
 public class UnitsSwiatTests {
-    static TestStdin FeedStdin(string lines) =>
+    readonly Game game = new();
+    TestStdin FeedStdin(string lines) =>
         TestStdin.Feed(lines);
 
-    static void RoomSetup() {
-        Session.ExitRequested = false;
-        UnitsSeed.Reseed();
-        Player.Energy = 30000;
-        Player.Experience = 100;
-        Player.Stats[TStat.Strength] = 127;
-        Player.Stats[TStat.Dexterity] = 127;
-        Combat.Fled = false;
-        Skills.Values[TSkill.Fleeing] = 0;
-        Skills.Values[TSkill.FleeEnergy] = 0;
-        Player.Mana = 0;
-        Skills.Values[TSkill.Parry] = 0;
-        Combat.FireballCharges = 0;
-        Combat.PoisonCharges = 0;
-        Combat.PoisonRounds = 0;
-        Skills.Values[TSkill.Cooking] = 0;
-        Skills.Values[TSkill.Kick] = 0;
-        Skills.Values[TSkill.KickMinMana] = 0;
-        Skills.Values[TSkill.KickMaxEnergy] = 0;
-        Gear.Values[TGearItem.Armor] = 0;
-        Gear.Values[TGearItem.WornCount] = 0;
-        Gear.Values[TGearItem.LuckRoll] = 0;
-        Player.MaxEnergy = 50;
-        World.Monsters[TMonster.CageStrong] = 0;
-        Bag.Count = 0;
-        World.Quest = 0;
-        World.QuestKills = 0;
-        World.LiroyKilled = false;
-        Player.Money = 0;
-        Bag.Permit = 0;
-        Bag.Items[TBagItem.Diploma] = 0;
-        Bag.Items[TBagItem.Pipe] = 0;
+    void RoomSetup() {
+        game.Session.ExitRequested = false;
+        UnitsSeed.Reseed(game);
+        game.Player.Energy = 30000;
+        game.Player.Experience = 100;
+        game.Player.Stats[TStat.Strength] = 127;
+        game.Player.Stats[TStat.Dexterity] = 127;
+        game.Combat.Fled = false;
+        game.Skills.Values[TSkill.Fleeing] = 0;
+        game.Skills.Values[TSkill.FleeEnergy] = 0;
+        game.Player.Mana = 0;
+        game.Skills.Values[TSkill.Parry] = 0;
+        game.Combat.FireballCharges = 0;
+        game.Combat.PoisonCharges = 0;
+        game.Combat.PoisonRounds = 0;
+        game.Skills.Values[TSkill.Cooking] = 0;
+        game.Skills.Values[TSkill.Kick] = 0;
+        game.Skills.Values[TSkill.KickMinMana] = 0;
+        game.Skills.Values[TSkill.KickMaxEnergy] = 0;
+        game.Gear.Values[TGearItem.Armor] = 0;
+        game.Gear.Values[TGearItem.WornCount] = 0;
+        game.Gear.Values[TGearItem.LuckRoll] = 0;
+        game.Player.MaxEnergy = 50;
+        game.World.Monsters[TMonster.CageStrong] = 0;
+        game.Bag.Count = 0;
+        game.World.Quest = 0;
+        game.World.QuestKills = 0;
+        game.World.LiroyKilled = false;
+        game.Player.Money = 0;
+        game.Bag.Permit = 0;
+        game.Bag.Items[TBagItem.Diploma] = 0;
+        game.Bag.Items[TBagItem.Pipe] = 0;
         foreach (TBagItem item in Enum.GetValues<TBagItem>()) {
-            Bag.ItemRooms[item].Clear();
+            game.Bag.ItemRooms[item].Clear();
         }
-        Player.Practice = 1;
+        game.Player.Practice = 1;
     }
 
-    static void PokojAt(string cmds, int room) {
-        Session.ExitRequested = false;
-        Session.Room = room;
+    void PokojAt(string cmds, int room) {
+        game.Session.ExitRequested = false;
+        game.Session.Room = room;
         using (FeedStdin(cmds)) {
-            Rooms.DispatchRoom();
+            game.Rooms.DispatchRoom();
         }
     }
 
     [Fact]
     public void Pokoj5Poster() {
         RoomSetup();
-        Session.Room = 5;
+        game.Session.Room = 5;
         using (FeedStdin("EXIT|PATRZ PLAKAT|WYJSCIE")) {
-            Rooms.DispatchRoom();
+            game.Rooms.DispatchRoom();
         }
 
-        Assert.Equal(5, Session.Room);
+        Assert.Equal(5, game.Session.Room);
     }
 
     [Fact]
     public void Pokoj1Poster() {
         RoomSetup();
-        Session.Room = 1;
+        game.Session.Room = 1;
         using (FeedStdin("EXIT|PATRZ PLAKAT|WYJSCIE")) {
-            Rooms.DispatchRoom();
+            game.Rooms.DispatchRoom();
         }
 
-        Assert.Equal(1, Session.Room);
+        Assert.Equal(1, game.Session.Room);
     }
 
     [Fact]
     public void Pokoj4Poster() {
         RoomSetup();
         PokojAt("EXIT|PATRZ AFISZ|WYJSCIE", 4);
-        Assert.Equal(4, Session.Room);
+        Assert.Equal(4, game.Session.Room);
     }
 
     [Fact]
     public void Pokoj13Loot() {
         RoomSetup();
-        Bag.Items[TBagItem.OldSword] = 0;
-        Bag.Items[TBagItem.SmallShield] = 0;
-        Bag.Items[TBagItem.Heart] = 0;
+        game.Bag.Items[TBagItem.OldSword] = 0;
+        game.Bag.Items[TBagItem.SmallShield] = 0;
+        game.Bag.Items[TBagItem.Heart] = 0;
         bool sawSword = false, sawShield = false, sawHeart = false;
         for (int i = 1; i <= 80; i++) {
-            Player.Energy = 30000;
-            Player.Experience = 100;
-            Player.Stats[TStat.Strength] = 127;
-            Player.Stats[TStat.Dexterity] = 127;
-            Combat.Fled = false;
-            Skills.Values[TSkill.Fleeing] = 0;
-            Skills.Values[TSkill.FleeEnergy] = 0;
-            Player.Mana = 0;
-            Skills.Values[TSkill.Parry] = 0;
-            Combat.FireballCharges = 0;
-            Combat.PoisonCharges = 0;
-            Combat.PoisonRounds = 0;
-            Skills.Values[TSkill.Cooking] = 0;
-            Skills.Values[TSkill.Kick] = 0;
-            Skills.Values[TSkill.KickMinMana] = 0;
-            Skills.Values[TSkill.KickMaxEnergy] = 0;
-            Gear.Values[TGearItem.LuckRoll] = 0;
-            World.Monsters[TMonster.CageStrong] = 13;
+            game.Player.Energy = 30000;
+            game.Player.Experience = 100;
+            game.Player.Stats[TStat.Strength] = 127;
+            game.Player.Stats[TStat.Dexterity] = 127;
+            game.Combat.Fled = false;
+            game.Skills.Values[TSkill.Fleeing] = 0;
+            game.Skills.Values[TSkill.FleeEnergy] = 0;
+            game.Player.Mana = 0;
+            game.Skills.Values[TSkill.Parry] = 0;
+            game.Combat.FireballCharges = 0;
+            game.Combat.PoisonCharges = 0;
+            game.Combat.PoisonRounds = 0;
+            game.Skills.Values[TSkill.Cooking] = 0;
+            game.Skills.Values[TSkill.Kick] = 0;
+            game.Skills.Values[TSkill.KickMinMana] = 0;
+            game.Skills.Values[TSkill.KickMaxEnergy] = 0;
+            game.Gear.Values[TGearItem.LuckRoll] = 0;
+            game.World.Monsters[TMonster.CageStrong] = 13;
             PokojAt("ZABIJ POTWOR|WYJSCIE", 13);
-            if (Bag.HasGroundItem(TBagItem.OldSword)) {
+            if (game.Bag.HasGroundItem(TBagItem.OldSword)) {
                 sawSword = true;
             }
 
-            if (Bag.HasGroundItem(TBagItem.SmallShield)) {
+            if (game.Bag.HasGroundItem(TBagItem.SmallShield)) {
                 sawShield = true;
             }
 
-            if (Bag.HasGroundItem(TBagItem.Heart)) {
+            if (game.Bag.HasGroundItem(TBagItem.Heart)) {
                 sawHeart = true;
             }
 
@@ -132,22 +132,22 @@ public class UnitsSwiatTests {
     [Fact]
     public void Pokoj13Flee() {
         RoomSetup();
-        World.Monsters[TMonster.CageStrong] = 13;
-        Player.Energy = 50;
-        Skills.Values[TSkill.FleeEnergy] = 100;
-        Player.Mana = 20;
-        Skills.Values[TSkill.Fleeing] = 100;
+        game.World.Monsters[TMonster.CageStrong] = 13;
+        game.Player.Energy = 50;
+        game.Skills.Values[TSkill.FleeEnergy] = 100;
+        game.Player.Mana = 20;
+        game.Skills.Values[TSkill.Fleeing] = 100;
         PokojAt("ZABIJ POTWOR|WYJSCIE", 13);
-        Assert.Equal(13, World.Monsters[TMonster.CageStrong]);
-        Assert.False(Combat.Fled);
+        Assert.Equal(13, game.World.Monsters[TMonster.CageStrong]);
+        Assert.False(game.Combat.Fled);
     }
 
     [Fact]
     public void Pokoj13Exits() {
         RoomSetup();
-        World.Monsters[TMonster.CageStrong] = 0;
+        game.World.Monsters[TMonster.CageStrong] = 0;
         PokojAt("EXIT|MODE|WYJSCIE", 13);
-        Assert.Equal(13, Session.Room);
+        Assert.Equal(13, game.Session.Room);
     }
 
     [Fact]
@@ -156,10 +156,10 @@ public class UnitsSwiatTests {
         foreach (int room in rooms) {
             RoomSetup();
             PokojAt("EXIT|MODE|WYJSCIE", room);
-            Assert.Equal(room, Session.Room);
+            Assert.Equal(room, game.Session.Room);
             RoomSetup();
             PokojAt("WYJSCIE", room);
-            Assert.Equal(room, Session.Room);
+            Assert.Equal(room, game.Session.Room);
         }
     }
 
@@ -167,45 +167,45 @@ public class UnitsSwiatTests {
     public void Pokoj11Poster() {
         RoomSetup();
         PokojAt("EXIT|PATRZ PLAKAT|WYJSCIE", 11);
-        Assert.Equal(11, Session.Room);
+        Assert.Equal(11, game.Session.Room);
     }
 
     [Fact]
     public void Pokoj30Exits() {
         RoomSetup();
         PokojAt("EXIT|WYJSCIE", 30);
-        Assert.Equal(30, Session.Room);
+        Assert.Equal(30, game.Session.Room);
     }
 
     [Fact]
     public void Pokoj60Exits() {
         RoomSetup();
         PokojAt("EXIT|WYJSCIE", 60);
-        Assert.Equal(60, Session.Room);
+        Assert.Equal(60, game.Session.Room);
     }
 
     [Fact]
     public void Pokoj75Exits() {
         RoomSetup();
         PokojAt("EXIT|WYJSCIE", 75);
-        Assert.Equal(75, Session.Room);
+        Assert.Equal(75, game.Session.Room);
     }
 
     [Fact]
     public void Pokoj83Exits() {
         RoomSetup();
         PokojAt("EXIT|WYJSCIE", 83);
-        Assert.Equal(83, Session.Room);
+        Assert.Equal(83, game.Session.Room);
     }
 
     [Fact]
     public void NettleThroneReturnsToCaveMouth() {
-        var throne = Rooms.RoomDefs.Single(room => room.number == Rooms.RoomNettleThrone);
+        var throne = game.Rooms.RoomDefs.Single(room => room.number == Rooms.RoomNettleThrone);
         Assert.Contains(throne.moves, move => move.cmd == Texts.CmdPolnoc && move.dest == Rooms.RoomCaveMouth);
         Assert.DoesNotContain(throne.moves, move => move.cmd == Texts.CmdPolodnie && move.dest == Rooms.RoomCaveMouth);
     }
 
-    static string Opposite(string cmd) =>
+    string Opposite(string cmd) =>
         cmd switch {
             Texts.CmdPolnoc => Texts.CmdPolodnie,
             Texts.CmdPolodnie => Texts.CmdPolnoc,
@@ -216,7 +216,7 @@ public class UnitsSwiatTests {
             _ => "",
         };
 
-    static TMazeDir Opposite(TMazeDir dir) =>
+    TMazeDir Opposite(TMazeDir dir) =>
         dir switch {
             TMazeDir.mdPolnoc => TMazeDir.mdPolodnie,
             TMazeDir.mdPolodnie => TMazeDir.mdPolnoc,
@@ -227,7 +227,7 @@ public class UnitsSwiatTests {
 
     [Fact]
     public void RoomMovesAreTwoWay() {
-        var rooms = Rooms.RoomDefs.ToDictionary(room => room.number);
+        var rooms = game.Rooms.RoomDefs.ToDictionary(room => room.number);
         foreach (var room in rooms.Values) {
             foreach (var move in room.moves) {
                 if ((room.number == Rooms.RoomArenaEntrance) && (move.dest == Rooms.RoomArena33)) {
@@ -239,15 +239,15 @@ public class UnitsSwiatTests {
             }
         }
 
-        var arena = MazeMoves.Single(move => move.room == Rooms.RoomArena33);
+        var arena = game.MazeMoves.Single(move => move.room == Rooms.RoomArena33);
         Assert.Contains(TMazeDir.mdPolodnie, arena.exits);
         Assert.Equal(Rooms.RoomArenaEntrance,
-            Rooms.RoomInDirection(Rooms.RoomArena33, MazeDirectionCommand(TMazeDir.mdPolodnie)));
+            game.Rooms.RoomInDirection(Rooms.RoomArena33, game.MazeDirectionCommand(TMazeDir.mdPolodnie)));
 
-        var mazeRooms = MazeMoves.ToDictionary(move => move.room);
+        var mazeRooms = game.MazeMoves.ToDictionary(move => move.room);
         foreach (var maze in mazeRooms.Values) {
             foreach (TMazeDir dir in maze.exits) {
-                int? destination = Rooms.RoomInDirection(maze.room, MazeDirectionCommand(dir));
+                int? destination = game.Rooms.RoomInDirection(maze.room, game.MazeDirectionCommand(dir));
                 Assert.NotNull(destination);
                 if (destination == Rooms.RoomArenaEntrance) {
                     Assert.Equal(Rooms.RoomArena33, maze.room);
@@ -262,15 +262,15 @@ public class UnitsSwiatTests {
 
     [Fact]
     public void RoomNamesCoverConnectivity() {
-        var rooms = Rooms.RoomDefs;
+        var rooms = game.Rooms.RoomDefs;
         Assert.All(rooms, room => Assert.False(string.IsNullOrWhiteSpace(room.name), $"room {room.number} has no name"));
         Assert.Equal(rooms.Count, rooms.Select(room => room.name).Distinct().Count());
         Assert.All(rooms, room => Assert.All(room.moves,
             move => Assert.Contains(rooms, target => target.number == move.dest)));
         Assert.All(rooms, room => Assert.All(room.moves,
-            move => Assert.Equal(move.dest, Rooms.RoomInDirection(room.number, move.cmd))));
-        Assert.All(MazeMoves, maze => Assert.All(maze.exits, dir => {
-            int? target = Rooms.RoomInDirection(maze.room, MazeDirectionCommand(dir));
+            move => Assert.Equal(move.dest, game.Rooms.RoomInDirection(room.number, move.cmd))));
+        Assert.All(game.MazeMoves, maze => Assert.All(maze.exits, dir => {
+            int? target = game.Rooms.RoomInDirection(maze.room, game.MazeDirectionCommand(dir));
             Assert.NotNull(target);
             Assert.Contains(rooms, room => room.number == target);
         }));
@@ -278,9 +278,9 @@ public class UnitsSwiatTests {
 
     [Fact]
     public void CageRewardConnectsEastOfSchoolLanding() {
-        var landing = Rooms.RoomDefs.Single(room => room.number == Rooms.RoomSchoolLanding);
-        var reward = Rooms.RoomDefs.Single(room => room.number == Rooms.RoomCageReward);
-        var hugeCage = Rooms.RoomDefs.Single(room => room.number == Rooms.RoomCageHuge);
+        var landing = game.Rooms.RoomDefs.Single(room => room.number == Rooms.RoomSchoolLanding);
+        var reward = game.Rooms.RoomDefs.Single(room => room.number == Rooms.RoomCageReward);
+        var hugeCage = game.Rooms.RoomDefs.Single(room => room.number == Rooms.RoomCageHuge);
 
         Assert.Equal(new Rooms.TCoordinate(-2, -1, 1), reward.position);
         Assert.Contains(landing.moves, move => move.cmd == Texts.CmdWschod && move.dest == reward.number);
@@ -290,7 +290,7 @@ public class UnitsSwiatTests {
 
     [Fact]
     public void MapCoordinatesAreUniqueAndPartitionLayoutIsFixed() {
-        var rooms = Rooms.RoomDefs;
+        var rooms = game.Rooms.RoomDefs;
         Assert.Equal(rooms.Count, rooms.Select(room => room.position).Distinct().Count());
 
         Dictionary<int, Rooms.TCoordinate> fixedCells = new() {
@@ -310,226 +310,226 @@ public class UnitsSwiatTests {
 
         Assert.All(fixedCells, entry =>
             Assert.Equal(entry.Value, rooms.Single(room => room.number == entry.Key).position));
-        Assert.Equal(Rooms.RoomFutureRoad, Rooms.RoomInDirection(Rooms.RoomQuestMaster, Texts.CmdWschod));
+        Assert.Equal(Rooms.RoomFutureRoad, game.Rooms.RoomInDirection(Rooms.RoomQuestMaster, Texts.CmdWschod));
     }
 
     [Fact]
     public void Pokoj100QuestMaster() {
         RoomSetup();
-        Player.Money = 10000;
-        Bag.Permit = 0;
+        game.Player.Money = 10000;
+        game.Bag.Permit = 0;
         PokojAt("EXIT|LISTA|ZABIJ QUEST-MASTER|ZACZNIJ QUEST 1|WYJSCIE", 100);
-        Assert.Equal(1, World.Quest);
-        Assert.Equal(75, World.QuestKills);
-        Assert.Equal(10000, Player.Money);
-        Assert.Equal(1, Bag.Permit);
-        Assert.Equal(1, Bag.Count);
+        Assert.Equal(1, game.World.Quest);
+        Assert.Equal(75, game.World.QuestKills);
+        Assert.Equal(10000, game.Player.Money);
+        Assert.Equal(1, game.Bag.Permit);
+        Assert.Equal(1, game.Bag.Count);
     }
 
     [Fact]
     public void Pokoj100BlockedRoad() {
         RoomSetup();
-        Bag.Permit = 0;
+        game.Bag.Permit = 0;
         PokojAt("ZACHOD|WYJSCIE", 100);
-        Assert.Equal(100, Session.Room);
+        Assert.Equal(100, game.Session.Room);
     }
 
     [Fact]
     public void Pokoj100OpenRoad() {
         RoomSetup();
-        Bag.Permit = 1;
-        Bag.Count = 1;
+        game.Bag.Permit = 1;
+        game.Bag.Count = 1;
         PokojAt("EXIT|ZACHOD", 100);
-        Assert.Equal(101, Session.Room);
-        Assert.Equal(101, Session.OuterRoom);
+        Assert.Equal(101, game.Session.Room);
+        Assert.Equal(101, game.Session.OuterRoom);
     }
 
     [Fact]
     public void Pokoj100QuestStart() {
         RoomSetup();
-        Player.Money = 10000;
+        game.Player.Money = 10000;
         PokojAt("ZACZNIJ QUEST 2|ZACZNIJ QUEST 3|WYJSCIE", 100);
-        Assert.Equal(2, World.Quest);
-        Assert.Equal(50, World.QuestKills);
-        Assert.Equal(10000, Player.Money);
+        Assert.Equal(2, game.World.Quest);
+        Assert.Equal(50, game.World.QuestKills);
+        Assert.Equal(10000, game.Player.Money);
     }
 
     [Fact]
     public void Pokoj100QuestStartHard() {
         RoomSetup();
         PokojAt("ZACZNIJ QUEST 3|WYJSCIE", 100);
-        Assert.Equal(3, World.Quest);
-        Assert.Equal(50, World.QuestKills);
+        Assert.Equal(3, game.World.Quest);
+        Assert.Equal(50, game.World.QuestKills);
     }
 
     [Fact]
     public void Pokoj100QuestStartCountsDeadLiroy() {
         RoomSetup();
-        World.Monsters[TMonster.Liroy] = 0;
+        game.World.Monsters[TMonster.Liroy] = 0;
         PokojAt("ZACZNIJ QUEST 2|WYJSCIE", 100);
-        Assert.True(World.LiroyKilled);
+        Assert.True(game.World.LiroyKilled);
     }
 
     [Fact]
     public void Pokoj100QuestStartRequiresLiveLiroy() {
         RoomSetup();
-        World.Monsters[TMonster.Liroy] = Rooms.RoomStage1;
-        World.LiroyKilled = true;
+        game.World.Monsters[TMonster.Liroy] = Rooms.RoomStage1;
+        game.World.LiroyKilled = true;
         PokojAt("ZACZNIJ QUEST 3|WYJSCIE", 100);
-        Assert.False(World.LiroyKilled);
+        Assert.False(game.World.LiroyKilled);
     }
 
     [Fact]
     public void Pokoj100FinishNoQuest() {
         RoomSetup();
-        Bag.Permit = 0;
-        Player.Experience = 100;
+        game.Bag.Permit = 0;
+        game.Player.Experience = 100;
         PokojAt("ZAKONCZ QUEST|WYJSCIE", 100);
-        Assert.Equal(0, World.Quest);
-        Assert.Equal(100, Player.Experience);
-        Assert.Equal(0, Bag.Permit);
+        Assert.Equal(0, game.World.Quest);
+        Assert.Equal(100, game.Player.Experience);
+        Assert.Equal(0, game.Bag.Permit);
     }
 
     [Fact]
     public void Pokoj100FinishEasy() {
         RoomSetup();
-        World.Quest = 1;
-        World.QuestKills = 0;
-        Bag.Permit = 0;
-        Player.Experience = 100;
+        game.World.Quest = 1;
+        game.World.QuestKills = 0;
+        game.Bag.Permit = 0;
+        game.Player.Experience = 100;
         PokojAt("ZAKONCZ QUEST|WYJSCIE", 100);
-        Assert.Equal(0, World.Quest);
-        Assert.Equal(0, World.QuestKills);
-        Assert.Equal(1, Bag.Permit);
-        Assert.Equal(200, Player.Experience);
-        Assert.Equal(1, Bag.Count);
+        Assert.Equal(0, game.World.Quest);
+        Assert.Equal(0, game.World.QuestKills);
+        Assert.Equal(1, game.Bag.Permit);
+        Assert.Equal(200, game.Player.Experience);
+        Assert.Equal(1, game.Bag.Count);
     }
 
     [Fact]
     public void Pokoj100FinishMedium() {
         RoomSetup();
-        World.Quest = 2;
-        World.QuestKills = 0;
-        World.LiroyKilled = true;
-        Bag.Items[TBagItem.Diploma] = 1;
-        Player.MaxEnergy = 55;
-        Bag.Permit = 0;
-        Player.Experience = 100;
-        Bag.Count = 1;
+        game.World.Quest = 2;
+        game.World.QuestKills = 0;
+        game.World.LiroyKilled = true;
+        game.Bag.Items[TBagItem.Diploma] = 1;
+        game.Player.MaxEnergy = 55;
+        game.Bag.Permit = 0;
+        game.Player.Experience = 100;
+        game.Bag.Count = 1;
         PokojAt("ZAKONCZ QUEST|WYJSCIE", 100);
-        Assert.Equal(0, World.Quest);
-        Assert.Equal(0, Bag.Items[TBagItem.Diploma]);
-        Assert.Equal(50, Player.MaxEnergy);
-        Assert.Equal(1, Bag.Permit);
-        Assert.Equal(350, Player.Experience);
-        Assert.Equal(1, Bag.Count);
+        Assert.Equal(0, game.World.Quest);
+        Assert.Equal(0, game.Bag.Items[TBagItem.Diploma]);
+        Assert.Equal(50, game.Player.MaxEnergy);
+        Assert.Equal(1, game.Bag.Permit);
+        Assert.Equal(350, game.Player.Experience);
+        Assert.Equal(1, game.Bag.Count);
     }
 
     [Fact]
     public void Pokoj100FinishNeedsLiroy() {
         RoomSetup();
-        World.Quest = 2;
-        World.QuestKills = 0;
-        World.LiroyKilled = false;
-        Bag.Items[TBagItem.Diploma] = 1;
-        Bag.Permit = 0;
-        Player.Experience = 100;
+        game.World.Quest = 2;
+        game.World.QuestKills = 0;
+        game.World.LiroyKilled = false;
+        game.Bag.Items[TBagItem.Diploma] = 1;
+        game.Bag.Permit = 0;
+        game.Player.Experience = 100;
         PokojAt("ZAKONCZ QUEST|WYJSCIE", 100);
-        Assert.Equal(2, World.Quest);
-        Assert.Equal(100, Player.Experience);
-        Assert.Equal(0, Bag.Permit);
+        Assert.Equal(2, game.World.Quest);
+        Assert.Equal(100, game.Player.Experience);
+        Assert.Equal(0, game.Bag.Permit);
     }
 
     [Fact]
     public void Pokoj100FinishHard() {
         RoomSetup();
-        World.Quest = 3;
-        World.QuestKills = 0;
-        World.LiroyKilled = true;
-        Bag.Items[TBagItem.Pipe] = 1;
-        Player.Practice = 1;
-        Bag.Permit = 0;
-        Player.Experience = 100;
-        Bag.Count = 1;
-        Player.Stats[TStat.Wisdom] = 6;
-        Player.Stats[TStat.MaxWisdom] = 10;
+        game.World.Quest = 3;
+        game.World.QuestKills = 0;
+        game.World.LiroyKilled = true;
+        game.Bag.Items[TBagItem.Pipe] = 1;
+        game.Player.Practice = 1;
+        game.Bag.Permit = 0;
+        game.Player.Experience = 100;
+        game.Bag.Count = 1;
+        game.Player.Stats[TStat.Wisdom] = 6;
+        game.Player.Stats[TStat.MaxWisdom] = 10;
         PokojAt("ZAKONCZ QUEST|WYJSCIE", 100);
-        Assert.Equal(0, World.Quest);
-        Assert.Equal(0, Bag.Items[TBagItem.Pipe]);
-        Assert.Equal(1, Player.Practice);
-        Assert.Equal(1, Bag.Permit);
-        Assert.Equal(525, Player.Experience);
-        Assert.Equal(1, Bag.Count);
-        Assert.Equal(5, Player.Stats[TStat.Wisdom]);
-        Player.Stats[TStat.Wisdom] = 0;
-        Player.Stats[TStat.MaxWisdom] = 0;
+        Assert.Equal(0, game.World.Quest);
+        Assert.Equal(0, game.Bag.Items[TBagItem.Pipe]);
+        Assert.Equal(1, game.Player.Practice);
+        Assert.Equal(1, game.Bag.Permit);
+        Assert.Equal(525, game.Player.Experience);
+        Assert.Equal(1, game.Bag.Count);
+        Assert.Equal(5, game.Player.Stats[TStat.Wisdom]);
+        game.Player.Stats[TStat.Wisdom] = 0;
+        game.Player.Stats[TStat.MaxWisdom] = 0;
     }
 
     [Fact]
     public void LiroyKillCountsOnce() {
         RoomSetup();
-        World.Quest = 2;
-        World.QuestKills = 50;
-        Session.Room = Rooms.RoomStage1;
-        World.Monsters[TMonster.Liroy] = Rooms.RoomStage1;
+        game.World.Quest = 2;
+        game.World.QuestKills = 50;
+        game.Session.Room = Rooms.RoomStage1;
+        game.World.Monsters[TMonster.Liroy] = Rooms.RoomStage1;
         PokojAt("ZABIJ LIROY|WYJSCIE", Rooms.RoomStage1);
-        Assert.Equal(49, World.QuestKills);
-        Assert.True(World.LiroyKilled);
-        Assert.Equal(0, World.Monsters[TMonster.Liroy]);
+        Assert.Equal(49, game.World.QuestKills);
+        Assert.True(game.World.LiroyKilled);
+        Assert.Equal(0, game.World.Monsters[TMonster.Liroy]);
     }
 
     [Fact]
     public void StaruchTradeLeavesYouInTheCity() {
         RoomSetup();
-        Session.Room = Rooms.RoomHut;
-        Bag.Items[TBagItem.Sausage] = 4;
-        Bag.Items[TBagItem.ReturnScroll] = 0;
-        Bag.Items[TBagItem.Beer] = 0;
-        Bag.Count = 4;
-        Player.Money = 200;
-        World.OldElf = false;
+        game.Session.Room = Rooms.RoomHut;
+        game.Bag.Items[TBagItem.Sausage] = 4;
+        game.Bag.Items[TBagItem.ReturnScroll] = 0;
+        game.Bag.Items[TBagItem.Beer] = 0;
+        game.Bag.Count = 4;
+        game.Player.Money = 200;
+        game.World.OldElf = false;
         using (FeedStdin("ROZMAWIAJ STARUCH")) {
-            Rooms.DispatchRoom();
+            game.Rooms.DispatchRoom();
         }
 
-        Assert.Equal(Rooms.RoomCityCentre, Session.Room);
-        Assert.Equal(1, Bag.Items[TBagItem.ReturnScroll]);
-        Assert.Equal(1, Bag.Items[TBagItem.Beer]);
-        Assert.Equal(0, Bag.Items[TBagItem.Sausage]);
-        Assert.Equal(0, Player.Money);
-        Assert.Equal(2, Bag.Count);
+        Assert.Equal(Rooms.RoomCityCentre, game.Session.Room);
+        Assert.Equal(1, game.Bag.Items[TBagItem.ReturnScroll]);
+        Assert.Equal(1, game.Bag.Items[TBagItem.Beer]);
+        Assert.Equal(0, game.Bag.Items[TBagItem.Sausage]);
+        Assert.Equal(0, game.Player.Money);
+        Assert.Equal(2, game.Bag.Count);
     }
 
     [Fact]
     public void KamienieMogaZabic() {
         RoomSetup();
-        Player.MaxEnergy = 50;
-        Player.Energy = 10;
-        Player.Stats[TStat.Dexterity] = 10;
+        game.Player.MaxEnergy = 50;
+        game.Player.Energy = 10;
+        game.Player.Stats[TStat.Dexterity] = 10;
         for (int i = 1; i <= 20; i++) {
             PokojAt("PATRZ|POLNOC", 87);
-            if (Session.Room == Texts.DeadRoom) {
+            if (game.Session.Room == Texts.DeadRoom) {
                 break;
             }
         }
 
-        Assert.Equal(Texts.DeadRoom, Session.Room);
-        Assert.Equal(0, Player.Energy);
+        Assert.Equal(Texts.DeadRoom, game.Session.Room);
+        Assert.Equal(0, game.Player.Energy);
     }
 
     [Fact]
     public void StudniaMozeZabic() {
         RoomSetup();
-        Player.MaxEnergy = 50;
-        Player.Energy = 50;
+        game.Player.MaxEnergy = 50;
+        game.Player.Energy = 50;
         for (int i = 1; i <= 100; i++) {
             PokojAt("PATRZ STUDNIA|POLNOC", 80);
-            if (Session.Room == Texts.DeadRoom) {
+            if (game.Session.Room == Texts.DeadRoom) {
                 break;
             }
         }
 
-        Assert.Equal(Texts.DeadRoom, Session.Room);
-        Assert.Equal(0, Player.Energy);
+        Assert.Equal(Texts.DeadRoom, game.Session.Room);
+        Assert.Equal(0, game.Player.Energy);
     }
 }

@@ -1,169 +1,169 @@
-using static Game;
 
 namespace Bombki.Tests;
 
 public class UnitsArenaTests {
-    static TestStdin FeedStdin(string lines) =>
+    readonly Game game = new();
+    TestStdin FeedStdin(string lines) =>
         TestStdin.Feed(lines);
 
     [Fact]
     public void ScenaMessages() {
-        Session.Room = 1;
-        World.Monsters[TMonster.Guitarist] = 1;
-        World.Monsters[TMonster.Drummer] = 1;
-        World.Monsters[TMonster.Keyboardist] = 1;
-        World.Monsters[TMonster.Liroy] = 1;
-        DescribeStage();
-        Assert.Equal(1, Session.Room);
+        game.Session.Room = 1;
+        game.World.Monsters[TMonster.Guitarist] = 1;
+        game.World.Monsters[TMonster.Drummer] = 1;
+        game.World.Monsters[TMonster.Keyboardist] = 1;
+        game.World.Monsters[TMonster.Liroy] = 1;
+        game.DescribeStage();
+        Assert.Equal(1, game.Session.Room);
     }
 
     [Fact]
     public void TlumMessages() {
-        Session.Room = 1;
-        World.Monsters[TMonster.Kid] = 1;
-        World.Monsters[TMonster.Lunatic] = 1;
-        World.Monsters[TMonster.Listener] = 1;
-        World.Monsters[TMonster.Fan] = 1;
-        World.Monsters[TMonster.Man] = 1;
-        World.Monsters[TMonster.Policeman] = 1;
-        World.Monsters[TMonster.Bouncer] = 1;
-        World.Monsters[TMonster.Gorilla] = 1;
-        World.Monsters[TMonster.OldMan] = 1;
-        World.Monsters[TMonster.Reporter] = 1;
-        DescribeCrowd();
-        Assert.Equal(1, Session.Room);
+        game.Session.Room = 1;
+        game.World.Monsters[TMonster.Kid] = 1;
+        game.World.Monsters[TMonster.Lunatic] = 1;
+        game.World.Monsters[TMonster.Listener] = 1;
+        game.World.Monsters[TMonster.Fan] = 1;
+        game.World.Monsters[TMonster.Man] = 1;
+        game.World.Monsters[TMonster.Policeman] = 1;
+        game.World.Monsters[TMonster.Bouncer] = 1;
+        game.World.Monsters[TMonster.Gorilla] = 1;
+        game.World.Monsters[TMonster.OldMan] = 1;
+        game.World.Monsters[TMonster.Reporter] = 1;
+        game.DescribeCrowd();
+        Assert.Equal(1, game.Session.Room);
     }
 
     [Fact]
     public void KtoMessages() {
-        Session.Room = 1;
-        World.Monsters[TMonster.Woodworm] = 1;
-        World.Monsters[TMonster.Fly] = 1;
-        World.Monsters[TMonster.Bacterium] = 1;
-        World.Monsters[TMonster.Snail] = 1;
-        World.Monsters[TMonster.Beetle] = 1;
-        World.Monsters[TMonster.Cockroach] = 1;
-        World.Monsters[TMonster.Ant] = 1;
-        World.Monsters[TMonster.Spider] = 1;
-        World.Monsters[TMonster.Boar] = 1;
-        World.Monsters[TMonster.Rat] = 1;
-        World.Monsters[TMonster.Fox] = 1;
-        World.Monsters[TMonster.Partridge] = 1;
-        World.Monsters[TMonster.Hare] = 1;
-        World.Monsters[TMonster.Mongrel] = 1;
-        World.Monsters[TMonster.Eagle] = 1;
-        World.Monsters[TMonster.Deer] = 1;
-        World.Monsters[TMonster.Elephant] = 1;
-        World.Monsters[TMonster.Lion] = 1;
-        World.Monsters[TMonster.Giraffe] = 1;
-        World.Monsters[TMonster.Camel] = 1;
-        World.Monsters[TMonster.Ostrich] = 1;
-        World.Monsters[TMonster.Boa] = 1;
-        World.Monsters[TMonster.Wolf] = 1;
-        World.Monsters[TMonster.Bison] = 1;
-        World.Monsters[TMonster.Panther] = 1;
-        World.Monsters[TMonster.Gladiator] = 1;
-        World.Monsters[TMonster.Warrior] = 1;
-        World.Monsters[TMonster.Tamer] = 1;
-        DescribeBeasts();
-        Assert.Equal(1, Session.Room);
+        game.Session.Room = 1;
+        game.World.Monsters[TMonster.Woodworm] = 1;
+        game.World.Monsters[TMonster.Fly] = 1;
+        game.World.Monsters[TMonster.Bacterium] = 1;
+        game.World.Monsters[TMonster.Snail] = 1;
+        game.World.Monsters[TMonster.Beetle] = 1;
+        game.World.Monsters[TMonster.Cockroach] = 1;
+        game.World.Monsters[TMonster.Ant] = 1;
+        game.World.Monsters[TMonster.Spider] = 1;
+        game.World.Monsters[TMonster.Boar] = 1;
+        game.World.Monsters[TMonster.Rat] = 1;
+        game.World.Monsters[TMonster.Fox] = 1;
+        game.World.Monsters[TMonster.Partridge] = 1;
+        game.World.Monsters[TMonster.Hare] = 1;
+        game.World.Monsters[TMonster.Mongrel] = 1;
+        game.World.Monsters[TMonster.Eagle] = 1;
+        game.World.Monsters[TMonster.Deer] = 1;
+        game.World.Monsters[TMonster.Elephant] = 1;
+        game.World.Monsters[TMonster.Lion] = 1;
+        game.World.Monsters[TMonster.Giraffe] = 1;
+        game.World.Monsters[TMonster.Camel] = 1;
+        game.World.Monsters[TMonster.Ostrich] = 1;
+        game.World.Monsters[TMonster.Boa] = 1;
+        game.World.Monsters[TMonster.Wolf] = 1;
+        game.World.Monsters[TMonster.Bison] = 1;
+        game.World.Monsters[TMonster.Panther] = 1;
+        game.World.Monsters[TMonster.Gladiator] = 1;
+        game.World.Monsters[TMonster.Warrior] = 1;
+        game.World.Monsters[TMonster.Tamer] = 1;
+        game.DescribeBeasts();
+        Assert.Equal(1, game.Session.Room);
     }
 
     [Fact]
     public void UlSklepMessages() {
-        Session.Room = 1;
-        World.Monsters[TMonster.Dachshund] = 1;
-        World.Monsters[TMonster.Shepherd] = 1;
-        World.Monsters[TMonster.Pooch] = 1;
-        World.Monsters[TMonster.Spaniel] = 1;
-        World.Monsters[TMonster.Poodle] = 1;
-        World.Monsters[TMonster.Cabman] = 1;
-        World.Monsters[TMonster.Vendor] = 1;
-        World.Monsters[TMonster.Sweeper] = 1;
-        World.Monsters[TMonster.Drunkard] = 1;
-        World.Monsters[TMonster.SickMan] = 1;
-        DescribeStreet();
-        Assert.Equal(1, Session.Room);
+        game.Session.Room = 1;
+        game.World.Monsters[TMonster.Dachshund] = 1;
+        game.World.Monsters[TMonster.Shepherd] = 1;
+        game.World.Monsters[TMonster.Pooch] = 1;
+        game.World.Monsters[TMonster.Spaniel] = 1;
+        game.World.Monsters[TMonster.Poodle] = 1;
+        game.World.Monsters[TMonster.Cabman] = 1;
+        game.World.Monsters[TMonster.Vendor] = 1;
+        game.World.Monsters[TMonster.Sweeper] = 1;
+        game.World.Monsters[TMonster.Drunkard] = 1;
+        game.World.Monsters[TMonster.SickMan] = 1;
+        game.DescribeStreet();
+        Assert.Equal(1, game.Session.Room);
     }
 
     [Fact]
     public void BluszczMessages() {
-        Session.Room = 1;
-        World.Monsters[TMonster.Sorrel] = 1;
-        World.Monsters[TMonster.Daisy] = 1;
-        World.Monsters[TMonster.Clover] = 1;
-        World.Monsters[TMonster.SowThistle] = 1;
-        World.Monsters[TMonster.Dandelion] = 1;
-        World.Monsters[TMonster.Rose] = 1;
-        World.Monsters[TMonster.Thistle] = 1;
-        World.Monsters[TMonster.Blackberry] = 1;
-        World.Monsters[TMonster.Gooseberry] = 1;
-        World.Monsters[TMonster.Raspberry] = 1;
-        World.Monsters[TMonster.Grass] = 1;
-        World.Monsters[TMonster.Duncan] = 1;
-        DescribePlants();
-        Assert.Equal(1, Session.Room);
+        game.Session.Room = 1;
+        game.World.Monsters[TMonster.Sorrel] = 1;
+        game.World.Monsters[TMonster.Daisy] = 1;
+        game.World.Monsters[TMonster.Clover] = 1;
+        game.World.Monsters[TMonster.SowThistle] = 1;
+        game.World.Monsters[TMonster.Dandelion] = 1;
+        game.World.Monsters[TMonster.Rose] = 1;
+        game.World.Monsters[TMonster.Thistle] = 1;
+        game.World.Monsters[TMonster.Blackberry] = 1;
+        game.World.Monsters[TMonster.Gooseberry] = 1;
+        game.World.Monsters[TMonster.Raspberry] = 1;
+        game.World.Monsters[TMonster.Grass] = 1;
+        game.World.Monsters[TMonster.Duncan] = 1;
+        game.DescribePlants();
+        Assert.Equal(1, game.Session.Room);
     }
 
     [Fact]
     public void PierdolyTlo() {
         using (FeedStdin("1")) {
-            Command = "ZMIEN TLO";
-            DisplayPrefs();
+            game.Command = "ZMIEN TLO";
+            game.DisplayPrefs();
         }
     }
 
     [Fact]
     public void Porownanie() {
-        Player.Mana = 10;
+        game.Player.Mana = 10;
         using (FeedStdin("DZIK")) {
-            CompareFoe();
+            game.CompareFoe();
         }
     }
 
-    static void MiniarenaSetup() {
-        Session.ExitRequested = false;
-        UnitsSeed.Reseed();
-        World.Monsters[TMonster.Bacterium] = 33;
-        World.Monsters[TMonster.Snail] = 33;
-        World.Monsters[TMonster.Woodworm] = 33;
-        World.Monsters[TMonster.Fly] = 33;
-        World.Monsters[TMonster.Beetle] = 33;
-        World.Monsters[TMonster.Cockroach] = 33;
-        World.Monsters[TMonster.Ant] = 33;
-        World.Monsters[TMonster.Spider] = 33;
-        World.Monsters[TMonster.Boar] = 33;
-        World.Monsters[TMonster.Mongrel] = 33;
-        World.Monsters[TMonster.Rat] = 33;
-        World.Monsters[TMonster.Fox] = 33;
-        World.Monsters[TMonster.Partridge] = 33;
-        World.Monsters[TMonster.Hare] = 33;
-        World.Monsters[TMonster.Eagle] = 33;
-        World.Monsters[TMonster.Deer] = 33;
-        World.Monsters[TMonster.Elephant] = 33;
-        World.Monsters[TMonster.Lion] = 33;
-        World.Monsters[TMonster.Giraffe] = 33;
-        World.Monsters[TMonster.Wolf] = 33;
-        World.Monsters[TMonster.Camel] = 33;
-        World.Monsters[TMonster.Ostrich] = 33;
-        World.Monsters[TMonster.Boa] = 33;
-        World.Monsters[TMonster.Bison] = 33;
-        World.Monsters[TMonster.Panther] = 33;
-        World.Monsters[TMonster.Gladiator] = 33;
-        World.Monsters[TMonster.Warrior] = 33;
-        World.Monsters[TMonster.Tamer] = 33;
-        Session.Room = 33;
-        Player.Stats[TStat.Strength] = 127;
-        Player.Stats[TStat.Dexterity] = 127;
-        Player.Energy = 30000;
-        Combat.Fled = false;
+    void MiniarenaSetup() {
+        game.Session.ExitRequested = false;
+        UnitsSeed.Reseed(game);
+        game.World.Monsters[TMonster.Bacterium] = 33;
+        game.World.Monsters[TMonster.Snail] = 33;
+        game.World.Monsters[TMonster.Woodworm] = 33;
+        game.World.Monsters[TMonster.Fly] = 33;
+        game.World.Monsters[TMonster.Beetle] = 33;
+        game.World.Monsters[TMonster.Cockroach] = 33;
+        game.World.Monsters[TMonster.Ant] = 33;
+        game.World.Monsters[TMonster.Spider] = 33;
+        game.World.Monsters[TMonster.Boar] = 33;
+        game.World.Monsters[TMonster.Mongrel] = 33;
+        game.World.Monsters[TMonster.Rat] = 33;
+        game.World.Monsters[TMonster.Fox] = 33;
+        game.World.Monsters[TMonster.Partridge] = 33;
+        game.World.Monsters[TMonster.Hare] = 33;
+        game.World.Monsters[TMonster.Eagle] = 33;
+        game.World.Monsters[TMonster.Deer] = 33;
+        game.World.Monsters[TMonster.Elephant] = 33;
+        game.World.Monsters[TMonster.Lion] = 33;
+        game.World.Monsters[TMonster.Giraffe] = 33;
+        game.World.Monsters[TMonster.Wolf] = 33;
+        game.World.Monsters[TMonster.Camel] = 33;
+        game.World.Monsters[TMonster.Ostrich] = 33;
+        game.World.Monsters[TMonster.Boa] = 33;
+        game.World.Monsters[TMonster.Bison] = 33;
+        game.World.Monsters[TMonster.Panther] = 33;
+        game.World.Monsters[TMonster.Gladiator] = 33;
+        game.World.Monsters[TMonster.Warrior] = 33;
+        game.World.Monsters[TMonster.Tamer] = 33;
+        game.Session.Room = 33;
+        game.Player.Stats[TStat.Strength] = 127;
+        game.Player.Stats[TStat.Dexterity] = 127;
+        game.Player.Energy = 30000;
+        game.Combat.Fled = false;
     }
 
     [Fact]
     public void MiniarenaSlabo() {
         MiniarenaSetup();
         using (FeedStdin("ZABIJ BAKTERIA|ZABIJ SLIMAK|ZABIJ KORNIK|ZABIJ MUCHA|ZABIJ ZUK|ZABIJ KARALUCH|ZABIJ MROWKA|ZABIJ PAJAK|WYJSCIE")) {
-            Rooms.DispatchRoom();
+            game.Rooms.DispatchRoom();
         }
     }
 
@@ -171,7 +171,7 @@ public class UnitsArenaTests {
     public void MiniarenaMniejslabo() {
         MiniarenaSetup();
         using (FeedStdin("ZABIJ DZIK|ZABIJ WILCZUR|ZABIJ SZCZUR|ZABIJ LIS|ZABIJ KUROPATWA|ZABIJ ZAJAC|ZABIJ ORZEL|ZABIJ SARNA|WYJSCIE")) {
-            Rooms.DispatchRoom();
+            game.Rooms.DispatchRoom();
         }
     }
 
@@ -179,7 +179,7 @@ public class UnitsArenaTests {
     public void MiniarenaSrednio() {
         MiniarenaSetup();
         using (FeedStdin("ZABIJ SLON|ZABIJ LEW|ZABIJ ZYRAFA|ZABIJ WILK|ZABIJ WIELBLAD|ZABIJ STRUS|ZABIJ BOA|ZABIJ BIZON|ZABIJ PANTERA|WYJSCIE")) {
-            Rooms.DispatchRoom();
+            game.Rooms.DispatchRoom();
         }
     }
 
@@ -187,15 +187,15 @@ public class UnitsArenaTests {
     public void MiniarenaTrudno() {
         MiniarenaSetup();
         using (FeedStdin("ZABIJ GLADIATOR|ZABIJ WOJOWNIK|ZABIJ TRENER|WYJSCIE")) {
-            Rooms.DispatchRoom();
+            game.Rooms.DispatchRoom();
         }
     }
 
-    static void MiniarenaAt(string cmd, int room) {
-        Session.ExitRequested = false;
-        Session.Room = room;
+    void MiniarenaAt(string cmd, int room) {
+        game.Session.ExitRequested = false;
+        game.Session.Room = room;
         using (FeedStdin(cmd)) {
-            Rooms.DispatchRoom();
+            game.Rooms.DispatchRoom();
         }
     }
 
@@ -217,111 +217,111 @@ public class UnitsArenaTests {
         MiniarenaAt("ZACHOD", 33);
     }
 
-    static void FightSetup() {
-        UnitsSeed.Reseed();
-        Session.Room = 100;
-        World.Monsters[TMonster.Drummer] = 100;
-        World.Monsters[TMonster.Guitarist] = 100;
-        World.Monsters[TMonster.Keyboardist] = 100;
-        World.Monsters[TMonster.Liroy] = 100;
-        World.Monsters[TMonster.Duncan] = 100;
-        World.Monsters[TMonster.Sorrel] = 100;
-        World.Monsters[TMonster.Daisy] = 100;
-        World.Monsters[TMonster.Clover] = 100;
-        World.Monsters[TMonster.SowThistle] = 100;
-        World.Monsters[TMonster.Dandelion] = 100;
-        World.Monsters[TMonster.Rose] = 100;
-        World.Monsters[TMonster.Thistle] = 100;
-        World.Monsters[TMonster.Raspberry] = 100;
-        World.Monsters[TMonster.Gooseberry] = 100;
-        World.Monsters[TMonster.Blackberry] = 100;
-        World.Monsters[TMonster.Grass] = 100;
-        Player.Stats[TStat.Strength] = 127;
-        Player.Stats[TStat.Dexterity] = 127;
-        Player.Energy = 30000;
-        Combat.Fled = false;
-        World.DuncanQuest = 0;
-        Player.Money = 10000;
-        Bag.Permit = 100;
-        Bag.Items[TBagItem.Backpack] = 100;
-        World.Quest = 0;
-        Player.Experience = 0;
+    void FightSetup() {
+        UnitsSeed.Reseed(game);
+        game.Session.Room = 100;
+        game.World.Monsters[TMonster.Drummer] = 100;
+        game.World.Monsters[TMonster.Guitarist] = 100;
+        game.World.Monsters[TMonster.Keyboardist] = 100;
+        game.World.Monsters[TMonster.Liroy] = 100;
+        game.World.Monsters[TMonster.Duncan] = 100;
+        game.World.Monsters[TMonster.Sorrel] = 100;
+        game.World.Monsters[TMonster.Daisy] = 100;
+        game.World.Monsters[TMonster.Clover] = 100;
+        game.World.Monsters[TMonster.SowThistle] = 100;
+        game.World.Monsters[TMonster.Dandelion] = 100;
+        game.World.Monsters[TMonster.Rose] = 100;
+        game.World.Monsters[TMonster.Thistle] = 100;
+        game.World.Monsters[TMonster.Raspberry] = 100;
+        game.World.Monsters[TMonster.Gooseberry] = 100;
+        game.World.Monsters[TMonster.Blackberry] = 100;
+        game.World.Monsters[TMonster.Grass] = 100;
+        game.Player.Stats[TStat.Strength] = 127;
+        game.Player.Stats[TStat.Dexterity] = 127;
+        game.Player.Energy = 30000;
+        game.Combat.Fled = false;
+        game.World.DuncanQuest = 0;
+        game.Player.Money = 10000;
+        game.Bag.Permit = 100;
+        game.Bag.Items[TBagItem.Backpack] = 100;
+        game.World.Quest = 0;
+        game.Player.Experience = 0;
     }
 
     [Fact]
     public void Fightscena() {
         FightSetup();
-        Command = "ZABIJ PERKUSISTA";
-        StageFights();
-        Command = "ZABIJ GITARZYSTA";
-        StageFights();
-        Command = "ZABIJ LIROY";
-        StageFights();
-        Command = "ZABIJ ORGANISTA";
-        StageFights();
+        game.Command = "ZABIJ PERKUSISTA";
+        game.StageFights();
+        game.Command = "ZABIJ GITARZYSTA";
+        game.StageFights();
+        game.Command = "ZABIJ LIROY";
+        game.StageFights();
+        game.Command = "ZABIJ ORGANISTA";
+        game.StageFights();
     }
 
     [Fact]
     public void FightbluszczZabij() {
         FightSetup();
-        Command = "ZABIJ DUNCAN";
-        PlantFights();
-        Command = "ZABIJ SZCZAW";
-        PlantFights();
-        Command = "ZABIJ STOKROTKA";
-        PlantFights();
-        Command = "ZABIJ KONICZYNKA";
-        PlantFights();
-        Command = "ZABIJ MLECZ";
-        PlantFights();
-        Command = "ZABIJ DMUCHAWIEC";
-        PlantFights();
-        Command = "ZABIJ ROZA";
-        PlantFights();
-        Command = "ZABIJ OSET";
-        PlantFights();
-        Command = "ZABIJ MALINA";
-        PlantFights();
-        Command = "ZABIJ AGREST";
-        PlantFights();
-        Command = "ZABIJ JEZYNA";
-        PlantFights();
-        Command = "ZABIJ TRAWA";
-        PlantFights();
+        game.Command = "ZABIJ DUNCAN";
+        game.PlantFights();
+        game.Command = "ZABIJ SZCZAW";
+        game.PlantFights();
+        game.Command = "ZABIJ STOKROTKA";
+        game.PlantFights();
+        game.Command = "ZABIJ KONICZYNKA";
+        game.PlantFights();
+        game.Command = "ZABIJ MLECZ";
+        game.PlantFights();
+        game.Command = "ZABIJ DMUCHAWIEC";
+        game.PlantFights();
+        game.Command = "ZABIJ ROZA";
+        game.PlantFights();
+        game.Command = "ZABIJ OSET";
+        game.PlantFights();
+        game.Command = "ZABIJ MALINA";
+        game.PlantFights();
+        game.Command = "ZABIJ AGREST";
+        game.PlantFights();
+        game.Command = "ZABIJ JEZYNA";
+        game.PlantFights();
+        game.Command = "ZABIJ TRAWA";
+        game.PlantFights();
     }
 
     [Fact]
     public void FightbluszczShop() {
         FightSetup();
-        Command = "SECRET LISTA";
-        PlantFights();
-        Command = "KUP DOKUMENT";
-        PlantFights();
-        Command = "KUP PLECAK";
-        PlantFights();
+        game.Command = "SECRET LISTA";
+        game.PlantFights();
+        game.Command = "KUP DOKUMENT";
+        game.PlantFights();
+        game.Command = "KUP PLECAK";
+        game.PlantFights();
     }
 
     [Fact]
     public void FightbluszczDuncan() {
         FightSetup();
-        World.DuncanQuest = 0;
-        Command = "ROZMAWIAJ DUNCAN";
-        PlantFights();
-        World.DuncanQuest = -125;
-        Command = "ROZMAWIAJ DUNCAN";
-        PlantFights();
+        game.World.DuncanQuest = 0;
+        game.Command = "ROZMAWIAJ DUNCAN";
+        game.PlantFights();
+        game.World.DuncanQuest = -125;
+        game.Command = "ROZMAWIAJ DUNCAN";
+        game.PlantFights();
     }
 
-    static void PorownanieAsk(string monster,
+    void PorownanieAsk(string monster,
         int poziom, int sil, int zre, int par, int kop) {
         using (FeedStdin(monster)) {
-            Player.Mana = 10;
-            Player.Level = poziom;
-            Player.Stats[TStat.Strength] = sil;
-            Player.Stats[TStat.Dexterity] = zre;
-            Skills.Values[TSkill.Parry] = par;
-            Skills.Values[TSkill.Kick] = kop;
-            CompareFoe();
+            game.Player.Mana = 10;
+            game.Player.Level = poziom;
+            game.Player.Stats[TStat.Strength] = sil;
+            game.Player.Stats[TStat.Dexterity] = zre;
+            game.Skills.Values[TSkill.Parry] = par;
+            game.Skills.Values[TSkill.Kick] = kop;
+            game.CompareFoe();
         }
     }
 
@@ -331,7 +331,7 @@ public class UnitsArenaTests {
         PorownanieAsk("KUROPATWA", 0, 16, 0, 0, 0);
         PorownanieAsk("SARNA", 0, 19, 0, 0, 0);
         PorownanieAsk("DZIADEK", 0, 30, 0, 0, 0);
-        Assert.Equal(30, Player.Stats[TStat.Strength]);
+        Assert.Equal(30, game.Player.Stats[TStat.Strength]);
     }
 
     [Fact]
@@ -406,139 +406,139 @@ public class UnitsArenaTests {
     public void PorownanieBonusesAndBakteria() {
         PorownanieAsk("DZIK", 0, 10, 0, 51, 11);
         PorownanieAsk("DZIK", 0, 10, 0, 76, 71);
-        Player.MaxMana = 100;
-        Player.Mana = 10;
+        game.Player.MaxMana = 100;
+        game.Player.Mana = 10;
         using (FeedStdin("BAKTERIA")) {
-            CompareFoe();
+            game.CompareFoe();
         }
 
-        Assert.Equal(15, Player.Mana);
+        Assert.Equal(15, game.Player.Mana);
     }
 
-    static void LootSetup() {
-        UnitsSeed.Reseed();
-        Bag.Items[TBagItem.Heart] = 0;
-        Bag.ItemRooms[TBagItem.Heart].Clear();
-        Player.MaxEnergy = 30000;
-        Player.Energy = 30000;
-        Player.Stats[TStat.Strength] = 127;
-        Player.Stats[TStat.Dexterity] = 127;
-        Combat.Fled = false;
-        Skills.Values[TSkill.Fleeing] = 0;
-        Skills.Values[TSkill.FleeEnergy] = 0;
-        Player.Mana = 0;
-        Combat.FireballCharges = 0;
-        Combat.PoisonCharges = 0;
-        Combat.PoisonRounds = 0;
-        Skills.Values[TSkill.Kick] = 0;
-        Skills.Values[TSkill.KickMinMana] = 0;
-        Skills.Values[TSkill.KickMaxEnergy] = 0;
-        Gear.Values[TGearItem.Armor] = 0;
-        Gear.Values[TGearItem.WornCount] = 0;
-        Gear.Values[TGearItem.LuckRoll] = 0;
-        Bag.Count = 0;
+    void LootSetup() {
+        UnitsSeed.Reseed(game);
+        game.Bag.Items[TBagItem.Heart] = 0;
+        game.Bag.ItemRooms[TBagItem.Heart].Clear();
+        game.Player.MaxEnergy = 30000;
+        game.Player.Energy = 30000;
+        game.Player.Stats[TStat.Strength] = 127;
+        game.Player.Stats[TStat.Dexterity] = 127;
+        game.Combat.Fled = false;
+        game.Skills.Values[TSkill.Fleeing] = 0;
+        game.Skills.Values[TSkill.FleeEnergy] = 0;
+        game.Player.Mana = 0;
+        game.Combat.FireballCharges = 0;
+        game.Combat.PoisonCharges = 0;
+        game.Combat.PoisonRounds = 0;
+        game.Skills.Values[TSkill.Kick] = 0;
+        game.Skills.Values[TSkill.KickMinMana] = 0;
+        game.Skills.Values[TSkill.KickMaxEnergy] = 0;
+        game.Gear.Values[TGearItem.Armor] = 0;
+        game.Gear.Values[TGearItem.WornCount] = 0;
+        game.Gear.Values[TGearItem.LuckRoll] = 0;
+        game.Bag.Count = 0;
     }
 
     [Fact]
     public void HeartLootIgnoresGroundHeart() {
         LootSetup();
-        Bag.AddGroundItem(TBagItem.Heart, 7);
-        CompositeFight(1, 0, 1, 0, 1, 0, 0, 1, 20, false, false);
-        Assert.Equal(1, Bag.Items[TBagItem.Heart]);
+        game.Bag.AddGroundItem(TBagItem.Heart, 7);
+        game.CompositeFight(1, 0, 1, 0, 1, 0, 0, 1, 20, false, false);
+        Assert.Equal(1, game.Bag.Items[TBagItem.Heart]);
     }
 
     [Fact]
     public void EncounterHeartVeasy() {
         LootSetup();
         for (int i = 1; i <= 160; i++) {
-            if (Bag.Items[TBagItem.Heart] == 0) {
-                Fight(TFoe.VeryEasyEnemy);
+            if (game.Bag.Items[TBagItem.Heart] == 0) {
+                game.Fight(TFoe.VeryEasyEnemy);
             }
         }
 
-        Assert.Equal(1, Bag.Items[TBagItem.Heart]);
+        Assert.Equal(1, game.Bag.Items[TBagItem.Heart]);
     }
 
     [Fact]
     public void EncounterHeartEasy() {
         LootSetup();
         for (int i = 1; i <= 160; i++) {
-            if (Bag.Items[TBagItem.Heart] == 0) {
-                Fight(TFoe.EasyEnemy);
+            if (game.Bag.Items[TBagItem.Heart] == 0) {
+                game.Fight(TFoe.EasyEnemy);
             }
         }
 
-        Assert.Equal(1, Bag.Items[TBagItem.Heart]);
+        Assert.Equal(1, game.Bag.Items[TBagItem.Heart]);
     }
 
     [Fact]
     public void EncounterHeartNeasy() {
         LootSetup();
         for (int i = 1; i <= 160; i++) {
-            if (Bag.Items[TBagItem.Heart] == 0) {
-                Fight(TFoe.NotEasyEnemy);
+            if (game.Bag.Items[TBagItem.Heart] == 0) {
+                game.Fight(TFoe.NotEasyEnemy);
             }
         }
 
-        Assert.Equal(1, Bag.Items[TBagItem.Heart]);
+        Assert.Equal(1, game.Bag.Items[TBagItem.Heart]);
     }
 
     [Fact]
     public void EncounterHeartTrudno() {
         LootSetup();
         for (int i = 1; i <= 110; i++) {
-            if (Bag.Items[TBagItem.Heart] == 0) {
-                Fight(TFoe.HardEnemy);
+            if (game.Bag.Items[TBagItem.Heart] == 0) {
+                game.Fight(TFoe.HardEnemy);
             }
         }
 
-        Assert.Equal(1, Bag.Items[TBagItem.Heart]);
+        Assert.Equal(1, game.Bag.Items[TBagItem.Heart]);
     }
 
     [Fact]
     public void EncounterHeartBtrudno() {
         LootSetup();
         for (int i = 1; i <= 150; i++) {
-            if (Bag.Items[TBagItem.Heart] == 0) {
-                Fight(TFoe.VeryHardEnemy);
+            if (game.Bag.Items[TBagItem.Heart] == 0) {
+                game.Fight(TFoe.VeryHardEnemy);
             }
         }
 
-        Assert.Equal(1, Bag.Items[TBagItem.Heart]);
+        Assert.Equal(1, game.Bag.Items[TBagItem.Heart]);
     }
 
     [Fact]
     public void WalkaPotrawkiLearn() {
-        UnitsSeed.Reseed();
+        UnitsSeed.Reseed(game);
         bool learned = false;
         for (int i = 1; i <= 800; i++) {
-            Player.Energy = 100;
-            Player.Stats[TStat.Strength] = 127;
-            Player.Stats[TStat.Dexterity] = 127;
-            Player.MaxEnergy = 100;
-            Combat.EnemyEnergy = 0;
-            Combat.EnemyStrength = 1;
-            Combat.EnemyDexterity = 1;
-            Skills.Values[TSkill.Parry] = 0;
-            Skills.Values[TSkill.Kick] = 0;
-            Skills.Values[TSkill.KickMinMana] = 0;
-            Skills.Values[TSkill.KickMaxEnergy] = 0;
-            Player.Mana = 0;
-            Combat.FireballCharges = 0;
-            Combat.PoisonCharges = 0;
-            Combat.PoisonRounds = 0;
-            Skills.Values[TSkill.Fleeing] = 0;
-            Skills.Values[TSkill.FleeEnergy] = 0;
-            Combat.Fled = false;
-            Player.Experience = 0;
-            Gear.Values[TGearItem.LuckRoll] = 0;
-            Gear.Values[TGearItem.Armor] = 0;
-            Gear.Values[TGearItem.WornCount] = 0;
-            Player.Energy = 100;
-            Skills.Values[TSkill.Cooking] = 1;
-            Bag.Items[TBagItem.Bigos] = 0;
-            DoFight();
-            if (Skills.Values[TSkill.Cooking] > 1) {
+            game.Player.Energy = 100;
+            game.Player.Stats[TStat.Strength] = 127;
+            game.Player.Stats[TStat.Dexterity] = 127;
+            game.Player.MaxEnergy = 100;
+            game.Combat.EnemyEnergy = 0;
+            game.Combat.EnemyStrength = 1;
+            game.Combat.EnemyDexterity = 1;
+            game.Skills.Values[TSkill.Parry] = 0;
+            game.Skills.Values[TSkill.Kick] = 0;
+            game.Skills.Values[TSkill.KickMinMana] = 0;
+            game.Skills.Values[TSkill.KickMaxEnergy] = 0;
+            game.Player.Mana = 0;
+            game.Combat.FireballCharges = 0;
+            game.Combat.PoisonCharges = 0;
+            game.Combat.PoisonRounds = 0;
+            game.Skills.Values[TSkill.Fleeing] = 0;
+            game.Skills.Values[TSkill.FleeEnergy] = 0;
+            game.Combat.Fled = false;
+            game.Player.Experience = 0;
+            game.Gear.Values[TGearItem.LuckRoll] = 0;
+            game.Gear.Values[TGearItem.Armor] = 0;
+            game.Gear.Values[TGearItem.WornCount] = 0;
+            game.Player.Energy = 100;
+            game.Skills.Values[TSkill.Cooking] = 1;
+            game.Bag.Items[TBagItem.Bigos] = 0;
+            game.DoFight();
+            if (game.Skills.Values[TSkill.Cooking] > 1) {
                 learned = true;
             }
         }
@@ -547,36 +547,36 @@ public class UnitsArenaTests {
 
     [Fact]
     public void WalkaParryLearn() {
-        UnitsSeed.Reseed();
+        UnitsSeed.Reseed(game);
         for (int i = 1; i <= 60; i++) {
-            Player.Energy = 100;
-            Player.Stats[TStat.Strength] = 127;
-            Player.Stats[TStat.Dexterity] = 127;
-            Player.MaxEnergy = 30000;
-            Combat.EnemyEnergy = 3000;
-            Combat.EnemyStrength = 5;
-            Combat.EnemyDexterity = 1;
-            Skills.Values[TSkill.Parry] = 99;
-            Skills.Values[TSkill.Kick] = 0;
-            Skills.Values[TSkill.KickMinMana] = 0;
-            Skills.Values[TSkill.KickMaxEnergy] = 0;
-            Player.Mana = 0;
-            Combat.FireballCharges = 0;
-            Combat.PoisonCharges = 0;
-            Combat.PoisonRounds = 0;
-            Skills.Values[TSkill.Fleeing] = 0;
-            Skills.Values[TSkill.FleeEnergy] = 0;
-            Combat.Fled = false;
-            Player.Experience = 0;
-            Gear.Values[TGearItem.LuckRoll] = 0;
-            Gear.Values[TGearItem.Armor] = 0;
-            Gear.Values[TGearItem.WornCount] = 0;
-            Player.Energy = 30000;
-            DoFight();
-            if (Skills.Values[TSkill.Parry] > 99) {
+            game.Player.Energy = 100;
+            game.Player.Stats[TStat.Strength] = 127;
+            game.Player.Stats[TStat.Dexterity] = 127;
+            game.Player.MaxEnergy = 30000;
+            game.Combat.EnemyEnergy = 3000;
+            game.Combat.EnemyStrength = 5;
+            game.Combat.EnemyDexterity = 1;
+            game.Skills.Values[TSkill.Parry] = 99;
+            game.Skills.Values[TSkill.Kick] = 0;
+            game.Skills.Values[TSkill.KickMinMana] = 0;
+            game.Skills.Values[TSkill.KickMaxEnergy] = 0;
+            game.Player.Mana = 0;
+            game.Combat.FireballCharges = 0;
+            game.Combat.PoisonCharges = 0;
+            game.Combat.PoisonRounds = 0;
+            game.Skills.Values[TSkill.Fleeing] = 0;
+            game.Skills.Values[TSkill.FleeEnergy] = 0;
+            game.Combat.Fled = false;
+            game.Player.Experience = 0;
+            game.Gear.Values[TGearItem.LuckRoll] = 0;
+            game.Gear.Values[TGearItem.Armor] = 0;
+            game.Gear.Values[TGearItem.WornCount] = 0;
+            game.Player.Energy = 30000;
+            game.DoFight();
+            if (game.Skills.Values[TSkill.Parry] > 99) {
                 break;
             }
         }
-        Assert.True(Skills.Values[TSkill.Parry] > 99);
+        Assert.True(game.Skills.Values[TSkill.Parry] > 99);
     }
 }

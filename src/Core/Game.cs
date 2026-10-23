@@ -7,16 +7,22 @@ using System.Text.Json.Serialization;
 using static Texts;
 using static Rooms;
 
-public static class Game {
+public class Game {
 
-    public static TPlayer Player = new();
-    public static TSkills Skills = new();
-    public static TGear Gear = new();
-    public static TBag Bag = new();
-    public static TCombat Combat = new();
-    public static TWorld World = new();
-    public static TSession Session = new();
-    public static string Command {
+    public TPlayer Player = new();
+    public TSkills Skills = new();
+    public TGear Gear = new();
+    public TBag Bag = new();
+    public TCombat Combat = new();
+    public TWorld World = new();
+    public TSession Session = new();
+    public Rooms Rooms { get; }
+
+    public Game() {
+        Rooms = new Rooms(this);
+    }
+
+    public string Command {
         get => _command;
         set {
             _command = NormalizeCommand(value);
@@ -26,12 +32,12 @@ public static class Game {
         }
     }
 
-    static string _command = "";
+    string _command = "";
 
-    public static string Verb = "";
-    public static string Rest = "";
+    public string Verb = "";
+    public string Rest = "";
 
-    static string NormalizeCommand(string value) {
+    string NormalizeCommand(string value) {
         value = value.Trim();
         if (!value.Contains("  ")) {
             return value;
@@ -52,21 +58,20 @@ public static class Game {
         return normalized.ToString();
     }
 
-    static (string verb, string rest) SplitVerbRest(string command) {
+    (string verb, string rest) SplitVerbRest(string command) {
         int split = command.IndexOf(' ');
         return split < 0 ? (command, TxtEmpty) : (command[..(split + 1)], command[(split + 1)..]);
     }
 
-    public static bool Matches(string cmd) =>
+    public bool Matches(string cmd) =>
         Command == cmd;
 
-    public static Action DispatchRooms = () => { };
 
     const ulong BombkiDefaultSeed = 0x9E3779B97F4A7C15;
     const ulong XorshiftMult = 2685821657736338717;
-    static ulong _bombkiState = BombkiDefaultSeed;
+    ulong _bombkiState = BombkiDefaultSeed;
 
-    static ulong ParseSeed(string? text) {
+    ulong ParseSeed(string? text) {
         if (text is null) {
             return 0;
         }
@@ -104,7 +109,7 @@ public static class Game {
         return digits == 0 ? 0 : value;
     }
 
-    public static void Randomize() {
+    public void Randomize() {
         if (!Crt.DebugEnabled()) {
             _bombkiState = (ulong)DateTime.UtcNow.Ticks;
             return;
@@ -118,7 +123,7 @@ public static class Game {
         _bombkiState = parsed == 0 ? BombkiDefaultSeed : parsed;
     }
 
-    static uint NextBelow(uint bound) {
+    uint NextBelow(uint bound) {
         ulong x = _bombkiState;
         x ^= x >> 12;
         x ^= x << 25;
@@ -127,32 +132,34 @@ public static class Game {
         return (uint)(((x * XorshiftMult) >> 32) % bound);
     }
 
-    public static int Roll(int spread) =>
+    public int Roll(int spread) =>
         spread <= 0 ? 0 : (int)NextBelow((uint)spread);
 
     public const int MaxInt = 32767;
 
-    public static readonly List<TQuestOffer> QuestOffers = [
+    public List<TQuestOffer> QuestOffers => _questOffers ??= [
         new($"{CmdZacznij}{CmdQuest} 1", TxtRoom100_09, 1, 75),
         new($"{CmdZacznij}{CmdQuest} 2", TxtRoom100_10, 2, 50),
         new($"{CmdZacznij}{CmdQuest} 3", TxtRoom100_11, 3, 50),
     ];
+    List<TQuestOffer>? _questOffers;
 
-    public static readonly List<TGroundItem> GroundItems = [
+    public List<TGroundItem> GroundItems => _groundItems ??= [
         new(TBagItem.OldSword, TxtStart_07),
         new(TBagItem.SmallShield, TxtGroundItemLabel + TxtStart_08),
         new(TBagItem.Heart, TxtGroundItemLabel + TxtStart_09),
         new(TBagItem.Diploma, TxtGroundItemLabel + TxtStart_10),
         new(TBagItem.Pipe, TxtStart_11),
     ];
+    List<TGroundItem>? _groundItems;
 
-    public static void MoveTo(int room) {
+    public void MoveTo(int room) {
         Session.Room = room;
         Session.OuterRoom = room;
         GroundItemLines();
     }
 
-    public static void GroundItemLines() {
+    public void GroundItemLines() {
         for (int ti = 0; ti < GroundItems.Count; ti++) {
             TGroundItem t = GroundItems[ti];
             if (Bag.HasGroundItem(t.item, Session.OuterRoom)) {
@@ -161,7 +168,7 @@ public static class Game {
         }
     }
 
-    public static void MoveWhen(List<TMovement> moves) {
+    public void MoveWhen(List<TMovement> moves) {
         for (int i = 0; i < moves.Count; i++) {
             if (!Matches(moves[i].cmd)) {
                 continue;
@@ -177,7 +184,7 @@ public static class Game {
         }
     }
 
-    public static bool MoveWhenOrQuit(List<TMovement> moves) {
+    public bool MoveWhenOrQuit(List<TMovement> moves) {
         if (Verb == CmdWyjscie) {
             Session.ExitRequested = true;
             return true;
@@ -186,13 +193,13 @@ public static class Game {
         return false;
     }
 
-    public static void WriteLines(List<string> lines) {
+    public void WriteLines(List<string> lines) {
         for (int i = 0; i < lines.Count; i++) {
             Out.WriteLine(lines[i]);
         }
     }
 
-    public static void TryLoot(TBagItem item, int threshold, string foundMsg) {
+    public void TryLoot(TBagItem item, int threshold, string foundMsg) {
         Combat.Roll = Roll(20);
         if (Combat.Roll < threshold) {
             Bag.AddGroundItem(item, Session.Room);
@@ -200,13 +207,13 @@ public static class Game {
         }
     }
 
-    public static void TryCageLoot(int threshold) {
+    public void TryCageLoot(int threshold) {
         TryLoot(TBagItem.OldSword, threshold, TxtShared_10);
         TryLoot(TBagItem.SmallShield, threshold, TxtShared_11);
         TryLoot(TBagItem.Heart, 6, TxtShared_12);
     }
 
-    public static void ShowIntro() {
+    public void ShowIntro() {
         Crt.ClrScr();
         Player.MaxEnergy = 50;
         WriteLines(ReadBanner());
@@ -216,12 +223,12 @@ public static class Game {
         Out.WriteLine(TxtShowIntro_14);
     }
 
-    public static List<string> ReadBanner() =>
+    public List<string> ReadBanner() =>
         [.. File.ReadAllLines(Path.Combine(AppContext.BaseDirectory, "data", "banner.aa"), Encoding.Latin1)];
 
     static readonly List<int> RainbowColors = [91, 93, 92, 96, 94, 95];
 
-    public static void WriteRainbow(string text) {
+    public void WriteRainbow(string text) {
         int step = 0;
         foreach (char c in text) {
             if (c == ' ') {
@@ -234,7 +241,7 @@ public static class Game {
         Out.Write("\x1b[m");
     }
 
-    public static void StartQuest(string cmd, string line, int quest, int kills) {
+    public void StartQuest(string cmd, string line, int quest, int kills) {
         if (!Matches(cmd)) {
             return;
         }
@@ -250,21 +257,23 @@ public static class Game {
         World.LiroyKilled = World.Monsters[TMonster.Liroy] == 0;
     }
 
-    public static readonly List<TBand> PosExpBands = [
+    public List<TBand> PosExpBands => _posExpBands ??= [
         new(1, 2, 10, 0), new(3, 3, 19, 0), new(4, 6, 9, 0),
         new(7, 9, 8, 0), new(10, 12, 7, 0), new(13, 15, 6, 0),
         new(16, 18, 5, 0), new(19, 21, 4, 0), new(22, 24, 3, 0),
         new(25, 27, 2, 0), new(28, 30, 1, 0), new(31, MaxInt, 0, 0),
     ];
+    List<TBand>? _posExpBands;
 
-    public static readonly List<TBand> NegExpBands = [
+    public List<TBand> NegExpBands => _negExpBands ??= [
         new(2, 2, 12, 0), new(4, 4, 13, 0), new(6, 6, 14, 0),
         new(8, 8, 15, 0), new(10, 10, 16, 0), new(12, 12, 17, 0),
         new(14, 14, 18, 0), new(16, 16, 19, 0), new(18, 18, 20, 0),
         new(21, MaxInt, 21, 0),
     ];
+    List<TBand>? _negExpBands;
 
-    public static int BandAmount(List<TBand> bands, int v) {
+    public int BandAmount(List<TBand> bands, int v) {
         for (int bi = 0; bi < bands.Count; bi++) {
             TBand band = bands[bi];
             if ((v >= band.lo) && (v <= band.hi)) {
@@ -274,12 +283,12 @@ public static class Game {
         return 0;
     }
 
-    public static int FightExpForEnergy(int diff) =>
+    public int FightExpForEnergy(int diff) =>
         diff > 0
             ? BandAmount(PosExpBands, diff)
             : diff < 0 ? BandAmount(NegExpBands, (-diff)) : 11;
 
-    public static int FightExpForStrength(int diff) {
+    public int FightExpForStrength(int diff) {
         if (diff > 0) {
             return diff >= 10 ? 1 : 11 - diff;
         } else if (diff < 0) {
@@ -290,7 +299,7 @@ public static class Game {
         }
     }
 
-    public static int FightExpForDexterity(int diff) {
+    public int FightExpForDexterity(int diff) {
         int step;
         if (diff > 0) {
             step = ((diff + 1) / 2);
@@ -305,14 +314,15 @@ public static class Game {
     }
 
 
-    public static readonly List<TDodgeBound> DodgeBounds = [
+    public List<TDodgeBound> DodgeBounds => _dodgeBounds ??= [
         new(30, 12, 60), new(27, 13, 58), new(24, 14, 56),
         new(20, 15, 54), new(18, 16, 52), new(16, 17, 51),
         new(12, 18, 48), new(9, 19, 46), new(6, 20, 42),
         new(4, 21, 40), new(2, 22, 38), new(0, 23, 35),
     ];
+    List<TDodgeBound>? _dodgeBounds;
 
-    public static TDodgeBound DodgeBoundRow(int chance) {
+    public TDodgeBound DodgeBoundRow(int chance) {
         int i = 0;
         while ((i < DodgeBounds.Count - 1) && (chance <= DodgeBounds[i].limit)) {
             i++;
@@ -321,15 +331,15 @@ public static class Game {
         return DodgeBounds[i];
     }
 
-    public static int DodgeBound(int chance) =>
+    public int DodgeBound(int chance) =>
         DodgeBoundRow(chance).player;
-    public static int EnemyDodgeBound(int chance) =>
+    public int EnemyDodgeBound(int chance) =>
         DodgeBoundRow(chance).enemy;
 
-    public static int DexterityBonus(int value) =>
+    public int DexterityBonus(int value) =>
         value >= 8 ? value / 2 : 0;
 
-    public static int ParryBonus(int value) {
+    public int ParryBonus(int value) {
         int bonus = 0;
         if (value > 75) {
             bonus++;
@@ -342,7 +352,7 @@ public static class Game {
         return bonus;
     }
 
-    public static int KickBonus(int value) {
+    public int KickBonus(int value) {
         int bonus = 0;
         if (value > 70) {
             bonus += 2;
@@ -355,7 +365,7 @@ public static class Game {
         return bonus;
     }
 
-    public static void FightDog() {
+    public void FightDog() {
         Combat.EnemyEnergy = 10;
         Combat.EnemyDexterity = 10;
         Combat.EnemyStrength = 5;
@@ -366,15 +376,16 @@ public static class Game {
         TryLoot(TBagItem.Heart, 5, TxtFightDog_02);
     }
 
-    public static readonly List<TSpawnedAt> CageInits = [
+    public List<TSpawnedAt> CageInits => _cageInits ??= [
         new(TMonster.CageWeakling, RoomCageWeakling),
         new(TMonster.CageStrong, RoomCageStrong),
         new(TMonster.CageAgile, RoomCageAgile),
         new(TMonster.CageTough, RoomCageTough),
         new(TMonster.CageHuge, RoomCageHuge),
     ];
+    List<TSpawnedAt>? _cageInits;
 
-    public static readonly List<TSpawnedAt> PubSpawns = [
+    public List<TSpawnedAt> PubSpawns => _pubSpawns ??= [
         new(TMonster.Minibarman, RoomPub),
         new(TMonster.Fatso, RoomPub),
         new(TMonster.DJ, RoomBackstage),
@@ -382,9 +393,10 @@ public static class Game {
         new(TMonster.Couple, RoomBar),
         new(TMonster.Maciek, RoomBar),
     ];
+    List<TSpawnedAt>? _pubSpawns;
 
 
-    public static readonly List<TSpot> PlantSpots = [
+    public List<TSpot> PlantSpots => _plantSpots ??= [
         new(TMonster.Sorrel, TxtDescribePlants_01),
         new(TMonster.Daisy, TxtDescribePlants_02),
         new(TMonster.Clover, TxtDescribePlants_03),
@@ -397,8 +409,9 @@ public static class Game {
         new(TMonster.Raspberry, TxtDescribePlants_10),
         new(TMonster.Grass, TxtDescribePlants_11),
     ];
+    List<TSpot>? _plantSpots;
 
-    public static readonly List<TSpot> BeastSpots = [
+    public List<TSpot> BeastSpots => _beastSpots ??= [
         new(TMonster.Woodworm, TxtDescribeBeasts_01),
         new(TMonster.Fly, TxtDescribeBeasts_02),
         new(TMonster.Bacterium, TxtDescribeBeasts_03),
@@ -428,8 +441,9 @@ public static class Game {
         new(TMonster.Warrior, TxtDescribeBeasts_27),
         new(TMonster.Tamer, TxtDescribeBeasts_28),
     ];
+    List<TSpot>? _beastSpots;
 
-    public static readonly List<TSpot> StreetSpots = [
+    public List<TSpot> StreetSpots => _streetSpots ??= [
         new(TMonster.Dachshund, TxtDescribeStreet_01),
         new(TMonster.Shepherd, TxtDescribeStreet_02),
         new(TMonster.Pooch, TxtDescribeStreet_03),
@@ -441,15 +455,17 @@ public static class Game {
         new(TMonster.Drunkard, TxtDescribeStreet_09),
         new(TMonster.SickMan, TxtDescribeStreet_10),
     ];
+    List<TSpot>? _streetSpots;
 
-    public static readonly List<TSpot> StageSpots = [
+    public List<TSpot> StageSpots => _stageSpots ??= [
         new(TMonster.Guitarist, TxtDescribeStage_01),
         new(TMonster.Drummer, TxtDescribeStage_02),
         new(TMonster.Keyboardist, TxtDescribeStage_03),
         new(TMonster.Liroy, TxtDescribeStage_04),
     ];
+    List<TSpot>? _stageSpots;
 
-    public static readonly List<TSpot> CrowdSpots = [
+    public List<TSpot> CrowdSpots => _crowdSpots ??= [
         new(TMonster.Kid, TxtDescribeCrowd_01),
         new(TMonster.Lunatic, TxtDescribeCrowd_02),
         new(TMonster.Listener, TxtDescribeCrowd_03),
@@ -461,26 +477,27 @@ public static class Game {
         new(TMonster.OldMan, TxtDescribeCrowd_09),
         new(TMonster.Reporter, TxtDescribeCrowd_10),
     ];
+    List<TSpot>? _crowdSpots;
 
-    public static void SpawnAt(List<TSpawnedAt> placements) {
+    public void SpawnAt(List<TSpawnedAt> placements) {
         foreach (TSpawnedAt placement in placements) {
             World.Monsters[placement.monster] = placement.room;
         }
     }
 
-    public static void SpawnGroup(List<TMonster> targets, int spread, int Base) {
+    public void SpawnGroup(List<TMonster> targets, int spread, int Base) {
         foreach (TMonster target in targets) {
             World.Monsters[target] = Roll(spread) + Base;
         }
     }
 
-    public static bool PastLimit(List<TMonster> targets, int limit) =>
+    public bool PastLimit(List<TMonster> targets, int limit) =>
         targets.All(target => World.Monsters[target] > limit);
 
-    static List<TMonster> MonstersOf(params TMonster[] monsters) =>
+    List<TMonster> MonstersOf(params TMonster[] monsters) =>
         [.. monsters];
 
-    public static void SpawnMonsters() {
+    public void SpawnMonsters() {
         do {
             SpawnGroup(MonstersOf(TMonster.Bacterium, TMonster.Snail, TMonster.Beetle, TMonster.Cockroach, TMonster.Ant,
                 TMonster.Spider, TMonster.Boar, TMonster.Fox, TMonster.Rat, TMonster.Partridge), 38, RoomCityCentre);
@@ -527,7 +544,7 @@ public static class Game {
             && (World.Monsters[TMonster.Thistle] < RoomCavePath) && (World.Monsters[TMonster.Raspberry] < RoomCavePath)));
     }
 
-    public static void TrainAttribute(IntSlot Attribute, IntSlot MaxAttribute, int MinPractice, int PracticeCost, string cmdForm, string nounForm) {
+    public void TrainAttribute(IntSlot Attribute, IntSlot MaxAttribute, int MinPractice, int PracticeCost, string cmdForm, string nounForm) {
         if ((Player.Practice > MinPractice) && (Attribute.Get() < MaxAttribute.Get())) {
             Attribute.Set((Attribute.Get() + 1));
             Player.Practice -= PracticeCost;
@@ -535,13 +552,14 @@ public static class Game {
         }
     }
 
-    public static readonly List<TTrainable> Trainables = [
+    public List<TTrainable> Trainables => _trainables ??= [
         new() { cmd = CmdTrenuj2 + CmdSila, stat = TStat.Strength, maxStat = TStat.MaxStrength, minPractice = 2, cost = 3, cmdForm = CmdSile, nounForm = CmdSily },
         new() { cmd = CmdTrenuj2 + CmdZrecznosc, stat = TStat.Dexterity, maxStat = TStat.MaxDexterity, minPractice = 1, cost = 2, cmdForm = CmdZrecznosc, nounForm = CmdZrecznosci },
         new() { cmd = CmdTrenuj2 + CmdMadrosc, stat = TStat.Wisdom, maxStat = TStat.MaxWisdom, minPractice = 2, cost = 3, cmdForm = CmdMadrosc, nounForm = CmdMadrosci },
     ];
+    List<TTrainable>? _trainables;
 
-    public static void HandleTrain() {
+    public void HandleTrain() {
         if (Verb == CmdTrenuj) {
             Out.WriteLine(TxtHandleTrain_01);
         }
@@ -554,7 +572,7 @@ public static class Game {
         }
     }
 
-    public static void DescribePlants() {
+    public void DescribePlants() {
         for (int i = 0; i < PlantSpots.Count; i++) {
             if (World.Monsters[PlantSpots[i].where] == Session.Room) {
                 Out.WriteLine(PlantSpots[i].text);
@@ -566,7 +584,7 @@ public static class Game {
         }
     }
 
-    public static void CompositeFight(int EnemyEnergyBase, int EnemyEnergyRand, int EnemyDexterityBase, int EnemyDexterityRand, int EnemyStrengthBase, int EnemyStrengthRand,
+    public void CompositeFight(int EnemyEnergyBase, int EnemyEnergyRand, int EnemyDexterityBase, int EnemyDexterityRand, int EnemyStrengthBase, int EnemyStrengthRand,
         int LootBase, int LootRand, int HeartChance, bool RequireEnergy, bool AntDoughnut) {
         Combat.EnemyEnergy = EnemyEnergyRand > 0 ? Roll(EnemyEnergyRand) + EnemyEnergyBase : EnemyEnergyBase;
 
@@ -598,7 +616,7 @@ public static class Game {
     }
 
 
-    public static readonly TEnumList<TFoe, TFoeStats> Foes = new([
+    public TEnumList<TFoe, TFoeStats> Foes => _foes ??= new([
         new() { energyBase = 1, energyRand = 0, dexterityBase = 1, dexterityRand = 0,
             strengthBase = 2, strengthRand = 0, lootBase = 0, lootRand = 3,
             heartChance = 0, requireEnergy = false, antDoughnut = true, },
@@ -624,29 +642,35 @@ public static class Game {
             strengthBase = 16, strengthRand = 2, lootBase = 15, lootRand = 50,
             heartChance = 5, requireEnergy = false, antDoughnut = false, },
     ]);
+    TEnumList<TFoe, TFoeStats>? _foes;
 
 
-    public static readonly TCageStats CageWeaklingStats = new() { energy = 20, dexterity = 3, strength = 3, lootRand = 10, lootThreshold = 4, };
-    public static readonly TCageStats CageStrongStats = new() { energy = 20, dexterity = 3, strength = 10, lootRand = 15, lootThreshold = 7, };
-    public static readonly TCageStats CageAgileStats = new() { energy = 20, dexterity = 30, strength = 3, lootRand = 15, lootThreshold = 7, };
-    public static readonly TCageStats CageToughStats = new() { energy = 40, dexterity = 3, strength = 3, lootRand = 15, lootThreshold = 7, };
-    public static readonly TCageStats CageHugeStats = new() { energy = 40, dexterity = 11, strength = 10, lootRand = 30, lootThreshold = 10, };
+    public TCageStats CageWeaklingStats => _cageWeaklingStats ??= new() { energy = 20, dexterity = 3, strength = 3, lootRand = 10, lootThreshold = 4, };
+    TCageStats? _cageWeaklingStats;
+    public TCageStats CageStrongStats => _cageStrongStats ??= new() { energy = 20, dexterity = 3, strength = 10, lootRand = 15, lootThreshold = 7, };
+    TCageStats? _cageStrongStats;
+    public TCageStats CageAgileStats => _cageAgileStats ??= new() { energy = 20, dexterity = 30, strength = 3, lootRand = 15, lootThreshold = 7, };
+    TCageStats? _cageAgileStats;
+    public TCageStats CageToughStats => _cageToughStats ??= new() { energy = 40, dexterity = 3, strength = 3, lootRand = 15, lootThreshold = 7, };
+    TCageStats? _cageToughStats;
+    public TCageStats CageHugeStats => _cageHugeStats ??= new() { energy = 40, dexterity = 11, strength = 10, lootRand = 30, lootThreshold = 10, };
+    TCageStats? _cageHugeStats;
 
-    public static void Fight(TFoe foe) {
+    public void Fight(TFoe foe) {
         TFoeStats f = Foes[foe];
         CompositeFight(f.energyBase, f.energyRand, f.dexterityBase, f.dexterityRand,
             f.strengthBase, f.strengthRand, f.lootBase, f.lootRand, f.heartChance,
             f.requireEnergy, f.antDoughnut);
     }
 
-    public static void KillBeast(string cmd, IntSlot beast, TFoe foe) {
+    public void KillBeast(string cmd, IntSlot beast, TFoe foe) {
         if ((Matches(cmd)) && (Session.Room == beast.Get())) {
             Fight(foe);
             beast.Set(0);
         }
     }
 
-    public static void KillBeastUnlessFled(string cmd, IntSlot beast, TFoe foe) {
+    public void KillBeastUnlessFled(string cmd, IntSlot beast, TFoe foe) {
         if ((Matches(cmd)) && (Session.Room == beast.Get())) {
             Fight(foe);
             if (!Combat.Fled) {
@@ -656,7 +680,7 @@ public static class Game {
     }
 
 
-    public static void CompareFoeRules(List<TCompareFoeRule> rules) {
+    public void CompareFoeRules(List<TCompareFoeRule> rules) {
         for (int i = 0; i < rules.Count; i++) {
             TCompareFoeRule rule = rules[i];
             if ((rule.stat.Get() >= rule.lo) && (rule.stat.Get() <= rule.hi)) {
@@ -665,69 +689,77 @@ public static class Game {
         }
     }
 
-    static IntSlot SessionOverall() =>
+    IntSlot SessionOverall() =>
         new(() =>
             Session.Overall, v => Session.Overall = v);
-    static IntSlot PlayerStrength() =>
+    IntSlot PlayerStrength() =>
         IntSlot.Into(Player.Stats, TStat.Strength);
 
-    public static readonly List<TCompareFoeRule> BeastCompareRules = [
+    public List<TCompareFoeRule> BeastCompareRules => _beastCompareRules ??= [
         new(SessionOverall(), -MaxInt - 1, 15, TxtCompareFoe_02),
         new(PlayerStrength(), 16, 18, TxtEnemy + TxtCompareFoe_03),
         new(PlayerStrength(), 19, MaxInt, TxtCompareFoe_04),
     ];
+    List<TCompareFoeRule>? _beastCompareRules;
 
-    public static readonly List<TCompareFoeRule> BigBeastCompareRules = [
+    public List<TCompareFoeRule> BigBeastCompareRules => _bigBeastCompareRules ??= [
         new(SessionOverall(), -MaxInt - 1, 15, TxtCompareFoe_05),
         new(PlayerStrength(), 16, 20, TxtCompareFoe_06),
         new(PlayerStrength(), 21, 22, TxtCompareFoe_07),
         new(PlayerStrength(), 23, MaxInt, TxtCompareFoe_08),
     ];
+    List<TCompareFoeRule>? _bigBeastCompareRules;
 
-    public static readonly List<TCompareFoeRule> FighterCompareRules = [
+    public List<TCompareFoeRule> FighterCompareRules => _fighterCompareRules ??= [
         new(SessionOverall(), -MaxInt - 1, 14, TxtCompareFoe_09),
         new(SessionOverall(), 15, 17, TxtCompareFoe_10),
         new(SessionOverall(), 18, 22, TxtCompareFoe_11),
         new(SessionOverall(), 23, 25, TxtCompareFoe_12),
         new(SessionOverall(), 26, MaxInt, TxtCompareFoe_13),
     ];
+    List<TCompareFoeRule>? _fighterCompareRules;
 
-    public static readonly List<TCompareFoeRule> DrunkCompareRules = [
+    public List<TCompareFoeRule> DrunkCompareRules => _drunkCompareRules ??= [
         new(SessionOverall(), -MaxInt - 1, 23, TxtCompareFoe_14),
         new(SessionOverall(), 24, 25, TxtCompareFoe_15),
         new(SessionOverall(), 26, 28, TxtCompareFoe_16),
         new(SessionOverall(), 29, MaxInt, TxtCompareFoe_17),
         new(SessionOverall(), 35, MaxInt, TxtCompareFoe_18),
     ];
+    List<TCompareFoeRule>? _drunkCompareRules;
 
-    public static readonly List<TCompareFoeRule> MusicianCompareRules = [
+    public List<TCompareFoeRule> MusicianCompareRules => _musicianCompareRules ??= [
         new(SessionOverall(), -MaxInt - 1, 20, TxtCompareFoe_19),
         new(SessionOverall(), 23, 27, TxtCompareFoe_20),
         new(SessionOverall(), 28, MaxInt, TxtCompareFoe_21),
     ];
+    List<TCompareFoeRule>? _musicianCompareRules;
 
-    public static readonly List<TCompareFoeRule> IvyCompareRules = [
+    public List<TCompareFoeRule> IvyCompareRules => _ivyCompareRules ??= [
         new(SessionOverall(), -MaxInt - 1, 19, TxtCompareFoe_22),
         new(SessionOverall(), 20, 25, TxtCompareFoe_23),
         new(SessionOverall(), 26, 29, TxtCompareFoe_24),
         new(SessionOverall(), 30, MaxInt, TxtCompareFoe_25),
         new(SessionOverall(), 36, MaxInt, TxtCompareFoe_26),
     ];
+    List<TCompareFoeRule>? _ivyCompareRules;
 
-    public static readonly List<TCompareFoeRule> LiroyCompareRules = [
+    public List<TCompareFoeRule> LiroyCompareRules => _liroyCompareRules ??= [
         new(SessionOverall(), -MaxInt - 1, 27, TxtCompareFoe_27),
         new(SessionOverall(), 28, 32, TxtCompareFoe_28),
         new(SessionOverall(), 33, 43, TxtCompareFoe_29),
         new(SessionOverall(), 44, 47, TxtCompareFoe_30),
         new(SessionOverall(), 48, MaxInt, TxtCompareFoe_31),
     ];
+    List<TCompareFoeRule>? _liroyCompareRules;
 
-    public static readonly List<TCompareFoeRule> PokrzywaCompareRules = [
+    public List<TCompareFoeRule> PokrzywaCompareRules => _pokrzywaCompareRules ??= [
         new(SessionOverall(), -MaxInt - 1, 39, TxtCompareFoe_32),
         new(SessionOverall(), 40, MaxInt, TxtCompareFoe_33),
     ];
+    List<TCompareFoeRule>? _pokrzywaCompareRules;
 
-    public static void CompareFoe() {
+    public void CompareFoe() {
         Combat.Roll = Roll(100);
         Out.WriteLine(TxtCompareFoe_01);
         Command = Crt.ReadLn();
@@ -824,7 +856,7 @@ public static class Game {
         }
     }
 
-    public static void DescribeStreet() {
+    public void DescribeStreet() {
         for (int i = 0; i < StreetSpots.Count; i++) {
             if (World.Monsters[StreetSpots[i].where] == Session.Room) {
                 Out.WriteLine(StreetSpots[i].text);
@@ -832,7 +864,7 @@ public static class Game {
         }
     }
 
-    public static void GainLoot1000(int threshold, string line1, string line2, TBagItem item) {
+    public void GainLoot1000(int threshold, string line1, string line2, TBagItem item) {
         Combat.Roll = Roll(1000);
         if (Combat.Roll <= threshold) {
             Out.WriteLine(line1);
@@ -844,7 +876,7 @@ public static class Game {
         }
     }
 
-    public static void GainLoot100(int threshold, string line1, string line2, TBagItem item) {
+    public void GainLoot100(int threshold, string line1, string line2, TBagItem item) {
         Combat.Roll = Roll(100);
         if ((Combat.Roll < threshold) && (Session.Room != DeadRoom)) {
             Out.WriteLine(TxtShared_08 + line1);
@@ -856,18 +888,18 @@ public static class Game {
         }
     }
 
-    public static void SuitGain() =>
+    public void SuitGain() =>
         GainLoot1000(25, TxtSuitGain_01, TxtSuitGain_02, TBagItem.SpikedSuit);
-    public static void PillGain() =>
+    public void PillGain() =>
         GainLoot1000(42, TxtPillGain_01, "", TBagItem.TeleportPill);
-    public static void CassetteGain() =>
+    public void CassetteGain() =>
         GainLoot100(2, TxtCassetteGain_01, TxtCassetteGain_02, TBagItem.Cassette);
-    public static void LeafGain() =>
+    public void LeafGain() =>
         GainLoot100(6, TxtLeafGain_01, TxtLeafGain_02, TBagItem.LuckyLeaf);
-    public static void ScrollGain() =>
+    public void ScrollGain() =>
         GainLoot100(10, TxtScrollGain_01, "", TBagItem.CompareScroll);
 
-    public static void DescribeStage() {
+    public void DescribeStage() {
         for (int i = 0; i < StageSpots.Count; i++) {
             if (World.Monsters[StageSpots[i].where] == Session.Room) {
                 Out.WriteLine(StageSpots[i].text);
@@ -875,7 +907,7 @@ public static class Game {
         }
     }
 
-    public static void DescribeCrowd() {
+    public void DescribeCrowd() {
         for (int i = 0; i < CrowdSpots.Count; i++) {
             if (World.Monsters[CrowdSpots[i].where] == Session.Room) {
                 Out.WriteLine(CrowdSpots[i].text);
@@ -883,7 +915,7 @@ public static class Game {
         }
     }
 
-    public static void DescribeBeasts() {
+    public void DescribeBeasts() {
         for (int i = 0; i < BeastSpots.Count; i++) {
             if (World.Monsters[BeastSpots[i].where] == Session.Room) {
                 Out.WriteLine(BeastSpots[i].text);
@@ -891,7 +923,7 @@ public static class Game {
         }
     }
 
-    public static void ShieldBlock() {
+    public void ShieldBlock() {
         Combat.Roll = Roll(100);
         if (Combat.Roll <= Gear.Values[TGearItem.Armor]) {
             Combat.Damage -= Gear.Values[TGearItem.WornCount];
@@ -903,7 +935,7 @@ public static class Game {
         }
     }
 
-    public static void DoFight() {
+    public void DoFight() {
         for (int i = 0; i < FightExpStats.Count; i++) {
             TFightExpStat s = FightExpStats[i];
             Combat.FightExperience += s.expFor((s.playerStat.Get() - s.enemyStat.Get()));
@@ -1128,20 +1160,21 @@ public static class Game {
     }
 
 
-    public static readonly List<TFightExpStat> FightExpStats = [
+    public List<TFightExpStat> FightExpStats => _fightExpStats ??= [
         new() { playerStat = new IntSlot(() => Player.MaxEnergy, v => Player.MaxEnergy = v), enemyStat = new IntSlot(() => Combat.EnemyEnergy, v => Combat.EnemyEnergy = v), expFor = FightExpForEnergy },
         new() { playerStat = PlayerStat(TStat.Strength), enemyStat = new IntSlot(() => Combat.EnemyStrength, v => Combat.EnemyStrength = v), expFor = FightExpForStrength },
         new() { playerStat = PlayerStat(TStat.Dexterity), enemyStat = new IntSlot(() => Combat.EnemyDexterity, v => Combat.EnemyDexterity = v), expFor = FightExpForDexterity },
     ];
+    List<TFightExpStat>? _fightExpStats;
 
-    public static void TakeItem(string cmd, TBagItem item, string verb, string line) {
+    public void TakeItem(string cmd, TBagItem item, string verb, string line) {
         if ((Matches(cmd)) && Bag.TakeGroundItem(item, Session.OuterRoom)) {
             Out.WriteLine(verb + line);
             AcquireItem(item);
         }
     }
 
-    public static bool IsEquipped(TBagItem item) =>
+    public bool IsEquipped(TBagItem item) =>
         item switch {
             TBagItem.OldSword => Gear.Values[TGearItem.WeaponKind] == 1,
             TBagItem.SmallShield => Gear.Values[TGearItem.ShieldKind] == 1,
@@ -1150,17 +1183,17 @@ public static class Game {
             _ => false,
         };
 
-    static void AddInventoryItem(TBagItem item, int quantity) {
+    void AddInventoryItem(TBagItem item, int quantity) {
         Bag.Items[item] += quantity;
         Bag.Count += quantity;
     }
 
-    static void RemoveInventoryItem(TBagItem item, int quantity) {
+    void RemoveInventoryItem(TBagItem item, int quantity) {
         Bag.Items[item] -= quantity;
         Bag.Count -= quantity;
     }
 
-    public static void AcquireItem(TBagItem item, int quantity = 1) {
+    public void AcquireItem(TBagItem item, int quantity = 1) {
         if (quantity < 1) {
             throw new ArgumentOutOfRangeException(nameof(quantity));
         }
@@ -1172,7 +1205,7 @@ public static class Game {
         }
     }
 
-    public static bool LoseItem(TBagItem item, int quantity = 1) {
+    public bool LoseItem(TBagItem item, int quantity = 1) {
         if ((quantity < 1) || (Bag.Items[item] < quantity)) {
             return false;
         }
@@ -1184,7 +1217,7 @@ public static class Game {
         return true;
     }
 
-    static void SetInventoryItemCount(TBagItem item, int count) {
+    void SetInventoryItemCount(TBagItem item, int count) {
         if (count > Bag.Items[item]) {
             AcquireItem(item, count - Bag.Items[item]);
         } else if (count < Bag.Items[item]) {
@@ -1192,12 +1225,12 @@ public static class Game {
         }
     }
 
-    public static void AcquirePermit() {
+    public void AcquirePermit() {
         Bag.Permit++;
         Bag.Count++;
     }
 
-    public static bool LosePermit() {
+    public bool LosePermit() {
         if (Bag.Permit < 1) {
             return false;
         }
@@ -1207,7 +1240,7 @@ public static class Game {
         return true;
     }
 
-    public static void DropItem(string cmd, TBagItem item, string verb, string line) {
+    public void DropItem(string cmd, TBagItem item, string verb, string line) {
         if ((Matches(cmd)) && (Bag.Items[item] > 0) && !IsEquipped(item)) {
             Out.WriteLine(verb + line);
             LoseItem(item);
@@ -1215,7 +1248,7 @@ public static class Game {
         }
     }
 
-    public static bool Equip(TBagItem item) {
+    public bool Equip(TBagItem item) {
         if ((Bag.Items[item] == 0) || IsEquipped(item)) {
             return false;
         }
@@ -1260,7 +1293,7 @@ public static class Game {
         return false;
     }
 
-    public static bool Unequip(TBagItem item) {
+    public bool Unequip(TBagItem item) {
         if (!IsEquipped(item)) {
             return false;
         }
@@ -1298,23 +1331,25 @@ public static class Game {
     }
 
 
-    public static readonly List<TTakeDrop> TakeItems = [
+    public List<TTakeDrop> TakeItems => _takeItems ??= [
         new() { cmd = CmdBierz + CmdStary, item = TBagItem.OldSword, verb = TxtPickUpVerb, line = TxtTakeDrop_01 },
         new() { cmd = CmdBierz + CmdMala, item = TBagItem.SmallShield, verb = TxtPickUpVerb, line = TxtTakeDrop_02 },
         new() { cmd = CmdBierz + CmdSerce, item = TBagItem.Heart, verb = TxtPickUpVerb, line = TxtTakeDrop_03 },
         new() { cmd = CmdBierz + CmdDyplom, item = TBagItem.Diploma, verb = TxtPickUpVerb, line = TxtTakeDrop_04 },
         new() { cmd = CmdBierz + CmdFajka, item = TBagItem.Pipe, verb = TxtPickUpVerb, line = TxtTakeDrop_05 },
     ];
+    List<TTakeDrop>? _takeItems;
 
-    public static readonly List<TTakeDrop> DropItems = [
+    public List<TTakeDrop> DropItems => _dropItems ??= [
         new() { cmd = CmdOdrzuc + CmdStary, item = TBagItem.OldSword, verb = TxtDropVerb, line = TxtTakeDrop_06 },
         new() { cmd = CmdOdrzuc + CmdFajka, item = TBagItem.Pipe, verb = "", line = TxtTakeDrop_07 },
         new() { cmd = CmdOdrzuc + CmdMala, item = TBagItem.SmallShield, verb = TxtDropVerb, line = TxtTakeDrop_08 },
         new() { cmd = CmdOdrzuc + CmdSerce, item = TBagItem.Heart, verb = TxtDropVerb, line = CmdZakrwawioneSerce },
         new() { cmd = CmdOdrzuc + CmdDyplom, item = TBagItem.Diploma, verb = TxtDropVerb, line = TxtTakeDrop_10 },
     ];
+    List<TTakeDrop>? _dropItems;
 
-    public static void TakeDrop() {
+    public void TakeDrop() {
         for (int ti = 0; ti < TakeItems.Count; ti++) {
             TTakeDrop t = TakeItems[ti];
             TakeItem(t.cmd, t.item, t.verb, t.line);
@@ -1326,20 +1361,20 @@ public static class Game {
     }
 
 
-    static IntSlot PlayerEnergy() =>
+    IntSlot PlayerEnergy() =>
         new(() => Player.Energy, v => Player.Energy = v);
-    static IntSlot PlayerStat(TStat stat) =>
+    IntSlot PlayerStat(TStat stat) =>
         new(() => Player.Stats[stat], v => Player.Stats[stat] = v);
-    static IntSlot BagItemSlot(TBagItem item) =>
+    IntSlot BagItemSlot(TBagItem item) =>
         new(() => Bag.Items[item], v => Bag.Items[item] = v);
-    static IntSlot PlayerMaxEnergy() =>
+    IntSlot PlayerMaxEnergy() =>
         new(() => Player.MaxEnergy, v => Player.MaxEnergy = v);
-    static IntSlot PlayerMana() =>
+    IntSlot PlayerMana() =>
         new(() => Player.Mana, v => Player.Mana = v);
-    static IntSlot PlayerMaxMana() =>
+    IntSlot PlayerMaxMana() =>
         new(() => Player.MaxMana, v => Player.MaxMana = v);
 
-    public static readonly List<TFoodItem> FoodItems = [
+    public List<TFoodItem> FoodItems => _foodItems ??= [
         new() { cmd = CmdUzyj + CmdPaczek, item = TBagItem.Doughnut, verb = TxtEatVerb, line = TxtUseItems_12, gain = 8, stat = PlayerEnergy(), cap = PlayerMaxEnergy() },
         new() { cmd = CmdUzyj + CmdCiastko, item = TBagItem.Cookie, verb = TxtEatVerb, line = TxtUseItems_13, gain = 12, stat = PlayerEnergy(), cap = PlayerMaxEnergy() },
         new() { cmd = CmdUzyj + CmdSuchaRacja, item = TBagItem.DryRation, verb = TxtEatVerb, line = TxtUseItems_14, gain = 16, stat = PlayerEnergy(), cap = PlayerMaxEnergy() },
@@ -1349,14 +1384,15 @@ public static class Game {
         new() { cmd = CmdUzyj + CmdMalaButelkaMany, item = TBagItem.ManaBottle, verb = "", line = TxtUseItems_26, gain = 30, stat = PlayerMana(), cap = PlayerMaxMana() },
         new() { cmd = CmdUzyj + CmdBigos, item = TBagItem.Bigos, verb = TxtEatVerb, line = TxtUseItems_27, gain = 20, stat = PlayerEnergy(), cap = PlayerMaxEnergy() },
     ];
+    List<TFoodItem>? _foodItems;
 
-    public static void ClampStat(ref int stat, int cap) {
+    public void ClampStat(ref int stat, int cap) {
         if (stat > cap) {
             stat = cap;
         }
     }
 
-    public static void EatFood(string cmd, TBagItem item, string verb, string line, int gain, IntSlot stat, IntSlot cap) {
+    public void EatFood(string cmd, TBagItem item, string verb, string line, int gain, IntSlot stat, IntSlot cap) {
         if (Matches(cmd) && LoseItem(item)) {
             Out.WriteLine(verb + line);
             stat.Set((stat.Get() + gain));
@@ -1366,7 +1402,7 @@ public static class Game {
         }
     }
 
-    public static void UseItems() {
+    public void UseItems() {
         for (int fi = 0; fi < FoodItems.Count; fi++) {
             TFoodItem f = FoodItems[fi];
             EatFood(f.cmd, f.item, f.verb, f.line, f.gain, f.stat, f.cap);
@@ -1485,7 +1521,7 @@ public static class Game {
         }
     }
 
-    public static void DisplayPrefs() {
+    public void DisplayPrefs() {
         switch (Verb) {
             case CmdZmien:
                 switch (Rest) {
@@ -1505,7 +1541,7 @@ public static class Game {
     }
 
 
-    public static readonly List<TBeastKill> BeastKills = [
+    public List<TBeastKill> BeastKills => _beastKills ??= [
         new() { cmd = CmdZabij + CmdSlimak, beast = TMonster.Snail, foe = TFoe.WeakEnemy, unlessFled = true },
         new() { cmd = CmdZabij + CmdKornik, beast = TMonster.Woodworm, foe = TFoe.WeakEnemy, unlessFled = true },
         new() { cmd = CmdZabij + CmdMucha, beast = TMonster.Fly, foe = TFoe.WeakEnemy, unlessFled = true },
@@ -1530,15 +1566,17 @@ public static class Game {
         new() { cmd = CmdZabij + CmdBizon, beast = TMonster.Bison, foe = TFoe.MediumEnemy, unlessFled = false },
         new() { cmd = CmdZabij + CmdPantera, beast = TMonster.Panther, foe = TFoe.MediumEnemy, unlessFled = false },
     ];
+    List<TBeastKill>? _beastKills;
 
 
-    public static readonly List<TArenaKill> ArenaKills = [
+    public List<TArenaKill> ArenaKills => _arenaKills ??= [
         new() { cmd = CmdZabij + CmdGladiator, monster = TMonster.Gladiator, pills = true },
         new() { cmd = CmdZabij + CmdWojownik, monster = TMonster.Warrior, pills = true },
         new() { cmd = CmdZabij + CmdTrener, monster = TMonster.Tamer, pills = false },
     ];
+    List<TArenaKill>? _arenaKills;
 
-    public static void ArenaKill(string cmd, TMonster monster, bool pills) {
+    public void ArenaKill(string cmd, TMonster monster, bool pills) {
         if ((Matches(cmd)) && (Session.Room == World.Monsters[monster])) {
             Fight(TFoe.HardEnemy);
             World.Monsters[monster] = 0;
@@ -1551,7 +1589,7 @@ public static class Game {
     }
 
 
-    public static readonly List<TMazeMove> MazeMoves = [
+    public List<TMazeMove> MazeMoves => _mazeMoves ??= [
         new() { room = RoomArena33, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
         new() { room = RoomArena34, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
         new() { room = RoomArena35, exits = [TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
@@ -1578,8 +1616,9 @@ public static class Game {
         new() { room = RoomArena56, exits = [TMazeDir.mdPolodnie, TMazeDir.mdZachod] },
         new() { room = RoomArena57, exits = [TMazeDir.mdPolodnie, TMazeDir.mdWschod] },
     ];
+    List<TMazeMove>? _mazeMoves;
 
-    public static string MazeDirectionCommand(TMazeDir dir) =>
+    public string MazeDirectionCommand(TMazeDir dir) =>
         dir switch {
             TMazeDir.mdPolodnie => CmdPolodnie,
             TMazeDir.mdPolnoc => CmdPolnoc,
@@ -1588,7 +1627,7 @@ public static class Game {
             _ => throw new ArgumentOutOfRangeException(nameof(dir)),
         };
 
-    public static void MazeMove(TMazeDir dir) {
+    public void MazeMove(TMazeDir dir) {
         TMazeMove? maze = MazeMoves.FirstOrDefault(move => move.room == Session.Room);
         if (maze?.exits.Contains(dir) != true) {
             return;
@@ -1600,7 +1639,7 @@ public static class Game {
         }
     }
 
-    public static void StageFights() {
+    public void StageFights() {
         switch (Verb) {
             case CmdZabij:
                 switch (Rest) {
@@ -1642,14 +1681,14 @@ public static class Game {
         }
     }
 
-    public static void KillPlant(string cmd, IntSlot Plant) {
+    public void KillPlant(string cmd, IntSlot Plant) {
         if ((Matches(cmd)) && (Plant.Get() == Session.Room)) {
             Fight(TFoe.VeryEasyEnemy);
             Plant.Set(0);
         }
     }
 
-    public static void KillPlantIfAlive(string cmd, IntSlot Plant) {
+    public void KillPlantIfAlive(string cmd, IntSlot Plant) {
         if ((Matches(cmd)) && (Plant.Get() == Session.Room)) {
             Fight(TFoe.VeryEasyEnemy);
             if (Player.Energy > 0) {
@@ -1658,7 +1697,7 @@ public static class Game {
         }
     }
 
-    public static void KillPlantEasyIfAlive(string cmd, IntSlot Plant) {
+    public void KillPlantEasyIfAlive(string cmd, IntSlot Plant) {
         if ((Matches(cmd)) && (Plant.Get() == Session.Room)) {
             Fight(TFoe.EasyEnemy);
             if (Player.Energy > 0) {
@@ -1668,22 +1707,24 @@ public static class Game {
     }
 
 
-    public static readonly List<TPlantKill> PlantKills = [
+    public List<TPlantKill> PlantKills => _plantKills ??= [
         new() { cmd = CmdZabij + CmdSzczaw, plant = TMonster.Sorrel },
         new() { cmd = CmdZabij + CmdKoniczynka, plant = TMonster.Clover },
         new() { cmd = CmdZabij + CmdMlecz, plant = TMonster.SowThistle },
         new() { cmd = CmdZabij + CmdDmuchawiec, plant = TMonster.Dandelion },
     ];
+    List<TPlantKill>? _plantKills;
 
-    public static readonly List<TPlantKill> EasyPlantKills = [
+    public List<TPlantKill> EasyPlantKills => _easyPlantKills ??= [
         new() { cmd = CmdZabij + CmdRoza, plant = TMonster.Rose },
         new() { cmd = CmdZabij + CmdOset, plant = TMonster.Thistle },
         new() { cmd = CmdZabij + CmdMalina, plant = TMonster.Raspberry },
         new() { cmd = CmdZabij + CmdAgrest, plant = TMonster.Gooseberry },
         new() { cmd = CmdZabij + CmdJezyna, plant = TMonster.Blackberry },
     ];
+    List<TPlantKill>? _easyPlantKills;
 
-    public static void PlantFights() {
+    public void PlantFights() {
         switch (Verb) {
             case CmdZabij:
                 switch (Rest) {
@@ -1780,7 +1821,7 @@ public static class Game {
         }
     }
 
-    public static void ReadCommand() {
+    public void ReadCommand() {
         Out.Write(Player.Energy + TxtShared_01 + Player.Experience + TxtShared_02);
         Command = Crt.ReadLn();
         switch (Verb) {
@@ -1798,7 +1839,7 @@ public static class Game {
         ExpandAbbrev();
     }
 
-    public static void RefuseCheats() {
+    public void RefuseCheats() {
         bool dawaj = false;
         bool other = false;
         switch (Verb) {
@@ -1830,7 +1871,7 @@ public static class Game {
         }
     }
 
-    public static void HandleGround() {
+    public void HandleGround() {
         for (int gi = 0; gi < GroundCommands.Count; gi++) {
             if ((GroundCommands[gi].cmd == TxtEmpty) || (Matches(GroundCommands[gi].cmd))) {
                 GroundCommands[gi].run();
@@ -1846,7 +1887,7 @@ public static class Game {
         (CmdG, CmdGora), (CmdD, CmdDol), (CmdE, CmdExit), (CmdM, CmdMode),
     ];
 
-    public static void ExpandAbbrev() {
+    public void ExpandAbbrev() {
         for (int i = 0; i < Abbreviations.Count; i++) {
             if (Matches(Abbreviations[i].from)) {
                 Command = Abbreviations[i].to;
@@ -1856,7 +1897,7 @@ public static class Game {
     }
 
 
-    public static readonly List<TRace> Races = [
+    public List<TRace> Races => _races ??= [
         new() { name = CmdCzlowiek, baseStats = new([ 10, 10, 10, 15, 15, 15 ]),
             MaxManaBonus = 0, MoneyBonus = 0, MaxEnergyBonus = 0, EnergyBonus = 0, },
         new() { name = CmdOlbrzym, baseStats = new([ 13, 13, 5, 20, 20, 7 ]),
@@ -1870,14 +1911,16 @@ public static class Game {
         new() { name = CmdCzaromil, baseStats = new([ 6, 7, 16, 9, 11, 25 ]),
             MaxManaBonus = 150, MoneyBonus = 0, MaxEnergyBonus = 0, EnergyBonus = 0, },
     ];
+    List<TRace>? _races;
 
 
-    public static readonly List<TDexterityLimit> DexterityItemLimits = [
+    public List<TDexterityLimit> DexterityItemLimits => _dexterityItemLimits ??= [
         new() { gate = 0, limit = 10 }, new() { gate = 11, limit = 11 },
         new() { gate = 13, limit = 12 }, new() { gate = 16, limit = 13 },
         new() { gate = 19, limit = 14 }, new() { gate = 21, limit = 15 },
         new() { gate = 25, limit = 16 },
     ];
+    List<TDexterityLimit>? _dexterityItemLimits;
 
     public const int Lvl1_Threshold = 700;
     public const int Lvl2_Threshold = 725;
@@ -1885,19 +1928,20 @@ public static class Game {
     public const int Lvl4_Base = 735;
     public const int Lvl9_Base = 735;
 
-    public static readonly List<TBand> LvlThresholds = [
+    public List<TBand> LvlThresholds => _lvlThresholds ??= [
         new(1, 1, Lvl1_Threshold, 0),
         new(2, 2, Lvl2_Threshold, 0),
         new(3, 3, Lvl3_Threshold, 0),
         new(4, 8, Lvl4_Base, 1),
         new(9, MaxInt, Lvl9_Base, 2),
     ];
+    List<TBand>? _lvlThresholds;
 
-    public static int LevelThreshold(int lvl) =>
+    public int LevelThreshold(int lvl) =>
         BandAmount(LvlThresholds, lvl);
 
 
-    public static readonly List<TSheetItem> SheetItems = [
+    public List<TSheetItem> SheetItems => _sheetItems ??= [
         new() { item = BagItemSlot(TBagItem.OldSword), desc = CmdStaryZardzewialyMiecz, width = 0, kind = TSheetKind.ikShown },
         new() { item = BagItemSlot(TBagItem.SmallShield), desc = CmdOkraglaMalaTarcza, width = 0, kind = TSheetKind.ikShown },
         new() { item = BagItemSlot(TBagItem.Heart), desc = CmdZakrwawioneSerce, width = 0, kind = TSheetKind.ikShown },
@@ -1921,8 +1965,9 @@ public static class Game {
         new() { item = BagItemSlot(TBagItem.CompareScroll), desc = CmdScrollZCzaremPorownywanie, width = 0, kind = TSheetKind.ikPlain },
         new() { item = BagItemSlot(TBagItem.ReturnScroll), desc = CmdScrollZCzaremPowrot, width = 0, kind = TSheetKind.ikPlain },
     ];
+    List<TSheetItem>? _sheetItems;
 
-    public static void ShowSheetItem(TSheetKind kind, int val, string desc, int width) {
+    public void ShowSheetItem(TSheetKind kind, int val, string desc, int width) {
         if (val > 0) {
             switch (kind) {
                 case TSheetKind.ikShown:
@@ -1935,7 +1980,7 @@ public static class Game {
         }
     }
 
-    public static void RecalcBag() {
+    public void RecalcBag() {
         Bag.Count = Enum.GetValues<TBagItem>().Sum(item => Bag.Items[item]) + Bag.Permit;
         Bag.Limit = DexterityItemLimits[0].limit;
         for (int i = DexterityItemLimits.Count - 1; i >= 0; i--) {
@@ -1950,7 +1995,7 @@ public static class Game {
         }
     }
 
-    public static void ShowCharacter() {
+    public void ShowCharacter() {
         RecalcBag();
         Out.WriteLine($"{TxtShowCharacter_30}{Player.Name}");
         Out.WriteLine(TxtShowCharacter_01);
@@ -2014,7 +2059,7 @@ public static class Game {
         }
     }
 
-    public static int FindRace(string name) {
+    public int FindRace(string name) {
         for (int i = 0; i < Races.Count; i++) {
             if (name == Races[i].name) {
                 return i;
@@ -2024,10 +2069,10 @@ public static class Game {
         return -1;
     }
 
-    public static bool IsNameChar(char c) =>
+    public bool IsNameChar(char c) =>
         (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == ' ';
 
-    public static void ChooseRace() {
+    public void ChooseRace() {
         int chosen;
         ShowIntro();
         Out.WriteLine(TxtChooseRace_02);
@@ -2078,7 +2123,7 @@ public static class Game {
         ]);
     }
 
-    public static void KillStreetFoe(string cmd, IntSlot target, bool extra, TStreetKind kind) {
+    public void KillStreetFoe(string cmd, IntSlot target, bool extra, TStreetKind kind) {
         if ((Matches(cmd)) && (target.Get() == Session.Room)) {
             switch (kind) {
                 case TStreetKind.skDog:
@@ -2102,7 +2147,7 @@ public static class Game {
         }
     }
 
-    public static void KillSweeper() {
+    public void KillSweeper() {
         if ((Verb == CmdZabij && Rest == CmdZamiatacz) && (World.Monsters[TMonster.Sweeper] == Session.Room)) {
             Fight(TFoe.VeryEasyEnemy);
             World.Monsters[TMonster.Sweeper] = 0;
@@ -2114,7 +2159,7 @@ public static class Game {
         }
     }
 
-    public static void KillSickMan() {
+    public void KillSickMan() {
         if ((Verb == CmdZabij && Rest == CmdZebrak) && (World.Monsters[TMonster.SickMan] == Session.Room)) {
             Fight(TFoe.VeryEasyEnemy);
             if (Player.Energy > 0) {
@@ -2127,7 +2172,7 @@ public static class Game {
     }
 
 
-    public static readonly List<TStreetKill> StreetKills = [
+    public List<TStreetKill> StreetKills => _streetKills ??= [
         new() { cmd = CmdZabij + CmdOwczarek, target = TMonster.Shepherd, extra = false, kind = TStreetKind.skDog },
         new() { cmd = CmdZabij + CmdPiesek, target = TMonster.Pooch, extra = false, kind = TStreetKind.skDog },
         new() { cmd = CmdZabij + CmdJamnik, target = TMonster.Dachshund, extra = false, kind = TStreetKind.skDog },
@@ -2137,8 +2182,9 @@ public static class Game {
         new() { cmd = CmdZabij + CmdSprzedawca, target = TMonster.Vendor, extra = true, kind = TStreetKind.skFolk },
         new() { cmd = CmdZabij + CmdPijak, target = TMonster.Drunkard, extra = false, kind = TStreetKind.skFolk },
     ];
+    List<TStreetKill>? _streetKills;
 
-    public static void StreetFights() {
+    public void StreetFights() {
         for (int ki = 0; ki < StreetKills.Count; ki++) {
             TStreetKill k = StreetKills[ki];
             KillStreetFoe(k.cmd, IntSlot.Into(World.Monsters, k.target), k.extra, k.kind);
@@ -2148,7 +2194,7 @@ public static class Game {
     }
 
 
-    public static readonly List<TTrainingLine> TrainingLines = [
+    public List<TTrainingLine> TrainingLines => _trainingLines ??= [
         new() { wisdom = 10, strength = 11, dexterity = -1, text1 = TxtTraining_03 },
         new() { wisdom = 10, strength = -1, dexterity = 10, text1 = TxtTraining_04 },
         new() { wisdom = 15, strength = -1, dexterity = 11, text1 = TxtTraining_05 },
@@ -2174,17 +2220,18 @@ public static class Game {
         new() { wisdom = 19, strength = -1, dexterity = -1, text1 = TxtTraining_25 },
         new() { wisdom = 23, strength = -1, dexterity = 12, text1 = TxtTraining_26 },
     ];
+    List<TTrainingLine>? _trainingLines;
 
-    public static bool GatesMet(int reqWisdom, int reqStrength, int reqDexterity) =>
+    public bool GatesMet(int reqWisdom, int reqStrength, int reqDexterity) =>
         ((reqWisdom == -1) || (Player.Stats[TStat.Wisdom] > reqWisdom)) &&
         ((reqStrength == -1) || (Player.Stats[TStat.Strength] > reqStrength)) &&
         ((reqDexterity == -1) || (Player.Stats[TStat.Dexterity] > reqDexterity));
 
-    public static void WriteTrainingGain(string skillName, int value) =>
+    public void WriteTrainingGain(string skillName, int value) =>
         Out.WriteLine(TxtTrainingVerb + skillName + TxtTrainingThreshold + value
             + TxtTraining_29 + Player.Practice + TxtShared_19);
 
-    public static void Training() {
+    public void Training() {
         switch (Verb) {
             case CmdPatrz:
                 if (Rest == CmdPlakat) {
@@ -2267,10 +2314,10 @@ public static class Game {
         Converters = { new TEnumListConverterFactory() },
     };
 
-    public static string SaveFileName() =>
+    public string SaveFileName() =>
         $"{Player.Name}.json";
 
-    public static void SaveCharacter() {
+    public void SaveCharacter() {
         Command = CmdJa;
         Session.SavedFlag = true;
         Out.WriteLine(TxtSaveCharacter_01);
@@ -2279,7 +2326,7 @@ public static class Game {
         File.WriteAllText(SaveFileName(), JsonSerializer.Serialize(save, SaveFormat));
     }
 
-    public static void Death() {
+    public void Death() {
         WriteLines([
             TxtDeath_01,
             TxtDeath_02,
@@ -2300,14 +2347,15 @@ public static class Game {
 
 
 
-    public static readonly Dictionary<TBagItem, TItemCarryModifiers> ItemCarryModifiers = new() {
+    public Dictionary<TBagItem, TItemCarryModifiers> ItemCarryModifiers => _itemCarryModifiers ??= new() {
         [TBagItem.Diploma] = new() { maxEnergy = 5 },
         [TBagItem.Pipe] = new() { wisdom = 1 },
         [TBagItem.Cassette] = new() { armor = -8, dexterity = 1, maxEnergy = 5 },
         [TBagItem.LuckyLeaf] = new() { maxMana = 40 },
     };
+    Dictionary<TBagItem, TItemCarryModifiers>? _itemCarryModifiers;
 
-    public static readonly List<TShopOffer> ShopOffers = [
+    public List<TShopOffer> ShopOffers => _shopOffers ??= [
         new() { item = TBagItem.OldSword, buyPrice = 70, buyName = TxtBuyOldSword_01,
             sellPrice = 30, sellLines = [TxtSellOldSword_01, TxtSellOldSword_02], },
         new() { item = TBagItem.SmallShield, buyPrice = 15, buyName = TxtBuySmallShield_01,
@@ -2335,11 +2383,12 @@ public static class Game {
         new() { item = TBagItem.Bread, buyPrice = 24, buyName = CmdChleb },
         new() { item = TBagItem.Sausage, buyPrice = 29, buyName = TxtItemWeke },
     ];
+    List<TShopOffer>? _shopOffers;
 
-    public static TShopOffer? ShopOffer(TBagItem item) =>
+    public TShopOffer? ShopOffer(TBagItem item) =>
         ShopOffers.FirstOrDefault(o => o.item == item);
 
-    static void ApplyItemCarryModifiers(TBagItem item, int sign) {
+    void ApplyItemCarryModifiers(TBagItem item, int sign) {
         if (!ItemCarryModifiers.TryGetValue(item, out TItemCarryModifiers? modifiers)
             || modifiers is null) {
             return;
@@ -2352,7 +2401,7 @@ public static class Game {
         Player.MaxMana += sign * modifiers.maxMana;
     }
 
-    public static bool Buy(TBagItem item) {
+    public bool Buy(TBagItem item) {
         TShopOffer? offer = ShopOffer(item);
         if ((offer is null)
             || (Player.Money < (offer.buyGate >= 0 ? offer.buyGate : offer.buyPrice))) {
@@ -2367,7 +2416,7 @@ public static class Game {
         return true;
     }
 
-    public static bool Sell(TBagItem item) {
+    public bool Sell(TBagItem item) {
         TShopOffer? offer = ShopOffer(item);
         if ((offer is null) || IsEquipped(item) || !LoseItem(item)) {
             return false;
@@ -2379,7 +2428,7 @@ public static class Game {
     }
 
 
-    public static void RunShopRules(List<TShopRule> rules) {
+    public void RunShopRules(List<TShopRule> rules) {
         TShopRule? rule = rules.FirstOrDefault(r => Matches(r.cmd));
         if (rule is null) {
             return;
@@ -2392,14 +2441,15 @@ public static class Game {
         }
     }
 
-    public static readonly List<TShopRule> ArmouryRules = [
+    public List<TShopRule> ArmouryRules => _armouryRules ??= [
         new(CmdKup + CmdStary, TBagItem.OldSword, false),
         new(CmdSprzedaj + CmdStary, TBagItem.OldSword, true),
         new(CmdKup + CmdMala, TBagItem.SmallShield, false),
         new(CmdSprzedaj + CmdMala, TBagItem.SmallShield, true),
     ];
+    List<TShopRule>? _armouryRules;
 
-    public static readonly List<TShopRule> GeneralStoreRules = [
+    public List<TShopRule> GeneralStoreRules => _generalStoreRules ??= [
         new(CmdKup + CmdFajka, TBagItem.Pipe, false),
         new(CmdKup + CmdKomplet, TBagItem.Tracksuit, false),
         new(CmdSprzedaj + CmdKomplet, TBagItem.Tracksuit, true),
@@ -2409,8 +2459,9 @@ public static class Game {
         new(CmdSprzedaj + TxtWornGarnitur, TBagItem.SpikedSuit, true),
         new(CmdSprzedaj + CmdKaseta, TBagItem.Cassette, true),
     ];
+    List<TShopRule>? _generalStoreRules;
 
-    public static readonly List<TShopRule> MagicShopRules = [
+    public List<TShopRule> MagicShopRules => _magicShopRules ??= [
         new(CmdKup + CmdMalaButelkaMany, TBagItem.ManaBottle, false),
         new(CmdKup + CmdListek, TBagItem.LuckyLeaf, false),
         new(CmdSprzedaj + CmdListek, TBagItem.LuckyLeaf, true),
@@ -2419,8 +2470,9 @@ public static class Game {
         new(CmdKup + CmdScrollPorownywanie, TBagItem.CompareScroll, false),
         new(CmdSprzedaj + CmdScrollPorownywanie, TBagItem.CompareScroll, true),
     ];
+    List<TShopRule>? _magicShopRules;
 
-    public static readonly List<TShopRule> BakeryRules = [
+    public List<TShopRule> BakeryRules => _bakeryRules ??= [
         new(CmdKup + CmdPaczek, TBagItem.Doughnut, false),
         new(CmdKup + CmdCiastko, TBagItem.Cookie, false),
         new(CmdKup + CmdSuchaRacja, TBagItem.DryRation, false),
@@ -2428,8 +2480,9 @@ public static class Game {
         new(CmdKup + CmdChleb, TBagItem.Bread, false),
         new(CmdKup + CmdWeka, TBagItem.Sausage, false),
     ];
+    List<TShopRule>? _bakeryRules;
 
-    public static void BakeryShop() {
+    public void BakeryShop() {
         if (Verb == CmdLista) {
             WriteLines([
                 TxtShared_24,
@@ -2447,20 +2500,22 @@ public static class Game {
     }
 
 
-    public static readonly List<TShopStock> ArmouryStock = [
+    public List<TShopStock> ArmouryStock => _armouryStock ??= [
         new() { lines = [TxtArmouryShop_01] },
         new() { lines = [TxtArmouryShop_02] },
     ];
+    List<TShopStock>? _armouryStock;
 
-    public static readonly List<TShopStock> GeneralStoreStock = [
+    public List<TShopStock> GeneralStoreStock => _generalStoreStock ??= [
         new() { lines = [TxtGeneralStoreShop_02] },
         new() { lines = [TxtGeneralStoreShop_03, TxtGeneralStoreShop_04, TxtGeneralStoreShop_05] },
     ];
+    List<TShopStock>? _generalStoreStock;
 
-    public static void ShowStock(List<string> lines) =>
+    public void ShowStock(List<string> lines) =>
         lines.ForEach(Out.WriteLine);
 
-    public static void ArmouryShop() {
+    public void ArmouryShop() {
         if (Verb == CmdLista) {
             Out.WriteLine(TxtShared_24);
             for (int si2 = 0; si2 < ArmouryStock.Count; si2++) {
@@ -2473,7 +2528,7 @@ public static class Game {
         RunShopRules(ArmouryRules);
     }
 
-    public static void GeneralStoreShop() {
+    public void GeneralStoreShop() {
         if (Verb == CmdLista) {
             Out.WriteLine(TxtGeneralStoreShop_01);
             for (int si2 = 0; si2 < GeneralStoreStock.Count; si2++) {
@@ -2483,7 +2538,7 @@ public static class Game {
         RunShopRules(GeneralStoreRules);
     }
 
-    public static void MagicShop() {
+    public void MagicShop() {
         if (Verb == CmdLista) {
             WriteLines([
                 TxtMagicShop_01,
@@ -2502,7 +2557,7 @@ public static class Game {
 
 
 
-    public static readonly List<TConcertKill> ConcertKills = [
+    public List<TConcertKill> ConcertKills => _concertKills ??= [
         new() { cmd = CmdZabij + CmdDziecko, monster = TMonster.Kid, foe = TFoe.WeakishEnemy, bonus = TConcertBonus.cbNone },
         new() { cmd = CmdZabij + CmdDziadek, monster = TMonster.OldMan, foe = TFoe.WeakishEnemy, bonus = TConcertBonus.cbPipe },
         new() { cmd = CmdZabij + CmdWariat, monster = TMonster.Lunatic, foe = TFoe.MediumEnemy, bonus = TConcertBonus.cbNone },
@@ -2514,8 +2569,9 @@ public static class Game {
         new() { cmd = CmdZabij + CmdGoryl, monster = TMonster.Gorilla, foe = TFoe.HardEnemy, bonus = TConcertBonus.cbSuit },
         new() { cmd = CmdZabij + CmdOchroniarz, monster = TMonster.Bouncer, foe = TFoe.HardEnemy, bonus = TConcertBonus.cbSuit },
     ];
+    List<TConcertKill>? _concertKills;
 
-    public static void ConcertKill(string cmd, TMonster monster, TFoe foe, TConcertBonus bonus) {
+    public void ConcertKill(string cmd, TMonster monster, TFoe foe, TConcertBonus bonus) {
         if ((Matches(cmd)) && (Session.Room == World.Monsters[monster])) {
             Fight(foe);
             if (Combat.EnemyEnergy < 1) {
@@ -2535,14 +2591,14 @@ public static class Game {
         }
     }
 
-    public static void ConcertFights() {
+    public void ConcertFights() {
         for (int ci = 0; ci < ConcertKills.Count; ci++) {
             TConcertKill c = ConcertKills[ci];
             ConcertKill(c.cmd, c.monster, c.foe, c.bonus);
         }
     }
 
-    public static readonly List<TCheckpoint> CheckpointRules = [
+    public List<TCheckpoint> CheckpointRules => _checkpointRules ??= [
         new(400, 0, 1, (-MaxInt - 1), 19),
         new(180, 0, 1, (-MaxInt - 1), 7),
         new(360, 1, 2, (-MaxInt - 1), 7),
@@ -2550,8 +2606,9 @@ public static class Game {
         new(300, 0, 1, 8, 12),
         new(500, 1, 2, 8, 12),
     ];
+    List<TCheckpoint>? _checkpointRules;
 
-    public static void ReachCheckpoint(int exp, int stage, int next, int loStr, int hiStr) {
+    public void ReachCheckpoint(int exp, int stage, int next, int loStr, int hiStr) {
         if ((Player.Experience >= exp) && (Session.CheckpointStage == stage)
             && (Player.Stats[TStat.Strength] >= loStr) && (Player.Stats[TStat.Strength] <= hiStr)) {
             Out.WriteLine(TxtCheckpoints_01);
@@ -2560,7 +2617,7 @@ public static class Game {
         }
     }
 
-    public static void Checkpoints() {
+    public void Checkpoints() {
         for (int ci = 0; ci < CheckpointRules.Count; ci++) {
             TCheckpoint c = CheckpointRules[ci];
             ReachCheckpoint(c.exp, c.stage, c.next, c.loStr, c.hiStr);
@@ -2568,29 +2625,32 @@ public static class Game {
     }
 
 
-    public static readonly List<TBand> LevelCosts = [
+    public List<TBand> LevelCosts => _levelCosts ??= [
         new(1, 1, 725, 0),
         new(2, 2, 730, 0),
         new(3, 3, 735, 0),
         new(4, 8, Lvl4_Base, 1),
         new(9, MaxInt, Lvl9_Base, 2),
     ];
+    List<TBand>? _levelCosts;
 
-    public static readonly List<TBand> PracticeGains = [
+    public List<TBand> PracticeGains => _practiceGains ??= [
         new(-128, 10, 3, 0),
         new(11, 15, 4, 0),
         new(16, 22, 5, 0),
         new((-MaxInt - 1), MaxInt, 6, 0),
     ];
+    List<TBand>? _practiceGains;
 
-    public static readonly List<TEnergyBonus> MaxEnergyGains = [
+    public List<TEnergyBonus> MaxEnergyGains => _maxEnergyGains ??= [
         new() { dexLo = 12, strLo = (-MaxInt - 1), bonus = 1 },
         new() { dexLo = 16, strLo = (-MaxInt - 1), bonus = 1 },
         new() { dexLo = 21, strLo = (-MaxInt - 1), bonus = 1 },
         new() { dexLo = 26, strLo = 20, bonus = 1 },
     ];
+    List<TEnergyBonus>? _maxEnergyGains;
 
-    public static void CheckLevelUp() {
+    public void CheckLevelUp() {
         int threshold;
         if (Player.Level < 1) {
             return;
@@ -2675,28 +2735,28 @@ public static class Game {
         }
     }
 
-    public static void CmdScan() =>
+    public void CmdScan() =>
         Out.WriteLine(TxtCmdScan_01);
-    public static void CmdClearScreen() =>
+    public void CmdClearScreen() =>
         Crt.ClrScr();
 
-    public static void CmdGiveEnergy() {
+    public void CmdGiveEnergy() {
         Player.MaxEnergy += 200;
         Player.ChangeEnergy(200);
     }
 
-    public static void CmdGiveKunszt() =>
+    public void CmdGiveKunszt() =>
         Player.Experience += 500;
-    public static void CmdTakeMoney() =>
+    public void CmdTakeMoney() =>
         Player.Money -= 100;
 
-    public static void CmdResetArmor() {
+    public void CmdResetArmor() {
         Gear.Values[TGearItem.WornCount] = 0;
         Gear.Values[TGearItem.Armor] = 0;
         Gear.Values[TGearItem.LuckRoll] = 0;
     }
 
-    public static void CmdStrip() {
+    public void CmdStrip() {
         Gear.Values[TGearItem.Wearing] = 0;
         Gear.Values[TGearItem.WeaponKind] = 0;
         Gear.Values[TGearItem.ShieldKind] = 0;
@@ -2706,14 +2766,14 @@ public static class Game {
         Player.Stats[TStat.Strength]--;
     }
 
-    public static void CmdJustSaved() {
+    public void CmdJustSaved() {
         if (Session.SavedFlag) {
             Command = CmdZdolnosci;
             Session.SavedFlag = false;
         }
     }
 
-    public static void CmdDrinkBeer() {
+    public void CmdDrinkBeer() {
         if (LoseItem(TBagItem.Beer)) {
             Out.WriteLine(TxtCmdDrinkBeer_01);
             Player.ChangeEnergy(10);
@@ -2721,38 +2781,38 @@ public static class Game {
         }
     }
 
-    public static void CmdWieldOldSword() {
+    public void CmdWieldOldSword() {
         if (Equip(TBagItem.OldSword)) {
             Out.WriteLine(TxtCmdWieldOldSword_01);
         }
     }
 
-    public static void CmdUnwieldOldSword() {
+    public void CmdUnwieldOldSword() {
         if (Unequip(TBagItem.OldSword)) {
             Out.WriteLine(TxtCmdUnwieldOldSword_01);
         }
     }
 
-    public static void CmdWieldSmallShield() {
+    public void CmdWieldSmallShield() {
         if (Equip(TBagItem.SmallShield)) {
             Out.WriteLine(TxtCmdWieldSmallShield_01);
         }
     }
 
-    public static void CmdUnwieldSmallShield() {
+    public void CmdUnwieldSmallShield() {
         if (Unequip(TBagItem.SmallShield)) {
             Out.WriteLine(TxtCmdUnwieldSmallShield_01);
         }
     }
 
-    public static void CmdSetFleeEnergy() {
+    public void CmdSetFleeEnergy() {
         if (Skills.Values[TSkill.Fleeing] > 0) {
             Out.WriteLine(TxtCmdSetFleeEnergy_01);
             Skills.Values[TSkill.FleeEnergy] = Crt.ReadInt();
         }
     }
 
-    public static void CmdSleep() {
+    public void CmdSleep() {
         Session.SleepHours = 0;
         do {
             Session.SleepHours += 1;
@@ -2774,7 +2834,7 @@ public static class Game {
         }
     }
 
-    public static void CmdCompare() {
+    public void CmdCompare() {
         if (Skills.Values[TSkill.Comparing] > 0) {
             Combat.Roll = Roll(100);
             bool success = Skills.Values[TSkill.Comparing] > Combat.Roll;
@@ -2790,16 +2850,17 @@ public static class Game {
         }
     }
 
-    public static void CmdGiveMoney() =>
+    public void CmdGiveMoney() =>
         Player.Money += 5000;
 
-    public static readonly List<string> RefusedFood = [
+    public List<string> RefusedFood => _refusedFood ??= [
         CmdOdrzuc + CmdPaczek, CmdOdrzuc + CmdCiastko,
         CmdOdrzuc + CmdSuchaRacja, CmdOdrzuc + CmdBulka,
         CmdOdrzuc + CmdChleb, CmdOdrzuc + CmdWeka,
         CmdOdrzuc + CmdSerce, CmdOdrzuc + CmdBigos, ];
+    List<string>? _refusedFood;
 
-    public static void CmdRefuseFoodDrop() {
+    public void CmdRefuseFoodDrop() {
         for (int i = 0; i < RefusedFood.Count; i++) {
             if (Matches(RefusedFood[i])) {
                 Out.WriteLine(TxtCmdRefuseFoodDrop_01);
@@ -2808,7 +2869,7 @@ public static class Game {
         }
     }
 
-    public static void CmdOpenPortal() {
+    public void CmdOpenPortal() {
         bool portal = false;
         switch (Verb) {
             case CmdPowrot:
@@ -2847,7 +2908,7 @@ public static class Game {
         }
     }
 
-    public static void CmdUseCompareScroll() {
+    public void CmdUseCompareScroll() {
         if (Bag.Items[TBagItem.CompareScroll] > 0) {
             if (!Player.ChangeMana(-10)) {
                 Out.WriteLine(TxtNoMana);
@@ -2858,7 +2919,7 @@ public static class Game {
         }
     }
 
-    public static void CmdSetKickThresholds() {
+    public void CmdSetKickThresholds() {
         if (Skills.Values[TSkill.Kick] > 0) {
             Out.WriteLine(TxtCmdSetKickThresholds_01);
             Out.WriteLine(TxtCmdSetKickThresholds_02);
@@ -2868,11 +2929,11 @@ public static class Game {
         }
     }
 
-    public static void CmdSpeede() =>
+    public void CmdSpeede() =>
         AcquirePermit();
 
 
-    public static readonly List<TSkillLine> SkillLines = [
+    public List<TSkillLine> SkillLines => _skillLines ??= [
         new() { wisdom = 10, strength = 11, dexterity = -1, text1 = TxtCmdShowSkills_01, skill = TSkill.Kick, text2 = TxtShared_26 },
         new() { wisdom = 10, strength = -1, dexterity = 10, text1 = TxtCmdShowSkills_02, skill = TSkill.Fleeing, text2 = TxtShared_26 },
         new() { wisdom = 15, strength = -1, dexterity = 11, text1 = TxtCmdShowSkills_03, skill = TSkill.Parry, text2 = TxtShared_26 },
@@ -2880,8 +2941,9 @@ public static class Game {
         new() { wisdom = 18, strength = -1, dexterity = -1, text1 = TxtCmdShowSkills_05, skill = TSkill.Cooking, text2 = TxtShared_26 },
         new() { wisdom = 19, strength = -1, dexterity = -1, text1 = TxtCmdShowSkills_06, skill = TSkill.Returning, text2 = TxtShared_26 },
     ];
+    List<TSkillLine>? _skillLines;
 
-    public static void CmdShowSkills() {
+    public void CmdShowSkills() {
         for (int i = 0; i < SkillLines.Count; i++) {
             if (GatesMet(SkillLines[i].wisdom, SkillLines[i].strength, SkillLines[i].dexterity)) {
                 TSkillLine s = SkillLines[i];
@@ -2890,7 +2952,7 @@ public static class Game {
         }
     }
 
-    public static readonly List<TCommandEntry> GroundCommands = [
+    public List<TCommandEntry> GroundCommands => _groundCommands ??= [
         new(CmdPamietaj, SaveCharacter),
         new(CmdScan2, CmdScan),
         new(CmdCzysc + CmdEkran, CmdClearScreen),
@@ -2921,8 +2983,9 @@ public static class Game {
         new(TxtEmpty, DisplayPrefs),
         new(CmdWlacz + CmdPostac, LoadCharacter),
     ];
+    List<TCommandEntry>? _groundCommands;
 
-    public static void Start() {
+    public void Start() {
         Randomize();
         ChooseRace();
         do {
@@ -2948,7 +3011,7 @@ public static class Game {
             }
 
             Session.ExitRequested = false;
-            DispatchRooms();
+            Rooms.DispatchRoom();
             if (Session.ExitRequested) {
                 return;
             }
@@ -2961,12 +3024,12 @@ public static class Game {
         } while (true);
     }
 
-    public static void LoadCharacter() {
+    public void LoadCharacter() {
         Command = Crt.ReadLn();
         LoadGame();
     }
 
-    public static void LoadGame() {
+    public void LoadGame() {
         SaveData? save = JsonSerializer.Deserialize<SaveData>(File.ReadAllText(SaveFileName()), SaveFormat);
         if (save is null) {
             return;

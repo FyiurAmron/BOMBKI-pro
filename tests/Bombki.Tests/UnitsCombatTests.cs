@@ -1,56 +1,56 @@
-using static Game;
 
 namespace Bombki.Tests;
 
 public class UnitsCombatTests {
-    static void WalkaSetup(int maxE, int wrogE, int sil, int wrogSil,
+    readonly Game game = new();
+    void WalkaSetup(int maxE, int wrogE, int sil, int wrogSil,
         int zre, int wrogZre, int par, int kop) {
-        UnitsSeed.Reseed();
-        Player.Energy = 100;
-        Skills.Values[TSkill.Parry] = par;
-        Skills.Values[TSkill.Kick] = kop;
-        Skills.Values[TSkill.KickMinMana] = 0;
-        Skills.Values[TSkill.KickMaxEnergy] = 0;
-        Player.Mana = 0;
-        Combat.FireballCharges = 0;
-        Combat.PoisonCharges = 0;
-        Combat.PoisonRounds = 0;
-        Skills.Values[TSkill.Fleeing] = 0;
-        Skills.Values[TSkill.FleeEnergy] = 0;
-        Combat.Fled = false;
-        Player.Experience = 0;
-        Gear.Values[TGearItem.LuckRoll] = 0;
-        Gear.Values[TGearItem.Armor] = 0;
-        Gear.Values[TGearItem.WornCount] = 0;
-        Player.MaxEnergy = maxE;
-        Combat.EnemyEnergy = wrogE;
-        Player.Stats[TStat.Strength] = sil;
-        Combat.EnemyStrength = wrogSil;
-        Player.Stats[TStat.Dexterity] = zre;
-        Combat.EnemyDexterity = wrogZre;
+        UnitsSeed.Reseed(game);
+        game.Player.Energy = 100;
+        game.Skills.Values[TSkill.Parry] = par;
+        game.Skills.Values[TSkill.Kick] = kop;
+        game.Skills.Values[TSkill.KickMinMana] = 0;
+        game.Skills.Values[TSkill.KickMaxEnergy] = 0;
+        game.Player.Mana = 0;
+        game.Combat.FireballCharges = 0;
+        game.Combat.PoisonCharges = 0;
+        game.Combat.PoisonRounds = 0;
+        game.Skills.Values[TSkill.Fleeing] = 0;
+        game.Skills.Values[TSkill.FleeEnergy] = 0;
+        game.Combat.Fled = false;
+        game.Player.Experience = 0;
+        game.Gear.Values[TGearItem.LuckRoll] = 0;
+        game.Gear.Values[TGearItem.Armor] = 0;
+        game.Gear.Values[TGearItem.WornCount] = 0;
+        game.Player.MaxEnergy = maxE;
+        game.Combat.EnemyEnergy = wrogE;
+        game.Player.Stats[TStat.Strength] = sil;
+        game.Combat.EnemyStrength = wrogSil;
+        game.Player.Stats[TStat.Dexterity] = zre;
+        game.Combat.EnemyDexterity = wrogZre;
     }
 
-    static void RunWalka(int maxE, int wrogE, int sil, int wrogSil,
+    void RunWalka(int maxE, int wrogE, int sil, int wrogSil,
         int zre, int wrogZre, int par, int kop, int expectedKunszt) {
         WalkaSetup(maxE, wrogE, sil, wrogSil, zre, wrogZre, par, kop);
-        DoFight();
-        Assert.Equal(expectedKunszt, Player.Experience);
+        game.DoFight();
+        Assert.Equal(expectedKunszt, game.Player.Experience);
     }
 
-    static void RunWalkaRange(int maxE, int wrogE, int sil, int wrogSil,
+    void RunWalkaRange(int maxE, int wrogE, int sil, int wrogSil,
         int zre, int wrogZre, int par, int kop, int kunsztLo, int kunsztHi) {
         WalkaSetup(maxE, wrogE, sil, wrogSil, zre, wrogZre, par, kop);
-        DoFight();
-        Assert.InRange(Player.Experience, kunsztLo, kunsztHi);
+        game.DoFight();
+        Assert.InRange(game.Player.Experience, kunsztLo, kunsztHi);
     }
 
-    static void RunWalkaShielded(int maxE, int wrogE, int sil, int wrogSil,
+    void RunWalkaShielded(int maxE, int wrogE, int sil, int wrogSil,
         int zre, int wrogZre, int par, int kop, int expectedKunszt) {
         WalkaSetup(maxE, wrogE, sil, wrogSil, zre, wrogZre, par, kop);
-        Gear.Values[TGearItem.Armor] = 100;
-        Gear.Values[TGearItem.WornCount] = 127;
-        DoFight();
-        Assert.Equal(expectedKunszt, Player.Experience);
+        game.Gear.Values[TGearItem.Armor] = 100;
+        game.Gear.Values[TGearItem.WornCount] = 127;
+        game.DoFight();
+        Assert.Equal(expectedKunszt, game.Player.Experience);
     }
 
     [Fact]
@@ -126,239 +126,239 @@ public class UnitsCombatTests {
     [Fact]
     public void WalkaPoisoned() {
         WalkaSetup(100, 0, 1, 1, 10, 10, 0, 0);
-        Combat.PoisonRounds = 10;
-        DoFight();
-        Assert.True(Combat.EnemyEnergy < 1);
-        Assert.True(Player.Energy > 0);
+        game.Combat.PoisonRounds = 10;
+        game.DoFight();
+        Assert.True(game.Combat.EnemyEnergy < 1);
+        Assert.True(game.Player.Energy > 0);
     }
 
     [Fact]
     public void WalkaFireball() {
         WalkaSetup(0, 0, 1, 1, 10, 10, 0, 0);
-        Combat.FireballCharges = 1;
-        DoFight();
-        Assert.True(Combat.EnemyEnergy < 1);
-        Assert.True(Combat.FireballCharges == 0 || Combat.FireballCharges == 1);
+        game.Combat.FireballCharges = 1;
+        game.DoFight();
+        Assert.True(game.Combat.EnemyEnergy < 1);
+        Assert.True(game.Combat.FireballCharges == 0 || game.Combat.FireballCharges == 1);
     }
 
     [Fact]
     public void WalkaPoison() {
         WalkaSetup(0, 0, 1, 1, 10, 10, 0, 0);
-        Combat.PoisonCharges = 1;
-        DoFight();
-        Assert.True(Combat.EnemyEnergy < 1);
-        Assert.True(Combat.PoisonCharges == 0 || Combat.PoisonCharges == 1);
+        game.Combat.PoisonCharges = 1;
+        game.DoFight();
+        Assert.True(game.Combat.EnemyEnergy < 1);
+        Assert.True(game.Combat.PoisonCharges == 0 || game.Combat.PoisonCharges == 1);
     }
 
     [Fact]
     public void WalkaParry() {
         WalkaSetup(100, 0, 1, 20, 10, 10, 139, 0);
-        DoFight();
-        Assert.True(Combat.EnemyEnergy < 1);
-        Assert.True(Player.Energy > 0);
+        game.DoFight();
+        Assert.True(game.Combat.EnemyEnergy < 1);
+        Assert.True(game.Player.Energy > 0);
     }
 
     [Fact]
     public void WalkaParryLight() {
         WalkaSetup(10000, 10, 3, 3, 10, 10, 139, 0);
-        Player.Energy = 10000;
-        DoFight();
-        Assert.True(Combat.EnemyEnergy < 1);
-        Assert.True(Player.Energy > 0);
+        game.Player.Energy = 10000;
+        game.DoFight();
+        Assert.True(game.Combat.EnemyEnergy < 1);
+        Assert.True(game.Player.Energy > 0);
     }
 
     [Fact]
     public void WalkaSpecials() {
         WalkaSetup(10000, 20, 3, 20, 10, 10, 139, 0);
-        Player.Energy = 10000;
-        Combat.FireballCharges = 1;
-        Combat.PoisonCharges = 1;
-        Combat.PoisonRounds = 10;
-        DoFight();
-        Assert.True(Combat.EnemyEnergy < 1);
-        Assert.True(Player.Energy > 0);
+        game.Player.Energy = 10000;
+        game.Combat.FireballCharges = 1;
+        game.Combat.PoisonCharges = 1;
+        game.Combat.PoisonRounds = 10;
+        game.DoFight();
+        Assert.True(game.Combat.EnemyEnergy < 1);
+        Assert.True(game.Player.Energy > 0);
     }
 
     [Fact]
     public void WalkaSuperKopHit() {
         WalkaSetup(0, 0, 1, 1, 10, 10, 0, 100);
-        Player.Mana = 100;
-        Skills.Values[TSkill.KickMaxEnergy] = 100;
-        Player.Energy = 50;
-        DoFight();
-        Assert.True(Combat.EnemyEnergy < 1);
-        Assert.True(Player.Mana < 100);
+        game.Player.Mana = 100;
+        game.Skills.Values[TSkill.KickMaxEnergy] = 100;
+        game.Player.Energy = 50;
+        game.DoFight();
+        Assert.True(game.Combat.EnemyEnergy < 1);
+        Assert.True(game.Player.Mana < 100);
     }
 
     [Fact]
     public void WalkaSuperKopHitAgain() {
         WalkaSetup(0, 0, 1, 1, 10, 10, 0, 100);
-        Player.Mana = 100;
-        Skills.Values[TSkill.KickMaxEnergy] = 100;
-        Player.Energy = 50;
-        DoFight();
-        Assert.True(Combat.EnemyEnergy < 1);
-        Assert.True(Player.Mana < 100);
+        game.Player.Mana = 100;
+        game.Skills.Values[TSkill.KickMaxEnergy] = 100;
+        game.Player.Energy = 50;
+        game.DoFight();
+        Assert.True(game.Combat.EnemyEnergy < 1);
+        Assert.True(game.Player.Mana < 100);
     }
 
     [Fact]
     public void WalkaSuperKopChybia() {
         WalkaSetup(0, 0, 1, 1, 10, 10, 0, 11);
-        Player.Mana = 100;
-        Skills.Values[TSkill.KickMaxEnergy] = 100;
-        Player.Energy = 50;
-        DoFight();
-        Assert.True(Combat.EnemyEnergy < 1);
-        Assert.True(Player.Mana < 100);
+        game.Player.Mana = 100;
+        game.Skills.Values[TSkill.KickMaxEnergy] = 100;
+        game.Player.Energy = 50;
+        game.DoFight();
+        Assert.True(game.Combat.EnemyEnergy < 1);
+        Assert.True(game.Player.Mana < 100);
     }
 
     [Fact]
     public void WalkaFlee() {
         WalkaSetup(0, 0, 1, 1, 10, 10, 0, 0);
-        Skills.Values[TSkill.Fleeing] = 100;
-        Skills.Values[TSkill.FleeEnergy] = 100;
-        Player.Energy = 50;
-        Player.Mana = 100;
-        DoFight();
-        Assert.True(Combat.Fled);
+        game.Skills.Values[TSkill.Fleeing] = 100;
+        game.Skills.Values[TSkill.FleeEnergy] = 100;
+        game.Player.Energy = 50;
+        game.Player.Mana = 100;
+        game.DoFight();
+        Assert.True(game.Combat.Fled);
     }
 
     [Fact]
     public void WalkaFleeChybia() {
         WalkaSetup(0, 0, 1, 1, 10, 10, 0, 0);
-        Skills.Values[TSkill.Fleeing] = 1;
-        Skills.Values[TSkill.FleeEnergy] = 100;
-        Player.Energy = 50;
-        Player.Mana = 100;
-        DoFight();
-        Assert.True(Combat.EnemyEnergy < 1);
+        game.Skills.Values[TSkill.Fleeing] = 1;
+        game.Skills.Values[TSkill.FleeEnergy] = 100;
+        game.Player.Energy = 50;
+        game.Player.Mana = 100;
+        game.DoFight();
+        Assert.True(game.Combat.EnemyEnergy < 1);
     }
 
     [Fact]
     public void WalkaPotrawki() {
         WalkaSetup(0, 0, 1, 1, 10, 10, 0, 0);
-        Skills.Values[TSkill.Cooking] = 99;
-        Bag.Items[TBagItem.Bigos] = 0;
-        Bag.Count = 0;
-        DoFight();
-        Assert.True(Combat.EnemyEnergy < 1);
-        Assert.True(Bag.Count == 0 || Bag.Count == 1);
+        game.Skills.Values[TSkill.Cooking] = 99;
+        game.Bag.Items[TBagItem.Bigos] = 0;
+        game.Bag.Count = 0;
+        game.DoFight();
+        Assert.True(game.Combat.EnemyEnergy < 1);
+        Assert.True(game.Bag.Count == 0 || game.Bag.Count == 1);
     }
 
     [Fact]
     public void WalkaDeath() {
         WalkaSetup(0, 0, 1, 61, 10, 10, 0, 0);
-        Player.Energy = 1;
-        DoFight();
-        Assert.True(Player.Energy < 1 || Combat.EnemyEnergy < 1);
+        game.Player.Energy = 1;
+        game.DoFight();
+        Assert.True(game.Player.Energy < 1 || game.Combat.EnemyEnergy < 1);
     }
 
     [Fact]
     public void WalkaFukroll() {
         WalkaSetup(0, 10, 2, 1, 10, 10, 0, 0);
-        Gear.Values[TGearItem.LuckRoll] = 1;
-        DoFight();
-        Assert.True(Combat.EnemyEnergy < 1);
+        game.Gear.Values[TGearItem.LuckRoll] = 1;
+        game.DoFight();
+        Assert.True(game.Combat.EnemyEnergy < 1);
     }
 
-    static void EncounterSetup() {
+    void EncounterSetup() {
         WalkaSetup(127, 0, 127, 1, 127, 1, 0, 0);
-        Bag.Items[TBagItem.SmallShield] = 0;
-        Skills.Values[TSkill.Cooking] = 0;
-        Combat.FireballCharges = 0;
-        Combat.PoisonCharges = 0;
-        Combat.PoisonRounds = 0;
-        Bag.Items[TBagItem.Heart] = 0;
-        Bag.ItemRooms[TBagItem.Heart].Clear();
+        game.Bag.Items[TBagItem.SmallShield] = 0;
+        game.Skills.Values[TSkill.Cooking] = 0;
+        game.Combat.FireballCharges = 0;
+        game.Combat.PoisonCharges = 0;
+        game.Combat.PoisonRounds = 0;
+        game.Bag.Items[TBagItem.Heart] = 0;
+        game.Bag.ItemRooms[TBagItem.Heart].Clear();
     }
 
     [Fact]
     public void Encounters() {
         EncounterSetup();
-        Command = "ZABIJ MROWKA";
-        Fight(TFoe.WeakEnemy);
-        Assert.True(Combat.EnemyEnergy < 1);
+        game.Command = "ZABIJ MROWKA";
+        game.Fight(TFoe.WeakEnemy);
+        Assert.True(game.Combat.EnemyEnergy < 1);
         EncounterSetup();
-        FightDog();
-        Assert.True(Combat.EnemyEnergy < 1);
+        game.FightDog();
+        Assert.True(game.Combat.EnemyEnergy < 1);
         EncounterSetup();
-        Fight(TFoe.WeakishEnemy);
-        Assert.True(Combat.EnemyEnergy < 1);
+        game.Fight(TFoe.WeakishEnemy);
+        Assert.True(game.Combat.EnemyEnergy < 1);
         EncounterSetup();
-        Fight(TFoe.MediumEnemy);
-        Assert.True(Combat.EnemyEnergy < 1);
+        game.Fight(TFoe.MediumEnemy);
+        Assert.True(game.Combat.EnemyEnergy < 1);
         EncounterSetup();
-        Fight(TFoe.HardEnemy);
-        Assert.True(Combat.EnemyEnergy < 1);
+        game.Fight(TFoe.HardEnemy);
+        Assert.True(game.Combat.EnemyEnergy < 1);
         EncounterSetup();
-        Fight(TFoe.VeryEasyEnemy);
-        Assert.True(Combat.EnemyEnergy < 1 && Player.Energy > 0);
+        game.Fight(TFoe.VeryEasyEnemy);
+        Assert.True(game.Combat.EnemyEnergy < 1 && game.Player.Energy > 0);
         EncounterSetup();
-        Fight(TFoe.EasyEnemy);
-        Assert.True(Combat.EnemyEnergy < 1 && Player.Energy > 0);
+        game.Fight(TFoe.EasyEnemy);
+        Assert.True(game.Combat.EnemyEnergy < 1 && game.Player.Energy > 0);
         EncounterSetup();
-        Fight(TFoe.NotEasyEnemy);
-        Assert.True(Combat.EnemyEnergy < 1 && Player.Energy > 0);
+        game.Fight(TFoe.NotEasyEnemy);
+        Assert.True(game.Combat.EnemyEnergy < 1 && game.Player.Energy > 0);
         EncounterSetup();
-        Fight(TFoe.VeryHardEnemy);
-        Assert.True(Combat.EnemyEnergy < 1);
+        game.Fight(TFoe.VeryHardEnemy);
+        Assert.True(game.Combat.EnemyEnergy < 1);
     }
 
     [Fact]
     public void EnergyClampsAtZero() {
-        Player.MaxEnergy = 50;
-        Player.Energy = 10;
-        Assert.False(Player.ChangeEnergy(-40));
-        Assert.Equal(0, Player.Energy);
+        game.Player.MaxEnergy = 50;
+        game.Player.Energy = 10;
+        Assert.False(game.Player.ChangeEnergy(-40));
+        Assert.Equal(0, game.Player.Energy);
     }
 
     [Fact]
     public void EnergyClampsAtMax() {
-        Player.MaxEnergy = 50;
-        Player.Energy = 10;
-        Assert.True(Player.ChangeEnergy(100));
-        Assert.Equal(50, Player.Energy);
+        game.Player.MaxEnergy = 50;
+        game.Player.Energy = 10;
+        Assert.True(game.Player.ChangeEnergy(100));
+        Assert.Equal(50, game.Player.Energy);
     }
 
     [Fact]
     public void ManaClampsAtZero() {
-        Player.MaxMana = 50;
-        Player.Mana = 10;
-        Assert.False(Player.ChangeMana(-40));
-        Assert.Equal(0, Player.Mana);
+        game.Player.MaxMana = 50;
+        game.Player.Mana = 10;
+        Assert.False(game.Player.ChangeMana(-40));
+        Assert.Equal(0, game.Player.Mana);
     }
 
     [Fact]
     public void ManaClampsAtMax() {
-        Player.MaxMana = 50;
-        Player.Mana = 10;
-        Assert.True(Player.ChangeMana(100));
-        Assert.Equal(50, Player.Mana);
+        game.Player.MaxMana = 50;
+        game.Player.Mana = 10;
+        Assert.True(game.Player.ChangeMana(100));
+        Assert.Equal(50, game.Player.Mana);
     }
 
     [Fact]
     public void ManaExactCostIsEnough() {
-        Player.MaxMana = 50;
-        Player.Mana = 10;
-        Assert.True(Player.ChangeMana(-10));
-        Assert.Equal(0, Player.Mana);
+        game.Player.MaxMana = 50;
+        game.Player.Mana = 10;
+        Assert.True(game.Player.ChangeMana(-10));
+        Assert.Equal(0, game.Player.Mana);
     }
 
     [Fact]
     public void PorownanieNieDzialaBezMany() {
-        Player.MaxMana = 100;
-        Player.Mana = 0;
-        Skills.Values[TSkill.Comparing] = 1;
-        CmdCompare();
-        Assert.Equal(0, Player.Mana);
+        game.Player.MaxMana = 100;
+        game.Player.Mana = 0;
+        game.Skills.Values[TSkill.Comparing] = 1;
+        game.CmdCompare();
+        Assert.Equal(0, game.Player.Mana);
     }
 
     [Fact]
     public void WalkaDodge() {
         WalkaSetup(0, 30, 3, 1, 0, 2, 0, 0);
-        Player.Energy = 100;
-        DoFight();
-        Assert.True(Combat.EnemyEnergy < 1);
-        Assert.True(Player.Energy > 0);
+        game.Player.Energy = 100;
+        game.DoFight();
+        Assert.True(game.Combat.EnemyEnergy < 1);
+        Assert.True(game.Player.Energy > 0);
     }
 }

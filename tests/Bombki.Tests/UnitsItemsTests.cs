@@ -1,1134 +1,1134 @@
-using static Game;
 
 namespace Bombki.Tests;
 
 public class UnitsItemsTests {
+    readonly Game game = new();
     [Fact]
     public void BraniePicksUpSword() {
-        Session.OuterRoom = 7;
-        Bag.Items[TBagItem.OldSword] = 0;
-        Bag.AddGroundItem(TBagItem.OldSword, 7);
-        Bag.Count = 0;
-        Command = "BIERZ STARY";
-        TakeDrop();
-        Assert.Equal(1, Bag.Items[TBagItem.OldSword]);
-        Assert.Empty(Bag.ItemRooms[TBagItem.OldSword]);
-        Assert.Equal(1, Bag.Count);
+        game.Session.OuterRoom = 7;
+        game.Bag.Items[TBagItem.OldSword] = 0;
+        game.Bag.AddGroundItem(TBagItem.OldSword, 7);
+        game.Bag.Count = 0;
+        game.Command = "BIERZ STARY";
+        game.TakeDrop();
+        Assert.Equal(1, game.Bag.Items[TBagItem.OldSword]);
+        Assert.Empty(game.Bag.ItemRooms[TBagItem.OldSword]);
+        Assert.Equal(1, game.Bag.Count);
     }
 
     [Fact]
     public void BranieDropsSword() {
-        Session.OuterRoom = 7;
-        Bag.Items[TBagItem.OldSword] = 1;
-        Bag.Count = 1;
-        Command = "ODRZUC STARY";
-        TakeDrop();
-        Assert.Equal(0, Bag.Items[TBagItem.OldSword]);
-        Assert.Contains(7, Bag.ItemRooms[TBagItem.OldSword]);
-        Assert.Equal(0, Bag.Count);
+        game.Session.OuterRoom = 7;
+        game.Bag.Items[TBagItem.OldSword] = 1;
+        game.Bag.Count = 1;
+        game.Command = "ODRZUC STARY";
+        game.TakeDrop();
+        Assert.Equal(0, game.Bag.Items[TBagItem.OldSword]);
+        Assert.Contains(7, game.Bag.ItemRooms[TBagItem.OldSword]);
+        Assert.Equal(0, game.Bag.Count);
     }
 
     [Fact]
     public void OdrzucanieNieDzialaNaWladanymMieczu() {
-        Session.OuterRoom = 7;
-        Bag.Items[TBagItem.OldSword] = 2;
-        Bag.ItemRooms[TBagItem.OldSword].Clear();
-        Bag.Count = 2;
-        Gear.Values[TGearItem.WeaponKind] = 0;
-        Player.Stats[TStat.Strength] = 0;
-        Gear.Values[TGearItem.LuckRoll] = 0;
-        Assert.True(Equip(TBagItem.OldSword));
-        Command = "ODRZUC STARY";
-        TakeDrop();
-        Assert.Equal(1, Bag.Items[TBagItem.OldSword]);
-        Assert.Empty(Bag.ItemRooms[TBagItem.OldSword]);
-        Assert.Equal(1, Bag.Count);
-        Assert.True(Unequip(TBagItem.OldSword));
-        Assert.Equal(2, Bag.Items[TBagItem.OldSword]);
-        Assert.Equal(2, Bag.Count);
+        game.Session.OuterRoom = 7;
+        game.Bag.Items[TBagItem.OldSword] = 2;
+        game.Bag.ItemRooms[TBagItem.OldSword].Clear();
+        game.Bag.Count = 2;
+        game.Gear.Values[TGearItem.WeaponKind] = 0;
+        game.Player.Stats[TStat.Strength] = 0;
+        game.Gear.Values[TGearItem.LuckRoll] = 0;
+        Assert.True(game.Equip(TBagItem.OldSword));
+        game.Command = "ODRZUC STARY";
+        game.TakeDrop();
+        Assert.Equal(1, game.Bag.Items[TBagItem.OldSword]);
+        Assert.Empty(game.Bag.ItemRooms[TBagItem.OldSword]);
+        Assert.Equal(1, game.Bag.Count);
+        Assert.True(game.Unequip(TBagItem.OldSword));
+        Assert.Equal(2, game.Bag.Items[TBagItem.OldSword]);
+        Assert.Equal(2, game.Bag.Count);
     }
 
     [Fact]
     public void OdrzucanieNieDzialaNaWladanejTarczy() {
-        Session.OuterRoom = 7;
-        Bag.Items[TBagItem.SmallShield] = 2;
-        Bag.ItemRooms[TBagItem.SmallShield].Clear();
-        Bag.Count = 2;
-        Gear.Values[TGearItem.ShieldKind] = 0;
-        Gear.Values[TGearItem.Armor] = 0;
-        Gear.Values[TGearItem.WornCount] = 0;
-        Assert.True(Equip(TBagItem.SmallShield));
-        Command = "ODRZUC MALA";
-        TakeDrop();
-        Assert.Equal(1, Bag.Items[TBagItem.SmallShield]);
-        Assert.Empty(Bag.ItemRooms[TBagItem.SmallShield]);
-        Assert.Equal(1, Bag.Count);
-        Assert.True(Unequip(TBagItem.SmallShield));
-        Assert.Equal(2, Bag.Items[TBagItem.SmallShield]);
-        Assert.Equal(2, Bag.Count);
+        game.Session.OuterRoom = 7;
+        game.Bag.Items[TBagItem.SmallShield] = 2;
+        game.Bag.ItemRooms[TBagItem.SmallShield].Clear();
+        game.Bag.Count = 2;
+        game.Gear.Values[TGearItem.ShieldKind] = 0;
+        game.Gear.Values[TGearItem.Armor] = 0;
+        game.Gear.Values[TGearItem.WornCount] = 0;
+        Assert.True(game.Equip(TBagItem.SmallShield));
+        game.Command = "ODRZUC MALA";
+        game.TakeDrop();
+        Assert.Equal(1, game.Bag.Items[TBagItem.SmallShield]);
+        Assert.Empty(game.Bag.ItemRooms[TBagItem.SmallShield]);
+        Assert.Equal(1, game.Bag.Count);
+        Assert.True(game.Unequip(TBagItem.SmallShield));
+        Assert.Equal(2, game.Bag.Items[TBagItem.SmallShield]);
+        Assert.Equal(2, game.Bag.Count);
     }
 
     [Fact]
     public void OdrzucanieBezSztukiNieDziala() {
-        Session.OuterRoom = 7;
-        Bag.Items[TBagItem.OldSword] = 0;
-        Bag.ItemRooms[TBagItem.OldSword].Clear();
-        Gear.Values[TGearItem.WeaponKind] = 0;
-        Bag.Count = 0;
-        Command = "ODRZUC STARY";
-        TakeDrop();
-        Assert.Equal(0, Bag.Items[TBagItem.OldSword]);
-        Assert.Empty(Bag.ItemRooms[TBagItem.OldSword]);
-        Assert.Equal(0, Bag.Count);
+        game.Session.OuterRoom = 7;
+        game.Bag.Items[TBagItem.OldSword] = 0;
+        game.Bag.ItemRooms[TBagItem.OldSword].Clear();
+        game.Gear.Values[TGearItem.WeaponKind] = 0;
+        game.Bag.Count = 0;
+        game.Command = "ODRZUC STARY";
+        game.TakeDrop();
+        Assert.Equal(0, game.Bag.Items[TBagItem.OldSword]);
+        Assert.Empty(game.Bag.ItemRooms[TBagItem.OldSword]);
+        Assert.Equal(0, game.Bag.Count);
     }
 
     [Fact]
     public void OdrzucanieStosuZostawiaReszte() {
-        Session.OuterRoom = 7;
-        Bag.Items[TBagItem.OldSword] = 2;
-        Bag.ItemRooms[TBagItem.OldSword].Clear();
-        Gear.Values[TGearItem.WeaponKind] = 0;
-        Bag.Count = 2;
-        Command = "ODRZUC STARY";
-        TakeDrop();
-        Assert.Equal(1, Bag.Items[TBagItem.OldSword]);
-        Assert.Contains(7, Bag.ItemRooms[TBagItem.OldSword]);
-        Assert.Equal(1, Bag.Count);
+        game.Session.OuterRoom = 7;
+        game.Bag.Items[TBagItem.OldSword] = 2;
+        game.Bag.ItemRooms[TBagItem.OldSword].Clear();
+        game.Gear.Values[TGearItem.WeaponKind] = 0;
+        game.Bag.Count = 2;
+        game.Command = "ODRZUC STARY";
+        game.TakeDrop();
+        Assert.Equal(1, game.Bag.Items[TBagItem.OldSword]);
+        Assert.Contains(7, game.Bag.ItemRooms[TBagItem.OldSword]);
+        Assert.Equal(1, game.Bag.Count);
     }
 
     [Fact]
     public void BranieJednejSztukiZostawiaInne() {
-        Session.OuterRoom = 7;
-        Bag.Items[TBagItem.OldSword] = 0;
-        Bag.Count = 0;
-        Bag.ItemRooms[TBagItem.OldSword].Clear();
-        Bag.AddGroundItem(TBagItem.OldSword, 7);
-        Bag.AddGroundItem(TBagItem.OldSword, 7);
-        Command = "BIERZ STARY";
-        TakeDrop();
-        Assert.Equal(1, Bag.Items[TBagItem.OldSword]);
-        Assert.Equal(1, Bag.Count);
-        Assert.Single(Bag.ItemRooms[TBagItem.OldSword]);
-        TakeDrop();
-        Assert.Equal(2, Bag.Items[TBagItem.OldSword]);
-        Assert.Equal(2, Bag.Count);
-        Assert.Empty(Bag.ItemRooms[TBagItem.OldSword]);
+        game.Session.OuterRoom = 7;
+        game.Bag.Items[TBagItem.OldSword] = 0;
+        game.Bag.Count = 0;
+        game.Bag.ItemRooms[TBagItem.OldSword].Clear();
+        game.Bag.AddGroundItem(TBagItem.OldSword, 7);
+        game.Bag.AddGroundItem(TBagItem.OldSword, 7);
+        game.Command = "BIERZ STARY";
+        game.TakeDrop();
+        Assert.Equal(1, game.Bag.Items[TBagItem.OldSword]);
+        Assert.Equal(1, game.Bag.Count);
+        Assert.Single(game.Bag.ItemRooms[TBagItem.OldSword]);
+        game.TakeDrop();
+        Assert.Equal(2, game.Bag.Items[TBagItem.OldSword]);
+        Assert.Equal(2, game.Bag.Count);
+        Assert.Empty(game.Bag.ItemRooms[TBagItem.OldSword]);
     }
 
     [Fact]
     public void OdrzucanieWieluSztuk() {
-        Session.OuterRoom = 7;
-        Bag.Items[TBagItem.OldSword] = 2;
-        Bag.Count = 2;
-        Bag.ItemRooms[TBagItem.OldSword].Clear();
-        Gear.Values[TGearItem.WeaponKind] = 0;
-        Command = "ODRZUC STARY";
-        TakeDrop();
-        TakeDrop();
-        Assert.Equal(0, Bag.Items[TBagItem.OldSword]);
-        Assert.Equal(0, Bag.Count);
-        Assert.Equal(2, Bag.ItemRooms[TBagItem.OldSword].Count);
-        Assert.All(Bag.ItemRooms[TBagItem.OldSword], room => Assert.Equal(7, room));
-        Bag.ItemRooms[TBagItem.OldSword].Clear();
+        game.Session.OuterRoom = 7;
+        game.Bag.Items[TBagItem.OldSword] = 2;
+        game.Bag.Count = 2;
+        game.Bag.ItemRooms[TBagItem.OldSword].Clear();
+        game.Gear.Values[TGearItem.WeaponKind] = 0;
+        game.Command = "ODRZUC STARY";
+        game.TakeDrop();
+        game.TakeDrop();
+        Assert.Equal(0, game.Bag.Items[TBagItem.OldSword]);
+        Assert.Equal(0, game.Bag.Count);
+        Assert.Equal(2, game.Bag.ItemRooms[TBagItem.OldSword].Count);
+        Assert.All(game.Bag.ItemRooms[TBagItem.OldSword], room => Assert.Equal(7, room));
+        game.Bag.ItemRooms[TBagItem.OldSword].Clear();
     }
 
     [Fact]
     public void WladaMieczZeStosu() {
-        Bag.Items[TBagItem.OldSword] = 2;
-        Bag.Count = 2;
-        Gear.Values[TGearItem.WeaponKind] = 0;
-        Player.Stats[TStat.Strength] = 10;
-        Gear.Values[TGearItem.LuckRoll] = 0;
-        CmdWieldOldSword();
-        Assert.Equal(1, Gear.Values[TGearItem.WeaponKind]);
-        Assert.Equal(1, Bag.Items[TBagItem.OldSword]);
-        Assert.Equal(1, Bag.Count);
-        CmdUnwieldOldSword();
-        Assert.Equal(0, Gear.Values[TGearItem.WeaponKind]);
-        Assert.Equal(2, Bag.Items[TBagItem.OldSword]);
-        Assert.Equal(2, Bag.Count);
-        Player.Stats[TStat.Strength] = 0;
-        Gear.Values[TGearItem.LuckRoll] = 0;
+        game.Bag.Items[TBagItem.OldSword] = 2;
+        game.Bag.Count = 2;
+        game.Gear.Values[TGearItem.WeaponKind] = 0;
+        game.Player.Stats[TStat.Strength] = 10;
+        game.Gear.Values[TGearItem.LuckRoll] = 0;
+        game.CmdWieldOldSword();
+        Assert.Equal(1, game.Gear.Values[TGearItem.WeaponKind]);
+        Assert.Equal(1, game.Bag.Items[TBagItem.OldSword]);
+        Assert.Equal(1, game.Bag.Count);
+        game.CmdUnwieldOldSword();
+        Assert.Equal(0, game.Gear.Values[TGearItem.WeaponKind]);
+        Assert.Equal(2, game.Bag.Items[TBagItem.OldSword]);
+        Assert.Equal(2, game.Bag.Count);
+        game.Player.Stats[TStat.Strength] = 0;
+        game.Gear.Values[TGearItem.LuckRoll] = 0;
     }
 
     [Fact]
     public void WladaTarczePrzenosiJaDoZalozenia() {
-        Bag.Items[TBagItem.SmallShield] = 1;
-        Bag.Count = 1;
-        Gear.Values[TGearItem.ShieldKind] = 0;
-        Gear.Values[TGearItem.Armor] = 0;
-        Gear.Values[TGearItem.WornCount] = 0;
-        CmdWieldSmallShield();
-        Assert.Equal(1, Gear.Values[TGearItem.ShieldKind]);
-        Assert.Equal(0, Bag.Items[TBagItem.SmallShield]);
-        Assert.Equal(0, Bag.Count);
-        Assert.Equal(15, Gear.Values[TGearItem.Armor]);
-        CmdUnwieldSmallShield();
-        Assert.Equal(0, Gear.Values[TGearItem.ShieldKind]);
-        Assert.Equal(1, Bag.Items[TBagItem.SmallShield]);
-        Assert.Equal(1, Bag.Count);
-        Assert.Equal(0, Gear.Values[TGearItem.Armor]);
-        Assert.Equal(0, Gear.Values[TGearItem.WornCount]);
+        game.Bag.Items[TBagItem.SmallShield] = 1;
+        game.Bag.Count = 1;
+        game.Gear.Values[TGearItem.ShieldKind] = 0;
+        game.Gear.Values[TGearItem.Armor] = 0;
+        game.Gear.Values[TGearItem.WornCount] = 0;
+        game.CmdWieldSmallShield();
+        Assert.Equal(1, game.Gear.Values[TGearItem.ShieldKind]);
+        Assert.Equal(0, game.Bag.Items[TBagItem.SmallShield]);
+        Assert.Equal(0, game.Bag.Count);
+        Assert.Equal(15, game.Gear.Values[TGearItem.Armor]);
+        game.CmdUnwieldSmallShield();
+        Assert.Equal(0, game.Gear.Values[TGearItem.ShieldKind]);
+        Assert.Equal(1, game.Bag.Items[TBagItem.SmallShield]);
+        Assert.Equal(1, game.Bag.Count);
+        Assert.Equal(0, game.Gear.Values[TGearItem.Armor]);
+        Assert.Equal(0, game.Gear.Values[TGearItem.WornCount]);
     }
 
     [Fact]
     public void LootDropsWhenTheItemIsAlreadyCarried() {
-        Bag.Items[TBagItem.OldSword] = 1;
-        Bag.Count = 1;
-        Bag.ItemRooms[TBagItem.OldSword].Clear();
-        Session.Room = 7;
-        TryLoot(TBagItem.OldSword, 100, "");
-        Assert.Contains(7, Bag.ItemRooms[TBagItem.OldSword]);
-        Bag.Items[TBagItem.OldSword] = 0;
-        Bag.Count = 0;
-        Bag.ItemRooms[TBagItem.OldSword].Clear();
+        game.Bag.Items[TBagItem.OldSword] = 1;
+        game.Bag.Count = 1;
+        game.Bag.ItemRooms[TBagItem.OldSword].Clear();
+        game.Session.Room = 7;
+        game.TryLoot(TBagItem.OldSword, 100, "");
+        Assert.Contains(7, game.Bag.ItemRooms[TBagItem.OldSword]);
+        game.Bag.Items[TBagItem.OldSword] = 0;
+        game.Bag.Count = 0;
+        game.Bag.ItemRooms[TBagItem.OldSword].Clear();
     }
 
     [Fact]
     public void LootDodajeKolejnyPrzedmiotNaZiemi() {
-        Session.Room = 7;
-        Bag.ItemRooms[TBagItem.Heart].Clear();
-        Bag.AddGroundItem(TBagItem.Heart, 7);
-        Bag.AddGroundItem(TBagItem.Heart, 8);
-        TryLoot(TBagItem.Heart, 100, "");
-        Assert.Equal(3, Bag.ItemRooms[TBagItem.Heart].Count);
-        Assert.Equal(2, Bag.ItemRooms[TBagItem.Heart].Count(room => room == 7));
-        Assert.Contains(8, Bag.ItemRooms[TBagItem.Heart]);
-        Bag.ItemRooms[TBagItem.Heart].Clear();
+        game.Session.Room = 7;
+        game.Bag.ItemRooms[TBagItem.Heart].Clear();
+        game.Bag.AddGroundItem(TBagItem.Heart, 7);
+        game.Bag.AddGroundItem(TBagItem.Heart, 8);
+        game.TryLoot(TBagItem.Heart, 100, "");
+        Assert.Equal(3, game.Bag.ItemRooms[TBagItem.Heart].Count);
+        Assert.Equal(2, game.Bag.ItemRooms[TBagItem.Heart].Count(room => room == 7));
+        Assert.Contains(8, game.Bag.ItemRooms[TBagItem.Heart]);
+        game.Bag.ItemRooms[TBagItem.Heart].Clear();
     }
 
     [Fact]
     public void BranieIgnoresMissingSword() {
-        Session.OuterRoom = 7;
-        Bag.Items[TBagItem.OldSword] = 0;
-        Bag.ItemRooms[TBagItem.OldSword].Clear();
-        Bag.Count = 0;
-        Command = "BIERZ STARY";
-        TakeDrop();
-        Assert.Equal(0, Bag.Items[TBagItem.OldSword]);
-        Assert.Equal(0, Bag.Count);
+        game.Session.OuterRoom = 7;
+        game.Bag.Items[TBagItem.OldSword] = 0;
+        game.Bag.ItemRooms[TBagItem.OldSword].Clear();
+        game.Bag.Count = 0;
+        game.Command = "BIERZ STARY";
+        game.TakeDrop();
+        Assert.Equal(0, game.Bag.Items[TBagItem.OldSword]);
+        Assert.Equal(0, game.Bag.Count);
     }
 
     [Fact]
     public void BranieIgnoresStartRoomWhenNothingLiesThere() {
-        Session.OuterRoom = Rooms.RoomStart;
-        Bag.Items[TBagItem.Diploma] = 0;
-        Bag.ItemRooms[TBagItem.Diploma].Clear();
-        Bag.Count = 0;
-        Command = "BIERZ DYPLOM";
-        TakeDrop();
-        Assert.Equal(0, Bag.Items[TBagItem.Diploma]);
-        Assert.Empty(Bag.ItemRooms[TBagItem.Diploma]);
-        Assert.Equal(0, Bag.Count);
+        game.Session.OuterRoom = Rooms.RoomStart;
+        game.Bag.Items[TBagItem.Diploma] = 0;
+        game.Bag.ItemRooms[TBagItem.Diploma].Clear();
+        game.Bag.Count = 0;
+        game.Command = "BIERZ DYPLOM";
+        game.TakeDrop();
+        Assert.Equal(0, game.Bag.Items[TBagItem.Diploma]);
+        Assert.Empty(game.Bag.ItemRooms[TBagItem.Diploma]);
+        Assert.Equal(0, game.Bag.Count);
     }
 
     [Fact]
     public void BraniePicksUpBluszczItems() {
-        Session.OuterRoom = 7;
-        Bag.Items[TBagItem.SmallShield] = 0;
-        Bag.Items[TBagItem.Heart] = 0;
-        Bag.Items[TBagItem.Diploma] = 0;
-        Bag.Items[TBagItem.Pipe] = 0;
-        Bag.AddGroundItem(TBagItem.SmallShield, 7);
-        Bag.AddGroundItem(TBagItem.Heart, 7);
-        Bag.AddGroundItem(TBagItem.Diploma, 7);
-        Bag.AddGroundItem(TBagItem.Pipe, 7);
-        Bag.Count = 0;
-        Player.Stats[TStat.Wisdom] = 0;
-        Player.Stats[TStat.MaxWisdom] = 5;
-        Player.MaxEnergy = 50;
-        Command = "BIERZ MALA";
-        TakeDrop();
-        Command = "BIERZ SERCE";
-        TakeDrop();
-        Command = "BIERZ DYPLOM";
-        TakeDrop();
-        Command = "BIERZ FAJKA";
-        TakeDrop();
-        Assert.Equal(1, Bag.Items[TBagItem.SmallShield]);
-        Assert.Equal(1, Bag.Items[TBagItem.Heart]);
-        Assert.Equal(1, Bag.Items[TBagItem.Diploma]);
-        Assert.Equal(1, Bag.Items[TBagItem.Pipe]);
-        Assert.Equal(4, Bag.Count);
-        Assert.Equal(55, Player.MaxEnergy);
-        Assert.Equal(1, Player.Stats[TStat.Wisdom]);
+        game.Session.OuterRoom = 7;
+        game.Bag.Items[TBagItem.SmallShield] = 0;
+        game.Bag.Items[TBagItem.Heart] = 0;
+        game.Bag.Items[TBagItem.Diploma] = 0;
+        game.Bag.Items[TBagItem.Pipe] = 0;
+        game.Bag.AddGroundItem(TBagItem.SmallShield, 7);
+        game.Bag.AddGroundItem(TBagItem.Heart, 7);
+        game.Bag.AddGroundItem(TBagItem.Diploma, 7);
+        game.Bag.AddGroundItem(TBagItem.Pipe, 7);
+        game.Bag.Count = 0;
+        game.Player.Stats[TStat.Wisdom] = 0;
+        game.Player.Stats[TStat.MaxWisdom] = 5;
+        game.Player.MaxEnergy = 50;
+        game.Command = "BIERZ MALA";
+        game.TakeDrop();
+        game.Command = "BIERZ SERCE";
+        game.TakeDrop();
+        game.Command = "BIERZ DYPLOM";
+        game.TakeDrop();
+        game.Command = "BIERZ FAJKA";
+        game.TakeDrop();
+        Assert.Equal(1, game.Bag.Items[TBagItem.SmallShield]);
+        Assert.Equal(1, game.Bag.Items[TBagItem.Heart]);
+        Assert.Equal(1, game.Bag.Items[TBagItem.Diploma]);
+        Assert.Equal(1, game.Bag.Items[TBagItem.Pipe]);
+        Assert.Equal(4, game.Bag.Count);
+        Assert.Equal(55, game.Player.MaxEnergy);
+        Assert.Equal(1, game.Player.Stats[TStat.Wisdom]);
     }
 
     [Fact]
     public void BranieDropsBluszczItems() {
-        Session.OuterRoom = 7;
-        Bag.Items[TBagItem.SmallShield] = 1;
-        Bag.Items[TBagItem.Heart] = 1;
-        Bag.Items[TBagItem.Diploma] = 1;
-        Bag.Items[TBagItem.Pipe] = 1;
-        Bag.Count = 4;
-        Player.Stats[TStat.Wisdom] = 1;
-        Player.MaxEnergy = 55;
-        Command = "ODRZUC FAJKA";
-        TakeDrop();
-        Command = "ODRZUC MALA";
-        TakeDrop();
-        Command = "ODRZUC SERCE";
-        TakeDrop();
-        Command = "ODRZUC DYPLOM";
-        TakeDrop();
-        Assert.Equal(0, Bag.Items[TBagItem.SmallShield]);
-        Assert.Equal(0, Bag.Items[TBagItem.Heart]);
-        Assert.Equal(0, Bag.Items[TBagItem.Diploma]);
-        Assert.Equal(0, Bag.Items[TBagItem.Pipe]);
-        Assert.Contains(7, Bag.ItemRooms[TBagItem.SmallShield]);
-        Assert.Contains(7, Bag.ItemRooms[TBagItem.Heart]);
-        Assert.Contains(7, Bag.ItemRooms[TBagItem.Diploma]);
-        Assert.Contains(7, Bag.ItemRooms[TBagItem.Pipe]);
-        Assert.Equal(0, Bag.Count);
-        Assert.Equal(50, Player.MaxEnergy);
-        Assert.Equal(0, Player.Stats[TStat.Wisdom]);
+        game.Session.OuterRoom = 7;
+        game.Bag.Items[TBagItem.SmallShield] = 1;
+        game.Bag.Items[TBagItem.Heart] = 1;
+        game.Bag.Items[TBagItem.Diploma] = 1;
+        game.Bag.Items[TBagItem.Pipe] = 1;
+        game.Bag.Count = 4;
+        game.Player.Stats[TStat.Wisdom] = 1;
+        game.Player.MaxEnergy = 55;
+        game.Command = "ODRZUC FAJKA";
+        game.TakeDrop();
+        game.Command = "ODRZUC MALA";
+        game.TakeDrop();
+        game.Command = "ODRZUC SERCE";
+        game.TakeDrop();
+        game.Command = "ODRZUC DYPLOM";
+        game.TakeDrop();
+        Assert.Equal(0, game.Bag.Items[TBagItem.SmallShield]);
+        Assert.Equal(0, game.Bag.Items[TBagItem.Heart]);
+        Assert.Equal(0, game.Bag.Items[TBagItem.Diploma]);
+        Assert.Equal(0, game.Bag.Items[TBagItem.Pipe]);
+        Assert.Contains(7, game.Bag.ItemRooms[TBagItem.SmallShield]);
+        Assert.Contains(7, game.Bag.ItemRooms[TBagItem.Heart]);
+        Assert.Contains(7, game.Bag.ItemRooms[TBagItem.Diploma]);
+        Assert.Contains(7, game.Bag.ItemRooms[TBagItem.Pipe]);
+        Assert.Equal(0, game.Bag.Count);
+        Assert.Equal(50, game.Player.MaxEnergy);
+        Assert.Equal(0, game.Player.Stats[TStat.Wisdom]);
     }
 
     [Fact]
     public void PipeModifiersRoundTripAtWisdomCap() {
-        Session.OuterRoom = 7;
-        Bag.Items[TBagItem.Pipe] = 0;
-        Bag.ItemRooms[TBagItem.Pipe].Clear();
-        Bag.Count = 0;
-        Bag.AddGroundItem(TBagItem.Pipe, 7);
-        Player.Stats[TStat.Wisdom] = 5;
-        Player.Stats[TStat.MaxWisdom] = 5;
-        Command = "BIERZ FAJKA";
-        TakeDrop();
-        Assert.Equal(6, Player.Stats[TStat.Wisdom]);
-        Assert.Equal(1, Bag.Count);
-        Command = "ODRZUC FAJKA";
-        TakeDrop();
-        Assert.Equal(5, Player.Stats[TStat.Wisdom]);
-        Assert.Equal(0, Bag.Count);
-        Bag.ItemRooms[TBagItem.Pipe].Clear();
-        Player.Stats[TStat.Wisdom] = 0;
-        Player.Stats[TStat.MaxWisdom] = 0;
+        game.Session.OuterRoom = 7;
+        game.Bag.Items[TBagItem.Pipe] = 0;
+        game.Bag.ItemRooms[TBagItem.Pipe].Clear();
+        game.Bag.Count = 0;
+        game.Bag.AddGroundItem(TBagItem.Pipe, 7);
+        game.Player.Stats[TStat.Wisdom] = 5;
+        game.Player.Stats[TStat.MaxWisdom] = 5;
+        game.Command = "BIERZ FAJKA";
+        game.TakeDrop();
+        Assert.Equal(6, game.Player.Stats[TStat.Wisdom]);
+        Assert.Equal(1, game.Bag.Count);
+        game.Command = "ODRZUC FAJKA";
+        game.TakeDrop();
+        Assert.Equal(5, game.Player.Stats[TStat.Wisdom]);
+        Assert.Equal(0, game.Bag.Count);
+        game.Bag.ItemRooms[TBagItem.Pipe].Clear();
+        game.Player.Stats[TStat.Wisdom] = 0;
+        game.Player.Stats[TStat.MaxWisdom] = 0;
     }
 
     [Fact]
     public void PipeBonusAppliesOnceForAStack() {
-        Bag.Items[TBagItem.Pipe] = 0;
-        Bag.Count = 0;
-        Player.Stats[TStat.Wisdom] = 5;
-        Player.Stats[TStat.MaxWisdom] = 5;
-        AcquireItem(TBagItem.Pipe, 2);
-        Assert.Equal(2, Bag.Items[TBagItem.Pipe]);
-        Assert.Equal(2, Bag.Count);
-        Assert.Equal(6, Player.Stats[TStat.Wisdom]);
-        Assert.True(LoseItem(TBagItem.Pipe));
-        Assert.Equal(1, Bag.Items[TBagItem.Pipe]);
-        Assert.Equal(1, Bag.Count);
-        Assert.Equal(6, Player.Stats[TStat.Wisdom]);
-        Assert.True(LoseItem(TBagItem.Pipe));
-        Assert.Equal(0, Bag.Items[TBagItem.Pipe]);
-        Assert.Equal(0, Bag.Count);
-        Assert.Equal(5, Player.Stats[TStat.Wisdom]);
-        Player.Stats[TStat.Wisdom] = 0;
-        Player.Stats[TStat.MaxWisdom] = 0;
+        game.Bag.Items[TBagItem.Pipe] = 0;
+        game.Bag.Count = 0;
+        game.Player.Stats[TStat.Wisdom] = 5;
+        game.Player.Stats[TStat.MaxWisdom] = 5;
+        game.AcquireItem(TBagItem.Pipe, 2);
+        Assert.Equal(2, game.Bag.Items[TBagItem.Pipe]);
+        Assert.Equal(2, game.Bag.Count);
+        Assert.Equal(6, game.Player.Stats[TStat.Wisdom]);
+        Assert.True(game.LoseItem(TBagItem.Pipe));
+        Assert.Equal(1, game.Bag.Items[TBagItem.Pipe]);
+        Assert.Equal(1, game.Bag.Count);
+        Assert.Equal(6, game.Player.Stats[TStat.Wisdom]);
+        Assert.True(game.LoseItem(TBagItem.Pipe));
+        Assert.Equal(0, game.Bag.Items[TBagItem.Pipe]);
+        Assert.Equal(0, game.Bag.Count);
+        Assert.Equal(5, game.Player.Stats[TStat.Wisdom]);
+        game.Player.Stats[TStat.Wisdom] = 0;
+        game.Player.Stats[TStat.MaxWisdom] = 0;
     }
 
     [Fact]
     public void UzywaSerce() {
-        Bag.Items[TBagItem.Heart] = 1;
-        Player.Energy = 10;
-        Player.MaxEnergy = 50;
-        Bag.Count = 1;
-        Command = "UZYJ SERCE";
-        UseItems();
-        Assert.Equal(0, Bag.Items[TBagItem.Heart]);
-        Assert.Equal(15, Player.Energy);
-        Assert.Equal(0, Bag.Count);
+        game.Bag.Items[TBagItem.Heart] = 1;
+        game.Player.Energy = 10;
+        game.Player.MaxEnergy = 50;
+        game.Bag.Count = 1;
+        game.Command = "UZYJ SERCE";
+        game.UseItems();
+        Assert.Equal(0, game.Bag.Items[TBagItem.Heart]);
+        Assert.Equal(15, game.Player.Energy);
+        Assert.Equal(0, game.Bag.Count);
     }
 
     [Fact]
     public void UzywaSerceClampsAtMaxE() {
-        Bag.Items[TBagItem.Heart] = 1;
-        Player.Energy = 48;
-        Player.MaxEnergy = 50;
-        Bag.Count = 1;
-        Command = "UZYJ SERCE";
-        UseItems();
-        Assert.Equal(50, Player.Energy);
+        game.Bag.Items[TBagItem.Heart] = 1;
+        game.Player.Energy = 48;
+        game.Player.MaxEnergy = 50;
+        game.Bag.Count = 1;
+        game.Command = "UZYJ SERCE";
+        game.UseItems();
+        Assert.Equal(50, game.Player.Energy);
     }
 
     [Fact]
     public void UzywaSerceZuzywaJedno() {
-        Bag.Items[TBagItem.Heart] = 2;
-        Player.Energy = 10;
-        Player.MaxEnergy = 50;
-        Bag.Count = 2;
-        Command = "UZYJ SERCE";
-        UseItems();
-        Assert.Equal(1, Bag.Items[TBagItem.Heart]);
-        Assert.Equal(15, Player.Energy);
-        Assert.Equal(1, Bag.Count);
+        game.Bag.Items[TBagItem.Heart] = 2;
+        game.Player.Energy = 10;
+        game.Player.MaxEnergy = 50;
+        game.Bag.Count = 2;
+        game.Command = "UZYJ SERCE";
+        game.UseItems();
+        Assert.Equal(1, game.Bag.Items[TBagItem.Heart]);
+        Assert.Equal(15, game.Player.Energy);
+        Assert.Equal(1, game.Bag.Count);
     }
 
     [Fact]
     public void UzywaKomplet() {
-        Bag.Items[TBagItem.Tracksuit] = 1;
-        Bag.Count = 1;
-        Gear.WornGarment = Texts.TxtEmpty;
-        Gear.Values[TGearItem.Armor] = 0;
-        Gear.Values[TGearItem.Wearing] = 0;
-        Command = "UZYJ KOMPLET";
-        UseItems();
-        Assert.Equal(7, Gear.Values[TGearItem.Armor]);
-        Assert.Equal(1, Gear.Values[TGearItem.Wearing]);
-        Assert.Equal(Texts.TxtWornSyf, Gear.WornGarment);
-        Assert.Equal(0, Bag.Items[TBagItem.Tracksuit]);
-        Assert.Equal(0, Bag.Count);
-        Command = "ODLOZ KOMPLET";
-        UseItems();
-        Assert.Equal(0, Gear.Values[TGearItem.Armor]);
-        Assert.Equal(0, Gear.Values[TGearItem.Wearing]);
-        Assert.Equal(Texts.TxtEmpty, Gear.WornGarment);
-        Assert.Equal(1, Bag.Items[TBagItem.Tracksuit]);
-        Assert.Equal(1, Bag.Count);
+        game.Bag.Items[TBagItem.Tracksuit] = 1;
+        game.Bag.Count = 1;
+        game.Gear.WornGarment = Texts.TxtEmpty;
+        game.Gear.Values[TGearItem.Armor] = 0;
+        game.Gear.Values[TGearItem.Wearing] = 0;
+        game.Command = "UZYJ KOMPLET";
+        game.UseItems();
+        Assert.Equal(7, game.Gear.Values[TGearItem.Armor]);
+        Assert.Equal(1, game.Gear.Values[TGearItem.Wearing]);
+        Assert.Equal(Texts.TxtWornSyf, game.Gear.WornGarment);
+        Assert.Equal(0, game.Bag.Items[TBagItem.Tracksuit]);
+        Assert.Equal(0, game.Bag.Count);
+        game.Command = "ODLOZ KOMPLET";
+        game.UseItems();
+        Assert.Equal(0, game.Gear.Values[TGearItem.Armor]);
+        Assert.Equal(0, game.Gear.Values[TGearItem.Wearing]);
+        Assert.Equal(Texts.TxtEmpty, game.Gear.WornGarment);
+        Assert.Equal(1, game.Bag.Items[TBagItem.Tracksuit]);
+        Assert.Equal(1, game.Bag.Count);
     }
 
     [Fact]
     public void UzywaKompletWorn() {
-        Bag.Items[TBagItem.Tracksuit] = 1;
-        Bag.Count = 1;
-        Gear.WornGarment = Texts.TxtWornGarnitur;
-        Gear.Values[TGearItem.Armor] = 0;
-        Gear.Values[TGearItem.Wearing] = 1;
-        Command = "UZYJ KOMPLET";
-        UseItems();
-        Assert.Equal(0, Gear.Values[TGearItem.Armor]);
-        Assert.Equal(1, Gear.Values[TGearItem.Wearing]);
-        Assert.Equal(Texts.TxtWornGarnitur, Gear.WornGarment);
-        Assert.Equal(1, Bag.Items[TBagItem.Tracksuit]);
-        Assert.Equal(1, Bag.Count);
-        Gear.WornGarment = Texts.TxtEmpty;
-        Gear.Values[TGearItem.Wearing] = 0;
+        game.Bag.Items[TBagItem.Tracksuit] = 1;
+        game.Bag.Count = 1;
+        game.Gear.WornGarment = Texts.TxtWornGarnitur;
+        game.Gear.Values[TGearItem.Armor] = 0;
+        game.Gear.Values[TGearItem.Wearing] = 1;
+        game.Command = "UZYJ KOMPLET";
+        game.UseItems();
+        Assert.Equal(0, game.Gear.Values[TGearItem.Armor]);
+        Assert.Equal(1, game.Gear.Values[TGearItem.Wearing]);
+        Assert.Equal(Texts.TxtWornGarnitur, game.Gear.WornGarment);
+        Assert.Equal(1, game.Bag.Items[TBagItem.Tracksuit]);
+        Assert.Equal(1, game.Bag.Count);
+        game.Gear.WornGarment = Texts.TxtEmpty;
+        game.Gear.Values[TGearItem.Wearing] = 0;
     }
 
     [Fact]
     public void UzywaGarnitur() {
-        Bag.Items[TBagItem.SpikedSuit] = 1;
-        Bag.Count = 1;
-        Gear.WornGarment = Texts.TxtEmpty;
-        Gear.Values[TGearItem.WornCount] = 0;
-        Gear.Values[TGearItem.Armor] = 0;
-        Gear.Values[TGearItem.LuckRoll] = 0;
-        Command = "UZYJ GARNITUR";
-        UseItems();
-        Assert.Equal(10, Gear.Values[TGearItem.Armor]);
-        Assert.Equal(1, Gear.Values[TGearItem.WornCount]);
-        Assert.Equal(15, Gear.Values[TGearItem.LuckRoll]);
-        Assert.Equal(Texts.TxtWornGarnitur, Gear.WornGarment);
-        Assert.Equal(0, Bag.Items[TBagItem.SpikedSuit]);
-        Assert.Equal(0, Bag.Count);
-        Command = "ODLOZ GARNITUR";
-        UseItems();
-        Assert.Equal(0, Gear.Values[TGearItem.Armor]);
-        Assert.Equal(0, Gear.Values[TGearItem.WornCount]);
-        Assert.Equal(0, Gear.Values[TGearItem.LuckRoll]);
-        Assert.Equal(Texts.TxtEmpty, Gear.WornGarment);
-        Assert.Equal(1, Bag.Items[TBagItem.SpikedSuit]);
-        Assert.Equal(1, Bag.Count);
+        game.Bag.Items[TBagItem.SpikedSuit] = 1;
+        game.Bag.Count = 1;
+        game.Gear.WornGarment = Texts.TxtEmpty;
+        game.Gear.Values[TGearItem.WornCount] = 0;
+        game.Gear.Values[TGearItem.Armor] = 0;
+        game.Gear.Values[TGearItem.LuckRoll] = 0;
+        game.Command = "UZYJ GARNITUR";
+        game.UseItems();
+        Assert.Equal(10, game.Gear.Values[TGearItem.Armor]);
+        Assert.Equal(1, game.Gear.Values[TGearItem.WornCount]);
+        Assert.Equal(15, game.Gear.Values[TGearItem.LuckRoll]);
+        Assert.Equal(Texts.TxtWornGarnitur, game.Gear.WornGarment);
+        Assert.Equal(0, game.Bag.Items[TBagItem.SpikedSuit]);
+        Assert.Equal(0, game.Bag.Count);
+        game.Command = "ODLOZ GARNITUR";
+        game.UseItems();
+        Assert.Equal(0, game.Gear.Values[TGearItem.Armor]);
+        Assert.Equal(0, game.Gear.Values[TGearItem.WornCount]);
+        Assert.Equal(0, game.Gear.Values[TGearItem.LuckRoll]);
+        Assert.Equal(Texts.TxtEmpty, game.Gear.WornGarment);
+        Assert.Equal(1, game.Bag.Items[TBagItem.SpikedSuit]);
+        Assert.Equal(1, game.Bag.Count);
     }
 
     [Fact]
     public void UzywaButelkaMany() {
-        Bag.Items[TBagItem.ManaBottle] = 1;
-        Player.Mana = 10;
-        Player.MaxMana = 50;
-        Bag.Count = 1;
-        Command = "UZYJ MALA BUTELKA MANY";
-        UseItems();
-        Assert.Equal(40, Player.Mana);
-        Assert.Equal(0, Bag.Count);
+        game.Bag.Items[TBagItem.ManaBottle] = 1;
+        game.Player.Mana = 10;
+        game.Player.MaxMana = 50;
+        game.Bag.Count = 1;
+        game.Command = "UZYJ MALA BUTELKA MANY";
+        game.UseItems();
+        Assert.Equal(40, game.Player.Mana);
+        Assert.Equal(0, game.Bag.Count);
     }
 
     [Fact]
     public void UzywaButelkaManyClampsAtMaxMana() {
-        Bag.Items[TBagItem.ManaBottle] = 1;
-        Player.Mana = 45;
-        Player.MaxMana = 50;
-        Bag.Count = 1;
-        Command = "UZYJ MALA BUTELKA MANY";
-        UseItems();
-        Assert.Equal(50, Player.Mana);
+        game.Bag.Items[TBagItem.ManaBottle] = 1;
+        game.Player.Mana = 45;
+        game.Player.MaxMana = 50;
+        game.Bag.Count = 1;
+        game.Command = "UZYJ MALA BUTELKA MANY";
+        game.UseItems();
+        Assert.Equal(50, game.Player.Mana);
     }
 
     [Fact]
     public void PorownanieScrollNieDzialaBezMany() {
-        Bag.Items[TBagItem.CompareScroll] = 1;
-        Bag.Count = 1;
-        Player.MaxMana = 100;
-        Player.Mana = 0;
-        CmdUseCompareScroll();
-        Assert.Equal(0, Player.Mana);
-        Assert.Equal(1, Bag.Items[TBagItem.CompareScroll]);
-        Assert.Equal(1, Bag.Count);
+        game.Bag.Items[TBagItem.CompareScroll] = 1;
+        game.Bag.Count = 1;
+        game.Player.MaxMana = 100;
+        game.Player.Mana = 0;
+        game.CmdUseCompareScroll();
+        Assert.Equal(0, game.Player.Mana);
+        Assert.Equal(1, game.Bag.Items[TBagItem.CompareScroll]);
+        Assert.Equal(1, game.Bag.Count);
     }
 
     [Fact]
     public void ScrollPowrotNieDzialaBezMany() {
-        Bag.Items[TBagItem.ReturnScroll] = 1;
-        Bag.Count = 1;
-        Player.MaxMana = 100;
-        Player.Mana = 0;
-        Session.Room = Rooms.RoomCityCentre;
-        Command = "UZYJ SCROLL POWROT";
-        CmdOpenPortal();
-        Assert.Equal(Rooms.RoomCityCentre, Session.Room);
-        Assert.Equal(0, Player.Mana);
-        Assert.Equal(1, Bag.Items[TBagItem.ReturnScroll]);
-        Assert.Equal(1, Bag.Count);
+        game.Bag.Items[TBagItem.ReturnScroll] = 1;
+        game.Bag.Count = 1;
+        game.Player.MaxMana = 100;
+        game.Player.Mana = 0;
+        game.Session.Room = Rooms.RoomCityCentre;
+        game.Command = "UZYJ SCROLL POWROT";
+        game.CmdOpenPortal();
+        Assert.Equal(Rooms.RoomCityCentre, game.Session.Room);
+        Assert.Equal(0, game.Player.Mana);
+        Assert.Equal(1, game.Bag.Items[TBagItem.ReturnScroll]);
+        Assert.Equal(1, game.Bag.Count);
     }
 
     [Fact]
     public void NiszczyPrzepustke() {
-        Bag.Permit = 1;
-        Bag.Count = 1;
-        Command = "ZNISZCZ PRZEPUSTKA";
-        UseItems();
-        Assert.Equal(0, Bag.Permit);
-        Assert.Equal(0, Bag.Count);
+        game.Bag.Permit = 1;
+        game.Bag.Count = 1;
+        game.Command = "ZNISZCZ PRZEPUSTKA";
+        game.UseItems();
+        Assert.Equal(0, game.Bag.Permit);
+        Assert.Equal(0, game.Bag.Count);
     }
 
     [Fact]
     public void PrzepustkiStackAndEachUsesOneBagSlot() {
-        Bag.Permit = 0;
-        Bag.Count = 0;
-        AcquirePermit();
-        AcquirePermit();
-        Assert.Equal(2, Bag.Permit);
-        Assert.Equal(2, Bag.Count);
-        Assert.True(LosePermit());
-        Assert.Equal(1, Bag.Permit);
-        Assert.Equal(1, Bag.Count);
-        Assert.True(LosePermit());
-        Assert.Equal(0, Bag.Permit);
-        Assert.Equal(0, Bag.Count);
-        Assert.False(LosePermit());
+        game.Bag.Permit = 0;
+        game.Bag.Count = 0;
+        game.AcquirePermit();
+        game.AcquirePermit();
+        Assert.Equal(2, game.Bag.Permit);
+        Assert.Equal(2, game.Bag.Count);
+        Assert.True(game.LosePermit());
+        Assert.Equal(1, game.Bag.Permit);
+        Assert.Equal(1, game.Bag.Count);
+        Assert.True(game.LosePermit());
+        Assert.Equal(0, game.Bag.Permit);
+        Assert.Equal(0, game.Bag.Count);
+        Assert.False(game.LosePermit());
     }
 
     [Fact]
     public void PatrzPrzepustke() {
-        Bag.Permit = 1;
-        Bag.Count = 1;
-        Command = "PATRZ PRZEPUSTKA";
-        UseItems();
-        Assert.Equal(1, Bag.Permit);
-        Assert.Equal(1, Bag.Count);
-        Bag.Permit = 0;
-        Bag.Count = 0;
+        game.Bag.Permit = 1;
+        game.Bag.Count = 1;
+        game.Command = "PATRZ PRZEPUSTKA";
+        game.UseItems();
+        Assert.Equal(1, game.Bag.Permit);
+        Assert.Equal(1, game.Bag.Count);
+        game.Bag.Permit = 0;
+        game.Bag.Count = 0;
     }
 
     [Fact]
     public void UzywaDyplom() {
-        Bag.Items[TBagItem.Diploma] = 1;
-        Command = "UZYJ DYPLOM";
-        UseItems();
-        Assert.Equal(1, Bag.Items[TBagItem.Diploma]);
+        game.Bag.Items[TBagItem.Diploma] = 1;
+        game.Command = "UZYJ DYPLOM";
+        game.UseItems();
+        Assert.Equal(1, game.Bag.Items[TBagItem.Diploma]);
     }
 
-    static void EatSetup(TBagItem item) {
-        Bag.Items[item] = 1;
-        Player.Energy = 10;
-        Player.MaxEnergy = 50;
-        Bag.Count = 1;
+    void EatSetup(TBagItem item) {
+        game.Bag.Items[item] = 1;
+        game.Player.Energy = 10;
+        game.Player.MaxEnergy = 50;
+        game.Bag.Count = 1;
     }
 
     [Fact]
     public void UzywaPaczek() {
         EatSetup(TBagItem.Doughnut);
-        Command = "UZYJ PACZEK";
-        UseItems();
-        Assert.Equal(0, Bag.Items[TBagItem.Doughnut]);
-        Assert.Equal(18, Player.Energy);
-        Assert.Equal(0, Bag.Count);
+        game.Command = "UZYJ PACZEK";
+        game.UseItems();
+        Assert.Equal(0, game.Bag.Items[TBagItem.Doughnut]);
+        Assert.Equal(18, game.Player.Energy);
+        Assert.Equal(0, game.Bag.Count);
     }
 
     [Fact]
     public void UzywaCiastko() {
         EatSetup(TBagItem.Cookie);
-        Command = "UZYJ CIASTKO";
-        UseItems();
-        Assert.Equal(0, Bag.Items[TBagItem.Cookie]);
-        Assert.Equal(22, Player.Energy);
+        game.Command = "UZYJ CIASTKO";
+        game.UseItems();
+        Assert.Equal(0, game.Bag.Items[TBagItem.Cookie]);
+        Assert.Equal(22, game.Player.Energy);
     }
 
     [Fact]
     public void UzywaSuchaRacja() {
         EatSetup(TBagItem.DryRation);
-        Command = "UZYJ SUCHA RACJA";
-        UseItems();
-        Assert.Equal(0, Bag.Items[TBagItem.DryRation]);
-        Assert.Equal(26, Player.Energy);
+        game.Command = "UZYJ SUCHA RACJA";
+        game.UseItems();
+        Assert.Equal(0, game.Bag.Items[TBagItem.DryRation]);
+        Assert.Equal(26, game.Player.Energy);
     }
 
     [Fact]
     public void UzywaBulka() {
         EatSetup(TBagItem.BreadRoll);
-        Command = "UZYJ BULKA";
-        UseItems();
-        Assert.Equal(0, Bag.Items[TBagItem.BreadRoll]);
-        Assert.Equal(30, Player.Energy);
+        game.Command = "UZYJ BULKA";
+        game.UseItems();
+        Assert.Equal(0, game.Bag.Items[TBagItem.BreadRoll]);
+        Assert.Equal(30, game.Player.Energy);
     }
 
     [Fact]
     public void UzywaChleb() {
         EatSetup(TBagItem.Bread);
-        Command = "UZYJ CHLEB";
-        UseItems();
-        Assert.Equal(0, Bag.Items[TBagItem.Bread]);
-        Assert.Equal(36, Player.Energy);
+        game.Command = "UZYJ CHLEB";
+        game.UseItems();
+        Assert.Equal(0, game.Bag.Items[TBagItem.Bread]);
+        Assert.Equal(36, game.Player.Energy);
     }
 
     [Fact]
     public void UzyjaWeka() {
         EatSetup(TBagItem.Sausage);
-        Command = "UZYJ WEKA";
-        UseItems();
-        Assert.Equal(0, Bag.Items[TBagItem.Sausage]);
-        Assert.Equal(44, Player.Energy);
+        game.Command = "UZYJ WEKA";
+        game.UseItems();
+        Assert.Equal(0, game.Bag.Items[TBagItem.Sausage]);
+        Assert.Equal(44, game.Player.Energy);
     }
 
     [Fact]
     public void UzywaBigos() {
         EatSetup(TBagItem.Bigos);
-        Command = "UZYJ BIGOS";
-        UseItems();
-        Assert.Equal(0, Bag.Items[TBagItem.Bigos]);
-        Assert.Equal(30, Player.Energy);
+        game.Command = "UZYJ BIGOS";
+        game.UseItems();
+        Assert.Equal(0, game.Bag.Items[TBagItem.Bigos]);
+        Assert.Equal(30, game.Player.Energy);
     }
 
     [Fact]
     public void UzywaPigulkaLow() {
-        Bag.Items[TBagItem.TeleportPill] = 1;
-        Player.Stats[TStat.Wisdom] = 5;
-        Player.MaxEnergy = 50;
-        Player.Energy = 40;
-        Player.Experience = 100;
-        Command = "UZYJ PIGULKA";
-        UseItems();
-        Assert.Equal(0, Bag.Items[TBagItem.TeleportPill]);
-        Assert.Equal(1, Player.Energy);
-        Assert.Equal(49, Player.MaxEnergy);
-        Assert.Equal(50, Player.Experience);
+        game.Bag.Items[TBagItem.TeleportPill] = 1;
+        game.Player.Stats[TStat.Wisdom] = 5;
+        game.Player.MaxEnergy = 50;
+        game.Player.Energy = 40;
+        game.Player.Experience = 100;
+        game.Command = "UZYJ PIGULKA";
+        game.UseItems();
+        Assert.Equal(0, game.Bag.Items[TBagItem.TeleportPill]);
+        Assert.Equal(1, game.Player.Energy);
+        Assert.Equal(49, game.Player.MaxEnergy);
+        Assert.Equal(50, game.Player.Experience);
     }
 
     [Fact]
     public void UzywaPigulkaMid() {
-        Bag.Items[TBagItem.TeleportPill] = 1;
-        Player.Stats[TStat.Wisdom] = 12;
-        Player.MaxEnergy = 100;
-        Player.Energy = 100;
-        Player.Experience = 100;
-        Command = "UZYJ PIGULKA";
-        UseItems();
-        Assert.Equal(60, Player.Energy);
-        Assert.Equal(70, Player.Experience);
+        game.Bag.Items[TBagItem.TeleportPill] = 1;
+        game.Player.Stats[TStat.Wisdom] = 12;
+        game.Player.MaxEnergy = 100;
+        game.Player.Energy = 100;
+        game.Player.Experience = 100;
+        game.Command = "UZYJ PIGULKA";
+        game.UseItems();
+        Assert.Equal(60, game.Player.Energy);
+        Assert.Equal(70, game.Player.Experience);
     }
 
     [Fact]
     public void UzywaPigulkaHigh() {
-        Bag.Items[TBagItem.TeleportPill] = 1;
-        Bag.Count = 1;
-        Player.Stats[TStat.Wisdom] = 20;
-        Player.MaxEnergy = 100;
-        Player.Energy = 100;
-        Player.Experience = 100;
-        Command = "UZYJ PIGULKA";
-        UseItems();
-        Assert.Equal(0, Bag.Items[TBagItem.TeleportPill]);
-        Assert.Equal(0, Bag.Count);
-        Assert.Equal(100, Player.Energy);
-        Assert.Equal(100, Player.Experience);
+        game.Bag.Items[TBagItem.TeleportPill] = 1;
+        game.Bag.Count = 1;
+        game.Player.Stats[TStat.Wisdom] = 20;
+        game.Player.MaxEnergy = 100;
+        game.Player.Energy = 100;
+        game.Player.Experience = 100;
+        game.Command = "UZYJ PIGULKA";
+        game.UseItems();
+        Assert.Equal(0, game.Bag.Items[TBagItem.TeleportPill]);
+        Assert.Equal(0, game.Bag.Count);
+        Assert.Equal(100, game.Player.Energy);
+        Assert.Equal(100, game.Player.Experience);
     }
 
     [Fact]
     public void GarniturZyskInvariant() {
-        UnitsSeed.Reseed();
-        Bag.Items[TBagItem.SpikedSuit] = 0;
-        Bag.Count = 0;
-        SuitGain();
-        Assert.True(Bag.Items[TBagItem.SpikedSuit] == 0
-            || Bag.Items[TBagItem.SpikedSuit] == 1);
-        Assert.True(Bag.Count == 0 || Bag.Count == 1);
+        UnitsSeed.Reseed(game);
+        game.Bag.Items[TBagItem.SpikedSuit] = 0;
+        game.Bag.Count = 0;
+        game.SuitGain();
+        Assert.True(game.Bag.Items[TBagItem.SpikedSuit] == 0
+            || game.Bag.Items[TBagItem.SpikedSuit] == 1);
+        Assert.True(game.Bag.Count == 0 || game.Bag.Count == 1);
     }
 
     [Fact]
     public void PigulkaZyskInvariant() {
-        UnitsSeed.Reseed();
-        Bag.Items[TBagItem.TeleportPill] = 0;
-        Bag.Count = 0;
-        PillGain();
-        Assert.True(Bag.Items[TBagItem.TeleportPill] == 0
-            || Bag.Items[TBagItem.TeleportPill] == 1);
-        Assert.True(Bag.Count == 0 || Bag.Count == 1);
+        UnitsSeed.Reseed(game);
+        game.Bag.Items[TBagItem.TeleportPill] = 0;
+        game.Bag.Count = 0;
+        game.PillGain();
+        Assert.True(game.Bag.Items[TBagItem.TeleportPill] == 0
+            || game.Bag.Items[TBagItem.TeleportPill] == 1);
+        Assert.True(game.Bag.Count == 0 || game.Bag.Count == 1);
     }
 
     [Fact]
     public void KasetaZyskInvariant() {
-        UnitsSeed.Reseed();
-        Bag.Items[TBagItem.Cassette] = 0;
-        Player.MaxEnergy = 0;
-        Gear.Values[TGearItem.Armor] = 0;
-        Bag.Count = 0;
-        Player.Stats[TStat.Dexterity] = 0;
-        Session.Room = 20;
-        CassetteGain();
-        Assert.True(Bag.Items[TBagItem.Cassette] == 0
-            || Bag.Items[TBagItem.Cassette] == 1);
-        Assert.True(Player.MaxEnergy == 0 || Player.MaxEnergy == 5);
-        Assert.True(Gear.Values[TGearItem.Armor] == 0
-            || Gear.Values[TGearItem.Armor] == -8);
-        Assert.True(Bag.Count == 0 || Bag.Count == 1);
-        Assert.True(Player.Stats[TStat.Dexterity] == 0
-            || Player.Stats[TStat.Dexterity] == 1);
+        UnitsSeed.Reseed(game);
+        game.Bag.Items[TBagItem.Cassette] = 0;
+        game.Player.MaxEnergy = 0;
+        game.Gear.Values[TGearItem.Armor] = 0;
+        game.Bag.Count = 0;
+        game.Player.Stats[TStat.Dexterity] = 0;
+        game.Session.Room = 20;
+        game.CassetteGain();
+        Assert.True(game.Bag.Items[TBagItem.Cassette] == 0
+            || game.Bag.Items[TBagItem.Cassette] == 1);
+        Assert.True(game.Player.MaxEnergy == 0 || game.Player.MaxEnergy == 5);
+        Assert.True(game.Gear.Values[TGearItem.Armor] == 0
+            || game.Gear.Values[TGearItem.Armor] == -8);
+        Assert.True(game.Bag.Count == 0 || game.Bag.Count == 1);
+        Assert.True(game.Player.Stats[TStat.Dexterity] == 0
+            || game.Player.Stats[TStat.Dexterity] == 1);
     }
 
     [Fact]
     public void ListekZyskInvariant() {
-        UnitsSeed.Reseed();
-        Bag.Items[TBagItem.LuckyLeaf] = 0;
-        Bag.Count = 0;
-        Player.MaxMana = 0;
-        Session.Room = 20;
-        LeafGain();
-        Assert.True(Bag.Items[TBagItem.LuckyLeaf] == 0
-            || Bag.Items[TBagItem.LuckyLeaf] == 1);
-        Assert.True(Bag.Count == 0 || Bag.Count == 1);
-        Assert.True(Player.MaxMana == 0 || Player.MaxMana == 40);
+        UnitsSeed.Reseed(game);
+        game.Bag.Items[TBagItem.LuckyLeaf] = 0;
+        game.Bag.Count = 0;
+        game.Player.MaxMana = 0;
+        game.Session.Room = 20;
+        game.LeafGain();
+        Assert.True(game.Bag.Items[TBagItem.LuckyLeaf] == 0
+            || game.Bag.Items[TBagItem.LuckyLeaf] == 1);
+        Assert.True(game.Bag.Count == 0 || game.Bag.Count == 1);
+        Assert.True(game.Player.MaxMana == 0 || game.Player.MaxMana == 40);
     }
 
     [Fact]
     public void ScrollPorZyskInvariant() {
-        UnitsSeed.Reseed();
-        Bag.Items[TBagItem.CompareScroll] = 0;
-        Bag.Count = 0;
-        Session.Room = 20;
-        ScrollGain();
-        Assert.True(Bag.Items[TBagItem.CompareScroll] == 0
-            || Bag.Items[TBagItem.CompareScroll] == 1);
-        Assert.True(Bag.Count == 0 || Bag.Count == 1);
+        UnitsSeed.Reseed(game);
+        game.Bag.Items[TBagItem.CompareScroll] = 0;
+        game.Bag.Count = 0;
+        game.Session.Room = 20;
+        game.ScrollGain();
+        Assert.True(game.Bag.Items[TBagItem.CompareScroll] == 0
+            || game.Bag.Items[TBagItem.CompareScroll] == 1);
+        Assert.True(game.Bag.Count == 0 || game.Bag.Count == 1);
     }
 
     [Fact]
     public void GarniturZyskGain() {
-        UnitsSeed.Reseed();
-        Bag.Items[TBagItem.SpikedSuit] = 0;
-        Bag.Count = 0;
+        UnitsSeed.Reseed(game);
+        game.Bag.Items[TBagItem.SpikedSuit] = 0;
+        game.Bag.Count = 0;
         int i = 0;
-        while (Bag.Count == 0 && i < 2000) {
-            SuitGain();
+        while (game.Bag.Count == 0 && i < 2000) {
+            game.SuitGain();
             i++;
         }
-        Assert.True(Bag.Count > 0);
-        Assert.Equal(1, Bag.Items[TBagItem.SpikedSuit]);
+        Assert.True(game.Bag.Count > 0);
+        Assert.Equal(1, game.Bag.Items[TBagItem.SpikedSuit]);
     }
 
     [Fact]
     public void PigulkaZyskGain() {
-        UnitsSeed.Reseed();
-        Bag.Items[TBagItem.TeleportPill] = 0;
-        Bag.Count = 0;
+        UnitsSeed.Reseed(game);
+        game.Bag.Items[TBagItem.TeleportPill] = 0;
+        game.Bag.Count = 0;
         int i = 0;
-        while (Bag.Count == 0 && i < 2000) {
-            PillGain();
+        while (game.Bag.Count == 0 && i < 2000) {
+            game.PillGain();
             i++;
         }
-        Assert.True(Bag.Count > 0);
-        Assert.Equal(1, Bag.Items[TBagItem.TeleportPill]);
+        Assert.True(game.Bag.Count > 0);
+        Assert.Equal(1, game.Bag.Items[TBagItem.TeleportPill]);
     }
 
     [Fact]
     public void KasetaZyskGain() {
-        UnitsSeed.Reseed();
-        Bag.Items[TBagItem.Cassette] = 0;
-        Player.MaxEnergy = 0;
-        Gear.Values[TGearItem.Armor] = 0;
-        Bag.Count = 0;
-        Player.Stats[TStat.Dexterity] = 0;
-        Session.Room = 20;
+        UnitsSeed.Reseed(game);
+        game.Bag.Items[TBagItem.Cassette] = 0;
+        game.Player.MaxEnergy = 0;
+        game.Gear.Values[TGearItem.Armor] = 0;
+        game.Bag.Count = 0;
+        game.Player.Stats[TStat.Dexterity] = 0;
+        game.Session.Room = 20;
         int i = 0;
-        while (Bag.Count == 0 && i < 2000) {
-            CassetteGain();
+        while (game.Bag.Count == 0 && i < 2000) {
+            game.CassetteGain();
             i++;
         }
-        Assert.True(Bag.Count > 0);
-        Assert.Equal(1, Bag.Items[TBagItem.Cassette]);
-        Assert.Equal(5, Player.MaxEnergy);
-        Assert.Equal(-8, Gear.Values[TGearItem.Armor]);
-        Assert.Equal(1, Player.Stats[TStat.Dexterity]);
+        Assert.True(game.Bag.Count > 0);
+        Assert.Equal(1, game.Bag.Items[TBagItem.Cassette]);
+        Assert.Equal(5, game.Player.MaxEnergy);
+        Assert.Equal(-8, game.Gear.Values[TGearItem.Armor]);
+        Assert.Equal(1, game.Player.Stats[TStat.Dexterity]);
     }
 
     [Fact]
     public void ListekZyskGain() {
-        UnitsSeed.Reseed();
-        Bag.Items[TBagItem.LuckyLeaf] = 0;
-        Bag.Count = 0;
-        Player.MaxMana = 0;
-        Session.Room = 20;
+        UnitsSeed.Reseed(game);
+        game.Bag.Items[TBagItem.LuckyLeaf] = 0;
+        game.Bag.Count = 0;
+        game.Player.MaxMana = 0;
+        game.Session.Room = 20;
         int i = 0;
-        while (Bag.Count == 0 && i < 2000) {
-            LeafGain();
+        while (game.Bag.Count == 0 && i < 2000) {
+            game.LeafGain();
             i++;
         }
-        Assert.True(Bag.Count > 0);
-        Assert.Equal(1, Bag.Items[TBagItem.LuckyLeaf]);
-        Assert.Equal(40, Player.MaxMana);
+        Assert.True(game.Bag.Count > 0);
+        Assert.Equal(1, game.Bag.Items[TBagItem.LuckyLeaf]);
+        Assert.Equal(40, game.Player.MaxMana);
     }
 
     [Fact]
     public void ScrollPorZyskGain() {
-        UnitsSeed.Reseed();
-        Bag.Items[TBagItem.CompareScroll] = 0;
-        Bag.Count = 0;
-        Session.Room = 20;
+        UnitsSeed.Reseed(game);
+        game.Bag.Items[TBagItem.CompareScroll] = 0;
+        game.Bag.Count = 0;
+        game.Session.Room = 20;
         int i = 0;
-        while (Bag.Count == 0 && i < 2000) {
-            ScrollGain();
+        while (game.Bag.Count == 0 && i < 2000) {
+            game.ScrollGain();
             i++;
         }
-        Assert.True(Bag.Count > 0);
-        Assert.Equal(1, Bag.Items[TBagItem.CompareScroll]);
+        Assert.True(game.Bag.Count > 0);
+        Assert.Equal(1, game.Bag.Items[TBagItem.CompareScroll]);
     }
 
     [Fact]
     public void SprzedazMieczaZeStosu() {
-        Bag.Items[TBagItem.OldSword] = 2;
-        Bag.Count = 2;
-        Gear.Values[TGearItem.WeaponKind] = 0;
-        Player.Money = 0;
-        Assert.True(Sell(TBagItem.OldSword));
-        Assert.Equal(1, Bag.Items[TBagItem.OldSword]);
-        Assert.Equal(1, Bag.Count);
-        Assert.Equal(30, Player.Money);
+        game.Bag.Items[TBagItem.OldSword] = 2;
+        game.Bag.Count = 2;
+        game.Gear.Values[TGearItem.WeaponKind] = 0;
+        game.Player.Money = 0;
+        Assert.True(game.Sell(TBagItem.OldSword));
+        Assert.Equal(1, game.Bag.Items[TBagItem.OldSword]);
+        Assert.Equal(1, game.Bag.Count);
+        Assert.Equal(30, game.Player.Money);
     }
 
     [Fact]
     public void SprzedazTarczyZeStosu() {
-        Bag.Items[TBagItem.SmallShield] = 2;
-        Bag.Count = 2;
-        Gear.Values[TGearItem.ShieldKind] = 0;
-        Player.Money = 0;
-        Assert.True(Sell(TBagItem.SmallShield));
-        Assert.Equal(1, Bag.Items[TBagItem.SmallShield]);
-        Assert.Equal(1, Bag.Count);
-        Assert.Equal(8, Player.Money);
+        game.Bag.Items[TBagItem.SmallShield] = 2;
+        game.Bag.Count = 2;
+        game.Gear.Values[TGearItem.ShieldKind] = 0;
+        game.Player.Money = 0;
+        Assert.True(game.Sell(TBagItem.SmallShield));
+        Assert.Equal(1, game.Bag.Items[TBagItem.SmallShield]);
+        Assert.Equal(1, game.Bag.Count);
+        Assert.Equal(8, game.Player.Money);
     }
 
     [Fact]
     public void SprzedazTarczyBezSztukiNieDziala() {
-        Bag.Items[TBagItem.SmallShield] = 0;
-        Bag.Count = 0;
-        Player.Money = 0;
-        Gear.Values[TGearItem.ShieldKind] = 0;
-        Assert.False(Sell(TBagItem.SmallShield));
-        Assert.Equal(0, Bag.Count);
-        Assert.Equal(0, Player.Money);
+        game.Bag.Items[TBagItem.SmallShield] = 0;
+        game.Bag.Count = 0;
+        game.Player.Money = 0;
+        game.Gear.Values[TGearItem.ShieldKind] = 0;
+        Assert.False(game.Sell(TBagItem.SmallShield));
+        Assert.Equal(0, game.Bag.Count);
+        Assert.Equal(0, game.Player.Money);
     }
 
     [Fact]
     public void SprzedazPigulkiBezSztukiNieDziala() {
-        Bag.Items[TBagItem.TeleportPill] = 0;
-        Bag.Count = 0;
-        Player.Money = 0;
-        Assert.False(Sell(TBagItem.TeleportPill));
-        Assert.Equal(0, Bag.Count);
-        Assert.Equal(0, Player.Money);
+        game.Bag.Items[TBagItem.TeleportPill] = 0;
+        game.Bag.Count = 0;
+        game.Player.Money = 0;
+        Assert.False(game.Sell(TBagItem.TeleportPill));
+        Assert.Equal(0, game.Bag.Count);
+        Assert.Equal(0, game.Player.Money);
     }
 
     [Fact]
     public void SprzedazFajkiZeStosu() {
-        Bag.Items[TBagItem.Pipe] = 2;
-        Bag.Count = 2;
-        Player.Money = 0;
-        Player.Stats[TStat.Wisdom] = 10;
-        Assert.True(Sell(TBagItem.Pipe));
-        Assert.Equal(1, Bag.Items[TBagItem.Pipe]);
-        Assert.Equal(1, Bag.Count);
-        Assert.Equal(120, Player.Money);
-        Assert.Equal(10, Player.Stats[TStat.Wisdom]);
-        Assert.True(Sell(TBagItem.Pipe));
-        Assert.Equal(0, Bag.Items[TBagItem.Pipe]);
-        Assert.Equal(0, Bag.Count);
-        Assert.Equal(240, Player.Money);
-        Assert.Equal(9, Player.Stats[TStat.Wisdom]);
-        Player.Stats[TStat.Wisdom] = 0;
-        Bag.Permit = 0;
-        Bag.Count = 0;
-        Player.Money = 0;
+        game.Bag.Items[TBagItem.Pipe] = 2;
+        game.Bag.Count = 2;
+        game.Player.Money = 0;
+        game.Player.Stats[TStat.Wisdom] = 10;
+        Assert.True(game.Sell(TBagItem.Pipe));
+        Assert.Equal(1, game.Bag.Items[TBagItem.Pipe]);
+        Assert.Equal(1, game.Bag.Count);
+        Assert.Equal(120, game.Player.Money);
+        Assert.Equal(10, game.Player.Stats[TStat.Wisdom]);
+        Assert.True(game.Sell(TBagItem.Pipe));
+        Assert.Equal(0, game.Bag.Items[TBagItem.Pipe]);
+        Assert.Equal(0, game.Bag.Count);
+        Assert.Equal(240, game.Player.Money);
+        Assert.Equal(9, game.Player.Stats[TStat.Wisdom]);
+        game.Player.Stats[TStat.Wisdom] = 0;
+        game.Bag.Permit = 0;
+        game.Bag.Count = 0;
+        game.Player.Money = 0;
     }
 
     [Fact]
     public void SprzedazListkaWymagaListka() {
-        Bag.Items[TBagItem.LuckyLeaf] = 0;
-        Bag.Count = 0;
-        Player.Money = 1000;
-        Player.MaxMana = 40;
-        Assert.False(Sell(TBagItem.LuckyLeaf));
-        Bag.Items[TBagItem.LuckyLeaf] = 1;
-        Bag.Count = 1;
-        Assert.True(Sell(TBagItem.LuckyLeaf));
-        Assert.Equal(1400, Player.Money);
-        Assert.Equal(0, Player.MaxMana);
+        game.Bag.Items[TBagItem.LuckyLeaf] = 0;
+        game.Bag.Count = 0;
+        game.Player.Money = 1000;
+        game.Player.MaxMana = 40;
+        Assert.False(game.Sell(TBagItem.LuckyLeaf));
+        game.Bag.Items[TBagItem.LuckyLeaf] = 1;
+        game.Bag.Count = 1;
+        Assert.True(game.Sell(TBagItem.LuckyLeaf));
+        Assert.Equal(1400, game.Player.Money);
+        Assert.Equal(0, game.Player.MaxMana);
     }
 
     [Fact]
     public void SprzedazKasetyRevertsCarryModifiers() {
-        Bag.Items[TBagItem.Cassette] = 1;
-        Bag.Count = 1;
-        Player.Money = 0;
-        Player.MaxEnergy = 55;
-        Player.Stats[TStat.Dexterity] = 11;
-        Gear.Values[TGearItem.Armor] = -8;
-        Assert.True(Sell(TBagItem.Cassette));
-        Assert.Equal(0, Bag.Items[TBagItem.Cassette]);
-        Assert.Equal(0, Bag.Count);
-        Assert.Equal(1000, Player.Money);
-        Assert.Equal(50, Player.MaxEnergy);
-        Assert.Equal(10, Player.Stats[TStat.Dexterity]);
-        Assert.Equal(0, Gear.Values[TGearItem.Armor]);
+        game.Bag.Items[TBagItem.Cassette] = 1;
+        game.Bag.Count = 1;
+        game.Player.Money = 0;
+        game.Player.MaxEnergy = 55;
+        game.Player.Stats[TStat.Dexterity] = 11;
+        game.Gear.Values[TGearItem.Armor] = -8;
+        Assert.True(game.Sell(TBagItem.Cassette));
+        Assert.Equal(0, game.Bag.Items[TBagItem.Cassette]);
+        Assert.Equal(0, game.Bag.Count);
+        Assert.Equal(1000, game.Player.Money);
+        Assert.Equal(50, game.Player.MaxEnergy);
+        Assert.Equal(10, game.Player.Stats[TStat.Dexterity]);
+        Assert.Equal(0, game.Gear.Values[TGearItem.Armor]);
     }
 
     [Fact]
     public void SprzedazGarnituruWymagaGarnituru() {
-        Bag.Items[TBagItem.SpikedSuit] = 0;
-        Bag.Count = 0;
-        Gear.WornGarment = Texts.TxtEmpty;
-        Assert.False(Sell(TBagItem.SpikedSuit));
-        Bag.Items[TBagItem.SpikedSuit] = 1;
-        Bag.Count = 1;
-        Assert.True(Sell(TBagItem.SpikedSuit));
-        Assert.Equal(0, Bag.Items[TBagItem.SpikedSuit]);
-        Assert.Equal(0, Bag.Count);
+        game.Bag.Items[TBagItem.SpikedSuit] = 0;
+        game.Bag.Count = 0;
+        game.Gear.WornGarment = Texts.TxtEmpty;
+        Assert.False(game.Sell(TBagItem.SpikedSuit));
+        game.Bag.Items[TBagItem.SpikedSuit] = 1;
+        game.Bag.Count = 1;
+        Assert.True(game.Sell(TBagItem.SpikedSuit));
+        Assert.Equal(0, game.Bag.Items[TBagItem.SpikedSuit]);
+        Assert.Equal(0, game.Bag.Count);
     }
 
     [Fact]
     public void SprzedazWladanegoMieczaNieDziala() {
-        Bag.Items[TBagItem.OldSword] = 2;
-        Bag.Count = 2;
-        Player.Money = 0;
-        Gear.Values[TGearItem.WeaponKind] = 0;
-        Player.Stats[TStat.Strength] = 0;
-        Gear.Values[TGearItem.LuckRoll] = 0;
-        Assert.True(Equip(TBagItem.OldSword));
-        Assert.False(Sell(TBagItem.OldSword));
-        Assert.Equal(1, Bag.Items[TBagItem.OldSword]);
-        Assert.Equal(1, Bag.Count);
-        Assert.Equal(0, Player.Money);
-        Assert.True(Unequip(TBagItem.OldSword));
-        Assert.Equal(2, Bag.Items[TBagItem.OldSword]);
-        Assert.Equal(2, Bag.Count);
+        game.Bag.Items[TBagItem.OldSword] = 2;
+        game.Bag.Count = 2;
+        game.Player.Money = 0;
+        game.Gear.Values[TGearItem.WeaponKind] = 0;
+        game.Player.Stats[TStat.Strength] = 0;
+        game.Gear.Values[TGearItem.LuckRoll] = 0;
+        Assert.True(game.Equip(TBagItem.OldSword));
+        Assert.False(game.Sell(TBagItem.OldSword));
+        Assert.Equal(1, game.Bag.Items[TBagItem.OldSword]);
+        Assert.Equal(1, game.Bag.Count);
+        Assert.Equal(0, game.Player.Money);
+        Assert.True(game.Unequip(TBagItem.OldSword));
+        Assert.Equal(2, game.Bag.Items[TBagItem.OldSword]);
+        Assert.Equal(2, game.Bag.Count);
     }
 
     [Fact]
     public void SprzedazWladanejTarczyNieDziala() {
-        Bag.Items[TBagItem.SmallShield] = 2;
-        Bag.Count = 2;
-        Player.Money = 0;
-        Gear.Values[TGearItem.ShieldKind] = 0;
-        Gear.Values[TGearItem.Armor] = 0;
-        Gear.Values[TGearItem.WornCount] = 0;
-        Assert.True(Equip(TBagItem.SmallShield));
-        Assert.False(Sell(TBagItem.SmallShield));
-        Assert.Equal(1, Bag.Items[TBagItem.SmallShield]);
-        Assert.Equal(1, Bag.Count);
-        Assert.Equal(0, Player.Money);
-        Assert.True(Unequip(TBagItem.SmallShield));
-        Assert.Equal(2, Bag.Items[TBagItem.SmallShield]);
-        Assert.Equal(2, Bag.Count);
+        game.Bag.Items[TBagItem.SmallShield] = 2;
+        game.Bag.Count = 2;
+        game.Player.Money = 0;
+        game.Gear.Values[TGearItem.ShieldKind] = 0;
+        game.Gear.Values[TGearItem.Armor] = 0;
+        game.Gear.Values[TGearItem.WornCount] = 0;
+        Assert.True(game.Equip(TBagItem.SmallShield));
+        Assert.False(game.Sell(TBagItem.SmallShield));
+        Assert.Equal(1, game.Bag.Items[TBagItem.SmallShield]);
+        Assert.Equal(1, game.Bag.Count);
+        Assert.Equal(0, game.Player.Money);
+        Assert.True(game.Unequip(TBagItem.SmallShield));
+        Assert.Equal(2, game.Bag.Items[TBagItem.SmallShield]);
+        Assert.Equal(2, game.Bag.Count);
     }
 
     [Fact]
     public void SprzedazWladanejTarczyBezSztukiNiePlaci() {
-        Bag.Items[TBagItem.SmallShield] = 1;
-        Bag.Count = 1;
-        Player.Money = 0;
-        Gear.Values[TGearItem.ShieldKind] = 0;
-        Gear.Values[TGearItem.Armor] = 0;
-        Gear.Values[TGearItem.WornCount] = 0;
-        Assert.True(Equip(TBagItem.SmallShield));
-        Assert.False(Sell(TBagItem.SmallShield));
-        Assert.Equal(0, Bag.Items[TBagItem.SmallShield]);
-        Assert.Equal(0, Bag.Count);
-        Assert.Equal(0, Player.Money);
-        Assert.True(Unequip(TBagItem.SmallShield));
+        game.Bag.Items[TBagItem.SmallShield] = 1;
+        game.Bag.Count = 1;
+        game.Player.Money = 0;
+        game.Gear.Values[TGearItem.ShieldKind] = 0;
+        game.Gear.Values[TGearItem.Armor] = 0;
+        game.Gear.Values[TGearItem.WornCount] = 0;
+        Assert.True(game.Equip(TBagItem.SmallShield));
+        Assert.False(game.Sell(TBagItem.SmallShield));
+        Assert.Equal(0, game.Bag.Items[TBagItem.SmallShield]);
+        Assert.Equal(0, game.Bag.Count);
+        Assert.Equal(0, game.Player.Money);
+        Assert.True(game.Unequip(TBagItem.SmallShield));
     }
 
     [Fact]
     public void SprzedazZalozonegoKompletuNieDziala() {
-        Bag.Items[TBagItem.Tracksuit] = 1;
-        Bag.Count = 1;
-        Player.Money = 0;
-        Gear.WornGarment = Texts.TxtEmpty;
-        Gear.Values[TGearItem.Armor] = 0;
-        Gear.Values[TGearItem.Wearing] = 0;
-        Assert.True(Equip(TBagItem.Tracksuit));
-        Assert.False(Sell(TBagItem.Tracksuit));
-        Assert.Equal(0, Bag.Items[TBagItem.Tracksuit]);
-        Assert.Equal(0, Bag.Count);
-        Assert.Equal(0, Player.Money);
-        Assert.True(Unequip(TBagItem.Tracksuit));
-        Assert.Equal(1, Bag.Items[TBagItem.Tracksuit]);
-        Assert.Equal(1, Bag.Count);
+        game.Bag.Items[TBagItem.Tracksuit] = 1;
+        game.Bag.Count = 1;
+        game.Player.Money = 0;
+        game.Gear.WornGarment = Texts.TxtEmpty;
+        game.Gear.Values[TGearItem.Armor] = 0;
+        game.Gear.Values[TGearItem.Wearing] = 0;
+        Assert.True(game.Equip(TBagItem.Tracksuit));
+        Assert.False(game.Sell(TBagItem.Tracksuit));
+        Assert.Equal(0, game.Bag.Items[TBagItem.Tracksuit]);
+        Assert.Equal(0, game.Bag.Count);
+        Assert.Equal(0, game.Player.Money);
+        Assert.True(game.Unequip(TBagItem.Tracksuit));
+        Assert.Equal(1, game.Bag.Items[TBagItem.Tracksuit]);
+        Assert.Equal(1, game.Bag.Count);
     }
 
     [Fact]
     public void SprzedazZalozonegoGarnituruNieDziala() {
-        Bag.Items[TBagItem.SpikedSuit] = 1;
-        Bag.Count = 1;
-        Player.Money = 0;
-        Gear.WornGarment = Texts.TxtEmpty;
-        Gear.Values[TGearItem.WornCount] = 0;
-        Gear.Values[TGearItem.Armor] = 0;
-        Gear.Values[TGearItem.LuckRoll] = 0;
-        Assert.True(Equip(TBagItem.SpikedSuit));
-        Assert.False(Sell(TBagItem.SpikedSuit));
-        Assert.Equal(0, Bag.Items[TBagItem.SpikedSuit]);
-        Assert.Equal(0, Bag.Count);
-        Assert.Equal(0, Player.Money);
-        Assert.True(Unequip(TBagItem.SpikedSuit));
-        Assert.Equal(1, Bag.Items[TBagItem.SpikedSuit]);
-        Assert.Equal(1, Bag.Count);
+        game.Bag.Items[TBagItem.SpikedSuit] = 1;
+        game.Bag.Count = 1;
+        game.Player.Money = 0;
+        game.Gear.WornGarment = Texts.TxtEmpty;
+        game.Gear.Values[TGearItem.WornCount] = 0;
+        game.Gear.Values[TGearItem.Armor] = 0;
+        game.Gear.Values[TGearItem.LuckRoll] = 0;
+        Assert.True(game.Equip(TBagItem.SpikedSuit));
+        Assert.False(game.Sell(TBagItem.SpikedSuit));
+        Assert.Equal(0, game.Bag.Items[TBagItem.SpikedSuit]);
+        Assert.Equal(0, game.Bag.Count);
+        Assert.Equal(0, game.Player.Money);
+        Assert.True(game.Unequip(TBagItem.SpikedSuit));
+        Assert.Equal(1, game.Bag.Items[TBagItem.SpikedSuit]);
+        Assert.Equal(1, game.Bag.Count);
     }
 
     [Fact]
     public void KupnoMieczaDzialaPrzyPosiadanym() {
-        Bag.Items[TBagItem.OldSword] = 1;
-        Bag.Count = 1;
-        Gear.Values[TGearItem.WeaponKind] = 0;
-        Player.Stats[TStat.Strength] = 0;
-        Gear.Values[TGearItem.LuckRoll] = 0;
-        Player.Money = 200;
-        Assert.True(Equip(TBagItem.OldSword));
-        Assert.True(Buy(TBagItem.OldSword));
-        Assert.Equal(130, Player.Money);
-        Assert.Equal(1, Bag.Items[TBagItem.OldSword]);
-        Assert.Equal(1, Bag.Count);
-        Assert.True(Buy(TBagItem.OldSword));
-        Assert.Equal(60, Player.Money);
-        Assert.Equal(2, Bag.Items[TBagItem.OldSword]);
-        Assert.Equal(2, Bag.Count);
-        Assert.True(Unequip(TBagItem.OldSword));
-        Assert.Equal(3, Bag.Items[TBagItem.OldSword]);
-        Assert.Equal(3, Bag.Count);
+        game.Bag.Items[TBagItem.OldSword] = 1;
+        game.Bag.Count = 1;
+        game.Gear.Values[TGearItem.WeaponKind] = 0;
+        game.Player.Stats[TStat.Strength] = 0;
+        game.Gear.Values[TGearItem.LuckRoll] = 0;
+        game.Player.Money = 200;
+        Assert.True(game.Equip(TBagItem.OldSword));
+        Assert.True(game.Buy(TBagItem.OldSword));
+        Assert.Equal(130, game.Player.Money);
+        Assert.Equal(1, game.Bag.Items[TBagItem.OldSword]);
+        Assert.Equal(1, game.Bag.Count);
+        Assert.True(game.Buy(TBagItem.OldSword));
+        Assert.Equal(60, game.Player.Money);
+        Assert.Equal(2, game.Bag.Items[TBagItem.OldSword]);
+        Assert.Equal(2, game.Bag.Count);
+        Assert.True(game.Unequip(TBagItem.OldSword));
+        Assert.Equal(3, game.Bag.Items[TBagItem.OldSword]);
+        Assert.Equal(3, game.Bag.Count);
     }
 
     [Fact]
     public void KupnoMalaButelkaManyPlaciCeneMimoNizszegoProgu() {
-        Bag.Items[TBagItem.ManaBottle] = 0;
-        Bag.Count = 0;
-        Player.Money = 16;
-        Assert.True(Buy(TBagItem.ManaBottle));
-        Assert.Equal(-4, Player.Money);
-        Assert.Equal(1, Bag.Items[TBagItem.ManaBottle]);
-        Assert.Equal(1, Bag.Count);
+        game.Bag.Items[TBagItem.ManaBottle] = 0;
+        game.Bag.Count = 0;
+        game.Player.Money = 16;
+        Assert.True(game.Buy(TBagItem.ManaBottle));
+        Assert.Equal(-4, game.Player.Money);
+        Assert.Equal(1, game.Bag.Items[TBagItem.ManaBottle]);
+        Assert.Equal(1, game.Bag.Count);
     }
 
     [Fact]
     public void KupnoFajkiDodajeMadrosc() {
-        Bag.Items[TBagItem.Pipe] = 0;
-        Bag.Count = 0;
-        Player.Money = 480;
-        Player.Stats[TStat.Wisdom] = 10;
-        Player.Stats[TStat.MaxWisdom] = 10;
-        Assert.True(Buy(TBagItem.Pipe));
-        Assert.Equal(0, Player.Money);
-        Assert.Equal(1, Bag.Items[TBagItem.Pipe]);
-        Assert.Equal(11, Player.Stats[TStat.Wisdom]);
-        Assert.Equal(1, Bag.Count);
-        Player.Stats[TStat.Wisdom] = 0;
-        Player.Stats[TStat.MaxWisdom] = 0;
-        Bag.Items[TBagItem.Pipe] = 0;
-        Bag.Count = 0;
-        Player.Money = 0;
+        game.Bag.Items[TBagItem.Pipe] = 0;
+        game.Bag.Count = 0;
+        game.Player.Money = 480;
+        game.Player.Stats[TStat.Wisdom] = 10;
+        game.Player.Stats[TStat.MaxWisdom] = 10;
+        Assert.True(game.Buy(TBagItem.Pipe));
+        Assert.Equal(0, game.Player.Money);
+        Assert.Equal(1, game.Bag.Items[TBagItem.Pipe]);
+        Assert.Equal(11, game.Player.Stats[TStat.Wisdom]);
+        Assert.Equal(1, game.Bag.Count);
+        game.Player.Stats[TStat.Wisdom] = 0;
+        game.Player.Stats[TStat.MaxWisdom] = 0;
+        game.Bag.Items[TBagItem.Pipe] = 0;
+        game.Bag.Count = 0;
+        game.Player.Money = 0;
     }
 
     [Fact]
     public void KupnoPaczkaPlaciCene() {
-        Bag.Items[TBagItem.Doughnut] = 0;
-        Bag.Count = 0;
-        Player.Money = 8;
-        Assert.True(Buy(TBagItem.Doughnut));
-        Assert.Equal(0, Player.Money);
-        Assert.Equal(1, Bag.Items[TBagItem.Doughnut]);
-        Assert.Equal(1, Bag.Count);
+        game.Bag.Items[TBagItem.Doughnut] = 0;
+        game.Bag.Count = 0;
+        game.Player.Money = 8;
+        Assert.True(game.Buy(TBagItem.Doughnut));
+        Assert.Equal(0, game.Player.Money);
+        Assert.Equal(1, game.Bag.Items[TBagItem.Doughnut]);
+        Assert.Equal(1, game.Bag.Count);
     }
 
     [Fact]
     public void ZapisWczytujeLiczniki() {
-        Player.Name = "COUNTS";
-        Bag.Items[TBagItem.Beer] = 2;
-        Bag.Items[TBagItem.Diploma] = 0;
-        Bag.ItemRooms[TBagItem.Diploma].Clear();
-        Bag.AddGroundItem(TBagItem.Diploma, 12);
-        Bag.AddGroundItem(TBagItem.Diploma, 14);
-        string path = SaveFileName();
+        game.Player.Name = "COUNTS";
+        game.Bag.Items[TBagItem.Beer] = 2;
+        game.Bag.Items[TBagItem.Diploma] = 0;
+        game.Bag.ItemRooms[TBagItem.Diploma].Clear();
+        game.Bag.AddGroundItem(TBagItem.Diploma, 12);
+        game.Bag.AddGroundItem(TBagItem.Diploma, 14);
+        string path = game.SaveFileName();
         try {
-            SaveCharacter();
-            Bag.Items[TBagItem.Beer] = 0;
-            Bag.ItemRooms[TBagItem.Diploma].Clear();
-            LoadGame();
+            game.SaveCharacter();
+            game.Bag.Items[TBagItem.Beer] = 0;
+            game.Bag.ItemRooms[TBagItem.Diploma].Clear();
+            game.LoadGame();
         } finally {
             File.Delete(path);
-            Session.SavedFlag = false;
+            game.Session.SavedFlag = false;
         }
-        Assert.Equal(2, Bag.Items[TBagItem.Beer]);
-        Assert.Equal(0, Bag.Items[TBagItem.Diploma]);
-        Assert.Equal(2, Bag.ItemRooms[TBagItem.Diploma].Count);
-        Assert.Contains(12, Bag.ItemRooms[TBagItem.Diploma]);
-        Assert.Contains(14, Bag.ItemRooms[TBagItem.Diploma]);
-        Assert.Empty(Bag.ItemRooms[TBagItem.Beer]);
+        Assert.Equal(2, game.Bag.Items[TBagItem.Beer]);
+        Assert.Equal(0, game.Bag.Items[TBagItem.Diploma]);
+        Assert.Equal(2, game.Bag.ItemRooms[TBagItem.Diploma].Count);
+        Assert.Contains(12, game.Bag.ItemRooms[TBagItem.Diploma]);
+        Assert.Contains(14, game.Bag.ItemRooms[TBagItem.Diploma]);
+        Assert.Empty(game.Bag.ItemRooms[TBagItem.Beer]);
     }
 
     [Fact]
     public void BagLimitFollowsDexterity() {
-        Player.Stats[TStat.Dexterity] = 10;
-        Bag.Items[TBagItem.Backpack] = 0;
-        RecalcBag();
-        Assert.Equal(10, Bag.Limit);
-        Player.Stats[TStat.Dexterity] = 12;
-        RecalcBag();
-        Assert.Equal(11, Bag.Limit);
-        Player.Stats[TStat.Dexterity] = 25;
-        RecalcBag();
-        Assert.Equal(16, Bag.Limit);
-        Bag.Items[TBagItem.Backpack] = 1;
-        RecalcBag();
-        Assert.Equal(20, Bag.Limit);
+        game.Player.Stats[TStat.Dexterity] = 10;
+        game.Bag.Items[TBagItem.Backpack] = 0;
+        game.RecalcBag();
+        Assert.Equal(10, game.Bag.Limit);
+        game.Player.Stats[TStat.Dexterity] = 12;
+        game.RecalcBag();
+        Assert.Equal(11, game.Bag.Limit);
+        game.Player.Stats[TStat.Dexterity] = 25;
+        game.RecalcBag();
+        Assert.Equal(16, game.Bag.Limit);
+        game.Bag.Items[TBagItem.Backpack] = 1;
+        game.RecalcBag();
+        Assert.Equal(20, game.Bag.Limit);
     }
 
     [Fact]
     public void RecalcBagRecomputesCount() {
-        Enum.GetValues<TBagItem>().ToList().ForEach(item => Bag.Items[item] = 0);
-        Player.Stats[TStat.Dexterity] = 10;
-        Bag.Permit = 0;
-        Bag.Items[TBagItem.Beer] = 2;
-        Bag.Items[TBagItem.Backpack] = 1;
-        Bag.Count = 99;
-        RecalcBag();
-        Assert.Equal(3, Bag.Count);
-        Assert.Equal(14, Bag.Limit);
+        Enum.GetValues<TBagItem>().ToList().ForEach(item => game.Bag.Items[item] = 0);
+        game.Player.Stats[TStat.Dexterity] = 10;
+        game.Bag.Permit = 0;
+        game.Bag.Items[TBagItem.Beer] = 2;
+        game.Bag.Items[TBagItem.Backpack] = 1;
+        game.Bag.Count = 99;
+        game.RecalcBag();
+        Assert.Equal(3, game.Bag.Count);
+        Assert.Equal(14, game.Bag.Limit);
     }
 
     [Fact]
     public void WczytaniePrzeliczaPlecak() {
-        Player.Name = "RECALC";
-        Enum.GetValues<TBagItem>().ToList().ForEach(item => Bag.Items[item] = 0);
-        Bag.Items[TBagItem.Beer] = 2;
-        Bag.Permit = 1;
-        Bag.Count = 0;
-        string path = SaveFileName();
+        game.Player.Name = "RECALC";
+        Enum.GetValues<TBagItem>().ToList().ForEach(item => game.Bag.Items[item] = 0);
+        game.Bag.Items[TBagItem.Beer] = 2;
+        game.Bag.Permit = 1;
+        game.Bag.Count = 0;
+        string path = game.SaveFileName();
         try {
-            SaveCharacter();
-            Bag.Count = 99;
-            LoadGame();
+            game.SaveCharacter();
+            game.Bag.Count = 99;
+            game.LoadGame();
         } finally {
             File.Delete(path);
-            Session.SavedFlag = false;
+            game.Session.SavedFlag = false;
         }
-        Assert.Equal(3, Bag.Count);
+        Assert.Equal(3, game.Bag.Count);
     }
 }

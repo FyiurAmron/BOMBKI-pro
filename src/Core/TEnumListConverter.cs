@@ -1,6 +1,5 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using static Game;
 
 public class TEnumListConverterFactory : JsonConverterFactory {
     public override bool CanConvert(Type typeToConvert) =>
