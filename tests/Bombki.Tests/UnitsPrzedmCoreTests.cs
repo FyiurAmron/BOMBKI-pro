@@ -35,6 +35,25 @@ public class UnitsPrzedmCoreTests {
     }
 
     [Fact]
+    public void CommandIgnoresExtraWhitespace() {
+        Command = "  PATRZ   PLAKAT  ";
+        Assert.Equal("PATRZ PLAKAT", Command);
+        Assert.Equal("PATRZ ", Verb);
+        Assert.Equal("PLAKAT", Rest);
+        Assert.True(Matches("PATRZ PLAKAT"));
+
+        Command = "  EXIT  ";
+        Assert.Equal("EXIT", Command);
+        Assert.Equal("EXIT", Verb);
+        Assert.Equal("", Rest);
+        Assert.True(Matches("EXIT"));
+
+        Command = "  PN  ";
+        ExpandAbbrev();
+        Assert.Equal("POLNOC", Command);
+    }
+
+    [Fact]
     public void TrainSila() {
         Player.Stats[TStat.Strength] = 10;
         Player.Stats[TStat.MaxStrength] = 20;

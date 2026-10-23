@@ -248,10 +248,10 @@ public static class Game {
     public static string Command {
         get => _command;
         set {
-            _command = value;
-            int split = value.IndexOf(' ');
-            Verb = split < 0 ? value : value[..(split + 1)];
-            Rest = split < 0 ? TxtEmpty : value[(split + 1)..];
+            _command = NormalizeCommand(value);
+            var (verb, rest) = SplitVerbRest(_command);
+            Verb = verb;
+            Rest = rest;
         }
     }
 
@@ -260,23 +260,34 @@ public static class Game {
     public static string Verb = "";
     public static string Rest = "";
 
-    static readonly Dictionary<string, (string verb, string rest)> SplitCache = [];
-
-    public static (string verb, string rest) Split(string cmd) {
-        if (SplitCache.TryGetValue(cmd, out var parts)) {
-            return parts;
+    static string NormalizeCommand(string value) {
+        value = value.Trim();
+        if (!value.Contains("  ")) {
+            return value;
         }
-
-        int split = cmd.IndexOf(' ');
-        parts = split < 0 ? (cmd, TxtEmpty) : (cmd[..(split + 1)], cmd[(split + 1)..]);
-        SplitCache[cmd] = parts;
-        return parts;
+        StringBuilder normalized = new(value.Length);
+        bool space = false;
+        foreach (char c in value) {
+            if (c == ' ') {
+                if (!space) {
+                    normalized.Append(c);
+                }
+                space = true;
+            } else {
+                normalized.Append(c);
+                space = false;
+            }
+        }
+        return normalized.ToString();
     }
 
-    public static bool Matches(string cmd) {
-        var (verb, rest) = Split(cmd);
-        return Verb == verb && Rest == rest;
+    static (string verb, string rest) SplitVerbRest(string command) {
+        int split = command.IndexOf(' ');
+        return split < 0 ? (command, TxtEmpty) : (command[..(split + 1)], command[(split + 1)..]);
     }
+
+    public static bool Matches(string cmd) =>
+        Command == cmd;
 
     public static Action DispatchRooms = () => { };
 
@@ -2128,12 +2139,15 @@ public static class Game {
         }
     }
 
+    static readonly List<(string from, string to)> Abbreviations = [
+        (CmdPn, CmdPolnoc), (CmdPd, CmdPolodnie), (CmdW, CmdWschod), (CmdZ, CmdZachod),
+        (CmdG, CmdGora), (CmdD, CmdDol), (CmdE, CmdExit), (CmdM, CmdMode),
+    ];
+
     public static void ExpandAbbrev() {
-        List<string> AbbrevFrom = [CmdPn, CmdPd, CmdW, CmdZ, CmdG, CmdD, CmdE, CmdM];
-        List<string> AbbrevTo = [CmdPolnoc, CmdPolodnie, CmdWschod, CmdZachod, CmdGora, CmdDol, CmdExit, CmdMode];
-        for (int i = 0; i < AbbrevFrom.Count; i++) {
-            if (Matches(AbbrevFrom[i])) {
-                Command = AbbrevTo[i];
+        for (int i = 0; i < Abbreviations.Count; i++) {
+            if (Matches(Abbreviations[i].from)) {
+                Command = Abbreviations[i].to;
                 return;
             }
         }

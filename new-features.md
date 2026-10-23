@@ -41,6 +41,7 @@
   - level messages use numeric levels instead of ordinal names
 - all rooms show their exit list
 - direction abbreviations work in every room
+- commands tolerate extra whitespace
 - exit lists show the real target room name now
 - all rooms wired; no longer crashes after going into northern LAS
 - the cage wing is fully two-way; the teleporter is gone
