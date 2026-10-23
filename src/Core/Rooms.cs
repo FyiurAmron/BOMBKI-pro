@@ -127,6 +127,11 @@ public static class Rooms {
             predicate?.Invoke(state?.Invoke() ?? enabled) ?? enabled;
     }
 
+    public enum TRoomPhase {
+        Enter,
+        Command,
+    }
+
     public class TRoom {
         public int number;
         public TCoordinate position;
@@ -136,43 +141,43 @@ public static class Rooms {
         public List<TMovement> moves = [];
         public List<TRoomPoster> posters = [];
         public bool maze = false;
-        public Action<bool>? turn = null;
+        public Action<TRoomPhase>? turn = null;
     }
 
-    static void StreetTurn(bool entering) {
-        if (entering) {
+    static void StreetTurn(TRoomPhase phase) {
+        if (phase == TRoomPhase.Enter) {
             DescribeStreet();
         } else {
             StreetFights();
         }
     }
 
-    static void PlantTurn(bool entering) {
-        if (entering) {
+    static void PlantTurn(TRoomPhase phase) {
+        if (phase == TRoomPhase.Enter) {
             DescribePlants();
         } else {
             PlantFights();
         }
     }
 
-    static void CrowdTurn(bool entering) {
-        if (entering) {
+    static void CrowdTurn(TRoomPhase phase) {
+        if (phase == TRoomPhase.Enter) {
             DescribeCrowd();
         } else {
             ConcertFights();
         }
     }
 
-    static void StageTurn(bool entering) {
-        if (entering) {
+    static void StageTurn(TRoomPhase phase) {
+        if (phase == TRoomPhase.Enter) {
             DescribeStage();
         } else {
             StageFights();
         }
     }
 
-    static void ArenaTurn(bool entering) {
-        if (entering) {
+    static void ArenaTurn(int room, TRoomPhase phase) {
+        if (phase == TRoomPhase.Enter) {
             DescribeBeasts();
             return;
         }
@@ -180,14 +185,14 @@ public static class Rooms {
             case CmdZabij:
                 switch (Rest) {
                     case CmdBakteria:
-                        if (Session.Room == World.Monsters[TMonster.Bacterium]) {
+                        if (room == World.Monsters[TMonster.Bacterium]) {
                             Fight(TFoe.WeakEnemy);
                             World.Monsters[TMonster.Bacterium] = 0;
                             Out.WriteLine(TxtArenaMaze_02);
                         }
                         break;
                     case CmdWilczur:
-                        if (Session.Room == World.Monsters[TMonster.Mongrel]) {
+                        if (room == World.Monsters[TMonster.Mongrel]) {
                             Out.WriteLine(TxtArenaMaze_03);
                             Fight(TFoe.WeakishEnemy);
                             World.Monsters[TMonster.Mongrel] = 0;
@@ -286,7 +291,7 @@ public static class Rooms {
             name = $"{TxtPlaceArena} {number - RoomArena33 + 1}",
             intro = [TxtArenaMaze_01],
             maze = true,
-            turn = ArenaTurn,
+            turn = phase => ArenaTurn(number, phase),
         };
 
     public static readonly List<TRoom> RoomDefs = [
@@ -316,8 +321,8 @@ public static class Rooms {
             intro = [TxtYouAreIn + TxtRoom2_01, TxtRoom2_02, TxtShared_04],
             exits = [Exit(CmdZachod, true)],
             posters = [new(CmdPatrz + CmdPlakat, [TxtShared_05, TxtRoom2_04, TxtRoom2_05])],
-            turn = entering => {
-                if (!entering) {
+            turn = phase => {
+                if (phase == TRoomPhase.Command) {
                     HandleTrain();
                 }
             },
@@ -328,8 +333,8 @@ public static class Rooms {
             name = TxtPlacePoddziemnyPokojTreningowy2,
             intro = [TxtRoom3_01, TxtRoom3_02, TxtRoom3_03],
             exits = [Exit(CmdGora, true)],
-            turn = entering => {
-                if (!entering) {
+            turn = phase => {
+                if (phase == TRoomPhase.Command) {
                     Training();
                 }
             },
@@ -387,8 +392,8 @@ public static class Rooms {
             position = new(-2, -1, 2),
             name = TxtPlaceKlatkaCieniasa,
             exits = [Exit(CmdZachod, true)],
-            turn = entering => {
-                if (entering) {
+            turn = phase => {
+                if (phase == TRoomPhase.Enter) {
                     DescribeCage(CageWeakling, RoomCageWeakling, TxtRoom12_01, TxtShared_07);
                 } else {
                     CageMonsterFight(IntSlot.Into(World.Monsters, CageWeakling), RoomCageWeakling, CageWeaklingStats);
@@ -400,8 +405,8 @@ public static class Rooms {
             position = new(-4, -1, 2),
             name = TxtPlaceKlatkaSilnego,
             exits = [Exit(CmdWschod, true)],
-            turn = entering => {
-                if (entering) {
+            turn = phase => {
+                if (phase == TRoomPhase.Enter) {
                     DescribeCage(CageStrong, RoomCageStrong, TxtRoom13_01, TxtShared_07);
                 } else {
                     CageMonsterFight(IntSlot.Into(World.Monsters, CageStrong), RoomCageStrong, CageStrongStats);
@@ -413,8 +418,8 @@ public static class Rooms {
             position = new(-3, 0, 2),
             name = TxtPlaceKlatkaZrecznego,
             exits = [Exit(CmdPolodnie, true)],
-            turn = entering => {
-                if (entering) {
+            turn = phase => {
+                if (phase == TRoomPhase.Enter) {
                     DescribeCage(CageAgile, RoomCageAgile, TxtRoom14_01, TxtRoom14_02);
                 } else {
                     CageMonsterFight(IntSlot.Into(World.Monsters, CageAgile), RoomCageAgile, CageAgileStats);
@@ -426,8 +431,8 @@ public static class Rooms {
             position = new(-3, -2, 2),
             name = TxtPlaceKlatkaOdpornego,
             exits = [Exit(CmdPolnoc, true)],
-            turn = entering => {
-                if (entering) {
+            turn = phase => {
+                if (phase == TRoomPhase.Enter) {
                     DescribeCage(CageTough, RoomCageTough, TxtRoom15_01, TxtShared_07);
                 } else {
                     CageMonsterFight(IntSlot.Into(World.Monsters, CageTough), RoomCageTough, CageToughStats);
@@ -439,8 +444,8 @@ public static class Rooms {
             position = new(-3, -1, 3),
             name = TxtPlaceKlatkaSilnegoOdpornegoIZrecznego,
             exits = [Exit(CmdDol, true), ],
-            turn = entering => {
-                if (entering) {
+            turn = phase => {
+                if (phase == TRoomPhase.Enter) {
                     DescribeCage(CageHuge, RoomCageHuge, TxtRoom16_01, TxtShared_07);
                 }
                 if (World.Monsters[CageHuge] == RoomCageHuge) {
@@ -467,8 +472,8 @@ public static class Rooms {
             name = TxtPlaceJedynaDrogaNieProwadzacaDoKlatek,
             intro = [TxtYouAreIn + TxtRoom17_01],
             exits = [Exit(CmdZachod, true)],
-            turn = entering => {
-                if (entering) {
+            turn = phase => {
+                if (phase == TRoomPhase.Enter) {
                     return;
                 }
                 if (Verb == CmdPatrz && Rest == CmdPlakat) {
@@ -531,8 +536,8 @@ public static class Rooms {
             intro = [TxtYouAreIn + TxtRoom23_01, TxtRoom23_02, TxtRoom23_03],
             exits = [Exit(CmdZachod, true)],
             posters = [new(CmdPatrz + CmdPlakat, [TxtRoom23_04, TxtRoom23_05])],
-            turn = entering => {
-                if (entering) {
+            turn = phase => {
+                if (phase == TRoomPhase.Enter) {
                     DescribeStreet();
                 } else {
                     BakeryShop();
@@ -546,8 +551,8 @@ public static class Rooms {
             intro = [TxtYouAreIn + TxtRoom24_01, TxtRoom24_02, TxtRoom24_03],
             exits = [Exit(CmdWschod, true)],
             posters = [new(CmdPatrz + CmdPlakat, [TxtRoom24_04])],
-            turn = entering => {
-                if (entering) {
+            turn = phase => {
+                if (phase == TRoomPhase.Enter) {
                     DescribeStreet();
                 } else {
                     ArmouryShop();
@@ -563,8 +568,8 @@ public static class Rooms {
             exits = [Exit(CmdZachod, true)],
             posters = [new(CmdPatrz + CmdWywieszka, [TxtRoom25_03]),
                        new(CmdPatrz + CmdPoster, [TxtGeneralStoreShop_06]), ],
-            turn = entering => {
-                if (entering) {
+            turn = phase => {
+                if (phase == TRoomPhase.Enter) {
                     DescribeStreet();
                 } else {
                     StreetFights();
@@ -579,8 +584,8 @@ public static class Rooms {
             intro = [TxtRoom26_01],
             exits = [Exit(CmdWschod, true)],
             posters = [new(CmdPatrz + CmdPlakat, [TxtRoom26_02])],
-            turn = entering => {
-                if (entering) {
+            turn = phase => {
+                if (phase == TRoomPhase.Enter) {
                     DescribeStreet();
                 } else {
                     MagicShop();
@@ -721,8 +726,8 @@ public static class Rooms {
             intro = [TxtYouAreIn + TxtConcertRooms_18, TxtConcertRooms_19],
             exits = [Exit(CmdPolodnie, true),
                      Exit(CmdWschod, true), ],
-            turn = entering => {
-                if (entering) {
+            turn = phase => {
+                if (phase == TRoomPhase.Enter) {
                     if (World.Monsters[Minibarman] == 67) {
                         Out.WriteLine(TxtConcertRooms_20);
                     }
@@ -776,8 +781,8 @@ public static class Rooms {
             exits = [Exit(CmdZachod, true),
                      Exit(CmdWschod, true), ],
             posters = [new(CmdPatrz + CmdTabliczka, [TxtConcertRooms_32])],
-            turn = entering => {
-                if (entering) {
+            turn = phase => {
+                if (phase == TRoomPhase.Enter) {
                     DescribeCrowd();
                     return;
                 }
@@ -794,8 +799,8 @@ public static class Rooms {
             intro = [TxtConcertRooms_33, TxtConcertRooms_34],
             exits = [Exit(CmdZachod, true),
                      Exit(CmdPolodnie, true), ],
-            turn = entering => {
-                if (entering) {
+            turn = phase => {
+                if (phase == TRoomPhase.Enter) {
                     if (World.Monsters[DJ] == 69) {
                         Out.WriteLine(TxtConcertRooms_35);
                     }
@@ -870,8 +875,8 @@ public static class Rooms {
             name = TxtPlaceBarPodDwomaPedalami,
             intro = [TxtYouAreIn + TxtRoom76_01, TxtRoom76_02, TxtRoom76_03, TxtRoom76_04],
             exits = [Exit(CmdPolodnie, true)],
-            turn = entering => {
-                if (entering) {
+            turn = phase => {
+                if (phase == TRoomPhase.Enter) {
                     if (World.Monsters[Maciek] == 76) {
                         Out.WriteLine(TxtRoom76_05);
                     }
@@ -950,8 +955,8 @@ public static class Rooms {
                      Exit(CmdWschod, true),
                      Exit(CmdPolodnie, true), ],
             posters = [new(CmdPatrz + CmdNapis, [TxtRoom80_04])],
-            turn = entering => {
-                if (entering) {
+            turn = phase => {
+                if (phase == TRoomPhase.Enter) {
                     DescribePlants();
                     return;
                 }
@@ -1018,8 +1023,8 @@ public static class Rooms {
             intro = [TxtRoom85_01, TxtRoom85_02],
             exits = [Exit(CmdWschod, true),
                       Exit(CmdZachod, static doorClosed => !doorClosed, () => World.Door, TxtRoom85_07), ],
-            turn = entering => {
-                if (entering) {
+            turn = phase => {
+                if (phase == TRoomPhase.Enter) {
                     if (World.Door) {
                         Out.WriteLine(TxtRoom85_03);
                     }
@@ -1042,8 +1047,8 @@ public static class Rooms {
             name = TxtPlaceDomek,
             intro = [TxtRoom86_01],
             exits = [Exit(CmdWschod, true)],
-            turn = entering => {
-                if (entering) {
+            turn = phase => {
+                if (phase == TRoomPhase.Enter) {
                     if (World.OldElf) {
                         Out.WriteLine(TxtRoom86_02);
                     }
@@ -1097,8 +1102,8 @@ public static class Rooms {
             intro = [TxtRoom87_01, TxtRoom87_02],
             exits = [Exit(CmdPolnoc, true),
                      Exit(CmdPolodnie, true), ],
-            turn = entering => {
-                if (!entering) {
+            turn = phase => {
+                if (phase == TRoomPhase.Command) {
                     return;
                 }
                 Combat.Roll = Roll(100);
@@ -1117,8 +1122,8 @@ public static class Rooms {
             name = TxtPlaceGrota,
             intro = [TxtRoom88_01, TxtRoom88_02, TxtRoom88_03, TxtRoom88_04],
             exits = [Exit(CmdPolnoc, true)],
-            turn = entering => {
-                if (!entering) {
+            turn = phase => {
+                if (phase == TRoomPhase.Command) {
                     return;
                 }
                 Out.Write(TxtRoom88_05);
@@ -1168,8 +1173,8 @@ public static class Rooms {
             exits = [Exit(CmdPolodnie, true),
                      Exit(CmdWschod, true),
                      Exit(CmdZachod, static allowed => allowed, () => Bag.Permit > 0, TxtRoom100_16), ],
-            turn = entering => {
-                if (entering) {
+            turn = phase => {
+                if (phase == TRoomPhase.Enter) {
                     DescribeStreet();
                 } else {
                     if (Verb == CmdLista) {
@@ -1427,7 +1432,7 @@ public static class Rooms {
 
     static void RunRoom(TRoom room) {
         WriteLines(room.intro);
-        room.turn?.Invoke(true);
+        room.turn?.Invoke(TRoomPhase.Enter);
         do {
             ReadCommand();
 
@@ -1436,7 +1441,7 @@ public static class Rooms {
             }
 
             if (Session.Room == room.number) {
-                room.turn?.Invoke(false);
+                room.turn?.Invoke(TRoomPhase.Command);
             }
 
             if (MoveWhenOrQuit(room.moves)) {
