@@ -183,107 +183,84 @@ public class Inventory {
             TFoodItem f = FoodItems[fi];
             EatFood(f.cmd, f.item, f.verb, f.line, f.gain, f.stat, f.cap);
         }
-        switch (game.Verb) {
-            case CmdUzyj:
-                switch (game.Rest) {
-                    case CmdFajka:
-                        if (game.Bag.Items[TBagItem.Pipe] > 0) {
-                            Out.WriteLine(TxtUseItems_01);
-                        }
+        UseCommands.FirstOrDefault(entry => game.Matches(entry.cmd))?.run();
+    }
 
-                        break;
-                    case CmdSerce:
-                        if (LoseItem(TBagItem.Heart)) {
-                            Out.WriteLine(TxtEatVerb + TxtUseItems_02);
-                            game.Player.ChangeEnergy(5);
-                        }
-                        break;
-                    case CmdDyplom:
-                        if (game.Bag.Items[TBagItem.Diploma] > 0) {
-                            game.WriteLines([
-                                TxtUseItems_03,
-                                TxtUseItems_06,
-                                TxtUseItems_06,
-                                TxtUseItems_06,
-                                TxtUseItems_07,
-                            ]);
-                        }
+    void UseTeleportPill() {
+        if (game.Bag.Items[TBagItem.TeleportPill] == 0) {
+            return;
+        }
 
-                        break;
-                    case CmdKaseta:
-                        Out.WriteLine(TxtUseItems_24);
-                        break;
-                    case CmdKomplet:
-                        if (Equip(TBagItem.Tracksuit)) {
-                            Out.WriteLine(TxtUseItems_28);
-                        }
-                        break;
-                    case CmdListek:
-                        if (game.Bag.Items[TBagItem.LuckyLeaf] > 0) {
-                            Out.WriteLine(TxtUseItems_30);
-                        }
+        Out.WriteLine(TxtUseItems_32);
+        LoseItem(TBagItem.TeleportPill);
+        game.World.SpawnMonsters();
+        if (game.Player.Stats[TStat.Wisdom] < 10) {
+            Out.WriteLine(TxtUseItems_33);
+            game.Player.MaxEnergy -= 1;
+            game.Player.Energy = 1;
+            game.Player.Experience -= 50;
+        } else if (game.Player.Stats[TStat.Wisdom] < 16) {
+            Out.WriteLine(TxtUseItems_35);
+            if (!game.Player.ChangeEnergy(-40)) {
+                game.Player.Energy = 1;
+            }
 
-                        break;
-                    case TxtWornGarnitur:
-                        if (Equip(TBagItem.SpikedSuit)) {
-                            Out.WriteLine(TxtUseItems_31);
-                        }
-                        break;
-                    case CmdPigulka:
-                        if (game.Bag.Items[TBagItem.TeleportPill] > 0) {
-                            Out.WriteLine(TxtUseItems_32);
-                            LoseItem(TBagItem.TeleportPill);
-                            game.World.SpawnMonsters();
-                            if (game.Player.Stats[TStat.Wisdom] < 10) {
-                                Out.WriteLine(TxtUseItems_33);
-                                game.Player.MaxEnergy -= 1;
-                                game.Player.Energy = 1;
-                                game.Player.Experience -= 50;
-                            } else if (game.Player.Stats[TStat.Wisdom] < 16) {
-                                Out.WriteLine(TxtUseItems_35);
-                                if (!game.Player.ChangeEnergy(-40)) {
-                                    game.Player.Energy = 1;
-                                }
-
-                                game.Player.Experience -= 30;
-                            } else {
-                                Out.WriteLine(TxtUseItems_37);
-                            }
-                        }
-                        break;
-                }
-                break;
-            case CmdZniszcz:
-                if ((game.Rest == CmdPrzepustka) && LosePermit()) {
-                    Out.WriteLine(TxtUseItems_16);
-                }
-                break;
-            case CmdPatrz:
-                if ((game.Rest == CmdPrzepustka) && (game.Bag.Permit > 0)) {
-                    game.WriteLines([
-                        TxtUseItems_17,
-                        TxtUseItems_18,
-                        TxtUseItems_17,
-                    ]);
-                }
-
-                break;
-            case CmdOdloz:
-                switch (game.Rest) {
-                    case CmdKomplet:
-                        if (Unequip(TBagItem.Tracksuit)) {
-                            Out.WriteLine(TxtUseItems_29);
-                        }
-                        break;
-                    case TxtWornGarnitur:
-                        if (Unequip(TBagItem.SpikedSuit)) {
-                            Out.WriteLine(TxtUseItems_38);
-                        }
-                        break;
-                }
-                break;
+            game.Player.Experience -= 30;
+        } else {
+            Out.WriteLine(TxtUseItems_37);
         }
     }
+
+    void SayIfHeld(TBagItem item, string line) {
+        if (game.Bag.Items[item] > 0) {
+            Out.WriteLine(line);
+        }
+    }
+
+    void SayIf(bool changed, string line) {
+        if (changed) {
+            Out.WriteLine(line);
+        }
+    }
+
+    List<TCommandEntry> UseCommands => _useCommands ??= [
+        new($"{CmdUzyj}{CmdFajka}", () => SayIfHeld(TBagItem.Pipe, TxtUseItems_01)),
+        new($"{CmdUzyj}{CmdSerce}", () => {
+            if (LoseItem(TBagItem.Heart)) {
+                Out.WriteLine($"{TxtEatVerb}{TxtUseItems_02}");
+                game.Player.ChangeEnergy(5);
+            }
+        }),
+        new($"{CmdUzyj}{CmdDyplom}", () => {
+            if (game.Bag.Items[TBagItem.Diploma] > 0) {
+                game.WriteLines([
+                    TxtUseItems_03,
+                    TxtUseItems_06,
+                    TxtUseItems_06,
+                    TxtUseItems_06,
+                    TxtUseItems_07,
+                ]);
+            }
+        }),
+        new($"{CmdUzyj}{CmdKaseta}", () => Out.WriteLine(TxtUseItems_24)),
+        new($"{CmdUzyj}{CmdKomplet}", () => SayIf(Equip(TBagItem.Tracksuit), TxtUseItems_28)),
+        new($"{CmdUzyj}{CmdListek}", () => SayIfHeld(TBagItem.LuckyLeaf, TxtUseItems_30)),
+        new($"{CmdUzyj}{TxtWornGarnitur}", () => SayIf(Equip(TBagItem.SpikedSuit), TxtUseItems_31)),
+        new($"{CmdUzyj}{CmdPigulka}", UseTeleportPill),
+        new($"{CmdZniszcz}{CmdPrzepustka}", () => SayIf(LosePermit(), TxtUseItems_16)),
+        new($"{CmdPatrz}{CmdPrzepustka}", () => {
+            if (game.Bag.Permit > 0) {
+                game.WriteLines([
+                    TxtUseItems_17,
+                    TxtUseItems_18,
+                    TxtUseItems_17,
+                ]);
+            }
+        }),
+        new($"{CmdOdloz}{CmdKomplet}", () => SayIf(Unequip(TBagItem.Tracksuit), TxtUseItems_29)),
+        new($"{CmdOdloz}{TxtWornGarnitur}", () => SayIf(Unequip(TBagItem.SpikedSuit), TxtUseItems_38)),
+    ];
+    List<TCommandEntry>? _useCommands;
 
     public void RecalcBag() {
         game.Bag.Count = Enum.GetValues<TBagItem>().Sum(item => game.Bag.Items[item]) + game.Bag.Permit;
