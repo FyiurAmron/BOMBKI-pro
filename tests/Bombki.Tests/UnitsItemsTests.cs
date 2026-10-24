@@ -10,7 +10,7 @@ public class UnitsItemsTests {
         game.Bag.AddGroundItem(TBagItem.OldSword, 7);
         game.Bag.Count = 0;
         game.Command = "BIERZ STARY";
-        game.TakeDrop();
+        game.Inventory.TakeDrop();
         Assert.Equal(1, game.Bag.Items[TBagItem.OldSword]);
         Assert.Empty(game.Bag.ItemRooms[TBagItem.OldSword]);
         Assert.Equal(1, game.Bag.Count);
@@ -22,7 +22,7 @@ public class UnitsItemsTests {
         game.Bag.Items[TBagItem.OldSword] = 1;
         game.Bag.Count = 1;
         game.Command = "ODRZUC STARY";
-        game.TakeDrop();
+        game.Inventory.TakeDrop();
         Assert.Equal(0, game.Bag.Items[TBagItem.OldSword]);
         Assert.Contains(7, game.Bag.ItemRooms[TBagItem.OldSword]);
         Assert.Equal(0, game.Bag.Count);
@@ -37,13 +37,13 @@ public class UnitsItemsTests {
         game.Gear.Values[TGearItem.WeaponKind] = 0;
         game.Player.Stats[TStat.Strength] = 0;
         game.Gear.Values[TGearItem.LuckRoll] = 0;
-        Assert.True(game.Equip(TBagItem.OldSword));
+        Assert.True(game.Inventory.Equip(TBagItem.OldSword));
         game.Command = "ODRZUC STARY";
-        game.TakeDrop();
+        game.Inventory.TakeDrop();
         Assert.Equal(1, game.Bag.Items[TBagItem.OldSword]);
         Assert.Empty(game.Bag.ItemRooms[TBagItem.OldSword]);
         Assert.Equal(1, game.Bag.Count);
-        Assert.True(game.Unequip(TBagItem.OldSword));
+        Assert.True(game.Inventory.Unequip(TBagItem.OldSword));
         Assert.Equal(2, game.Bag.Items[TBagItem.OldSword]);
         Assert.Equal(2, game.Bag.Count);
     }
@@ -57,13 +57,13 @@ public class UnitsItemsTests {
         game.Gear.Values[TGearItem.ShieldKind] = 0;
         game.Gear.Values[TGearItem.Armor] = 0;
         game.Gear.Values[TGearItem.WornCount] = 0;
-        Assert.True(game.Equip(TBagItem.SmallShield));
+        Assert.True(game.Inventory.Equip(TBagItem.SmallShield));
         game.Command = "ODRZUC MALA";
-        game.TakeDrop();
+        game.Inventory.TakeDrop();
         Assert.Equal(1, game.Bag.Items[TBagItem.SmallShield]);
         Assert.Empty(game.Bag.ItemRooms[TBagItem.SmallShield]);
         Assert.Equal(1, game.Bag.Count);
-        Assert.True(game.Unequip(TBagItem.SmallShield));
+        Assert.True(game.Inventory.Unequip(TBagItem.SmallShield));
         Assert.Equal(2, game.Bag.Items[TBagItem.SmallShield]);
         Assert.Equal(2, game.Bag.Count);
     }
@@ -76,7 +76,7 @@ public class UnitsItemsTests {
         game.Gear.Values[TGearItem.WeaponKind] = 0;
         game.Bag.Count = 0;
         game.Command = "ODRZUC STARY";
-        game.TakeDrop();
+        game.Inventory.TakeDrop();
         Assert.Equal(0, game.Bag.Items[TBagItem.OldSword]);
         Assert.Empty(game.Bag.ItemRooms[TBagItem.OldSword]);
         Assert.Equal(0, game.Bag.Count);
@@ -90,7 +90,7 @@ public class UnitsItemsTests {
         game.Gear.Values[TGearItem.WeaponKind] = 0;
         game.Bag.Count = 2;
         game.Command = "ODRZUC STARY";
-        game.TakeDrop();
+        game.Inventory.TakeDrop();
         Assert.Equal(1, game.Bag.Items[TBagItem.OldSword]);
         Assert.Contains(7, game.Bag.ItemRooms[TBagItem.OldSword]);
         Assert.Equal(1, game.Bag.Count);
@@ -105,11 +105,11 @@ public class UnitsItemsTests {
         game.Bag.AddGroundItem(TBagItem.OldSword, 7);
         game.Bag.AddGroundItem(TBagItem.OldSword, 7);
         game.Command = "BIERZ STARY";
-        game.TakeDrop();
+        game.Inventory.TakeDrop();
         Assert.Equal(1, game.Bag.Items[TBagItem.OldSword]);
         Assert.Equal(1, game.Bag.Count);
         Assert.Single(game.Bag.ItemRooms[TBagItem.OldSword]);
-        game.TakeDrop();
+        game.Inventory.TakeDrop();
         Assert.Equal(2, game.Bag.Items[TBagItem.OldSword]);
         Assert.Equal(2, game.Bag.Count);
         Assert.Empty(game.Bag.ItemRooms[TBagItem.OldSword]);
@@ -123,8 +123,8 @@ public class UnitsItemsTests {
         game.Bag.ItemRooms[TBagItem.OldSword].Clear();
         game.Gear.Values[TGearItem.WeaponKind] = 0;
         game.Command = "ODRZUC STARY";
-        game.TakeDrop();
-        game.TakeDrop();
+        game.Inventory.TakeDrop();
+        game.Inventory.TakeDrop();
         Assert.Equal(0, game.Bag.Items[TBagItem.OldSword]);
         Assert.Equal(0, game.Bag.Count);
         Assert.Equal(2, game.Bag.ItemRooms[TBagItem.OldSword].Count);
@@ -177,7 +177,7 @@ public class UnitsItemsTests {
         game.Bag.Count = 1;
         game.Bag.ItemRooms[TBagItem.OldSword].Clear();
         game.Session.Room = 7;
-        game.TryLoot(TBagItem.OldSword, 100, "");
+        game.Combat.TryLoot(TBagItem.OldSword, 100, "");
         Assert.Contains(7, game.Bag.ItemRooms[TBagItem.OldSword]);
         game.Bag.Items[TBagItem.OldSword] = 0;
         game.Bag.Count = 0;
@@ -190,7 +190,7 @@ public class UnitsItemsTests {
         game.Bag.ItemRooms[TBagItem.Heart].Clear();
         game.Bag.AddGroundItem(TBagItem.Heart, 7);
         game.Bag.AddGroundItem(TBagItem.Heart, 8);
-        game.TryLoot(TBagItem.Heart, 100, "");
+        game.Combat.TryLoot(TBagItem.Heart, 100, "");
         Assert.Equal(3, game.Bag.ItemRooms[TBagItem.Heart].Count);
         Assert.Equal(2, game.Bag.ItemRooms[TBagItem.Heart].Count(room => room == 7));
         Assert.Contains(8, game.Bag.ItemRooms[TBagItem.Heart]);
@@ -204,7 +204,7 @@ public class UnitsItemsTests {
         game.Bag.ItemRooms[TBagItem.OldSword].Clear();
         game.Bag.Count = 0;
         game.Command = "BIERZ STARY";
-        game.TakeDrop();
+        game.Inventory.TakeDrop();
         Assert.Equal(0, game.Bag.Items[TBagItem.OldSword]);
         Assert.Equal(0, game.Bag.Count);
     }
@@ -216,7 +216,7 @@ public class UnitsItemsTests {
         game.Bag.ItemRooms[TBagItem.Diploma].Clear();
         game.Bag.Count = 0;
         game.Command = "BIERZ DYPLOM";
-        game.TakeDrop();
+        game.Inventory.TakeDrop();
         Assert.Equal(0, game.Bag.Items[TBagItem.Diploma]);
         Assert.Empty(game.Bag.ItemRooms[TBagItem.Diploma]);
         Assert.Equal(0, game.Bag.Count);
@@ -238,13 +238,13 @@ public class UnitsItemsTests {
         game.Player.Stats[TStat.MaxWisdom] = 5;
         game.Player.MaxEnergy = 50;
         game.Command = "BIERZ MALA";
-        game.TakeDrop();
+        game.Inventory.TakeDrop();
         game.Command = "BIERZ SERCE";
-        game.TakeDrop();
+        game.Inventory.TakeDrop();
         game.Command = "BIERZ DYPLOM";
-        game.TakeDrop();
+        game.Inventory.TakeDrop();
         game.Command = "BIERZ FAJKA";
-        game.TakeDrop();
+        game.Inventory.TakeDrop();
         Assert.Equal(1, game.Bag.Items[TBagItem.SmallShield]);
         Assert.Equal(1, game.Bag.Items[TBagItem.Heart]);
         Assert.Equal(1, game.Bag.Items[TBagItem.Diploma]);
@@ -265,13 +265,13 @@ public class UnitsItemsTests {
         game.Player.Stats[TStat.Wisdom] = 1;
         game.Player.MaxEnergy = 55;
         game.Command = "ODRZUC FAJKA";
-        game.TakeDrop();
+        game.Inventory.TakeDrop();
         game.Command = "ODRZUC MALA";
-        game.TakeDrop();
+        game.Inventory.TakeDrop();
         game.Command = "ODRZUC SERCE";
-        game.TakeDrop();
+        game.Inventory.TakeDrop();
         game.Command = "ODRZUC DYPLOM";
-        game.TakeDrop();
+        game.Inventory.TakeDrop();
         Assert.Equal(0, game.Bag.Items[TBagItem.SmallShield]);
         Assert.Equal(0, game.Bag.Items[TBagItem.Heart]);
         Assert.Equal(0, game.Bag.Items[TBagItem.Diploma]);
@@ -295,11 +295,11 @@ public class UnitsItemsTests {
         game.Player.Stats[TStat.Wisdom] = 5;
         game.Player.Stats[TStat.MaxWisdom] = 5;
         game.Command = "BIERZ FAJKA";
-        game.TakeDrop();
+        game.Inventory.TakeDrop();
         Assert.Equal(6, game.Player.Stats[TStat.Wisdom]);
         Assert.Equal(1, game.Bag.Count);
         game.Command = "ODRZUC FAJKA";
-        game.TakeDrop();
+        game.Inventory.TakeDrop();
         Assert.Equal(5, game.Player.Stats[TStat.Wisdom]);
         Assert.Equal(0, game.Bag.Count);
         game.Bag.ItemRooms[TBagItem.Pipe].Clear();
@@ -313,15 +313,15 @@ public class UnitsItemsTests {
         game.Bag.Count = 0;
         game.Player.Stats[TStat.Wisdom] = 5;
         game.Player.Stats[TStat.MaxWisdom] = 5;
-        game.AcquireItem(TBagItem.Pipe, 2);
+        game.Inventory.AcquireItem(TBagItem.Pipe, 2);
         Assert.Equal(2, game.Bag.Items[TBagItem.Pipe]);
         Assert.Equal(2, game.Bag.Count);
         Assert.Equal(6, game.Player.Stats[TStat.Wisdom]);
-        Assert.True(game.LoseItem(TBagItem.Pipe));
+        Assert.True(game.Inventory.LoseItem(TBagItem.Pipe));
         Assert.Equal(1, game.Bag.Items[TBagItem.Pipe]);
         Assert.Equal(1, game.Bag.Count);
         Assert.Equal(6, game.Player.Stats[TStat.Wisdom]);
-        Assert.True(game.LoseItem(TBagItem.Pipe));
+        Assert.True(game.Inventory.LoseItem(TBagItem.Pipe));
         Assert.Equal(0, game.Bag.Items[TBagItem.Pipe]);
         Assert.Equal(0, game.Bag.Count);
         Assert.Equal(5, game.Player.Stats[TStat.Wisdom]);
@@ -336,7 +336,7 @@ public class UnitsItemsTests {
         game.Player.MaxEnergy = 50;
         game.Bag.Count = 1;
         game.Command = "UZYJ SERCE";
-        game.UseItems();
+        game.Inventory.UseItems();
         Assert.Equal(0, game.Bag.Items[TBagItem.Heart]);
         Assert.Equal(15, game.Player.Energy);
         Assert.Equal(0, game.Bag.Count);
@@ -349,7 +349,7 @@ public class UnitsItemsTests {
         game.Player.MaxEnergy = 50;
         game.Bag.Count = 1;
         game.Command = "UZYJ SERCE";
-        game.UseItems();
+        game.Inventory.UseItems();
         Assert.Equal(50, game.Player.Energy);
     }
 
@@ -360,7 +360,7 @@ public class UnitsItemsTests {
         game.Player.MaxEnergy = 50;
         game.Bag.Count = 2;
         game.Command = "UZYJ SERCE";
-        game.UseItems();
+        game.Inventory.UseItems();
         Assert.Equal(1, game.Bag.Items[TBagItem.Heart]);
         Assert.Equal(15, game.Player.Energy);
         Assert.Equal(1, game.Bag.Count);
@@ -374,14 +374,14 @@ public class UnitsItemsTests {
         game.Gear.Values[TGearItem.Armor] = 0;
         game.Gear.Values[TGearItem.Wearing] = 0;
         game.Command = "UZYJ KOMPLET";
-        game.UseItems();
+        game.Inventory.UseItems();
         Assert.Equal(7, game.Gear.Values[TGearItem.Armor]);
         Assert.Equal(1, game.Gear.Values[TGearItem.Wearing]);
         Assert.Equal(Texts.TxtWornSyf, game.Gear.WornGarment);
         Assert.Equal(0, game.Bag.Items[TBagItem.Tracksuit]);
         Assert.Equal(0, game.Bag.Count);
         game.Command = "ODLOZ KOMPLET";
-        game.UseItems();
+        game.Inventory.UseItems();
         Assert.Equal(0, game.Gear.Values[TGearItem.Armor]);
         Assert.Equal(0, game.Gear.Values[TGearItem.Wearing]);
         Assert.Equal(Texts.TxtEmpty, game.Gear.WornGarment);
@@ -397,7 +397,7 @@ public class UnitsItemsTests {
         game.Gear.Values[TGearItem.Armor] = 0;
         game.Gear.Values[TGearItem.Wearing] = 1;
         game.Command = "UZYJ KOMPLET";
-        game.UseItems();
+        game.Inventory.UseItems();
         Assert.Equal(0, game.Gear.Values[TGearItem.Armor]);
         Assert.Equal(1, game.Gear.Values[TGearItem.Wearing]);
         Assert.Equal(Texts.TxtWornGarnitur, game.Gear.WornGarment);
@@ -416,7 +416,7 @@ public class UnitsItemsTests {
         game.Gear.Values[TGearItem.Armor] = 0;
         game.Gear.Values[TGearItem.LuckRoll] = 0;
         game.Command = "UZYJ GARNITUR";
-        game.UseItems();
+        game.Inventory.UseItems();
         Assert.Equal(10, game.Gear.Values[TGearItem.Armor]);
         Assert.Equal(1, game.Gear.Values[TGearItem.WornCount]);
         Assert.Equal(15, game.Gear.Values[TGearItem.LuckRoll]);
@@ -424,7 +424,7 @@ public class UnitsItemsTests {
         Assert.Equal(0, game.Bag.Items[TBagItem.SpikedSuit]);
         Assert.Equal(0, game.Bag.Count);
         game.Command = "ODLOZ GARNITUR";
-        game.UseItems();
+        game.Inventory.UseItems();
         Assert.Equal(0, game.Gear.Values[TGearItem.Armor]);
         Assert.Equal(0, game.Gear.Values[TGearItem.WornCount]);
         Assert.Equal(0, game.Gear.Values[TGearItem.LuckRoll]);
@@ -440,7 +440,7 @@ public class UnitsItemsTests {
         game.Player.MaxMana = 50;
         game.Bag.Count = 1;
         game.Command = "UZYJ MALA BUTELKA MANY";
-        game.UseItems();
+        game.Inventory.UseItems();
         Assert.Equal(40, game.Player.Mana);
         Assert.Equal(0, game.Bag.Count);
     }
@@ -452,7 +452,7 @@ public class UnitsItemsTests {
         game.Player.MaxMana = 50;
         game.Bag.Count = 1;
         game.Command = "UZYJ MALA BUTELKA MANY";
-        game.UseItems();
+        game.Inventory.UseItems();
         Assert.Equal(50, game.Player.Mana);
     }
 
@@ -488,7 +488,7 @@ public class UnitsItemsTests {
         game.Bag.Permit = 1;
         game.Bag.Count = 1;
         game.Command = "ZNISZCZ PRZEPUSTKA";
-        game.UseItems();
+        game.Inventory.UseItems();
         Assert.Equal(0, game.Bag.Permit);
         Assert.Equal(0, game.Bag.Count);
     }
@@ -497,17 +497,17 @@ public class UnitsItemsTests {
     public void PrzepustkiStackAndEachUsesOneBagSlot() {
         game.Bag.Permit = 0;
         game.Bag.Count = 0;
-        game.AcquirePermit();
-        game.AcquirePermit();
+        game.Inventory.AcquirePermit();
+        game.Inventory.AcquirePermit();
         Assert.Equal(2, game.Bag.Permit);
         Assert.Equal(2, game.Bag.Count);
-        Assert.True(game.LosePermit());
+        Assert.True(game.Inventory.LosePermit());
         Assert.Equal(1, game.Bag.Permit);
         Assert.Equal(1, game.Bag.Count);
-        Assert.True(game.LosePermit());
+        Assert.True(game.Inventory.LosePermit());
         Assert.Equal(0, game.Bag.Permit);
         Assert.Equal(0, game.Bag.Count);
-        Assert.False(game.LosePermit());
+        Assert.False(game.Inventory.LosePermit());
     }
 
     [Fact]
@@ -515,7 +515,7 @@ public class UnitsItemsTests {
         game.Bag.Permit = 1;
         game.Bag.Count = 1;
         game.Command = "PATRZ PRZEPUSTKA";
-        game.UseItems();
+        game.Inventory.UseItems();
         Assert.Equal(1, game.Bag.Permit);
         Assert.Equal(1, game.Bag.Count);
         game.Bag.Permit = 0;
@@ -526,7 +526,7 @@ public class UnitsItemsTests {
     public void UzywaDyplom() {
         game.Bag.Items[TBagItem.Diploma] = 1;
         game.Command = "UZYJ DYPLOM";
-        game.UseItems();
+        game.Inventory.UseItems();
         Assert.Equal(1, game.Bag.Items[TBagItem.Diploma]);
     }
 
@@ -541,7 +541,7 @@ public class UnitsItemsTests {
     public void UzywaPaczek() {
         EatSetup(TBagItem.Doughnut);
         game.Command = "UZYJ PACZEK";
-        game.UseItems();
+        game.Inventory.UseItems();
         Assert.Equal(0, game.Bag.Items[TBagItem.Doughnut]);
         Assert.Equal(18, game.Player.Energy);
         Assert.Equal(0, game.Bag.Count);
@@ -551,7 +551,7 @@ public class UnitsItemsTests {
     public void UzywaCiastko() {
         EatSetup(TBagItem.Cookie);
         game.Command = "UZYJ CIASTKO";
-        game.UseItems();
+        game.Inventory.UseItems();
         Assert.Equal(0, game.Bag.Items[TBagItem.Cookie]);
         Assert.Equal(22, game.Player.Energy);
     }
@@ -560,7 +560,7 @@ public class UnitsItemsTests {
     public void UzywaSuchaRacja() {
         EatSetup(TBagItem.DryRation);
         game.Command = "UZYJ SUCHA RACJA";
-        game.UseItems();
+        game.Inventory.UseItems();
         Assert.Equal(0, game.Bag.Items[TBagItem.DryRation]);
         Assert.Equal(26, game.Player.Energy);
     }
@@ -569,7 +569,7 @@ public class UnitsItemsTests {
     public void UzywaBulka() {
         EatSetup(TBagItem.BreadRoll);
         game.Command = "UZYJ BULKA";
-        game.UseItems();
+        game.Inventory.UseItems();
         Assert.Equal(0, game.Bag.Items[TBagItem.BreadRoll]);
         Assert.Equal(30, game.Player.Energy);
     }
@@ -578,7 +578,7 @@ public class UnitsItemsTests {
     public void UzywaChleb() {
         EatSetup(TBagItem.Bread);
         game.Command = "UZYJ CHLEB";
-        game.UseItems();
+        game.Inventory.UseItems();
         Assert.Equal(0, game.Bag.Items[TBagItem.Bread]);
         Assert.Equal(36, game.Player.Energy);
     }
@@ -587,7 +587,7 @@ public class UnitsItemsTests {
     public void UzyjaWeka() {
         EatSetup(TBagItem.Sausage);
         game.Command = "UZYJ WEKA";
-        game.UseItems();
+        game.Inventory.UseItems();
         Assert.Equal(0, game.Bag.Items[TBagItem.Sausage]);
         Assert.Equal(44, game.Player.Energy);
     }
@@ -596,7 +596,7 @@ public class UnitsItemsTests {
     public void UzywaBigos() {
         EatSetup(TBagItem.Bigos);
         game.Command = "UZYJ BIGOS";
-        game.UseItems();
+        game.Inventory.UseItems();
         Assert.Equal(0, game.Bag.Items[TBagItem.Bigos]);
         Assert.Equal(30, game.Player.Energy);
     }
@@ -609,7 +609,7 @@ public class UnitsItemsTests {
         game.Player.Energy = 40;
         game.Player.Experience = 100;
         game.Command = "UZYJ PIGULKA";
-        game.UseItems();
+        game.Inventory.UseItems();
         Assert.Equal(0, game.Bag.Items[TBagItem.TeleportPill]);
         Assert.Equal(1, game.Player.Energy);
         Assert.Equal(49, game.Player.MaxEnergy);
@@ -624,7 +624,7 @@ public class UnitsItemsTests {
         game.Player.Energy = 100;
         game.Player.Experience = 100;
         game.Command = "UZYJ PIGULKA";
-        game.UseItems();
+        game.Inventory.UseItems();
         Assert.Equal(60, game.Player.Energy);
         Assert.Equal(70, game.Player.Experience);
     }
@@ -638,7 +638,7 @@ public class UnitsItemsTests {
         game.Player.Energy = 100;
         game.Player.Experience = 100;
         game.Command = "UZYJ PIGULKA";
-        game.UseItems();
+        game.Inventory.UseItems();
         Assert.Equal(0, game.Bag.Items[TBagItem.TeleportPill]);
         Assert.Equal(0, game.Bag.Count);
         Assert.Equal(100, game.Player.Energy);
@@ -650,7 +650,7 @@ public class UnitsItemsTests {
         UnitsSeed.Reseed(game);
         game.Bag.Items[TBagItem.SpikedSuit] = 0;
         game.Bag.Count = 0;
-        game.SuitGain();
+        game.Inventory.SuitGain();
         Assert.True(game.Bag.Items[TBagItem.SpikedSuit] == 0
             || game.Bag.Items[TBagItem.SpikedSuit] == 1);
         Assert.True(game.Bag.Count == 0 || game.Bag.Count == 1);
@@ -661,7 +661,7 @@ public class UnitsItemsTests {
         UnitsSeed.Reseed(game);
         game.Bag.Items[TBagItem.TeleportPill] = 0;
         game.Bag.Count = 0;
-        game.PillGain();
+        game.Inventory.PillGain();
         Assert.True(game.Bag.Items[TBagItem.TeleportPill] == 0
             || game.Bag.Items[TBagItem.TeleportPill] == 1);
         Assert.True(game.Bag.Count == 0 || game.Bag.Count == 1);
@@ -676,7 +676,7 @@ public class UnitsItemsTests {
         game.Bag.Count = 0;
         game.Player.Stats[TStat.Dexterity] = 0;
         game.Session.Room = 20;
-        game.CassetteGain();
+        game.Inventory.CassetteGain();
         Assert.True(game.Bag.Items[TBagItem.Cassette] == 0
             || game.Bag.Items[TBagItem.Cassette] == 1);
         Assert.True(game.Player.MaxEnergy == 0 || game.Player.MaxEnergy == 5);
@@ -694,7 +694,7 @@ public class UnitsItemsTests {
         game.Bag.Count = 0;
         game.Player.MaxMana = 0;
         game.Session.Room = 20;
-        game.LeafGain();
+        game.Inventory.LeafGain();
         Assert.True(game.Bag.Items[TBagItem.LuckyLeaf] == 0
             || game.Bag.Items[TBagItem.LuckyLeaf] == 1);
         Assert.True(game.Bag.Count == 0 || game.Bag.Count == 1);
@@ -707,7 +707,7 @@ public class UnitsItemsTests {
         game.Bag.Items[TBagItem.CompareScroll] = 0;
         game.Bag.Count = 0;
         game.Session.Room = 20;
-        game.ScrollGain();
+        game.Inventory.ScrollGain();
         Assert.True(game.Bag.Items[TBagItem.CompareScroll] == 0
             || game.Bag.Items[TBagItem.CompareScroll] == 1);
         Assert.True(game.Bag.Count == 0 || game.Bag.Count == 1);
@@ -720,7 +720,7 @@ public class UnitsItemsTests {
         game.Bag.Count = 0;
         int i = 0;
         while (game.Bag.Count == 0 && i < 2000) {
-            game.SuitGain();
+            game.Inventory.SuitGain();
             i++;
         }
         Assert.True(game.Bag.Count > 0);
@@ -734,7 +734,7 @@ public class UnitsItemsTests {
         game.Bag.Count = 0;
         int i = 0;
         while (game.Bag.Count == 0 && i < 2000) {
-            game.PillGain();
+            game.Inventory.PillGain();
             i++;
         }
         Assert.True(game.Bag.Count > 0);
@@ -752,7 +752,7 @@ public class UnitsItemsTests {
         game.Session.Room = 20;
         int i = 0;
         while (game.Bag.Count == 0 && i < 2000) {
-            game.CassetteGain();
+            game.Inventory.CassetteGain();
             i++;
         }
         Assert.True(game.Bag.Count > 0);
@@ -771,7 +771,7 @@ public class UnitsItemsTests {
         game.Session.Room = 20;
         int i = 0;
         while (game.Bag.Count == 0 && i < 2000) {
-            game.LeafGain();
+            game.Inventory.LeafGain();
             i++;
         }
         Assert.True(game.Bag.Count > 0);
@@ -787,7 +787,7 @@ public class UnitsItemsTests {
         game.Session.Room = 20;
         int i = 0;
         while (game.Bag.Count == 0 && i < 2000) {
-            game.ScrollGain();
+            game.Inventory.ScrollGain();
             i++;
         }
         Assert.True(game.Bag.Count > 0);
@@ -800,7 +800,7 @@ public class UnitsItemsTests {
         game.Bag.Count = 2;
         game.Gear.Values[TGearItem.WeaponKind] = 0;
         game.Player.Money = 0;
-        Assert.True(game.Sell(TBagItem.OldSword));
+        Assert.True(game.World.Sell(TBagItem.OldSword));
         Assert.Equal(1, game.Bag.Items[TBagItem.OldSword]);
         Assert.Equal(1, game.Bag.Count);
         Assert.Equal(30, game.Player.Money);
@@ -812,7 +812,7 @@ public class UnitsItemsTests {
         game.Bag.Count = 2;
         game.Gear.Values[TGearItem.ShieldKind] = 0;
         game.Player.Money = 0;
-        Assert.True(game.Sell(TBagItem.SmallShield));
+        Assert.True(game.World.Sell(TBagItem.SmallShield));
         Assert.Equal(1, game.Bag.Items[TBagItem.SmallShield]);
         Assert.Equal(1, game.Bag.Count);
         Assert.Equal(8, game.Player.Money);
@@ -824,7 +824,7 @@ public class UnitsItemsTests {
         game.Bag.Count = 0;
         game.Player.Money = 0;
         game.Gear.Values[TGearItem.ShieldKind] = 0;
-        Assert.False(game.Sell(TBagItem.SmallShield));
+        Assert.False(game.World.Sell(TBagItem.SmallShield));
         Assert.Equal(0, game.Bag.Count);
         Assert.Equal(0, game.Player.Money);
     }
@@ -834,7 +834,7 @@ public class UnitsItemsTests {
         game.Bag.Items[TBagItem.TeleportPill] = 0;
         game.Bag.Count = 0;
         game.Player.Money = 0;
-        Assert.False(game.Sell(TBagItem.TeleportPill));
+        Assert.False(game.World.Sell(TBagItem.TeleportPill));
         Assert.Equal(0, game.Bag.Count);
         Assert.Equal(0, game.Player.Money);
     }
@@ -845,12 +845,12 @@ public class UnitsItemsTests {
         game.Bag.Count = 2;
         game.Player.Money = 0;
         game.Player.Stats[TStat.Wisdom] = 10;
-        Assert.True(game.Sell(TBagItem.Pipe));
+        Assert.True(game.World.Sell(TBagItem.Pipe));
         Assert.Equal(1, game.Bag.Items[TBagItem.Pipe]);
         Assert.Equal(1, game.Bag.Count);
         Assert.Equal(120, game.Player.Money);
         Assert.Equal(10, game.Player.Stats[TStat.Wisdom]);
-        Assert.True(game.Sell(TBagItem.Pipe));
+        Assert.True(game.World.Sell(TBagItem.Pipe));
         Assert.Equal(0, game.Bag.Items[TBagItem.Pipe]);
         Assert.Equal(0, game.Bag.Count);
         Assert.Equal(240, game.Player.Money);
@@ -867,10 +867,10 @@ public class UnitsItemsTests {
         game.Bag.Count = 0;
         game.Player.Money = 1000;
         game.Player.MaxMana = 40;
-        Assert.False(game.Sell(TBagItem.LuckyLeaf));
+        Assert.False(game.World.Sell(TBagItem.LuckyLeaf));
         game.Bag.Items[TBagItem.LuckyLeaf] = 1;
         game.Bag.Count = 1;
-        Assert.True(game.Sell(TBagItem.LuckyLeaf));
+        Assert.True(game.World.Sell(TBagItem.LuckyLeaf));
         Assert.Equal(1400, game.Player.Money);
         Assert.Equal(0, game.Player.MaxMana);
     }
@@ -883,7 +883,7 @@ public class UnitsItemsTests {
         game.Player.MaxEnergy = 55;
         game.Player.Stats[TStat.Dexterity] = 11;
         game.Gear.Values[TGearItem.Armor] = -8;
-        Assert.True(game.Sell(TBagItem.Cassette));
+        Assert.True(game.World.Sell(TBagItem.Cassette));
         Assert.Equal(0, game.Bag.Items[TBagItem.Cassette]);
         Assert.Equal(0, game.Bag.Count);
         Assert.Equal(1000, game.Player.Money);
@@ -897,10 +897,10 @@ public class UnitsItemsTests {
         game.Bag.Items[TBagItem.SpikedSuit] = 0;
         game.Bag.Count = 0;
         game.Gear.WornGarment = Texts.TxtEmpty;
-        Assert.False(game.Sell(TBagItem.SpikedSuit));
+        Assert.False(game.World.Sell(TBagItem.SpikedSuit));
         game.Bag.Items[TBagItem.SpikedSuit] = 1;
         game.Bag.Count = 1;
-        Assert.True(game.Sell(TBagItem.SpikedSuit));
+        Assert.True(game.World.Sell(TBagItem.SpikedSuit));
         Assert.Equal(0, game.Bag.Items[TBagItem.SpikedSuit]);
         Assert.Equal(0, game.Bag.Count);
     }
@@ -913,12 +913,12 @@ public class UnitsItemsTests {
         game.Gear.Values[TGearItem.WeaponKind] = 0;
         game.Player.Stats[TStat.Strength] = 0;
         game.Gear.Values[TGearItem.LuckRoll] = 0;
-        Assert.True(game.Equip(TBagItem.OldSword));
-        Assert.False(game.Sell(TBagItem.OldSword));
+        Assert.True(game.Inventory.Equip(TBagItem.OldSword));
+        Assert.False(game.World.Sell(TBagItem.OldSword));
         Assert.Equal(1, game.Bag.Items[TBagItem.OldSword]);
         Assert.Equal(1, game.Bag.Count);
         Assert.Equal(0, game.Player.Money);
-        Assert.True(game.Unequip(TBagItem.OldSword));
+        Assert.True(game.Inventory.Unequip(TBagItem.OldSword));
         Assert.Equal(2, game.Bag.Items[TBagItem.OldSword]);
         Assert.Equal(2, game.Bag.Count);
     }
@@ -931,12 +931,12 @@ public class UnitsItemsTests {
         game.Gear.Values[TGearItem.ShieldKind] = 0;
         game.Gear.Values[TGearItem.Armor] = 0;
         game.Gear.Values[TGearItem.WornCount] = 0;
-        Assert.True(game.Equip(TBagItem.SmallShield));
-        Assert.False(game.Sell(TBagItem.SmallShield));
+        Assert.True(game.Inventory.Equip(TBagItem.SmallShield));
+        Assert.False(game.World.Sell(TBagItem.SmallShield));
         Assert.Equal(1, game.Bag.Items[TBagItem.SmallShield]);
         Assert.Equal(1, game.Bag.Count);
         Assert.Equal(0, game.Player.Money);
-        Assert.True(game.Unequip(TBagItem.SmallShield));
+        Assert.True(game.Inventory.Unequip(TBagItem.SmallShield));
         Assert.Equal(2, game.Bag.Items[TBagItem.SmallShield]);
         Assert.Equal(2, game.Bag.Count);
     }
@@ -949,12 +949,12 @@ public class UnitsItemsTests {
         game.Gear.Values[TGearItem.ShieldKind] = 0;
         game.Gear.Values[TGearItem.Armor] = 0;
         game.Gear.Values[TGearItem.WornCount] = 0;
-        Assert.True(game.Equip(TBagItem.SmallShield));
-        Assert.False(game.Sell(TBagItem.SmallShield));
+        Assert.True(game.Inventory.Equip(TBagItem.SmallShield));
+        Assert.False(game.World.Sell(TBagItem.SmallShield));
         Assert.Equal(0, game.Bag.Items[TBagItem.SmallShield]);
         Assert.Equal(0, game.Bag.Count);
         Assert.Equal(0, game.Player.Money);
-        Assert.True(game.Unequip(TBagItem.SmallShield));
+        Assert.True(game.Inventory.Unequip(TBagItem.SmallShield));
     }
 
     [Fact]
@@ -965,12 +965,12 @@ public class UnitsItemsTests {
         game.Gear.WornGarment = Texts.TxtEmpty;
         game.Gear.Values[TGearItem.Armor] = 0;
         game.Gear.Values[TGearItem.Wearing] = 0;
-        Assert.True(game.Equip(TBagItem.Tracksuit));
-        Assert.False(game.Sell(TBagItem.Tracksuit));
+        Assert.True(game.Inventory.Equip(TBagItem.Tracksuit));
+        Assert.False(game.World.Sell(TBagItem.Tracksuit));
         Assert.Equal(0, game.Bag.Items[TBagItem.Tracksuit]);
         Assert.Equal(0, game.Bag.Count);
         Assert.Equal(0, game.Player.Money);
-        Assert.True(game.Unequip(TBagItem.Tracksuit));
+        Assert.True(game.Inventory.Unequip(TBagItem.Tracksuit));
         Assert.Equal(1, game.Bag.Items[TBagItem.Tracksuit]);
         Assert.Equal(1, game.Bag.Count);
     }
@@ -984,12 +984,12 @@ public class UnitsItemsTests {
         game.Gear.Values[TGearItem.WornCount] = 0;
         game.Gear.Values[TGearItem.Armor] = 0;
         game.Gear.Values[TGearItem.LuckRoll] = 0;
-        Assert.True(game.Equip(TBagItem.SpikedSuit));
-        Assert.False(game.Sell(TBagItem.SpikedSuit));
+        Assert.True(game.Inventory.Equip(TBagItem.SpikedSuit));
+        Assert.False(game.World.Sell(TBagItem.SpikedSuit));
         Assert.Equal(0, game.Bag.Items[TBagItem.SpikedSuit]);
         Assert.Equal(0, game.Bag.Count);
         Assert.Equal(0, game.Player.Money);
-        Assert.True(game.Unequip(TBagItem.SpikedSuit));
+        Assert.True(game.Inventory.Unequip(TBagItem.SpikedSuit));
         Assert.Equal(1, game.Bag.Items[TBagItem.SpikedSuit]);
         Assert.Equal(1, game.Bag.Count);
     }
@@ -1002,16 +1002,16 @@ public class UnitsItemsTests {
         game.Player.Stats[TStat.Strength] = 0;
         game.Gear.Values[TGearItem.LuckRoll] = 0;
         game.Player.Money = 200;
-        Assert.True(game.Equip(TBagItem.OldSword));
-        Assert.True(game.Buy(TBagItem.OldSword));
+        Assert.True(game.Inventory.Equip(TBagItem.OldSword));
+        Assert.True(game.World.Buy(TBagItem.OldSword));
         Assert.Equal(130, game.Player.Money);
         Assert.Equal(1, game.Bag.Items[TBagItem.OldSword]);
         Assert.Equal(1, game.Bag.Count);
-        Assert.True(game.Buy(TBagItem.OldSword));
+        Assert.True(game.World.Buy(TBagItem.OldSword));
         Assert.Equal(60, game.Player.Money);
         Assert.Equal(2, game.Bag.Items[TBagItem.OldSword]);
         Assert.Equal(2, game.Bag.Count);
-        Assert.True(game.Unequip(TBagItem.OldSword));
+        Assert.True(game.Inventory.Unequip(TBagItem.OldSword));
         Assert.Equal(3, game.Bag.Items[TBagItem.OldSword]);
         Assert.Equal(3, game.Bag.Count);
     }
@@ -1021,7 +1021,7 @@ public class UnitsItemsTests {
         game.Bag.Items[TBagItem.ManaBottle] = 0;
         game.Bag.Count = 0;
         game.Player.Money = 16;
-        Assert.True(game.Buy(TBagItem.ManaBottle));
+        Assert.True(game.World.Buy(TBagItem.ManaBottle));
         Assert.Equal(-4, game.Player.Money);
         Assert.Equal(1, game.Bag.Items[TBagItem.ManaBottle]);
         Assert.Equal(1, game.Bag.Count);
@@ -1034,7 +1034,7 @@ public class UnitsItemsTests {
         game.Player.Money = 480;
         game.Player.Stats[TStat.Wisdom] = 10;
         game.Player.Stats[TStat.MaxWisdom] = 10;
-        Assert.True(game.Buy(TBagItem.Pipe));
+        Assert.True(game.World.Buy(TBagItem.Pipe));
         Assert.Equal(0, game.Player.Money);
         Assert.Equal(1, game.Bag.Items[TBagItem.Pipe]);
         Assert.Equal(11, game.Player.Stats[TStat.Wisdom]);
@@ -1051,7 +1051,7 @@ public class UnitsItemsTests {
         game.Bag.Items[TBagItem.Doughnut] = 0;
         game.Bag.Count = 0;
         game.Player.Money = 8;
-        Assert.True(game.Buy(TBagItem.Doughnut));
+        Assert.True(game.World.Buy(TBagItem.Doughnut));
         Assert.Equal(0, game.Player.Money);
         Assert.Equal(1, game.Bag.Items[TBagItem.Doughnut]);
         Assert.Equal(1, game.Bag.Count);
@@ -1087,16 +1087,16 @@ public class UnitsItemsTests {
     public void BagLimitFollowsDexterity() {
         game.Player.Stats[TStat.Dexterity] = 10;
         game.Bag.Items[TBagItem.Backpack] = 0;
-        game.RecalcBag();
+        game.Inventory.RecalcBag();
         Assert.Equal(10, game.Bag.Limit);
         game.Player.Stats[TStat.Dexterity] = 12;
-        game.RecalcBag();
+        game.Inventory.RecalcBag();
         Assert.Equal(11, game.Bag.Limit);
         game.Player.Stats[TStat.Dexterity] = 25;
-        game.RecalcBag();
+        game.Inventory.RecalcBag();
         Assert.Equal(16, game.Bag.Limit);
         game.Bag.Items[TBagItem.Backpack] = 1;
-        game.RecalcBag();
+        game.Inventory.RecalcBag();
         Assert.Equal(20, game.Bag.Limit);
     }
 
@@ -1108,7 +1108,7 @@ public class UnitsItemsTests {
         game.Bag.Items[TBagItem.Beer] = 2;
         game.Bag.Items[TBagItem.Backpack] = 1;
         game.Bag.Count = 99;
-        game.RecalcBag();
+        game.Inventory.RecalcBag();
         Assert.Equal(3, game.Bag.Count);
         Assert.Equal(14, game.Bag.Limit);
     }

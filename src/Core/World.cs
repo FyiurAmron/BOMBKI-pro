@@ -92,7 +92,7 @@ public class World : TWorld {
                 room.turn?.Invoke(TRoomPhase.Command);
             }
 
-            if (game.MoveWhenOrQuit(room.moves)) {
+            if (MoveWhenOrQuit(room.moves)) {
                 return;
             }
 
@@ -159,15 +159,15 @@ public class World : TWorld {
         game.Player.Experience += exp;
         game.World.Quest = 0;
         game.World.QuestKills = 0;
-        game.AcquirePermit();
+        game.Inventory.AcquirePermit();
         switch (quest) {
             case 1:
                 break;
             case 2:
-                game.LoseItem(TBagItem.Diploma);
+                game.Inventory.LoseItem(TBagItem.Diploma);
                 break;
             case 3:
-                game.LoseItem(TBagItem.Pipe);
+                game.Inventory.LoseItem(TBagItem.Pipe);
                 break;
         }
     }
@@ -345,13 +345,13 @@ public class World : TWorld {
             ? offer.buyLine
             : $"{TxtShopVerb}{offer.buyName}{TxtSpaceZa}{offer.buyPrice}{TxtSpaceMonet}");
         game.Player.Money -= offer.buyPrice;
-        game.AcquireItem(item);
+        game.Inventory.AcquireItem(item);
         return true;
     }
 
     public bool Sell(TBagItem item) {
         TShopOffer? offer = ShopOffer(item);
-        if ((offer is null) || game.IsEquipped(item) || !game.LoseItem(item)) {
+        if ((offer is null) || game.Inventory.IsEquipped(item) || !game.Inventory.LoseItem(item)) {
             return false;
         }
 
@@ -384,7 +384,7 @@ public class World : TWorld {
             ]);
         }
 
-        game.StreetFights();
+        game.Combat.StreetFights();
         RunShopRules(BakeryRules);
     }
 
@@ -397,7 +397,7 @@ public class World : TWorld {
 
             Out.WriteLine(TxtArmouryShop_03);
         }
-        game.StreetFights();
+        game.Combat.StreetFights();
         RunShopRules(ArmouryRules);
     }
 

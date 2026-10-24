@@ -33,14 +33,14 @@ public class UnitsCombatTests {
     void RunWalka(int maxE, int wrogE, int sil, int wrogSil,
         int zre, int wrogZre, int par, int kop, int expectedKunszt) {
         WalkaSetup(maxE, wrogE, sil, wrogSil, zre, wrogZre, par, kop);
-        game.DoFight();
+        game.Combat.DoFight();
         Assert.Equal(expectedKunszt, game.Player.Experience);
     }
 
     void RunWalkaRange(int maxE, int wrogE, int sil, int wrogSil,
         int zre, int wrogZre, int par, int kop, int kunsztLo, int kunsztHi) {
         WalkaSetup(maxE, wrogE, sil, wrogSil, zre, wrogZre, par, kop);
-        game.DoFight();
+        game.Combat.DoFight();
         Assert.InRange(game.Player.Experience, kunsztLo, kunsztHi);
     }
 
@@ -49,7 +49,7 @@ public class UnitsCombatTests {
         WalkaSetup(maxE, wrogE, sil, wrogSil, zre, wrogZre, par, kop);
         game.Gear.Values[TGearItem.Armor] = 100;
         game.Gear.Values[TGearItem.WornCount] = 127;
-        game.DoFight();
+        game.Combat.DoFight();
         Assert.Equal(expectedKunszt, game.Player.Experience);
     }
 
@@ -127,7 +127,7 @@ public class UnitsCombatTests {
     public void WalkaPoisoned() {
         WalkaSetup(100, 0, 1, 1, 10, 10, 0, 0);
         game.Combat.PoisonRounds = 10;
-        game.DoFight();
+        game.Combat.DoFight();
         Assert.True(game.Combat.EnemyEnergy < 1);
         Assert.True(game.Player.Energy > 0);
     }
@@ -136,7 +136,7 @@ public class UnitsCombatTests {
     public void WalkaFireball() {
         WalkaSetup(0, 0, 1, 1, 10, 10, 0, 0);
         game.Combat.FireballCharges = 1;
-        game.DoFight();
+        game.Combat.DoFight();
         Assert.True(game.Combat.EnemyEnergy < 1);
         Assert.True(game.Combat.FireballCharges == 0 || game.Combat.FireballCharges == 1);
     }
@@ -145,7 +145,7 @@ public class UnitsCombatTests {
     public void WalkaPoison() {
         WalkaSetup(0, 0, 1, 1, 10, 10, 0, 0);
         game.Combat.PoisonCharges = 1;
-        game.DoFight();
+        game.Combat.DoFight();
         Assert.True(game.Combat.EnemyEnergy < 1);
         Assert.True(game.Combat.PoisonCharges == 0 || game.Combat.PoisonCharges == 1);
     }
@@ -153,7 +153,7 @@ public class UnitsCombatTests {
     [Fact]
     public void WalkaParry() {
         WalkaSetup(100, 0, 1, 20, 10, 10, 139, 0);
-        game.DoFight();
+        game.Combat.DoFight();
         Assert.True(game.Combat.EnemyEnergy < 1);
         Assert.True(game.Player.Energy > 0);
     }
@@ -162,7 +162,7 @@ public class UnitsCombatTests {
     public void WalkaParryLight() {
         WalkaSetup(10000, 10, 3, 3, 10, 10, 139, 0);
         game.Player.Energy = 10000;
-        game.DoFight();
+        game.Combat.DoFight();
         Assert.True(game.Combat.EnemyEnergy < 1);
         Assert.True(game.Player.Energy > 0);
     }
@@ -174,7 +174,7 @@ public class UnitsCombatTests {
         game.Combat.FireballCharges = 1;
         game.Combat.PoisonCharges = 1;
         game.Combat.PoisonRounds = 10;
-        game.DoFight();
+        game.Combat.DoFight();
         Assert.True(game.Combat.EnemyEnergy < 1);
         Assert.True(game.Player.Energy > 0);
     }
@@ -185,7 +185,7 @@ public class UnitsCombatTests {
         game.Player.Mana = 100;
         game.Skills.Values[TSkill.KickMaxEnergy] = 100;
         game.Player.Energy = 50;
-        game.DoFight();
+        game.Combat.DoFight();
         Assert.True(game.Combat.EnemyEnergy < 1);
         Assert.True(game.Player.Mana < 100);
     }
@@ -196,7 +196,7 @@ public class UnitsCombatTests {
         game.Player.Mana = 100;
         game.Skills.Values[TSkill.KickMaxEnergy] = 100;
         game.Player.Energy = 50;
-        game.DoFight();
+        game.Combat.DoFight();
         Assert.True(game.Combat.EnemyEnergy < 1);
         Assert.True(game.Player.Mana < 100);
     }
@@ -207,7 +207,7 @@ public class UnitsCombatTests {
         game.Player.Mana = 100;
         game.Skills.Values[TSkill.KickMaxEnergy] = 100;
         game.Player.Energy = 50;
-        game.DoFight();
+        game.Combat.DoFight();
         Assert.True(game.Combat.EnemyEnergy < 1);
         Assert.True(game.Player.Mana < 100);
     }
@@ -219,7 +219,7 @@ public class UnitsCombatTests {
         game.Skills.Values[TSkill.FleeEnergy] = 100;
         game.Player.Energy = 50;
         game.Player.Mana = 100;
-        game.DoFight();
+        game.Combat.DoFight();
         Assert.True(game.Combat.Fled);
     }
 
@@ -230,7 +230,7 @@ public class UnitsCombatTests {
         game.Skills.Values[TSkill.FleeEnergy] = 100;
         game.Player.Energy = 50;
         game.Player.Mana = 100;
-        game.DoFight();
+        game.Combat.DoFight();
         Assert.True(game.Combat.EnemyEnergy < 1);
     }
 
@@ -240,7 +240,7 @@ public class UnitsCombatTests {
         game.Skills.Values[TSkill.Cooking] = 99;
         game.Bag.Items[TBagItem.Bigos] = 0;
         game.Bag.Count = 0;
-        game.DoFight();
+        game.Combat.DoFight();
         Assert.True(game.Combat.EnemyEnergy < 1);
         Assert.True(game.Bag.Count == 0 || game.Bag.Count == 1);
     }
@@ -249,7 +249,7 @@ public class UnitsCombatTests {
     public void WalkaDeath() {
         WalkaSetup(0, 0, 1, 61, 10, 10, 0, 0);
         game.Player.Energy = 1;
-        game.DoFight();
+        game.Combat.DoFight();
         Assert.True(game.Player.Energy < 1 || game.Combat.EnemyEnergy < 1);
     }
 
@@ -257,7 +257,7 @@ public class UnitsCombatTests {
     public void WalkaFukroll() {
         WalkaSetup(0, 10, 2, 1, 10, 10, 0, 0);
         game.Gear.Values[TGearItem.LuckRoll] = 1;
-        game.DoFight();
+        game.Combat.DoFight();
         Assert.True(game.Combat.EnemyEnergy < 1);
     }
 
@@ -276,31 +276,31 @@ public class UnitsCombatTests {
     public void Encounters() {
         EncounterSetup();
         game.Command = "ZABIJ MROWKA";
-        game.Fight(TFoe.WeakEnemy);
+        game.Combat.Fight(TFoe.WeakEnemy);
         Assert.True(game.Combat.EnemyEnergy < 1);
         EncounterSetup();
-        game.FightDog();
+        game.Combat.FightDog();
         Assert.True(game.Combat.EnemyEnergy < 1);
         EncounterSetup();
-        game.Fight(TFoe.WeakishEnemy);
+        game.Combat.Fight(TFoe.WeakishEnemy);
         Assert.True(game.Combat.EnemyEnergy < 1);
         EncounterSetup();
-        game.Fight(TFoe.MediumEnemy);
+        game.Combat.Fight(TFoe.MediumEnemy);
         Assert.True(game.Combat.EnemyEnergy < 1);
         EncounterSetup();
-        game.Fight(TFoe.HardEnemy);
+        game.Combat.Fight(TFoe.HardEnemy);
         Assert.True(game.Combat.EnemyEnergy < 1);
         EncounterSetup();
-        game.Fight(TFoe.VeryEasyEnemy);
+        game.Combat.Fight(TFoe.VeryEasyEnemy);
         Assert.True(game.Combat.EnemyEnergy < 1 && game.Player.Energy > 0);
         EncounterSetup();
-        game.Fight(TFoe.EasyEnemy);
+        game.Combat.Fight(TFoe.EasyEnemy);
         Assert.True(game.Combat.EnemyEnergy < 1 && game.Player.Energy > 0);
         EncounterSetup();
-        game.Fight(TFoe.NotEasyEnemy);
+        game.Combat.Fight(TFoe.NotEasyEnemy);
         Assert.True(game.Combat.EnemyEnergy < 1 && game.Player.Energy > 0);
         EncounterSetup();
-        game.Fight(TFoe.VeryHardEnemy);
+        game.Combat.Fight(TFoe.VeryHardEnemy);
         Assert.True(game.Combat.EnemyEnergy < 1);
     }
 
@@ -357,7 +357,7 @@ public class UnitsCombatTests {
     public void WalkaDodge() {
         WalkaSetup(0, 30, 3, 1, 0, 2, 0, 0);
         game.Player.Energy = 100;
-        game.DoFight();
+        game.Combat.DoFight();
         Assert.True(game.Combat.EnemyEnergy < 1);
         Assert.True(game.Player.Energy > 0);
     }

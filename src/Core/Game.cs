@@ -1,4 +1,3 @@
-
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -26,272 +25,6 @@ public class Game {
         Inventory = new Inventory(this);
         World = new World(this);
     }
-
-    public void MoveTo(int room) =>
-        World.MoveTo(room);
-
-    public void MoveWhen(List<TMovement> moves) =>
-        World.MoveWhen(moves);
-
-    public bool MoveWhenOrQuit(List<TMovement> moves) =>
-        World.MoveWhenOrQuit(moves);
-
-    public void SpawnAt(List<TSpawnedAt> placements) =>
-        World.SpawnAt(placements);
-
-    public void SpawnMonsters() =>
-        World.SpawnMonsters();
-
-    public void DescribePlants() =>
-        World.DescribePlants();
-
-    public void DescribeStreet() =>
-        World.DescribeStreet();
-
-    public void DescribeStage() =>
-        World.DescribeStage();
-
-    public void DescribeCrowd() =>
-        World.DescribeCrowd();
-
-    public void DescribeBeasts() =>
-        World.DescribeBeasts();
-
-    public List<TMazeMove> MazeMoves =>
-        World.MazeMoves;
-
-    public string MazeDirectionCommand(TMazeDir dir) =>
-        World.MazeDirectionCommand(dir);
-
-    public void MazeMove(TMazeDir dir) =>
-        World.MazeMove(dir);
-
-    public void StartQuest(string cmd, string line, int quest, int kills) =>
-        World.StartQuest(cmd, line, quest, kills);
-
-    public void Checkpoints() =>
-        World.Checkpoints();
-
-    public bool Buy(TBagItem item) =>
-        World.Buy(item);
-
-    public bool Sell(TBagItem item) =>
-        World.Sell(item);
-
-    public void BakeryShop() =>
-        World.BakeryShop();
-
-    public void ArmouryShop() =>
-        World.ArmouryShop();
-
-    public void GeneralStoreShop() =>
-        World.GeneralStoreShop();
-
-    public void MagicShop() =>
-        World.MagicShop();
-
-    public void TryLoot(TBagItem item, int threshold, string foundMsg) =>
-        Combat.TryLoot(item, threshold, foundMsg);
-
-    public void TryCageLoot(int threshold) =>
-        Combat.TryCageLoot(threshold);
-
-    public int FightExpForEnergy(int diff) =>
-        Combat.FightExpForEnergy(diff);
-
-    public int FightExpForStrength(int diff) =>
-        Combat.FightExpForStrength(diff);
-
-    public int FightExpForDexterity(int diff) =>
-        Combat.FightExpForDexterity(diff);
-
-    public TDodgeBound DodgeBoundRow(int chance) =>
-        Combat.DodgeBoundRow(chance);
-
-    public int DodgeBound(int chance) =>
-        Combat.DodgeBound(chance);
-
-    public int EnemyDodgeBound(int chance) =>
-        Combat.EnemyDodgeBound(chance);
-
-    public int DexterityBonus(int value) =>
-        Combat.DexterityBonus(value);
-
-    public int ParryBonus(int value) =>
-        Combat.ParryBonus(value);
-
-    public int KickBonus(int value) =>
-        Combat.KickBonus(value);
-
-    public void FightDog() =>
-        Combat.FightDog();
-
-    public void CompositeFight(int EnemyEnergyBase, int EnemyEnergyRand, int EnemyDexterityBase, int EnemyDexterityRand, int EnemyStrengthBase, int EnemyStrengthRand,
-        int LootBase, int LootRand, int HeartChance, bool RequireEnergy, bool AntDoughnut) =>
-        Combat.CompositeFight(EnemyEnergyBase, EnemyEnergyRand, EnemyDexterityBase, EnemyDexterityRand, EnemyStrengthBase, EnemyStrengthRand,
-            LootBase, LootRand, HeartChance, RequireEnergy, AntDoughnut);
-
-    public void Fight(TFoe foe) =>
-        Combat.Fight(foe);
-
-    public void KillBeast(string cmd, IntSlot beast, TFoe foe) =>
-        Combat.KillBeast(cmd, beast, foe);
-
-    public void KillBeastUnlessFled(string cmd, IntSlot beast, TFoe foe) =>
-        Combat.KillBeastUnlessFled(cmd, beast, foe);
-
-    public void CompareFoeRules(List<TCompareFoeRule> rules) =>
-        Combat.CompareFoeRules(rules);
-
-    public void CompareFoe() =>
-        Combat.CompareFoe();
-
-    public void ShieldBlock() =>
-        Combat.ShieldBlock();
-
-    public void DoFight() =>
-        Combat.DoFight();
-
-    public void ArenaKill(string cmd, TMonster monster, bool pills) =>
-        Combat.ArenaKill(cmd, monster, pills);
-
-    public void StageFights() =>
-        Combat.StageFights();
-
-    public void KillPlant(string cmd, IntSlot Plant) =>
-        Combat.KillPlant(cmd, Plant);
-
-    public void KillPlantIfAlive(string cmd, IntSlot Plant) =>
-        Combat.KillPlantIfAlive(cmd, Plant);
-
-    public void KillPlantEasyIfAlive(string cmd, IntSlot Plant) =>
-        Combat.KillPlantEasyIfAlive(cmd, Plant);
-
-    public void PlantFights() =>
-        Combat.PlantFights();
-
-    public void KillStreetFoe(string cmd, IntSlot target, bool extra, TStreetKind kind) =>
-        Combat.KillStreetFoe(cmd, target, extra, kind);
-
-    public void KillSweeper() =>
-        Combat.KillSweeper();
-
-    public void KillSickMan() =>
-        Combat.KillSickMan();
-
-    public void StreetFights() =>
-        Combat.StreetFights();
-
-    public void ConcertKill(string cmd, TMonster monster, TFoe foe, TConcertBonus bonus) =>
-        Combat.ConcertKill(cmd, monster, foe, bonus);
-
-    public void ConcertFights() =>
-        Combat.ConcertFights();
-
-    public void TrainAttribute(IntSlot Attribute, IntSlot MaxAttribute, int MinPractice, int PracticeCost, string cmdForm, string nounForm) =>
-        Character.TrainAttribute(Attribute, MaxAttribute, MinPractice, PracticeCost, cmdForm, nounForm);
-
-    public void HandleTrain() =>
-        Character.HandleTrain();
-
-    public int LevelThreshold(int lvl) =>
-        Character.LevelThreshold(lvl);
-
-    public void ShowSheetItem(TSheetKind kind, int val, string desc, int width) =>
-        Character.ShowSheetItem(kind, val, desc, width);
-
-    public void ShowCharacter() =>
-        Character.ShowCharacter();
-
-    public int FindRace(string name) =>
-        Character.FindRace(name);
-
-    public bool IsNameChar(char c) =>
-        Character.IsNameChar(c);
-
-    public void ChooseRace() =>
-        Character.ChooseRace();
-
-    public bool GatesMet(int reqWisdom, int reqStrength, int reqDexterity) =>
-        Character.GatesMet(reqWisdom, reqStrength, reqDexterity);
-
-    public void WriteTrainingGain(string skillName, int value) =>
-        Character.WriteTrainingGain(skillName, value);
-
-    public void Training() =>
-        Character.Training();
-
-    public void CmdSetKickThresholds() =>
-        Character.CmdSetKickThresholds();
-
-    public void CmdShowSkills() =>
-        Character.CmdShowSkills();
-
-    public void CheckLevelUp() =>
-        Character.CheckLevelUp();
-
-    public void GainLoot1000(int threshold, string line1, string line2, TBagItem item) =>
-        Inventory.GainLoot1000(threshold, line1, line2, item);
-
-    public void GainLoot100(int threshold, string line1, string line2, TBagItem item) =>
-        Inventory.GainLoot100(threshold, line1, line2, item);
-
-    public void SuitGain() =>
-        Inventory.SuitGain();
-
-    public void PillGain() =>
-        Inventory.PillGain();
-
-    public void CassetteGain() =>
-        Inventory.CassetteGain();
-
-    public void LeafGain() =>
-        Inventory.LeafGain();
-
-    public void ScrollGain() =>
-        Inventory.ScrollGain();
-
-    public void TakeItem(string cmd, TBagItem item, string verb, string line) =>
-        Inventory.TakeItem(cmd, item, verb, line);
-
-    public bool IsEquipped(TBagItem item) =>
-        Inventory.IsEquipped(item);
-
-    public void AcquireItem(TBagItem item, int quantity = 1) =>
-        Inventory.AcquireItem(item, quantity);
-
-    public bool LoseItem(TBagItem item, int quantity = 1) =>
-        Inventory.LoseItem(item, quantity);
-
-    public void AcquirePermit() =>
-        Inventory.AcquirePermit();
-
-    public bool LosePermit() =>
-        Inventory.LosePermit();
-
-    public void DropItem(string cmd, TBagItem item, string verb, string line) =>
-        Inventory.DropItem(cmd, item, verb, line);
-
-    public bool Equip(TBagItem item) =>
-        Inventory.Equip(item);
-
-    public bool Unequip(TBagItem item) =>
-        Inventory.Unequip(item);
-
-    public void TakeDrop() =>
-        Inventory.TakeDrop();
-
-    public void ClampStat(ref int stat, int cap) =>
-        Inventory.ClampStat(ref stat, cap);
-
-    public void EatFood(string cmd, TBagItem item, string verb, string line, int gain, IntSlot stat, IntSlot cap) =>
-        Inventory.EatFood(cmd, item, verb, line, gain, stat, cap);
-
-    public void UseItems() =>
-        Inventory.UseItems();
-
-    public void RecalcBag() =>
-        Inventory.RecalcBag();
 
     public string Command {
         get => _command;
@@ -336,7 +69,6 @@ public class Game {
 
     public bool Matches(string cmd) =>
         Command == cmd;
-
 
     const ulong BombkiDefaultSeed = 0x9E3779B97F4A7C15;
     const ulong XorshiftMult = 2685821657736338717;
@@ -408,19 +140,11 @@ public class Game {
 
     public const int MaxInt = 32767;
 
-
-
-
-
-
-
     public void WriteLines(List<string> lines) {
         for (int i = 0; i < lines.Count; i++) {
             Out.WriteLine(lines[i]);
         }
     }
-
-
 
     public void ShowIntro() {
         Crt.ClrScr();
@@ -449,7 +173,6 @@ public class Game {
         Out.Write("\x1b[m");
     }
 
-
     public List<TBand> PosExpBands => _posExpBands ??= [
         new(1, 2, 10, 0), new(3, 3, 19, 0), new(4, 6, 9, 0),
         new(7, 9, 8, 0), new(10, 12, 7, 0), new(13, 15, 6, 0),
@@ -476,82 +199,6 @@ public class Game {
         return 0;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     internal IntSlot PlayerEnergy() =>
         new(() => Player.Energy, v => Player.Energy = v);
     internal IntSlot PlayerMaxEnergy() =>
@@ -560,10 +207,6 @@ public class Game {
         new(() => Player.Mana, v => Player.Mana = v);
     internal IntSlot PlayerMaxMana() =>
         new(() => Player.MaxMana, v => Player.MaxMana = v);
-
-
-
-
 
     public void DisplayPrefs() {
         switch (Verb) {
@@ -583,23 +226,6 @@ public class Game {
                 break;
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public void ReadCommand() {
         Out.Write(Player.Energy + TxtShared_01 + Player.Experience + TxtShared_02);
@@ -676,9 +302,6 @@ public class Game {
         }
     }
 
-
-
-
     public List<TDexterityLimit> DexterityItemLimits => _dexterityItemLimits ??= [
         new() { gate = 0, limit = 10 }, new() { gate = 11, limit = 11 },
         new() { gate = 13, limit = 12 }, new() { gate = 16, limit = 13 },
@@ -686,29 +309,6 @@ public class Game {
         new() { gate = 25, limit = 16 },
     ];
     List<TDexterityLimit>? _dexterityItemLimits;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     static readonly JsonSerializerOptions SaveFormat = new() {
         WriteIndented = true,
@@ -733,47 +333,12 @@ public class Game {
         Out.WriteLine(TxtDeath_01);
         Player.Energy = Player.MaxEnergy;
         Player.Experience = (Player.Experience - (250 - Roll(50) + (5 * Player.Level))).Clamp(0, MaxInt);
-        MoveTo(RoomCityCentre);
-        SpawnMonsters();
+        World.MoveTo(RoomCityCentre);
+        World.SpawnMonsters();
         Command = CmdPamietaj;
         Crt.ReadLn();
         SaveCharacter();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public void CmdScan() =>
         Out.WriteLine(TxtCmdScan_01);
@@ -814,7 +379,7 @@ public class Game {
     }
 
     public void CmdDrinkBeer() {
-        if (LoseItem(TBagItem.Beer)) {
+        if (Inventory.LoseItem(TBagItem.Beer)) {
             Out.WriteLine(TxtCmdDrinkBeer_01);
             Player.ChangeEnergy(10);
             Player.ChangeMana(10);
@@ -822,25 +387,25 @@ public class Game {
     }
 
     public void CmdWieldOldSword() {
-        if (Equip(TBagItem.OldSword)) {
+        if (Inventory.Equip(TBagItem.OldSword)) {
             Out.WriteLine(TxtCmdWieldOldSword_01);
         }
     }
 
     public void CmdUnwieldOldSword() {
-        if (Unequip(TBagItem.OldSword)) {
+        if (Inventory.Unequip(TBagItem.OldSword)) {
             Out.WriteLine(TxtCmdUnwieldOldSword_01);
         }
     }
 
     public void CmdWieldSmallShield() {
-        if (Equip(TBagItem.SmallShield)) {
+        if (Inventory.Equip(TBagItem.SmallShield)) {
             Out.WriteLine(TxtCmdWieldSmallShield_01);
         }
     }
 
     public void CmdUnwieldSmallShield() {
-        if (Unequip(TBagItem.SmallShield)) {
+        if (Inventory.Unequip(TBagItem.SmallShield)) {
             Out.WriteLine(TxtCmdUnwieldSmallShield_01);
         }
     }
@@ -883,7 +448,7 @@ public class Game {
                 return;
             }
             if (success) {
-                CompareFoe();
+                Combat.CompareFoe();
             } else {
                 Out.WriteLine(TxtCmdCompare_01);
             }
@@ -937,11 +502,11 @@ public class Game {
                 return;
             }
             if (Rest == CmdScrollPowrot) {
-                LoseItem(TBagItem.ReturnScroll);
+                Inventory.LoseItem(TBagItem.ReturnScroll);
             }
             if (success) {
                 Out.WriteLine(TxtCmdOpenPortal_01);
-                MoveTo(RoomCityCentre);
+                World.MoveTo(RoomCityCentre);
             } else {
                 Out.WriteLine(partial ? TxtCmdOpenPortal_02 : TxtCmdOpenPortal_03);
             }
@@ -954,17 +519,13 @@ public class Game {
                 Out.WriteLine(TxtNoMana);
                 return;
             }
-            CompareFoe();
-            LoseItem(TBagItem.CompareScroll);
+            Combat.CompareFoe();
+            Inventory.LoseItem(TBagItem.CompareScroll);
         }
     }
 
-
     public void CmdSpeede() =>
-        AcquirePermit();
-
-
-
+        Inventory.AcquirePermit();
 
     public List<TCommandEntry> GroundCommands => _groundCommands ??= [
         new(CmdPamietaj, SaveCharacter),
@@ -975,15 +536,15 @@ public class Game {
         new(CmdZabieraj + CmdKase, CmdTakeMoney),
         new(CmdUstaw + CmdSz, CmdResetArmor),
         new(CmdZdejmuj, CmdStrip),
-        new(CmdJa, ShowCharacter),
-        new(TxtEmpty, TakeDrop),
+        new(CmdJa, Character.ShowCharacter),
+        new(TxtEmpty, Inventory.TakeDrop),
         new(TxtEmpty, CmdJustSaved),
         new(CmdUzyj + CmdPiwo, CmdDrinkBeer),
         new(CmdUzyj + CmdStary, CmdWieldOldSword),
         new(CmdOdloz + CmdStary, CmdUnwieldOldSword),
         new(CmdUzyj + CmdMala, CmdWieldSmallShield),
         new(CmdOdloz + CmdMala, CmdUnwieldSmallShield),
-        new(TxtEmpty, UseItems),
+        new(TxtEmpty, Inventory.UseItems),
         new(CmdZwiej, CmdSetFleeEnergy),
         new(CmdSpij, CmdSleep),
         new(CmdPorownaj, CmdCompare),
@@ -991,9 +552,9 @@ public class Game {
         new(TxtEmpty, CmdRefuseFoodDrop),
         new(TxtEmpty, CmdOpenPortal),
         new(CmdUzyj + CmdScrollPorownywanie, CmdUseCompareScroll),
-        new(CmdKop, CmdSetKickThresholds),
+        new(CmdKop, Character.CmdSetKickThresholds),
         new(CmdJestem + CmdSpeede2, CmdSpeede),
-        new(CmdZdolnosci, CmdShowSkills),
+        new(CmdZdolnosci, Character.CmdShowSkills),
         new(TxtEmpty, DisplayPrefs),
         new(CmdWlacz + CmdPostac, LoadCharacter),
     ];
@@ -1004,12 +565,12 @@ public class Game {
 
     public void Start() {
         Randomize();
-        ChooseRace();
+        Character.ChooseRace();
         do {
-            Checkpoints();
-            CheckLevelUp();
+            World.Checkpoints();
+            Character.CheckLevelUp();
 
-            RecalcBag();
+            Inventory.RecalcBag();
             if (Bag.Count > Bag.Limit) {
                 Out.WriteLine(TxtStart_01 + (Bag.Count - Bag.Limit) + TxtStart_02);
                 Out.WriteLine(TxtStart_03 + ((Bag.Count - Bag.Limit) * 10) + TxtFightTailEnergii);
@@ -1057,7 +618,7 @@ public class Game {
         Bag = save.Bag;
         World.Load(save.World);
         Session = save.Session;
-        RecalcBag();
+        Inventory.RecalcBag();
         Out.WriteLine(TxtLoadCharacter_01 + Gear.WornGarment);
     }
 

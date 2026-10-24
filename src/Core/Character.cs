@@ -53,7 +53,7 @@ public class Character {
     }
 
     public void ShowCharacter() {
-        game.RecalcBag();
+        game.Inventory.RecalcBag();
         Out.WriteLine($"{TxtShowCharacter_30}{game.Player.Name}");
         Out.WriteLine(TxtShowCharacter_01);
         for (int si = 0; si < SheetItems.Count; si++) {
@@ -166,11 +166,11 @@ public class Character {
         } while (chosen < 0);
         game.Player.Energy = (50 + Races[chosen].EnergyBonus);
         game.Player.Practice = 10;
-        game.SpawnAt(game.World.CageInits);
+        game.World.SpawnAt(game.World.CageInits);
         game.Player.Level = 1;
         game.Player.MaxMana += 100;
         game.Player.Mana = game.Player.MaxMana;
-        game.SpawnMonsters();
+        game.World.SpawnMonsters();
         game.Bag.AddGroundItem(TBagItem.OldSword, RoomStart);
         Out.WriteLine(TxtChooseRace_03);
     }

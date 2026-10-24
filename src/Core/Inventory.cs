@@ -274,7 +274,7 @@ public class Inventory {
                         if (game.Bag.Items[TBagItem.TeleportPill] > 0) {
                             Out.WriteLine(TxtUseItems_32);
                             LoseItem(TBagItem.TeleportPill);
-                            game.SpawnMonsters();
+                            game.World.SpawnMonsters();
                             if (game.Player.Stats[TStat.Wisdom] < 10) {
                                 Out.WriteLine(TxtUseItems_33);
                                 game.Player.MaxEnergy -= 1;

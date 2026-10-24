@@ -59,7 +59,7 @@ public class UnitsPrzedmCoreTests {
         game.Player.Stats[TStat.MaxStrength] = 20;
         game.Player.Practice = 10;
         game.Command = "TRENUJ SILA";
-        game.HandleTrain();
+        game.Character.HandleTrain();
         Assert.Equal(11, game.Player.Stats[TStat.Strength]);
         Assert.Equal(7, game.Player.Practice);
     }
@@ -70,7 +70,7 @@ public class UnitsPrzedmCoreTests {
         game.Player.Stats[TStat.MaxDexterity] = 20;
         game.Player.Practice = 10;
         game.Command = "TRENUJ ZRECZNOSC";
-        game.HandleTrain();
+        game.Character.HandleTrain();
         Assert.Equal(11, game.Player.Stats[TStat.Dexterity]);
         Assert.Equal(8, game.Player.Practice);
     }
@@ -81,7 +81,7 @@ public class UnitsPrzedmCoreTests {
         game.Player.Stats[TStat.MaxWisdom] = 20;
         game.Player.Practice = 10;
         game.Command = "TRENUJ MADROSC";
-        game.HandleTrain();
+        game.Character.HandleTrain();
         Assert.Equal(11, game.Player.Stats[TStat.Wisdom]);
         Assert.Equal(7, game.Player.Practice);
     }
@@ -92,7 +92,7 @@ public class UnitsPrzedmCoreTests {
         game.Player.Stats[TStat.MaxStrength] = 20;
         game.Player.Practice = 2;
         game.Command = "TRENUJ SILA";
-        game.HandleTrain();
+        game.Character.HandleTrain();
         Assert.Equal(10, game.Player.Stats[TStat.Strength]);
         Assert.Equal(2, game.Player.Practice);
     }
@@ -103,7 +103,7 @@ public class UnitsPrzedmCoreTests {
         game.Player.Stats[TStat.MaxStrength] = 20;
         game.Player.Practice = 10;
         game.Command = "TRENUJ SILA";
-        game.HandleTrain();
+        game.Character.HandleTrain();
         Assert.Equal(20, game.Player.Stats[TStat.Strength]);
         Assert.Equal(10, game.Player.Practice);
     }
@@ -111,7 +111,7 @@ public class UnitsPrzedmCoreTests {
     [Fact]
     public void PotworyRanges() {
         UnitsSeed.Reseed(game);
-        game.SpawnMonsters();
+        game.World.SpawnMonsters();
         List<TMonster> beasts = [
             TMonster.Bacterium, TMonster.Snail, TMonster.Beetle,
             TMonster.Cockroach, TMonster.Ant, TMonster.Spider,
@@ -194,7 +194,7 @@ public class UnitsPrzedmCoreTests {
         game.Combat.Damage = 50;
         game.Gear.Values[TGearItem.WornCount] = 30;
         game.Gear.Values[TGearItem.Armor] = 100;
-        game.ShieldBlock();
+        game.Combat.ShieldBlock();
         Assert.Equal(20, game.Combat.Damage);
     }
 
@@ -204,7 +204,7 @@ public class UnitsPrzedmCoreTests {
         game.Combat.Damage = 10;
         game.Gear.Values[TGearItem.WornCount] = 30;
         game.Gear.Values[TGearItem.Armor] = 100;
-        game.ShieldBlock();
+        game.Combat.ShieldBlock();
         Assert.Equal(0, game.Combat.Damage);
     }
 }

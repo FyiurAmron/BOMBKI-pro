@@ -13,7 +13,7 @@ public class UnitsArenaTests {
         game.World.Monsters[TMonster.Drummer] = 1;
         game.World.Monsters[TMonster.Keyboardist] = 1;
         game.World.Monsters[TMonster.Liroy] = 1;
-        game.DescribeStage();
+        game.World.DescribeStage();
         Assert.Equal(1, game.Session.Room);
     }
 
@@ -30,7 +30,7 @@ public class UnitsArenaTests {
         game.World.Monsters[TMonster.Gorilla] = 1;
         game.World.Monsters[TMonster.OldMan] = 1;
         game.World.Monsters[TMonster.Reporter] = 1;
-        game.DescribeCrowd();
+        game.World.DescribeCrowd();
         Assert.Equal(1, game.Session.Room);
     }
 
@@ -65,7 +65,7 @@ public class UnitsArenaTests {
         game.World.Monsters[TMonster.Gladiator] = 1;
         game.World.Monsters[TMonster.Warrior] = 1;
         game.World.Monsters[TMonster.Tamer] = 1;
-        game.DescribeBeasts();
+        game.World.DescribeBeasts();
         Assert.Equal(1, game.Session.Room);
     }
 
@@ -82,7 +82,7 @@ public class UnitsArenaTests {
         game.World.Monsters[TMonster.Sweeper] = 1;
         game.World.Monsters[TMonster.Drunkard] = 1;
         game.World.Monsters[TMonster.SickMan] = 1;
-        game.DescribeStreet();
+        game.World.DescribeStreet();
         Assert.Equal(1, game.Session.Room);
     }
 
@@ -101,7 +101,7 @@ public class UnitsArenaTests {
         game.World.Monsters[TMonster.Raspberry] = 1;
         game.World.Monsters[TMonster.Grass] = 1;
         game.World.Monsters[TMonster.Duncan] = 1;
-        game.DescribePlants();
+        game.World.DescribePlants();
         Assert.Equal(1, game.Session.Room);
     }
 
@@ -117,7 +117,7 @@ public class UnitsArenaTests {
     public void Porownanie() {
         game.Player.Mana = 10;
         using (FeedStdin("DZIK")) {
-            game.CompareFoe();
+            game.Combat.CompareFoe();
         }
     }
 
@@ -252,53 +252,53 @@ public class UnitsArenaTests {
     public void Fightscena() {
         FightSetup();
         game.Command = "ZABIJ PERKUSISTA";
-        game.StageFights();
+        game.Combat.StageFights();
         game.Command = "ZABIJ GITARZYSTA";
-        game.StageFights();
+        game.Combat.StageFights();
         game.Command = "ZABIJ LIROY";
-        game.StageFights();
+        game.Combat.StageFights();
         game.Command = "ZABIJ ORGANISTA";
-        game.StageFights();
+        game.Combat.StageFights();
     }
 
     [Fact]
     public void FightbluszczZabij() {
         FightSetup();
         game.Command = "ZABIJ DUNCAN";
-        game.PlantFights();
+        game.Combat.PlantFights();
         game.Command = "ZABIJ SZCZAW";
-        game.PlantFights();
+        game.Combat.PlantFights();
         game.Command = "ZABIJ STOKROTKA";
-        game.PlantFights();
+        game.Combat.PlantFights();
         game.Command = "ZABIJ KONICZYNKA";
-        game.PlantFights();
+        game.Combat.PlantFights();
         game.Command = "ZABIJ MLECZ";
-        game.PlantFights();
+        game.Combat.PlantFights();
         game.Command = "ZABIJ DMUCHAWIEC";
-        game.PlantFights();
+        game.Combat.PlantFights();
         game.Command = "ZABIJ ROZA";
-        game.PlantFights();
+        game.Combat.PlantFights();
         game.Command = "ZABIJ OSET";
-        game.PlantFights();
+        game.Combat.PlantFights();
         game.Command = "ZABIJ MALINA";
-        game.PlantFights();
+        game.Combat.PlantFights();
         game.Command = "ZABIJ AGREST";
-        game.PlantFights();
+        game.Combat.PlantFights();
         game.Command = "ZABIJ JEZYNA";
-        game.PlantFights();
+        game.Combat.PlantFights();
         game.Command = "ZABIJ TRAWA";
-        game.PlantFights();
+        game.Combat.PlantFights();
     }
 
     [Fact]
     public void FightbluszczShop() {
         FightSetup();
         game.Command = "SECRET LISTA";
-        game.PlantFights();
+        game.Combat.PlantFights();
         game.Command = "KUP DOKUMENT";
-        game.PlantFights();
+        game.Combat.PlantFights();
         game.Command = "KUP PLECAK";
-        game.PlantFights();
+        game.Combat.PlantFights();
     }
 
     [Fact]
@@ -306,10 +306,10 @@ public class UnitsArenaTests {
         FightSetup();
         game.World.DuncanQuest = 0;
         game.Command = "ROZMAWIAJ DUNCAN";
-        game.PlantFights();
+        game.Combat.PlantFights();
         game.World.DuncanQuest = -125;
         game.Command = "ROZMAWIAJ DUNCAN";
-        game.PlantFights();
+        game.Combat.PlantFights();
     }
 
     void PorownanieAsk(string monster,
@@ -321,7 +321,7 @@ public class UnitsArenaTests {
             game.Player.Stats[TStat.Dexterity] = zre;
             game.Skills.Values[TSkill.Parry] = par;
             game.Skills.Values[TSkill.Kick] = kop;
-            game.CompareFoe();
+            game.Combat.CompareFoe();
         }
     }
 
@@ -409,7 +409,7 @@ public class UnitsArenaTests {
         game.Player.MaxMana = 100;
         game.Player.Mana = 10;
         using (FeedStdin("BAKTERIA")) {
-            game.CompareFoe();
+            game.Combat.CompareFoe();
         }
 
         Assert.Equal(15, game.Player.Mana);
@@ -443,7 +443,7 @@ public class UnitsArenaTests {
     public void HeartLootIgnoresGroundHeart() {
         LootSetup();
         game.Bag.AddGroundItem(TBagItem.Heart, 7);
-        game.CompositeFight(1, 0, 1, 0, 1, 0, 0, 1, 20, false, false);
+        game.Combat.CompositeFight(1, 0, 1, 0, 1, 0, 0, 1, 20, false, false);
         Assert.Equal(1, game.Bag.Items[TBagItem.Heart]);
     }
 
@@ -452,7 +452,7 @@ public class UnitsArenaTests {
         LootSetup();
         for (int i = 1; i <= 160; i++) {
             if (game.Bag.Items[TBagItem.Heart] == 0) {
-                game.Fight(TFoe.VeryEasyEnemy);
+                game.Combat.Fight(TFoe.VeryEasyEnemy);
             }
         }
 
@@ -464,7 +464,7 @@ public class UnitsArenaTests {
         LootSetup();
         for (int i = 1; i <= 160; i++) {
             if (game.Bag.Items[TBagItem.Heart] == 0) {
-                game.Fight(TFoe.EasyEnemy);
+                game.Combat.Fight(TFoe.EasyEnemy);
             }
         }
 
@@ -476,7 +476,7 @@ public class UnitsArenaTests {
         LootSetup();
         for (int i = 1; i <= 160; i++) {
             if (game.Bag.Items[TBagItem.Heart] == 0) {
-                game.Fight(TFoe.NotEasyEnemy);
+                game.Combat.Fight(TFoe.NotEasyEnemy);
             }
         }
 
@@ -488,7 +488,7 @@ public class UnitsArenaTests {
         LootSetup();
         for (int i = 1; i <= 110; i++) {
             if (game.Bag.Items[TBagItem.Heart] == 0) {
-                game.Fight(TFoe.HardEnemy);
+                game.Combat.Fight(TFoe.HardEnemy);
             }
         }
 
@@ -500,7 +500,7 @@ public class UnitsArenaTests {
         LootSetup();
         for (int i = 1; i <= 150; i++) {
             if (game.Bag.Items[TBagItem.Heart] == 0) {
-                game.Fight(TFoe.VeryHardEnemy);
+                game.Combat.Fight(TFoe.VeryHardEnemy);
             }
         }
 
@@ -537,7 +537,7 @@ public class UnitsArenaTests {
             game.Player.Energy = 100;
             game.Skills.Values[TSkill.Cooking] = 1;
             game.Bag.Items[TBagItem.Bigos] = 0;
-            game.DoFight();
+            game.Combat.DoFight();
             if (game.Skills.Values[TSkill.Cooking] > 1) {
                 learned = true;
             }
@@ -572,7 +572,7 @@ public class UnitsArenaTests {
             game.Gear.Values[TGearItem.Armor] = 0;
             game.Gear.Values[TGearItem.WornCount] = 0;
             game.Player.Energy = 30000;
-            game.DoFight();
+            game.Combat.DoFight();
             if (game.Skills.Values[TSkill.Parry] > 99) {
                 break;
             }

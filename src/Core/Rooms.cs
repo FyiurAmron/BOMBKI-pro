@@ -150,39 +150,39 @@ public class Rooms {
 
     void StreetTurn(TRoomPhase phase) {
         if (phase == TRoomPhase.Enter) {
-            game.DescribeStreet();
+            game.World.DescribeStreet();
         } else {
-            game.StreetFights();
+            game.Combat.StreetFights();
         }
     }
 
     void PlantTurn(TRoomPhase phase) {
         if (phase == TRoomPhase.Enter) {
-            game.DescribePlants();
+            game.World.DescribePlants();
         } else {
-            game.PlantFights();
+            game.Combat.PlantFights();
         }
     }
 
     void CrowdTurn(TRoomPhase phase) {
         if (phase == TRoomPhase.Enter) {
-            game.DescribeCrowd();
+            game.World.DescribeCrowd();
         } else {
-            game.ConcertFights();
+            game.Combat.ConcertFights();
         }
     }
 
     void StageTurn(TRoomPhase phase) {
         if (phase == TRoomPhase.Enter) {
-            game.DescribeStage();
+            game.World.DescribeStage();
         } else {
-            game.StageFights();
+            game.Combat.StageFights();
         }
     }
 
     void ArenaTurn(int room, TRoomPhase phase) {
         if (phase == TRoomPhase.Enter) {
-            game.DescribeBeasts();
+            game.World.DescribeBeasts();
             return;
         }
         switch (game.Verb) {
@@ -190,7 +190,7 @@ public class Rooms {
                 switch (game.Rest) {
                     case CmdBakteria:
                         if (room == game.World.Monsters[TMonster.Bacterium]) {
-                            game.Fight(TFoe.WeakEnemy);
+                            game.Combat.Fight(TFoe.WeakEnemy);
                             game.World.Monsters[TMonster.Bacterium] = 0;
                             Out.WriteLine(TxtArenaMaze_02);
                         }
@@ -198,7 +198,7 @@ public class Rooms {
                     case CmdWilczur:
                         if (room == game.World.Monsters[TMonster.Mongrel]) {
                             Out.WriteLine(TxtArenaMaze_03);
-                            game.Fight(TFoe.WeakishEnemy);
+                            game.Combat.Fight(TFoe.WeakishEnemy);
                             game.World.Monsters[TMonster.Mongrel] = 0;
                         }
                         break;
@@ -208,27 +208,27 @@ public class Rooms {
         for (int bi = 0; bi < game.Combat.BeastKills.Count; bi++) {
             TBeastKill b = game.Combat.BeastKills[bi];
             if (b.unlessFled) {
-                game.KillBeastUnlessFled(b.cmd, IntSlot.Into(game.World.Monsters, b.beast), b.foe);
+                game.Combat.KillBeastUnlessFled(b.cmd, IntSlot.Into(game.World.Monsters, b.beast), b.foe);
             } else {
-                game.KillBeast(b.cmd, IntSlot.Into(game.World.Monsters, b.beast), b.foe);
+                game.Combat.KillBeast(b.cmd, IntSlot.Into(game.World.Monsters, b.beast), b.foe);
             }
         }
         for (int ai = 0; ai < game.Combat.ArenaKills.Count; ai++) {
             TArenaKill a = game.Combat.ArenaKills[ai];
-            game.ArenaKill(a.cmd, a.monster, a.pills);
+            game.Combat.ArenaKill(a.cmd, a.monster, a.pills);
         }
         switch (game.Verb) {
             case CmdPolodnie:
-                game.MazeMove(TMazeDir.mdPolodnie);
+                game.World.MazeMove(TMazeDir.mdPolodnie);
                 break;
             case CmdPolnoc:
-                game.MazeMove(TMazeDir.mdPolnoc);
+                game.World.MazeMove(TMazeDir.mdPolnoc);
                 break;
             case CmdWschod:
-                game.MazeMove(TMazeDir.mdWschod);
+                game.World.MazeMove(TMazeDir.mdWschod);
                 break;
             case CmdZachod:
-                game.MazeMove(TMazeDir.mdZachod);
+                game.World.MazeMove(TMazeDir.mdZachod);
                 break;
         }
     }
@@ -238,13 +238,13 @@ public class Rooms {
             game.Combat.EnemyEnergy = stats.energy;
             game.Combat.EnemyDexterity = stats.dexterity;
             game.Combat.EnemyStrength = stats.strength;
-            game.DoFight();
+            game.Combat.DoFight();
             if (!game.Combat.Fled) {
                 monster.Set(0);
                 game.Combat.Loot = game.Roll(stats.lootRand);
                 Out.WriteLine(TxtShared_08 + game.Combat.Loot + TxtShared_09);
                 game.Player.Money += game.Combat.Loot;
-                game.TryCageLoot(stats.lootThreshold);
+                game.Combat.TryCageLoot(stats.lootThreshold);
             } else {
                 game.Combat.Fled = false;
             }
@@ -308,7 +308,7 @@ public class Rooms {
             posters = [new(CmdPatrz + CmdPlakat, [TxtShared_05, TxtRoom2_04])],
             turn = phase => {
                 if (phase == TRoomPhase.Command) {
-                    game.HandleTrain();
+                    game.Character.HandleTrain();
                 }
             },
         },
@@ -320,7 +320,7 @@ public class Rooms {
             exits = [Exit(CmdGora, true)],
             turn = phase => {
                 if (phase == TRoomPhase.Command) {
-                    game.Training();
+                    game.Character.Training();
                 }
             },
         },
@@ -437,16 +437,16 @@ public class Rooms {
                     game.Combat.EnemyEnergy = game.Combat.CageHugeStats.energy;
                     game.Combat.EnemyDexterity = game.Combat.CageHugeStats.dexterity;
                     game.Combat.EnemyStrength = game.Combat.CageHugeStats.strength;
-                    game.DoFight();
+                    game.Combat.DoFight();
                     if (game.Combat.Fled) {
                         game.Combat.Fled = false;
-                        game.MoveTo(RoomCageCorridor);
+                        game.World.MoveTo(RoomCageCorridor);
                     } else {
                         game.World.Monsters[CageHuge] = 0;
                         game.Combat.Loot = game.Roll(game.Combat.CageHugeStats.lootRand);
                         Out.WriteLine(TxtShared_08 + game.Combat.Loot + TxtShared_09);
                         game.Player.Money += game.Combat.Loot;
-                        game.TryCageLoot(game.Combat.CageHugeStats.lootThreshold);
+                        game.Combat.TryCageLoot(game.Combat.CageHugeStats.lootThreshold);
                     }
                 }
             },
@@ -523,9 +523,9 @@ public class Rooms {
             posters = [new(CmdPatrz + CmdPlakat, [TxtRoom23_04])],
             turn = phase => {
                 if (phase == TRoomPhase.Enter) {
-                    game.DescribeStreet();
+                    game.World.DescribeStreet();
                 } else {
-                    game.BakeryShop();
+                    game.World.BakeryShop();
                 }
             },
         },
@@ -538,10 +538,10 @@ public class Rooms {
             posters = [new(CmdPatrz + CmdPlakat, [TxtRoom24_04])],
             turn = phase => {
                 if (phase == TRoomPhase.Enter) {
-                    game.DescribeStreet();
+                    game.World.DescribeStreet();
                 } else {
-                    game.ArmouryShop();
-                    game.StreetFights();
+                    game.World.ArmouryShop();
+                    game.Combat.StreetFights();
                 }
             },
         },
@@ -555,10 +555,10 @@ public class Rooms {
                        new(CmdPatrz + CmdPoster, [TxtGeneralStoreShop_06]), ],
             turn = phase => {
                 if (phase == TRoomPhase.Enter) {
-                    game.DescribeStreet();
+                    game.World.DescribeStreet();
                 } else {
-                    game.StreetFights();
-                    game.GeneralStoreShop();
+                    game.Combat.StreetFights();
+                    game.World.GeneralStoreShop();
                 }
             },
         },
@@ -571,10 +571,10 @@ public class Rooms {
             posters = [new(CmdPatrz + CmdPlakat, [TxtRoom26_02])],
             turn = phase => {
                 if (phase == TRoomPhase.Enter) {
-                    game.DescribeStreet();
+                    game.World.DescribeStreet();
                 } else {
-                    game.MagicShop();
-                    game.StreetFights();
+                    game.World.MagicShop();
+                    game.Combat.StreetFights();
                 }
             },
         },
@@ -719,35 +719,35 @@ public class Rooms {
                     if (game.World.Monsters[Fatso] == 67) {
                         Out.WriteLine(TxtConcertRooms_21);
                     }
-                    game.DescribeCrowd();
+                    game.World.DescribeCrowd();
                     return;
                 }
-                game.ConcertFights();
+                game.Combat.ConcertFights();
                 switch (game.Verb) {
                     case CmdZabij:
                         switch (game.Rest) {
                             case CmdMiniBarman:
                                 if (game.World.Monsters[Minibarman] == 67) {
                                     Out.WriteLine(TxtConcertRooms_23);
-                                    game.Fight(VeryHardEnemy);
+                                    game.Combat.Fight(VeryHardEnemy);
                                     if (game.Player.Energy > 0) {
                                         game.World.Monsters[Minibarman] = 0;
                                         game.Combat.Roll = game.Roll(100);
                                         if (game.Combat.Roll < 15) {
                                             Out.WriteLine(TxtConcertRooms_25 + TxtShared_08 + TxtPiwoTail);
-                                            game.AcquireItem(TBagItem.Beer);
+                                            game.Inventory.AcquireItem(TBagItem.Beer);
                                         }
                                     }
                                 }
                                 break;
                             case CmdGrubas:
                                 if (game.World.Monsters[Fatso] == 67) {
-                                    game.Fight(VeryHardEnemy);
+                                    game.Combat.Fight(VeryHardEnemy);
                                     if (game.Player.Energy > 0) {
                                         game.World.Monsters[Fatso] = 0;
                                         if (game.Combat.Roll < 15) {
                                             Out.WriteLine(TxtConcertRooms_26 + TxtShared_08 + TxtPiwoTail);
-                                            game.AcquireItem(TBagItem.Beer);
+                                            game.Inventory.AcquireItem(TBagItem.Beer);
                                         }
                                     }
                                 }
@@ -767,13 +767,13 @@ public class Rooms {
             posters = [new(CmdPatrz + CmdTabliczka, [TxtConcertRooms_32])],
             turn = phase => {
                 if (phase == TRoomPhase.Enter) {
-                    game.DescribeCrowd();
+                    game.World.DescribeCrowd();
                     return;
                 }
                 if (game.Verb == CmdExit) {
                     Out.WriteLine(TxtConcertRooms_31);
                 }
-                game.ConcertFights();
+                game.Combat.ConcertFights();
             },
         },
         new() {
@@ -792,18 +792,18 @@ public class Rooms {
                 }
                 if (game.Verb == CmdZabij && game.Rest == CmdDJ) {
                     if (game.World.Monsters[DJ] == 69) {
-                        game.Fight(VeryHardEnemy);
+                        game.Combat.Fight(VeryHardEnemy);
                         if (game.Combat.EnemyEnergy < 0) {
                             game.World.Monsters[DJ] = 0;
                             game.Combat.Roll = game.Roll(100);
                             if (game.Combat.Roll < 25) {
                                 Out.WriteLine(TxtShared_08 + TxtConcertRooms_38);
-                                game.AcquireItem(TBagItem.DryRation);
+                                game.Inventory.AcquireItem(TBagItem.DryRation);
                             }
                             if (game.Combat.Roll < 3) {
                                 Out.WriteLine(TxtShared_08 + TxtConcertRooms_39);
                                 Out.WriteLine(TxtBang + TxtUniqeItem + TxtConcertRooms_40);
-                                game.AcquireItem(TBagItem.Cassette);
+                                game.Inventory.AcquireItem(TBagItem.Cassette);
                             }
                         }
                     }
@@ -879,17 +879,17 @@ public class Rooms {
                     case CmdZabij:
                         switch (game.Rest) {
                             case CmdPedal:
-                                game.Fight(EasyEnemy);
+                                game.Combat.Fight(EasyEnemy);
                                 game.World.Monsters[Pedal] = 0;
-                                game.PillGain();
+                                game.Inventory.PillGain();
                                 break;
                             case CmdPara:
-                                game.Fight(VeryHardEnemy);
+                                game.Combat.Fight(VeryHardEnemy);
                                 game.World.Monsters[Couple] = 0;
-                                game.Fight(VeryHardEnemy);
+                                game.Combat.Fight(VeryHardEnemy);
                                 break;
                             case CmdMaciek:
-                                game.Fight(EasyEnemy);
+                                game.Combat.Fight(EasyEnemy);
                                 game.World.Monsters[Maciek] = 0;
                                 break;
                         }
@@ -941,10 +941,10 @@ public class Rooms {
             posters = [new(CmdPatrz + CmdNapis, [TxtRoom80_04])],
             turn = phase => {
                 if (phase == TRoomPhase.Enter) {
-                    game.DescribePlants();
+                    game.World.DescribePlants();
                     return;
                 }
-                game.PlantFights();
+                game.Combat.PlantFights();
                 if (game.Verb == CmdPatrz && game.Rest == CmdStudnia) {
                     game.Combat.Roll = (game.Roll(3) + 1);
                     Out.WriteLine(TxtRoom80_05 + game.Combat.Roll + TxtShared_23);
@@ -1016,7 +1016,7 @@ public class Rooms {
                 }
                 if (game.Verb == CmdZabij && game.Rest == CmdDrzwi) {
                     if (game.World.Door) {
-                        game.Fight(NotEasyEnemy);
+                        game.Combat.Fight(NotEasyEnemy);
                         if (game.Player.Energy > 0) {
                             game.World.Door = false;
                         }
@@ -1051,16 +1051,16 @@ public class Rooms {
                         if (game.Rest == CmdStaruch) {
                             if (game.Bag.Items[TBagItem.ReturnScroll] > 0) {
                                 Out.WriteLine(TxtRoom86_13);
-                                game.MoveTo(RoomCageHuge);
+                                game.World.MoveTo(RoomCageHuge);
                             } else if ((game.Bag.Items[TBagItem.Sausage] < 3) && (game.Player.Money < StaruchPrice) && (game.Bag.Items[TBagItem.ReturnScroll] == 0)) {
                                 Out.WriteLine(TxtRoom86_05);
                             } else if ((game.Bag.Items[TBagItem.Sausage] > 3) && (game.Player.Money >= StaruchPrice)) {
                                 Out.WriteLine(TxtRoom86_08);
-                                game.MoveTo(RoomCityCentre);
-                                game.AcquireItem(TBagItem.Beer);
-                                game.LoseItem(TBagItem.Sausage, 4);
+                                game.World.MoveTo(RoomCityCentre);
+                                game.Inventory.AcquireItem(TBagItem.Beer);
+                                game.Inventory.LoseItem(TBagItem.Sausage, 4);
                                 game.Player.Money -= StaruchPrice;
-                                game.AcquireItem(TBagItem.ReturnScroll);
+                                game.Inventory.AcquireItem(TBagItem.ReturnScroll);
                                 game.Player.Experience += 50;
                             }
                         }
@@ -1068,7 +1068,7 @@ public class Rooms {
                     case CmdZabij:
                         if (game.Rest == CmdStaruch) {
                             if (game.World.OldElf) {
-                                game.Fight(WeakEnemy);
+                                game.Combat.Fight(WeakEnemy);
                                 game.World.OldElf = false;
                                 Out.WriteLine(TxtRoom86_14);
                                 game.Player.Level -= 1;
@@ -1117,18 +1117,18 @@ public class Rooms {
                 game.Combat.EnemyStrength = 18;
                 game.Combat.FireballCharges = 5;
                 game.Combat.PoisonCharges = 1;
-                game.DoFight();
+                game.Combat.DoFight();
                 if (game.Combat.EnemyEnergy < 0) {
-                    game.LeafGain();
-                    game.PillGain();
-                    game.ScrollGain();
+                    game.Inventory.LeafGain();
+                    game.Inventory.PillGain();
+                    game.Inventory.ScrollGain();
                     if (game.World.DuncanQuest != 0) {
                         game.World.DuncanQuest -= 50;
                     }
                 }
                 if (game.Player.Energy > 0) {
                     Out.WriteLine(TxtRoom88_07);
-                    game.MoveTo(RoomCaveMouth);
+                    game.World.MoveTo(RoomCaveMouth);
                 }
             },
         },
@@ -1158,14 +1158,14 @@ public class Rooms {
                      Exit(CmdZachod, static allowed => allowed, () => game.Bag.Permit > 0, TxtRoom100_16), ],
             turn = phase => {
                 if (phase == TRoomPhase.Enter) {
-                    game.DescribeStreet();
+                    game.World.DescribeStreet();
                 } else {
                     if (game.Verb == CmdLista) {
                         Out.WriteLine(TxtRoom100_05);
                     }
                     for (int i = 0; i < game.World.QuestOffers.Count; i++) {
                         TQuestOffer q = game.World.QuestOffers[i];
-                        game.StartQuest(q.cmd, q.line, q.quest, q.kills);
+                        game.World.StartQuest(q.cmd, q.line, q.quest, q.kills);
                     }
                     if (game.Verb == CmdZakoncz && game.Rest == CmdQuest) {
                         if (game.World.Quest == 0) {
@@ -1204,9 +1204,9 @@ public class Rooms {
                                 game.Combat.EnemyStrength = 10;
                                 game.Combat.EnemyDexterity = 26;
                                 game.Combat.EnemyEnergy = 188;
-                                game.DoFight();
+                                game.Combat.DoFight();
                                 if (game.Combat.EnemyEnergy < 1) {
-                                    game.AcquirePermit();
+                                    game.Inventory.AcquirePermit();
                                 }
                             }
                             break;

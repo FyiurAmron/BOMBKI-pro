@@ -125,14 +125,14 @@ public class Combat : TCombat {
                     Roll = game.Roll(10);
                     if (Roll < 7) {
                         Out.WriteLine(TxtShared_08 + TxtCompositeFight_02);
-                        game.AcquireItem(TBagItem.Doughnut);
+                        game.Inventory.AcquireItem(TBagItem.Doughnut);
                     }
                 }
             } else if (HeartChance > 0) {
                 Roll = game.Roll(20);
                 if (Roll < HeartChance) {
                     Out.WriteLine(TxtShared_08 + TxtCompositeFight_03);
-                    game.AcquireItem(TBagItem.Heart);
+                    game.Inventory.AcquireItem(TBagItem.Heart);
                 }
             }
         }
@@ -486,7 +486,7 @@ public class Combat : TCombat {
                 Roll = game.Roll(100);
                 if (game.Skills.Values[TSkill.Cooking] > Roll) {
                     Out.WriteLine(TxtFightMadeBigos);
-                    game.AcquireItem(TBagItem.Bigos);
+                    game.Inventory.AcquireItem(TBagItem.Bigos);
                     if ((Roll < 1) && (game.Skills.Values[TSkill.Cooking] < 100)) {
                         Out.WriteLine(TxtFightCookingLearn);
                         game.Skills.Values[TSkill.Cooking]++;
@@ -508,9 +508,9 @@ public class Combat : TCombat {
             Fight(TFoe.HardEnemy);
             game.World.Monsters[monster] = 0;
             if (pills) {
-                game.PillGain();
+                game.Inventory.PillGain();
             } else {
-                game.SuitGain();
+                game.Inventory.SuitGain();
             }
         }
     }
@@ -523,14 +523,14 @@ public class Combat : TCombat {
                         if (game.World.Monsters[TMonster.Drummer] == game.Session.Room) {
                             Fight(TFoe.VeryEasyEnemy);
                             game.World.Monsters[TMonster.Drummer] = 0;
-                            game.CassetteGain();
+                            game.Inventory.CassetteGain();
                         }
                         break;
                     case CmdGitarzysta:
                         if (game.World.Monsters[TMonster.Guitarist] == game.Session.Room) {
                             Fight(TFoe.VeryEasyEnemy);
                             game.World.Monsters[TMonster.Guitarist] = 0;
-                            game.CassetteGain();
+                            game.Inventory.CassetteGain();
                         }
                         break;
                     case CmdLiroy:
@@ -539,7 +539,7 @@ public class Combat : TCombat {
                             if ((game.Session.Room != RoomDead) && (game.Player.Energy > 0) && !Fled) {
                                 Out.WriteLine(TxtStageFights_01);
                                 game.Player.Money += 30;
-                                game.CassetteGain();
+                                game.Inventory.CassetteGain();
                                 game.World.LiroyKilled = true;
                                 game.World.Monsters[TMonster.Liroy] = 0;
                             }
@@ -549,7 +549,7 @@ public class Combat : TCombat {
                         if (game.World.Monsters[TMonster.Keyboardist] == game.Session.Room) {
                             Fight(TFoe.VeryEasyEnemy);
                             game.World.Monsters[TMonster.Keyboardist] = 0;
-                            game.CassetteGain();
+                            game.Inventory.CassetteGain();
                         }
                         break;
                 }
@@ -622,7 +622,7 @@ public class Combat : TCombat {
                     case CmdDokument:
                         if (game.Player.Money > 399) {
                             Out.WriteLine(TxtPlantFights_05);
-                            game.AcquirePermit();
+                            game.Inventory.AcquirePermit();
                             game.Player.Money -= 400;
                         }
                         break;
@@ -630,7 +630,7 @@ public class Combat : TCombat {
                         if ((game.World.Monsters[TMonster.Duncan] == game.Session.Room) && (game.Player.Money > 4799)) {
                             Out.WriteLine(TxtPlantFights_06);
                             game.Player.Money -= 4800;
-                            game.AcquireItem(TBagItem.Backpack);
+                            game.Inventory.AcquireItem(TBagItem.Backpack);
                         }
                         break;
                 }
@@ -683,7 +683,7 @@ public class Combat : TCombat {
                         Out.WriteLine(TxtKillDog_01);
                         break;
                     case TStreetKind.skFolk:
-                        game.SuitGain();
+                        game.Inventory.SuitGain();
                         break;
                 }
             }
@@ -697,7 +697,7 @@ public class Combat : TCombat {
             Roll = game.Roll(100);
             if (Roll < 35) {
                 Out.WriteLine(TxtKillSweeper_01);
-                game.AcquireItem(TBagItem.Tracksuit);
+                game.Inventory.AcquireItem(TBagItem.Tracksuit);
             }
         }
     }
@@ -733,12 +733,12 @@ public class Combat : TCombat {
                     if (Roll < 5) {
                         Out.WriteLine(TxtShared_08 + TxtConcertFights_01);
                         Out.WriteLine(TxtConcertFights_02);
-                        game.AcquireItem(TBagItem.Pipe);
+                        game.Inventory.AcquireItem(TBagItem.Pipe);
                     }
                 }
             }
             if (bonus == TConcertBonus.cbSuit) {
-                game.SuitGain();
+                game.Inventory.SuitGain();
             }
         }
     }
