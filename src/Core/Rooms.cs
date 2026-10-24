@@ -149,37 +149,23 @@ public class Rooms {
         public Action<TRoomPhase>? turn = null;
     }
 
-    void StreetTurn(TRoomPhase phase) {
-        if (phase == TRoomPhase.Enter) {
-            game.World.DescribeStreet();
-        } else {
-            game.Combat.StreetFights();
-        }
-    }
+    void Turn(TRoomPhase phase, Action enter, Action command) =>
+        (phase == TRoomPhase.Enter ? enter : command)();
 
-    void PlantTurn(TRoomPhase phase) {
-        if (phase == TRoomPhase.Enter) {
-            game.World.DescribePlants();
-        } else {
-            game.Combat.PlantFights();
-        }
-    }
+    void ShopTurn(TRoomPhase phase, params List<Action> commands) =>
+        Turn(phase, game.World.DescribeStreet, () => commands.ForEach(command => command()));
 
-    void CrowdTurn(TRoomPhase phase) {
-        if (phase == TRoomPhase.Enter) {
-            game.World.DescribeCrowd();
-        } else {
-            game.Combat.ConcertFights();
-        }
-    }
+    void StreetTurn(TRoomPhase phase) =>
+        Turn(phase, game.World.DescribeStreet, game.Combat.StreetFights);
 
-    void StageTurn(TRoomPhase phase) {
-        if (phase == TRoomPhase.Enter) {
-            game.World.DescribeStage();
-        } else {
-            game.Combat.StageFights();
-        }
-    }
+    void PlantTurn(TRoomPhase phase) =>
+        Turn(phase, game.World.DescribePlants, game.Combat.PlantFights);
+
+    void CrowdTurn(TRoomPhase phase) =>
+        Turn(phase, game.World.DescribeCrowd, game.Combat.ConcertFights);
+
+    void StageTurn(TRoomPhase phase) =>
+        Turn(phase, game.World.DescribeStage, game.Combat.StageFights);
 
     void ArenaTurn(int room, TRoomPhase phase) {
         if (phase == TRoomPhase.Enter) {
@@ -270,6 +256,37 @@ public class Rooms {
             exits = Exits(direction),
         };
 
+    TRoom CageRoom(int number, TCoordinate position, string name, string exit, TMonster monster, string alive, string dead, Func<TCageStats> stats) =>
+        new() {
+            number = number,
+            position = position,
+            name = name,
+            exits = Exits(exit),
+            turn = phase => Turn(
+                phase,
+                () => DescribeCage(monster, number, alive, dead),
+                () => CageMonsterFight(IntSlot.Into(game.World.Monsters, monster), number, stats())),
+        };
+
+    TRoom ForestRoom(int number, TCoordinate position, int index, string exit) =>
+        new() {
+            number = number,
+            position = position,
+            name = $"{TxtPlaceLas} {index}",
+            intro = [TxtForest_01],
+            exits = Exits(exit),
+        };
+
+    TRoom PlantRoom(int number, TCoordinate position, string name, string intro, params List<string> exits) =>
+        new() {
+            number = number,
+            position = position,
+            name = name,
+            intro = [intro],
+            exits = Exits(exits),
+            turn = PlantTurn,
+        };
+
     TRoom ArenaRoom(int number, TCoordinate position) =>
         new() {
             number = number,
@@ -356,58 +373,10 @@ public class Rooms {
             exits = Exits(CmdPolnoc, CmdWschod, CmdPolodnie, CmdZachod, CmdGora, CmdDol),
             posters = [new(CmdPatrzPlakat, [TxtShared_13, TxtRoom11_10])],
         },
-        new() {
-            number = RoomCageWeakling,
-            position = new(-2, -1, 2),
-            name = TxtPlaceKlatkaCieniasa,
-            exits = Exits(CmdZachod),
-            turn = phase => {
-                if (phase == TRoomPhase.Enter) {
-                    DescribeCage(CageWeakling, RoomCageWeakling, TxtRoom12_01, TxtShared_07);
-                } else {
-                    CageMonsterFight(IntSlot.Into(game.World.Monsters, CageWeakling), RoomCageWeakling, game.Combat.CageWeaklingStats);
-                }
-            },
-        },
-        new() {
-            number = RoomCageStrong,
-            position = new(-4, -1, 2),
-            name = TxtPlaceKlatkaSilnego,
-            exits = Exits(CmdWschod),
-            turn = phase => {
-                if (phase == TRoomPhase.Enter) {
-                    DescribeCage(CageStrong, RoomCageStrong, TxtRoom13_01, TxtShared_07);
-                } else {
-                    CageMonsterFight(IntSlot.Into(game.World.Monsters, CageStrong), RoomCageStrong, game.Combat.CageStrongStats);
-                }
-            },
-        },
-        new() {
-            number = RoomCageAgile,
-            position = new(-3, 0, 2),
-            name = TxtPlaceKlatkaZrecznego,
-            exits = Exits(CmdPolodnie),
-            turn = phase => {
-                if (phase == TRoomPhase.Enter) {
-                    DescribeCage(CageAgile, RoomCageAgile, TxtRoom14_01, TxtRoom14_02);
-                } else {
-                    CageMonsterFight(IntSlot.Into(game.World.Monsters, CageAgile), RoomCageAgile, game.Combat.CageAgileStats);
-                }
-            },
-        },
-        new() {
-            number = RoomCageTough,
-            position = new(-3, -2, 2),
-            name = TxtPlaceKlatkaOdpornego,
-            exits = Exits(CmdPolnoc),
-            turn = phase => {
-                if (phase == TRoomPhase.Enter) {
-                    DescribeCage(CageTough, RoomCageTough, TxtRoom15_01, TxtShared_07);
-                } else {
-                    CageMonsterFight(IntSlot.Into(game.World.Monsters, CageTough), RoomCageTough, game.Combat.CageToughStats);
-                }
-            },
-        },
+        CageRoom(RoomCageWeakling, new(-2, -1, 2), TxtPlaceKlatkaCieniasa, CmdZachod, CageWeakling, TxtRoom12_01, TxtShared_07, () => game.Combat.CageWeaklingStats),
+        CageRoom(RoomCageStrong, new(-4, -1, 2), TxtPlaceKlatkaSilnego, CmdWschod, CageStrong, TxtRoom13_01, TxtShared_07, () => game.Combat.CageStrongStats),
+        CageRoom(RoomCageAgile, new(-3, 0, 2), TxtPlaceKlatkaZrecznego, CmdPolodnie, CageAgile, TxtRoom14_01, TxtRoom14_02, () => game.Combat.CageAgileStats),
+        CageRoom(RoomCageTough, new(-3, -2, 2), TxtPlaceKlatkaOdpornego, CmdPolnoc, CageTough, TxtRoom15_01, TxtShared_07, () => game.Combat.CageToughStats),
         new() {
             number = RoomCageHuge,
             position = new(-3, -1, 3),
@@ -495,13 +464,7 @@ public class Rooms {
             intro = [$"{TxtYouAreIn}{TxtRoom23_01}", TxtRoom23_02],
             exits = Exits(CmdZachod),
             posters = [new(CmdPatrzPlakat, [TxtRoom23_04])],
-            turn = phase => {
-                if (phase == TRoomPhase.Enter) {
-                    game.World.DescribeStreet();
-                } else {
-                    game.World.BakeryShop();
-                }
-            },
+            turn = phase => ShopTurn(phase, game.World.BakeryShop),
         },
         new() {
             number = RoomArmoury,
@@ -510,14 +473,7 @@ public class Rooms {
             intro = [$"{TxtYouAreIn}{TxtRoom24_01}", TxtRoom24_02],
             exits = Exits(CmdWschod),
             posters = [new(CmdPatrzPlakat, [TxtRoom24_04])],
-            turn = phase => {
-                if (phase == TRoomPhase.Enter) {
-                    game.World.DescribeStreet();
-                } else {
-                    game.World.ArmouryShop();
-                    game.Combat.StreetFights();
-                }
-            },
+            turn = phase => ShopTurn(phase, game.World.ArmouryShop, game.Combat.StreetFights),
         },
         new() {
             number = RoomGeneralStore,
@@ -527,14 +483,7 @@ public class Rooms {
             exits = Exits(CmdZachod),
             posters = [new($"{CmdPatrz}{CmdWywieszka}", [TxtRoom25_03]),
                        new($"{CmdPatrz}{CmdPoster}", [TxtGeneralStoreShop_06]), ],
-            turn = phase => {
-                if (phase == TRoomPhase.Enter) {
-                    game.World.DescribeStreet();
-                } else {
-                    game.Combat.StreetFights();
-                    game.World.GeneralStoreShop();
-                }
-            },
+            turn = phase => ShopTurn(phase, game.Combat.StreetFights, game.World.GeneralStoreShop),
         },
         new() {
             number = RoomMagicShop,
@@ -543,14 +492,7 @@ public class Rooms {
             intro = [TxtRoom26_01],
             exits = Exits(CmdWschod),
             posters = [new(CmdPatrzPlakat, [TxtRoom26_02])],
-            turn = phase => {
-                if (phase == TRoomPhase.Enter) {
-                    game.World.DescribeStreet();
-                } else {
-                    game.World.MagicShop();
-                    game.Combat.StreetFights();
-                }
-            },
+            turn = phase => ShopTurn(phase, game.World.MagicShop, game.Combat.StreetFights),
         },
         new() {
             number = RoomLongStreet,
@@ -852,30 +794,9 @@ public class Rooms {
                 }
             },
         },
-        new() {
-            number = RoomIvy1,
-            position = new(1, -1, 1),
-            name = $"{TxtPlaceBluszcz} 1",
-            intro = [TxtRoom77_01],
-            exits = Exits(CmdPolnoc, CmdWschod, CmdPolodnie, CmdZachod),
-            turn = PlantTurn,
-        },
-        new() {
-            number = RoomIvy2,
-            position = new(2, -1, 1),
-            name = $"{TxtPlaceBluszcz} 2",
-            intro = [TxtRoom78_01],
-            exits = Exits(CmdZachod),
-            turn = PlantTurn,
-        },
-        new() {
-            number = RoomIvy3,
-            position = new(0, -1, 1),
-            name = $"{TxtPlaceBluszcz} 3",
-            intro = [TxtRoom79_01],
-            exits = Exits(CmdWschod),
-            turn = PlantTurn,
-        },
+        PlantRoom(RoomIvy1, new(1, -1, 1), $"{TxtPlaceBluszcz} 1", TxtRoom77_01, CmdPolnoc, CmdWschod, CmdPolodnie, CmdZachod),
+        PlantRoom(RoomIvy2, new(2, -1, 1), $"{TxtPlaceBluszcz} 2", TxtRoom78_01, CmdZachod),
+        PlantRoom(RoomIvy3, new(0, -1, 1), $"{TxtPlaceBluszcz} 3", TxtRoom79_01, CmdWschod),
         new() {
             number = RoomIvy4,
             position = new(1, -2, 1),
@@ -909,38 +830,10 @@ public class Rooms {
                 }
             },
         },
-        new() {
-            number = RoomIvy5,
-            position = new(0, -2, 1),
-            name = $"{TxtPlaceBluszcz} 5",
-            intro = [TxtRoom81_01],
-            exits = Exits(CmdWschod),
-            turn = PlantTurn,
-        },
-        new() {
-            number = RoomIvy6,
-            position = new(2, -2, 1),
-            name = $"{TxtPlaceBluszcz} 6",
-            intro = [TxtRoom82_01],
-            exits = Exits(CmdZachod),
-            turn = PlantTurn,
-        },
-        new() {
-            number = RoomClearing,
-            position = new(1, -3, 1),
-            name = TxtPlacePolana,
-            intro = [TxtRoom83_01],
-            exits = Exits(CmdPolnoc, CmdZachod),
-            turn = PlantTurn,
-        },
-        new() {
-            number = RoomCavePath,
-            position = new(0, -3, 1),
-            name = TxtPlacePodejrzaneKrzaki,
-            intro = [TxtRoom84_01],
-            exits = Exits(CmdWschod, CmdPolodnie, CmdZachod),
-            turn = PlantTurn,
-        },
+        PlantRoom(RoomIvy5, new(0, -2, 1), $"{TxtPlaceBluszcz} 5", TxtRoom81_01, CmdWschod),
+        PlantRoom(RoomIvy6, new(2, -2, 1), $"{TxtPlaceBluszcz} 6", TxtRoom82_01, CmdZachod),
+        PlantRoom(RoomClearing, new(1, -3, 1), TxtPlacePolana, TxtRoom83_01, CmdPolnoc, CmdZachod),
+        PlantRoom(RoomCavePath, new(0, -3, 1), TxtPlacePodejrzaneKrzaki, TxtRoom84_01, CmdWschod, CmdPolodnie, CmdZachod),
         new() {
             number = RoomLivingDoor,
             position = new(-1, -3, 1),
@@ -1180,48 +1073,12 @@ public class Rooms {
             intro = [TxtRoom110_01],
             exits = Exits(CmdZachod),
         },
-        new() {
-            number = RoomForest,
-            position = new(-1, 5, 0),
-            name = $"{TxtPlaceLas} 1",
-            intro = [TxtForest_01],
-            exits = Exits(CmdPolodnie),
-        },
-        new() {
-            number = RoomForest1,
-            position = new(-1, 3, 0),
-            name = $"{TxtPlaceLas} 2",
-            intro = [TxtForest_01],
-            exits = Exits(CmdPolnoc),
-        },
-        new() {
-            number = RoomForest2,
-            position = new(-2, 5, 0),
-            name = $"{TxtPlaceLas} 3",
-            intro = [TxtForest_01],
-            exits = Exits(CmdPolodnie),
-        },
-        new() {
-            number = RoomForest3,
-            position = new(-2, 3, 0),
-            name = $"{TxtPlaceLas} 4",
-            intro = [TxtForest_01],
-            exits = Exits(CmdPolnoc),
-        },
-        new() {
-            number = RoomForest4,
-            position = new(-3, 5, 0),
-            name = $"{TxtPlaceLas} 5",
-            intro = [TxtForest_01],
-            exits = Exits(CmdPolodnie),
-        },
-        new() {
-            number = RoomForest5,
-            position = new(-3, 3, 0),
-            name = $"{TxtPlaceLas} 6",
-            intro = [TxtForest_01],
-            exits = Exits(CmdPolnoc),
-        },
+        ForestRoom(RoomForest, new(-1, 5, 0), 1, CmdPolodnie),
+        ForestRoom(RoomForest1, new(-1, 3, 0), 2, CmdPolnoc),
+        ForestRoom(RoomForest2, new(-2, 5, 0), 3, CmdPolodnie),
+        ForestRoom(RoomForest3, new(-2, 3, 0), 4, CmdPolnoc),
+        ForestRoom(RoomForest4, new(-3, 5, 0), 5, CmdPolodnie),
+        ForestRoom(RoomForest5, new(-3, 3, 0), 6, CmdPolnoc),
     ];
     List<TRoom>? _roomDefs;
 
