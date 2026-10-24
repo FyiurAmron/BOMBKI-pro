@@ -164,6 +164,8 @@ public record IntSlot(Func<int> Get, Action<int> Set) {
         new(() => list[key], v => list[key] = v);
 }
 
+public record TGearEffect(TGearItem? Slot = null, string? Garment = null, int Strength = 0, int Luck = 0, int Armor = 0, int Worn = 0);
+
 public record TGroundItem(TBagItem item, string line);
 
 public record TSpawnedAt(TMonster monster, int room);

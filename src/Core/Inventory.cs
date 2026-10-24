@@ -55,13 +55,9 @@ public class Inventory {
     }
 
     public bool IsEquipped(TBagItem item) =>
-        item switch {
-            TBagItem.OldSword => game.Gear.Values[TGearItem.WeaponKind] == 1,
-            TBagItem.SmallShield => game.Gear.Values[TGearItem.ShieldKind] == 1,
-            TBagItem.Tracksuit => game.Gear.WornGarment == TxtWornSyf,
-            TBagItem.SpikedSuit => game.Gear.WornGarment == TxtWornGarnitur,
-            _ => false,
-        };
+        GearEffects.TryGetValue(item, out TGearEffect? effect) && (effect.Slot is TGearItem slot
+            ? game.Gear.Values[slot] == 1
+            : game.Gear.WornGarment == effect.Garment);
 
     public void AcquireItem(TBagItem item, int quantity = 1) {
         if (quantity < 1) {
@@ -111,48 +107,16 @@ public class Inventory {
     }
 
     public bool Equip(TBagItem item) {
-        if ((game.Bag.Items[item] == 0) || IsEquipped(item)) {
+        if ((game.Bag.Items[item] == 0) || IsEquipped(item) || !GearEffects.TryGetValue(item, out TGearEffect? effect)) {
+            return false;
+        }
+        if (effect.Garment != null && game.Gear.WornGarment != TxtEmpty) {
             return false;
         }
 
-        switch (item) {
-            case TBagItem.OldSword:
-                LoseItem(item);
-                game.Gear.Values[TGearItem.WeaponKind] = 1;
-                game.Player.Stats[TStat.Strength] += 1;
-                game.Gear.Values[TGearItem.LuckRoll] += 3;
-                return true;
-            case TBagItem.SmallShield:
-                LoseItem(item);
-                game.Gear.Values[TGearItem.ShieldKind] = 1;
-                game.Gear.Values[TGearItem.Armor] += 15;
-                game.Gear.Values[TGearItem.WornCount] += 1;
-                return true;
-            case TBagItem.Tracksuit:
-                if (game.Gear.WornGarment != TxtEmpty) {
-                    return false;
-                }
-
-                LoseItem(item);
-                game.Gear.Values[TGearItem.Armor] += 7;
-                game.Gear.Values[TGearItem.Wearing] = 1;
-                game.Gear.WornGarment = TxtWornSyf;
-                return true;
-            case TBagItem.SpikedSuit:
-                if (game.Gear.WornGarment != TxtEmpty) {
-                    return false;
-                }
-
-                LoseItem(item);
-                game.Gear.Values[TGearItem.Wearing] = 1;
-                game.Gear.Values[TGearItem.WornCount] += 1;
-                game.Gear.Values[TGearItem.Armor] += 10;
-                game.Gear.Values[TGearItem.LuckRoll] += 15;
-                game.Gear.WornGarment = TxtWornGarnitur;
-                return true;
-        }
-
-        return false;
+        LoseItem(item);
+        ApplyGear(effect, 1);
+        return true;
     }
 
     public bool Unequip(TBagItem item) {
@@ -160,37 +124,32 @@ public class Inventory {
             return false;
         }
 
-        switch (item) {
-            case TBagItem.OldSword:
-                AcquireItem(item);
-                game.Gear.Values[TGearItem.WeaponKind] = 0;
-                game.Player.Stats[TStat.Strength] -= 1;
-                game.Gear.Values[TGearItem.LuckRoll] -= 3;
-                return true;
-            case TBagItem.SmallShield:
-                AcquireItem(item);
-                game.Gear.Values[TGearItem.ShieldKind] = 0;
-                game.Gear.Values[TGearItem.Armor] -= 15;
-                game.Gear.Values[TGearItem.WornCount] -= 1;
-                return true;
-            case TBagItem.Tracksuit:
-                AcquireItem(item);
-                game.Gear.Values[TGearItem.Wearing] = 0;
-                game.Gear.Values[TGearItem.Armor] -= 7;
-                game.Gear.WornGarment = TxtEmpty;
-                return true;
-            case TBagItem.SpikedSuit:
-                AcquireItem(item);
-                game.Gear.Values[TGearItem.Wearing] = 0;
-                game.Gear.Values[TGearItem.WornCount] -= 1;
-                game.Gear.Values[TGearItem.Armor] -= 10;
-                game.Gear.Values[TGearItem.LuckRoll] -= 15;
-                game.Gear.WornGarment = TxtEmpty;
-                return true;
+        AcquireItem(item);
+        ApplyGear(GearEffects[item], -1);
+        return true;
+    }
+
+    void ApplyGear(TGearEffect effect, int sign) {
+        if (effect.Slot is TGearItem slot) {
+            game.Gear.Values[slot] = (sign + 1) / 2;
+        }
+        if (effect.Garment != null) {
+            game.Gear.Values[TGearItem.Wearing] = (sign + 1) / 2;
+            game.Gear.WornGarment = sign > 0 ? effect.Garment : TxtEmpty;
         }
 
-        return false;
+        game.Player.Stats[TStat.Strength] += sign * effect.Strength;
+        game.Gear.Values[TGearItem.LuckRoll] += sign * effect.Luck;
+        game.Gear.Values[TGearItem.Armor] += sign * effect.Armor;
+        game.Gear.Values[TGearItem.WornCount] += sign * effect.Worn;
     }
+
+    static readonly Dictionary<TBagItem, TGearEffect> GearEffects = new() {
+        [TBagItem.OldSword] = new(Slot: TGearItem.WeaponKind, Strength: 1, Luck: 3),
+        [TBagItem.SmallShield] = new(Slot: TGearItem.ShieldKind, Armor: 15, Worn: 1),
+        [TBagItem.Tracksuit] = new(Garment: TxtWornSyf, Armor: 7),
+        [TBagItem.SpikedSuit] = new(Garment: TxtWornGarnitur, Armor: 10, Luck: 15, Worn: 1),
+    };
 
     public void TakeDrop() {
         for (int ti = 0; ti < TakeItems.Count; ti++) {

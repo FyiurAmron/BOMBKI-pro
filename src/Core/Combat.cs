@@ -170,95 +170,32 @@ public class Combat : TCombat {
         }
     }
 
+    static readonly List<string> DogCompareCommands = [CmdSpaniel, CmdOwczarek, CmdPiesek, CmdJamnik, CmdPudel];
+
+    Dictionary<string, List<TCompareFoeRule>> CompareFoeTable => _compareFoeTable ??= new List<(List<TCompareFoeRule> rules, List<string> cmds)> {
+        (BeastCompareRules, [CmdDzik, CmdSzczur, CmdLis, CmdKuropatwa, CmdZajac, CmdWilczur, CmdOrzel, CmdSarna, CmdDziecko, CmdDziadek]),
+        (BigBeastCompareRules, [CmdSlon, CmdLew, CmdZyrafa, CmdWielblad, CmdStrus, CmdBoa, CmdWilk, CmdBizon, CmdPantera, CmdWariat, CmdSluchacz, CmdFan, CmdCzlowiek, CmdReporter]),
+        (FighterCompareRules, [CmdGladiator, CmdWojownik, CmdTrener, CmdPolicjant, CmdGoryl, CmdOchroniarz]),
+        (DrunkCompareRules, [CmdMiniBarman, CmdGrubas, CmdDJ]),
+        (MusicianCompareRules, [CmdTaksowkarz, CmdSprzedawca, CmdGitarzysta, CmdPerkusista, CmdOrganista, CmdZebrak, CmdPijak, CmdZamiatacz, CmdSzczaw, CmdStokrotka, CmdKoniczynka, CmdMlecz, CmdDmuchawiec]),
+        (IvyCompareRules, [CmdPedal, CmdPara, CmdMaciek, CmdRoza, CmdMalina, CmdTrawa, CmdAgrest, CmdJezyna]),
+        (LiroyCompareRules, [CmdLiroy]),
+        (PokrzywaCompareRules, [CmdPokrzywa]),
+    }.SelectMany(group => group.cmds.Select(cmd => (cmd, group.rules))).ToDictionary(pair => pair.cmd, pair => pair.rules);
+    Dictionary<string, List<TCompareFoeRule>>? _compareFoeTable;
+
     public void CompareFoe() {
         Roll = game.Roll(100);
         Out.WriteLine(TxtCompareFoe_01);
         game.Command = Crt.ReadLn();
         game.Session.Overall = (game.Player.Level + game.Player.Stats[TStat.Strength] + DexterityBonus(game.Player.Stats[TStat.Dexterity]) + ParryBonus(game.Skills.Values[TSkill.Parry]) + KickBonus(game.Skills.Values[TSkill.Kick]));
-        switch (game.Verb) {
-            case CmdDzik:
-            case CmdSzczur:
-            case CmdLis:
-            case CmdKuropatwa:
-            case CmdZajac:
-            case CmdWilczur:
-            case CmdOrzel:
-            case CmdSarna:
-            case CmdDziecko:
-            case CmdDziadek:
-                CompareFoeRules(BeastCompareRules);
-                break;
-            case CmdSlon:
-            case CmdLew:
-            case CmdZyrafa:
-            case CmdWielblad:
-            case CmdStrus:
-            case CmdBoa:
-            case CmdWilk:
-            case CmdBizon:
-            case CmdPantera:
-            case CmdWariat:
-            case CmdSluchacz:
-            case CmdFan:
-            case CmdCzlowiek:
-            case CmdReporter:
-                CompareFoeRules(BigBeastCompareRules);
-                break;
-            case CmdGladiator:
-            case CmdWojownik:
-            case CmdTrener:
-            case CmdPolicjant:
-            case CmdGoryl:
-            case CmdOchroniarz:
-                CompareFoeRules(FighterCompareRules);
-                break;
-            case CmdMiniBarman:
-            case CmdGrubas:
-            case CmdDJ:
-                CompareFoeRules(DrunkCompareRules);
-                break;
-            case CmdTaksowkarz:
-            case CmdSprzedawca:
-            case CmdGitarzysta:
-            case CmdPerkusista:
-            case CmdOrganista:
-            case CmdZebrak:
-            case CmdPijak:
-            case CmdZamiatacz:
-            case CmdSzczaw:
-            case CmdStokrotka:
-            case CmdKoniczynka:
-            case CmdMlecz:
-            case CmdDmuchawiec:
-                CompareFoeRules(MusicianCompareRules);
-                break;
-            case CmdPedal:
-            case CmdPara:
-            case CmdMaciek:
-            case CmdRoza:
-            case CmdMalina:
-            case CmdTrawa:
-            case CmdAgrest:
-            case CmdJezyna:
-                CompareFoeRules(IvyCompareRules);
-                break;
-            case CmdLiroy:
-                CompareFoeRules(LiroyCompareRules);
-                break;
-            case CmdPokrzywa:
-                CompareFoeRules(PokrzywaCompareRules);
-                break;
-            case CmdSpaniel:
-            case CmdOwczarek:
-            case CmdPiesek:
-            case CmdJamnik:
-            case CmdPudel:
-                Out.WriteLine(TxtCompareFoe_34);
-                break;
-            case CmdBakteria:
-                Out.WriteLine(TxtCompareFoe_36);
-                game.Player.ChangeMana(5);
-                break;
+        if (CompareFoeTable.TryGetValue(game.Verb, out var rules)) {
+            CompareFoeRules(rules);
+        } else if (DogCompareCommands.Contains(game.Verb)) {
+            Out.WriteLine(TxtCompareFoe_34);
+        } else if (game.Verb == CmdBakteria) {
+            Out.WriteLine(TxtCompareFoe_36);
+            game.Player.ChangeMana(5);
         }
         if ((Roll < 3) && (game.Skills.Values[TSkill.Comparing] < 100)) {
             Out.WriteLine(TxtFightStars17 + TxtLearnVerb + TxtCompareFoe_35);
