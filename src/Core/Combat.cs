@@ -27,30 +27,17 @@ public class Combat : TCombat {
             ? game.BandAmount(game.PosExpBands, diff)
             : diff < 0 ? game.BandAmount(game.NegExpBands, (-diff)) : 11;
 
-    public int FightExpForStrength(int diff) {
-        if (diff > 0) {
-            return diff >= 10 ? 1 : 11 - diff;
-        } else if (diff < 0) {
-            diff = (-diff);
-            return diff >= 10 ? 21 : 11 + diff;
-        } else {
-            return 11;
-        }
-    }
+    static int ExpForStep(int diff, int step) =>
+        diff == 0 ? 11 : diff > 0 ? Math.Max(1, 11 - step) : Math.Min(21, 11 + step);
 
-    public int FightExpForDexterity(int diff) {
-        int step;
-        if (diff > 0) {
-            step = ((diff + 1) / 2);
-            return step >= 10 ? 1 : 11 - step;
-        } else if (diff < 0) {
-            diff = (-diff);
-            step = ((diff + 1) / 2);
-            return step >= 10 ? 21 : 11 + step;
-        } else {
-            return 11;
-        }
-    }
+    public int FightExpForStrength(int diff) =>
+        ExpForStep(diff, Math.Abs(diff));
+
+    public int FightExpForDexterity(int diff) =>
+        ExpForStep(diff, (Math.Abs(diff) + 1) / 2);
+
+    static int Bonus(int value, params List<(int over, int amount)> steps) =>
+        steps.Where(step => value > step.over).Sum(step => step.amount);
 
     public TDodgeBound DodgeBoundRow(int chance) {
         int i = 0;
@@ -70,31 +57,11 @@ public class Combat : TCombat {
     public int DexterityBonus(int value) =>
         value >= 8 ? value / 2 : 0;
 
-    public int ParryBonus(int value) {
-        int bonus = 0;
-        if (value > 75) {
-            bonus++;
-        }
+    public int ParryBonus(int value) =>
+        Bonus(value, (50, 1), (75, 1));
 
-        if (value > 50) {
-            bonus++;
-        }
-
-        return bonus;
-    }
-
-    public int KickBonus(int value) {
-        int bonus = 0;
-        if (value > 70) {
-            bonus += 2;
-        }
-
-        if (value > 10) {
-            bonus += 2;
-        }
-
-        return bonus;
-    }
+    public int KickBonus(int value) =>
+        Bonus(value, (10, 2), (70, 2));
 
     public void FightDog() {
         EnemyEnergy = 10;
@@ -378,37 +345,10 @@ public class Combat : TCombat {
             }
         } while (!((game.Player.Energy < 1) || (EnemyEnergy < 1) || Fled));
         if ((EnemyEnergy < 1) && (game.Player.Energy > 0)) {
-            if (game.Player.MaxEnergy > 75) {
-                FightExperience -= 2;
-            }
-
-            if (game.Player.MaxEnergy > 115) {
-                FightExperience -= 3;
-            }
-
-            if (game.Skills.Values[TSkill.Parry] > 50) {
-                FightExperience -= 2;
-            }
-
-            if (game.Skills.Values[TSkill.Parry] > 75) {
-                FightExperience -= 2;
-            }
-
-            if (game.Skills.Values[TSkill.Parry] > 95) {
-                FightExperience -= 1;
-            }
-
-            if (game.Skills.Values[TSkill.Kick] > 50) {
-                FightExperience -= 5;
-            }
-
-            if (game.Skills.Values[TSkill.Kick] > 95) {
-                FightExperience -= 2;
-            }
-
-            if (FightExperience < 0) {
-                FightExperience = 0;
-            }
+            FightExperience = Math.Max(0, FightExperience
+                - Bonus(game.Player.MaxEnergy, (75, 2), (115, 3))
+                - Bonus(game.Skills.Values[TSkill.Parry], (50, 2), (75, 2), (95, 1))
+                - Bonus(game.Skills.Values[TSkill.Kick], (50, 5), (95, 2)));
 
             Out.WriteLine(TxtFightVictoryLabel + FightExperience + TxtShared_22);
             game.Player.Experience = (FightExperience + game.Player.Experience);
@@ -453,46 +393,30 @@ public class Combat : TCombat {
     }
 
     public void StageFights() {
-        switch (game.Verb) {
-            case CmdZabij:
-                switch (game.Rest) {
-                    case CmdPerkusista:
-                        if (game.World.Monsters[TMonster.Drummer] == game.Session.Room) {
-                            Fight(TFoe.VeryEasyEnemy);
-                            game.World.Monsters[TMonster.Drummer] = 0;
-                            game.Inventory.CassetteGain();
-                        }
-                        break;
-                    case CmdGitarzysta:
-                        if (game.World.Monsters[TMonster.Guitarist] == game.Session.Room) {
-                            Fight(TFoe.VeryEasyEnemy);
-                            game.World.Monsters[TMonster.Guitarist] = 0;
-                            game.Inventory.CassetteGain();
-                        }
-                        break;
-                    case CmdLiroy:
-                        if (game.World.Monsters[TMonster.Liroy] == game.Session.Room) {
-                            Fight(TFoe.NotEasyEnemy);
-                            if ((game.Session.Room != RoomDead) && (game.Player.Energy > 0) && !Fled) {
-                                Out.WriteLine(TxtStageFights_01);
-                                game.Player.Money += 30;
-                                game.Inventory.CassetteGain();
-                                game.World.LiroyKilled = true;
-                                game.World.Monsters[TMonster.Liroy] = 0;
-                            }
-                        }
-                        break;
-                    case CmdOrganista:
-                        if (game.World.Monsters[TMonster.Keyboardist] == game.Session.Room) {
-                            Fight(TFoe.VeryEasyEnemy);
-                            game.World.Monsters[TMonster.Keyboardist] = 0;
-                            game.Inventory.CassetteGain();
-                        }
-                        break;
-                }
-                break;
+        BandMembers.ForEach(member => {
+            if (game.Matches($"{CmdZabij}{member.cmd}") && (game.World.Monsters[member.monster] == game.Session.Room)) {
+                Fight(TFoe.VeryEasyEnemy);
+                game.World.Monsters[member.monster] = 0;
+                game.Inventory.CassetteGain();
+            }
+        });
+        if (game.Matches($"{CmdZabij}{CmdLiroy}") && (game.World.Monsters[TMonster.Liroy] == game.Session.Room)) {
+            Fight(TFoe.NotEasyEnemy);
+            if ((game.Session.Room != RoomDead) && (game.Player.Energy > 0) && !Fled) {
+                Out.WriteLine(TxtStageFights_01);
+                game.Player.Money += 30;
+                game.Inventory.CassetteGain();
+                game.World.LiroyKilled = true;
+                game.World.Monsters[TMonster.Liroy] = 0;
+            }
         }
     }
+
+    static readonly List<(string cmd, TMonster monster)> BandMembers = [
+        (CmdPerkusista, TMonster.Drummer),
+        (CmdGitarzysta, TMonster.Guitarist),
+        (CmdOrganista, TMonster.Keyboardist),
+    ];
 
     public void KillPlant(string cmd, IntSlot Plant) {
         if ((game.Matches(cmd)) && (Plant.Get() == game.Session.Room)) {
