@@ -131,16 +131,7 @@ public class TSession {
     public bool ExitRequested;
 }
 
-public class TQuestOffer {
-    public string cmd = "", line = "";
-    public int quest, kills;
-    public TQuestOffer(string cmd, string line, int quest, int kills) {
-        this.cmd = cmd;
-        this.line = line;
-        this.quest = quest;
-        this.kills = kills;
-    }
-}
+public record TQuestOffer(string cmd, string line, int quest, int kills);
 
 public class TMovement {
     public string cmd = "";
@@ -149,15 +140,7 @@ public class TMovement {
     public string? blocked = null;
 }
 
-public class TBand {
-    public int lo, hi, Base, perUnit;
-    public TBand(int lo, int hi, int Base, int perUnit) {
-        this.lo = lo;
-        this.hi = hi;
-        this.Base = Base;
-        this.perUnit = perUnit;
-    }
-}
+public record TBand(int lo, int hi, int Base, int perUnit);
 
 public class TEnumList<TKey, TValue> where TKey : struct, Enum {
     readonly List<TValue> values;
@@ -176,45 +159,16 @@ public class TEnumList<TKey, TValue> where TKey : struct, Enum {
     }
 }
 
-public class IntSlot {
-    public Func<int> Get;
-    public Action<int> Set;
-    public IntSlot(Func<int> get, Action<int> set) {
-        Get = get;
-        Set = set;
-    }
+public record IntSlot(Func<int> Get, Action<int> Set) {
     public static IntSlot Into<TKey>(TEnumList<TKey, int> list, TKey key) where TKey : struct, Enum =>
         new(() => list[key], v => list[key] = v);
 }
 
-public class TGroundItem {
-    public TBagItem item;
-    public string line = "";
-    public TGroundItem(TBagItem item, string line) {
-        this.item = item;
-        this.line = line;
-    }
-}
+public record TGroundItem(TBagItem item, string line);
 
-public class TSpawnedAt {
-    public TMonster monster;
-    public int room;
-    public TSpawnedAt(TMonster monster, int room) {
-        this.monster = monster;
-        this.room = room;
-    }
-}
+public record TSpawnedAt(TMonster monster, int room);
 
-public class TCheckpoint {
-    public int exp, stage, next, loStr, hiStr;
-    public TCheckpoint(int exp, int stage, int next, int loStr, int hiStr) {
-        this.exp = exp;
-        this.stage = stage;
-        this.next = next;
-        this.loStr = loStr;
-        this.hiStr = hiStr;
-    }
-}
+public record TCheckpoint(int exp, int stage, int next, int loStr, int hiStr);
 
 public class TTrainable {
     public string cmd = "";
@@ -223,32 +177,11 @@ public class TTrainable {
     public string cmdForm = "", nounForm = "";
 }
 
-public class TCommandEntry {
-    public string cmd = "";
-    public Action run = () => { };
-    public TCommandEntry(string cmd, Action run) {
-        this.cmd = cmd;
-        this.run = run;
-    }
-}
+public record TCommandEntry(string cmd, Action run);
 
-public class TDodgeBound {
-    public int limit, player, enemy;
-    public TDodgeBound(int limit, int player, int enemy) {
-        this.limit = limit;
-        this.player = player;
-        this.enemy = enemy;
-    }
-}
+public record TDodgeBound(int limit, int player, int enemy);
 
-public class TSpot {
-    public TMonster where;
-    public string text = "";
-    public TSpot(TMonster where, string text) {
-        this.where = where;
-        this.text = text;
-    }
-}
+public record TSpot(TMonster where, string text);
 
 public class TFoeStats {
     public int energyBase, energyRand, dexterityBase, dexterityRand;
@@ -260,17 +193,7 @@ public class TCageStats {
     public int energy, dexterity, strength, lootRand, lootThreshold;
 }
 
-public class TCompareFoeRule {
-    public IntSlot stat;
-    public int lo, hi;
-    public string line = "";
-    public TCompareFoeRule(IntSlot stat, int lo, int hi, string line) {
-        this.stat = stat;
-        this.lo = lo;
-        this.hi = hi;
-        this.line = line;
-    }
-}
+public record TCompareFoeRule(IntSlot stat, int lo, int hi, string line);
 
 public class TFightExpStat {
     public IntSlot playerStat = null!, enemyStat = null!;
@@ -361,17 +284,7 @@ public class TItemCarryModifiers {
     public int armor, dexterity, maxEnergy, maxMana, wisdom;
 }
 
-public class TShopRule {
-    public string cmd = "";
-    public TBagItem item;
-    public bool selling;
-
-    public TShopRule(string cmd, TBagItem item, bool selling) {
-        this.cmd = cmd;
-        this.item = item;
-        this.selling = selling;
-    }
-}
+public record TShopRule(string cmd, TBagItem item, bool selling);
 
 public class TShopStock {
     public List<string> lines = [];
