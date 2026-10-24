@@ -47,8 +47,8 @@ public class Inventory {
     public void ScrollGain() =>
         GainLoot100(10, TxtScrollGain_01, "", TBagItem.CompareScroll);
 
-    public void TakeItem(string cmd, TBagItem item, string verb, string line) {
-        if ((game.Matches(cmd)) && game.Bag.TakeGroundItem(item, game.Session.OuterRoom)) {
+    public void TakeItem(TBagItem item, string verb, string line) {
+        if (game.Bag.TakeGroundItem(item, game.Session.OuterRoom)) {
             Out.WriteLine(verb + line);
             AcquireItem(item);
         }
@@ -98,8 +98,8 @@ public class Inventory {
         return true;
     }
 
-    public void DropItem(string cmd, TBagItem item, string verb, string line) {
-        if ((game.Matches(cmd)) && (game.Bag.Items[item] > 0) && !IsEquipped(item)) {
+    public void DropItem(TBagItem item, string verb, string line) {
+        if ((game.Bag.Items[item] > 0) && !IsEquipped(item)) {
             Out.WriteLine(verb + line);
             LoseItem(item);
             game.Bag.AddGroundItem(item, game.Session.OuterRoom);
@@ -152,13 +152,11 @@ public class Inventory {
     };
 
     public void TakeDrop() {
-        for (int ti = 0; ti < TakeItems.Count; ti++) {
-            TTakeDrop t = TakeItems[ti];
-            TakeItem(t.cmd, t.item, t.verb, t.line);
+        if (TakeItems.TryGetValue(game.Command, out TTakeDrop? take)) {
+            TakeItem(take.item, take.verb, take.line);
         }
-        for (int ti = 0; ti < DropItems.Count; ti++) {
-            TTakeDrop t = DropItems[ti];
-            DropItem(t.cmd, t.item, t.verb, t.line);
+        if (DropItems.TryGetValue(game.Command, out TTakeDrop? drop)) {
+            DropItem(drop.item, drop.verb, drop.line);
         }
     }
 
@@ -168,8 +166,8 @@ public class Inventory {
         }
     }
 
-    public void EatFood(string cmd, TBagItem item, string verb, string line, int gain, IntSlot stat, IntSlot cap) {
-        if (game.Matches(cmd) && LoseItem(item)) {
+    public void EatFood(TBagItem item, string verb, string line, int gain, IntSlot stat, IntSlot cap) {
+        if (LoseItem(item)) {
             Out.WriteLine(verb + line);
             stat.Set((stat.Get() + gain));
             int tmp = stat.Get();
@@ -179,9 +177,8 @@ public class Inventory {
     }
 
     public void UseItems() {
-        for (int fi = 0; fi < FoodItems.Count; fi++) {
-            TFoodItem f = FoodItems[fi];
-            EatFood(f.cmd, f.item, f.verb, f.line, f.gain, f.stat, f.cap);
+        if (FoodItems.TryGetValue(game.Command, out TFoodItem? food)) {
+            EatFood(food.item, food.verb, food.line, food.gain, food.stat, food.cap);
         }
         UseCommands.FirstOrDefault(entry => game.Matches(entry.cmd))?.run();
     }
@@ -308,35 +305,35 @@ public class Inventory {
         game.Player.MaxMana += sign * modifiers.maxMana;
     }
 
-    public List<TTakeDrop> TakeItems => _takeItems ??= [
-        new() { cmd = CmdBierz + CmdStary, item = TBagItem.OldSword, verb = TxtPickUpVerb, line = TxtTakeDrop_01 },
-        new() { cmd = CmdBierz + CmdMala, item = TBagItem.SmallShield, verb = TxtPickUpVerb, line = TxtTakeDrop_02 },
-        new() { cmd = CmdBierz + CmdSerce, item = TBagItem.Heart, verb = TxtPickUpVerb, line = TxtTakeDrop_03 },
-        new() { cmd = CmdBierz + CmdDyplom, item = TBagItem.Diploma, verb = TxtPickUpVerb, line = TxtTakeDrop_04 },
-        new() { cmd = CmdBierz + CmdFajka, item = TBagItem.Pipe, verb = TxtPickUpVerb, line = TxtTakeDrop_05 },
-    ];
-    List<TTakeDrop>? _takeItems;
+    public Dictionary<string, TTakeDrop> TakeItems => _takeItems ??= new() {
+        [$"{CmdBierz}{CmdStary}"] = new() { item = TBagItem.OldSword, verb = TxtPickUpVerb, line = TxtTakeDrop_01 },
+        [$"{CmdBierz}{CmdMala}"] = new() { item = TBagItem.SmallShield, verb = TxtPickUpVerb, line = TxtTakeDrop_02 },
+        [$"{CmdBierz}{CmdSerce}"] = new() { item = TBagItem.Heart, verb = TxtPickUpVerb, line = TxtTakeDrop_03 },
+        [$"{CmdBierz}{CmdDyplom}"] = new() { item = TBagItem.Diploma, verb = TxtPickUpVerb, line = TxtTakeDrop_04 },
+        [$"{CmdBierz}{CmdFajka}"] = new() { item = TBagItem.Pipe, verb = TxtPickUpVerb, line = TxtTakeDrop_05 },
+    };
+    Dictionary<string, TTakeDrop>? _takeItems;
 
-    public List<TTakeDrop> DropItems => _dropItems ??= [
-        new() { cmd = CmdOdrzuc + CmdStary, item = TBagItem.OldSword, verb = TxtDropVerb, line = TxtTakeDrop_06 },
-        new() { cmd = CmdOdrzuc + CmdFajka, item = TBagItem.Pipe, verb = "", line = TxtTakeDrop_07 },
-        new() { cmd = CmdOdrzuc + CmdMala, item = TBagItem.SmallShield, verb = TxtDropVerb, line = TxtTakeDrop_08 },
-        new() { cmd = CmdOdrzuc + CmdSerce, item = TBagItem.Heart, verb = TxtDropVerb, line = CmdZakrwawioneSerce },
-        new() { cmd = CmdOdrzuc + CmdDyplom, item = TBagItem.Diploma, verb = TxtDropVerb, line = TxtTakeDrop_10 },
-    ];
-    List<TTakeDrop>? _dropItems;
+    public Dictionary<string, TTakeDrop> DropItems => _dropItems ??= new() {
+        [$"{CmdOdrzuc}{CmdStary}"] = new() { item = TBagItem.OldSword, verb = TxtDropVerb, line = TxtTakeDrop_06 },
+        [$"{CmdOdrzuc}{CmdFajka}"] = new() { item = TBagItem.Pipe, verb = "", line = TxtTakeDrop_07 },
+        [$"{CmdOdrzuc}{CmdMala}"] = new() { item = TBagItem.SmallShield, verb = TxtDropVerb, line = TxtTakeDrop_08 },
+        [$"{CmdOdrzuc}{CmdSerce}"] = new() { item = TBagItem.Heart, verb = TxtDropVerb, line = CmdZakrwawioneSerce },
+        [$"{CmdOdrzuc}{CmdDyplom}"] = new() { item = TBagItem.Diploma, verb = TxtDropVerb, line = TxtTakeDrop_10 },
+    };
+    Dictionary<string, TTakeDrop>? _dropItems;
 
-    public List<TFoodItem> FoodItems => _foodItems ??= [
-        new() { cmd = CmdUzyj + CmdPaczek, item = TBagItem.Doughnut, verb = TxtEatVerb, line = TxtUseItems_12, gain = 8, stat = game.PlayerEnergy(), cap = game.PlayerMaxEnergy() },
-        new() { cmd = CmdUzyj + CmdCiastko, item = TBagItem.Cookie, verb = TxtEatVerb, line = TxtUseItems_13, gain = 12, stat = game.PlayerEnergy(), cap = game.PlayerMaxEnergy() },
-        new() { cmd = CmdUzyj + CmdSuchaRacja, item = TBagItem.DryRation, verb = TxtEatVerb, line = TxtUseItems_14, gain = 16, stat = game.PlayerEnergy(), cap = game.PlayerMaxEnergy() },
-        new() { cmd = CmdUzyj + CmdBulka, item = TBagItem.BreadRoll, verb = TxtEatVerb, line = TxtUseItems_15, gain = 20, stat = game.PlayerEnergy(), cap = game.PlayerMaxEnergy() },
-        new() { cmd = CmdUzyj + CmdChleb, item = TBagItem.Bread, verb = TxtEatVerb, line = TxtUseItems_23, gain = 26, stat = game.PlayerEnergy(), cap = game.PlayerMaxEnergy() },
-        new() { cmd = CmdUzyj + CmdWeka, item = TBagItem.Sausage, verb = TxtEatVerb, line = TxtUseItems_25, gain = 34, stat = game.PlayerEnergy(), cap = game.PlayerMaxEnergy() },
-        new() { cmd = CmdUzyj + CmdMalaButelkaMany, item = TBagItem.ManaBottle, verb = "", line = TxtUseItems_26, gain = 30, stat = game.PlayerMana(), cap = game.PlayerMaxMana() },
-        new() { cmd = CmdUzyj + CmdBigos, item = TBagItem.Bigos, verb = TxtEatVerb, line = TxtUseItems_27, gain = 20, stat = game.PlayerEnergy(), cap = game.PlayerMaxEnergy() },
-    ];
-    List<TFoodItem>? _foodItems;
+    public Dictionary<string, TFoodItem> FoodItems => _foodItems ??= new() {
+        [$"{CmdUzyj}{CmdPaczek}"] = new() { item = TBagItem.Doughnut, verb = TxtEatVerb, line = TxtUseItems_12, gain = 8, stat = game.PlayerEnergy(), cap = game.PlayerMaxEnergy() },
+        [$"{CmdUzyj}{CmdCiastko}"] = new() { item = TBagItem.Cookie, verb = TxtEatVerb, line = TxtUseItems_13, gain = 12, stat = game.PlayerEnergy(), cap = game.PlayerMaxEnergy() },
+        [$"{CmdUzyj}{CmdSuchaRacja}"] = new() { item = TBagItem.DryRation, verb = TxtEatVerb, line = TxtUseItems_14, gain = 16, stat = game.PlayerEnergy(), cap = game.PlayerMaxEnergy() },
+        [$"{CmdUzyj}{CmdBulka}"] = new() { item = TBagItem.BreadRoll, verb = TxtEatVerb, line = TxtUseItems_15, gain = 20, stat = game.PlayerEnergy(), cap = game.PlayerMaxEnergy() },
+        [$"{CmdUzyj}{CmdChleb}"] = new() { item = TBagItem.Bread, verb = TxtEatVerb, line = TxtUseItems_23, gain = 26, stat = game.PlayerEnergy(), cap = game.PlayerMaxEnergy() },
+        [$"{CmdUzyj}{CmdWeka}"] = new() { item = TBagItem.Sausage, verb = TxtEatVerb, line = TxtUseItems_25, gain = 34, stat = game.PlayerEnergy(), cap = game.PlayerMaxEnergy() },
+        [$"{CmdUzyj}{CmdMalaButelkaMany}"] = new() { item = TBagItem.ManaBottle, verb = "", line = TxtUseItems_26, gain = 30, stat = game.PlayerMana(), cap = game.PlayerMaxMana() },
+        [$"{CmdUzyj}{CmdBigos}"] = new() { item = TBagItem.Bigos, verb = TxtEatVerb, line = TxtUseItems_27, gain = 20, stat = game.PlayerEnergy(), cap = game.PlayerMaxEnergy() },
+    };
+    Dictionary<string, TFoodItem>? _foodItems;
 
     public Dictionary<TBagItem, TItemCarryModifiers> ItemCarryModifiers => _itemCarryModifiers ??= new() {
         [TBagItem.Diploma] = new() { maxEnergy = 5 },

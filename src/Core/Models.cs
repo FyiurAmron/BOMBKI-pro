@@ -131,7 +131,7 @@ public class TSession {
     public bool ExitRequested;
 }
 
-public record TQuestOffer(string cmd, string line, int quest, int kills);
+public record TQuestOffer(string line, int quest, int kills);
 
 public class TMovement {
     public string cmd = "";
@@ -173,7 +173,6 @@ public record TSpawnedAt(TMonster monster, int room);
 public record TCheckpoint(int exp, int stage, int next, int loStr, int hiStr);
 
 public class TTrainable {
-    public string cmd = "";
     public TStat stat, maxStat;
     public int minPractice, cost;
     public string cmdForm = "", nounForm = "";
@@ -204,12 +203,12 @@ public class TFightExpStat {
 }
 
 public class TTakeDrop {
-    public string cmd = "", verb = "", line = "";
+    public string verb = "", line = "";
     public TBagItem item;
 }
 
 public class TFoodItem {
-    public string cmd = "", verb = "", line = "";
+    public string verb = "", line = "";
     public TBagItem item;
     public int gain;
     public IntSlot stat = null!, cap = null!;
@@ -226,11 +225,6 @@ public class TArenaKill {
     public bool pills;
 }
 
-public class TMazeMove {
-    public int room;
-    public List<TMazeDir> exits = [];
-}
-
 public class TPlantKill {
     public TMonster plant;
     public TFoe foe;
@@ -238,7 +232,6 @@ public class TPlantKill {
 }
 
 public class TRace {
-    public string name = "";
     public TEnumList<TStat, int> baseStats = new();
     public int MaxManaBonus, MoneyBonus, MaxEnergyBonus, EnergyBonus;
 }

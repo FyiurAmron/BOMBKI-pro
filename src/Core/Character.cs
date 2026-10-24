@@ -28,11 +28,8 @@ public class Character {
             Out.WriteLine(TxtHandleTrain_01);
         }
 
-        for (int ti = 0; ti < Trainables.Count; ti++) {
-            TTrainable t = Trainables[ti];
-            if (game.Matches(t.cmd)) {
-                TrainAttribute(IntSlot.Into(game.Player.Stats, t.stat), IntSlot.Into(game.Player.Stats, t.maxStat), t.minPractice, t.cost, t.cmdForm, t.nounForm);
-            }
+        if (Trainables.TryGetValue(game.Command, out TTrainable? t)) {
+            TrainAttribute(IntSlot.Into(game.Player.Stats, t.stat), IntSlot.Into(game.Player.Stats, t.maxStat), t.minPractice, t.cost, t.cmdForm, t.nounForm);
         }
     }
 
@@ -116,21 +113,11 @@ public class Character {
         }
     }
 
-    public int FindRace(string name) {
-        for (int i = 0; i < Races.Count; i++) {
-            if (name == Races[i].name) {
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
     public bool IsNameChar(char c) =>
         (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == ' ';
 
     public void ChooseRace() {
-        int chosen;
+        TRace? race;
         game.ShowIntro();
         Out.WriteLine(TxtChooseRace_02);
         while (true) {
@@ -153,18 +140,17 @@ public class Character {
         do {
             Out.WriteLine(TxtChooseRace_01);
             game.Command = Crt.ReadLn();
-            chosen = FindRace(game.Command);
-            if (chosen >= 0) {
+            if (Races.TryGetValue(game.Command, out race)) {
                 foreach (TStat stat in Enum.GetValues<TStat>()) {
-                    game.Player.Stats[stat] = Races[chosen].baseStats[stat];
+                    game.Player.Stats[stat] = race.baseStats[stat];
                 }
 
-                game.Player.MaxMana += Races[chosen].MaxManaBonus;
-                game.Player.Money += Races[chosen].MoneyBonus;
-                game.Player.MaxEnergy += Races[chosen].MaxEnergyBonus;
+                game.Player.MaxMana += race.MaxManaBonus;
+                game.Player.Money += race.MoneyBonus;
+                game.Player.MaxEnergy += race.MaxEnergyBonus;
             }
-        } while (chosen < 0);
-        game.Player.Energy = (50 + Races[chosen].EnergyBonus);
+        } while (race is null);
+        game.Player.Energy = (50 + race.EnergyBonus);
         game.Player.Practice = 10;
         game.World.SpawnAt(game.World.CageInits);
         game.Player.Level = 1;
@@ -356,12 +342,12 @@ public class Character {
     IntSlot BagItemSlot(TBagItem item) =>
         new(() => game.Bag.Items[item], v => game.Bag.Items[item] = v);
 
-    public List<TTrainable> Trainables => _trainables ??= [
-        new() { cmd = CmdTrenuj2 + CmdSila, stat = TStat.Strength, maxStat = TStat.MaxStrength, minPractice = 2, cost = 3, cmdForm = CmdSile, nounForm = CmdSily },
-        new() { cmd = CmdTrenuj2 + CmdZrecznosc, stat = TStat.Dexterity, maxStat = TStat.MaxDexterity, minPractice = 1, cost = 2, cmdForm = CmdZrecznosc, nounForm = CmdZrecznosci },
-        new() { cmd = CmdTrenuj2 + CmdMadrosc, stat = TStat.Wisdom, maxStat = TStat.MaxWisdom, minPractice = 2, cost = 3, cmdForm = CmdMadrosc, nounForm = CmdMadrosci },
-    ];
-    List<TTrainable>? _trainables;
+    public Dictionary<string, TTrainable> Trainables => _trainables ??= new() {
+        [$"{CmdTrenuj2}{CmdSila}"] = new() { stat = TStat.Strength, maxStat = TStat.MaxStrength, minPractice = 2, cost = 3, cmdForm = CmdSile, nounForm = CmdSily },
+        [$"{CmdTrenuj2}{CmdZrecznosc}"] = new() { stat = TStat.Dexterity, maxStat = TStat.MaxDexterity, minPractice = 1, cost = 2, cmdForm = CmdZrecznosc, nounForm = CmdZrecznosci },
+        [$"{CmdTrenuj2}{CmdMadrosc}"] = new() { stat = TStat.Wisdom, maxStat = TStat.MaxWisdom, minPractice = 2, cost = 3, cmdForm = CmdMadrosc, nounForm = CmdMadrosci },
+    };
+    Dictionary<string, TTrainable>? _trainables;
 
     public List<TBand> LvlThresholds => _lvlThresholds ??= [
         new(1, 1, Lvl1_Threshold, 0),
@@ -398,21 +384,51 @@ public class Character {
     ];
     List<TSheetItem>? _sheetItems;
 
-    public List<TRace> Races => _races ??= [
-        new() { name = CmdCzlowiek, baseStats = new([ 10, 10, 10, 15, 15, 15 ]),
-            MaxManaBonus = 0, MoneyBonus = 0, MaxEnergyBonus = 0, EnergyBonus = 0, },
-        new() { name = CmdOlbrzym, baseStats = new([ 13, 13, 5, 20, 20, 7 ]),
-            MaxManaBonus = -30, MoneyBonus = 0, MaxEnergyBonus = 0, EnergyBonus = 0, },
-        new() { name = CmdNimfa, baseStats = new([ 10, 13, 7, 15, 20, 11 ]),
-            MaxManaBonus = 0, MoneyBonus = 0, MaxEnergyBonus = 0, EnergyBonus = 0, },
-        new() { name = CmdPolElf, baseStats = new([ 6, 16, 8, 10, 24, 12 ]),
-            MaxManaBonus = -20, MoneyBonus = 30, MaxEnergyBonus = -5, EnergyBonus = -5, },
-        new() { name = CmdUfok, baseStats = new([ 9, 9, 13, 13, 14, 20 ]),
-            MaxManaBonus = 50, MoneyBonus = 0, MaxEnergyBonus = 0, EnergyBonus = 0, },
-        new() { name = CmdCzaromil, baseStats = new([ 6, 7, 16, 9, 11, 25 ]),
-            MaxManaBonus = 150, MoneyBonus = 0, MaxEnergyBonus = 0, EnergyBonus = 0, },
-    ];
-    List<TRace>? _races;
+    public Dictionary<string, TRace> Races => _races ??= new() {
+        [CmdCzlowiek] = new() {
+            baseStats = new([10, 10, 10, 15, 15, 15]),
+            MaxManaBonus = 0,
+            MoneyBonus = 0,
+            MaxEnergyBonus = 0,
+            EnergyBonus = 0,
+        },
+        [CmdOlbrzym] = new() {
+            baseStats = new([13, 13, 5, 20, 20, 7]),
+            MaxManaBonus = -30,
+            MoneyBonus = 0,
+            MaxEnergyBonus = 0,
+            EnergyBonus = 0,
+        },
+        [CmdNimfa] = new() {
+            baseStats = new([10, 13, 7, 15, 20, 11]),
+            MaxManaBonus = 0,
+            MoneyBonus = 0,
+            MaxEnergyBonus = 0,
+            EnergyBonus = 0,
+        },
+        [CmdPolElf] = new() {
+            baseStats = new([6, 16, 8, 10, 24, 12]),
+            MaxManaBonus = -20,
+            MoneyBonus = 30,
+            MaxEnergyBonus = -5,
+            EnergyBonus = -5,
+        },
+        [CmdUfok] = new() {
+            baseStats = new([9, 9, 13, 13, 14, 20]),
+            MaxManaBonus = 50,
+            MoneyBonus = 0,
+            MaxEnergyBonus = 0,
+            EnergyBonus = 0,
+        },
+        [CmdCzaromil] = new() {
+            baseStats = new([6, 7, 16, 9, 11, 25]),
+            MaxManaBonus = 150,
+            MoneyBonus = 0,
+            MaxEnergyBonus = 0,
+            EnergyBonus = 0,
+        },
+    };
+    Dictionary<string, TRace>? _races;
 
     public List<TTrainingLine> TrainingLines => _trainingLines ??= [
         new() { wisdom = 10, strength = 11, dexterity = -1, text1 = TxtTraining_03 },

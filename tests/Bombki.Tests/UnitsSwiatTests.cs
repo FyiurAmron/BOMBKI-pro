@@ -239,23 +239,22 @@ public class UnitsSwiatTests {
             }
         }
 
-        var arena = game.World.MazeMoves.Single(move => move.room == Rooms.RoomArena33);
-        Assert.Contains(TMazeDir.mdPolodnie, arena.exits);
+        Assert.Contains(TMazeDir.mdPolodnie, game.World.MazeMoves[Rooms.RoomArena33]);
         Assert.Equal(Rooms.RoomArenaEntrance,
             game.World.RoomInDirection(Rooms.RoomArena33, game.World.MazeDirectionCommand(TMazeDir.mdPolodnie)));
 
-        var mazeRooms = game.World.MazeMoves.ToDictionary(move => move.room);
-        foreach (var maze in mazeRooms.Values) {
-            foreach (TMazeDir dir in maze.exits) {
-                int? destination = game.World.RoomInDirection(maze.room, game.World.MazeDirectionCommand(dir));
+        var mazeRooms = game.World.MazeMoves;
+        foreach (var (mazeRoom, exits) in mazeRooms) {
+            foreach (TMazeDir dir in exits) {
+                int? destination = game.World.RoomInDirection(mazeRoom, game.World.MazeDirectionCommand(dir));
                 Assert.NotNull(destination);
                 if (destination == Rooms.RoomArenaEntrance) {
-                    Assert.Equal(Rooms.RoomArena33, maze.room);
+                    Assert.Equal(Rooms.RoomArena33, mazeRoom);
                     Assert.Equal(TMazeDir.mdPolodnie, dir);
                     continue;
                 }
 
-                Assert.Contains(Opposite(dir), mazeRooms[destination.Value].exits);
+                Assert.Contains(Opposite(dir), mazeRooms[destination.Value]);
             }
         }
     }
@@ -269,8 +268,8 @@ public class UnitsSwiatTests {
             move => Assert.Contains(rooms, target => target.number == move.dest)));
         Assert.All(rooms, room => Assert.All(room.moves,
             move => Assert.Equal(move.dest, game.World.RoomInDirection(room.number, move.cmd))));
-        Assert.All(game.World.MazeMoves, maze => Assert.All(maze.exits, dir => {
-            int? target = game.World.RoomInDirection(maze.room, game.World.MazeDirectionCommand(dir));
+        Assert.All(game.World.MazeMoves, maze => Assert.All(maze.Value, dir => {
+            int? target = game.World.RoomInDirection(maze.Key, game.World.MazeDirectionCommand(dir));
             Assert.NotNull(target);
             Assert.Contains(rooms, room => room.number == target);
         }));

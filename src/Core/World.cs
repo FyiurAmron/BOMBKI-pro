@@ -44,13 +44,12 @@ public class World : TWorld {
         rooms.RoomIndex.TryGetValue(number, out TRoom? room) ? room.name : TxtEmpty;
 
     void WriteMazeExits(int number) {
-        TMazeMove? maze = MazeMoves.FirstOrDefault(move => move?.room == number);
-        if (maze == null) {
+        if (!MazeMoves.TryGetValue(number, out List<TMazeDir>? exits)) {
             return;
         }
         Out.WriteLine(TxtShared_03);
         foreach ((TMazeDir dir, string cmd, string label) in MazeExitLabels) {
-            if (maze.exits.Contains(dir) && RoomInDirection(number, cmd) is int destination) {
+            if (exits.Contains(dir) && RoomInDirection(number, cmd) is int destination) {
                 Out.Write(label);
                 Out.WriteLine(RoomName(destination));
             }
@@ -172,11 +171,7 @@ public class World : TWorld {
         }
     }
 
-    public void StartQuest(string cmd, string line, int quest, int kills) {
-        if (!game.Matches(cmd)) {
-            return;
-        }
-
+    public void StartQuest(string line, int quest, int kills) {
         if (Quest > 0) {
             Out.WriteLine(TxtRoom100_17);
             return;
@@ -282,8 +277,7 @@ public class World : TWorld {
         };
 
     public void MazeMove(TMazeDir dir) {
-        TMazeMove? maze = MazeMoves.FirstOrDefault(move => move.room == game.Session.Room);
-        if (maze?.exits.Contains(dir) != true) {
+        if (!MazeMoves.TryGetValue(game.Session.Room, out List<TMazeDir>? exits) || !exits.Contains(dir)) {
             return;
         }
 
@@ -392,12 +386,12 @@ public class World : TWorld {
     List<TMonster> MonstersOf(params TMonster[] monsters) =>
         [.. monsters];
 
-    public List<TQuestOffer> QuestOffers => _questOffers ??= [
-        new($"{CmdZacznij}{CmdQuest} 1", TxtRoom100_09, 1, 75),
-        new($"{CmdZacznij}{CmdQuest} 2", TxtRoom100_10, 2, 50),
-        new($"{CmdZacznij}{CmdQuest} 3", TxtRoom100_11, 3, 50),
-    ];
-    List<TQuestOffer>? _questOffers;
+    public Dictionary<string, TQuestOffer> QuestOffers => _questOffers ??= new() {
+        [$"{CmdZacznij}{CmdQuest} 1"] = new(TxtRoom100_09, 1, 75),
+        [$"{CmdZacznij}{CmdQuest} 2"] = new(TxtRoom100_10, 2, 50),
+        [$"{CmdZacznij}{CmdQuest} 3"] = new(TxtRoom100_11, 3, 50),
+    };
+    Dictionary<string, TQuestOffer>? _questOffers;
 
     public List<TGroundItem> GroundItems => _groundItems ??= [
         new(TBagItem.OldSword, TxtStart_07),
@@ -510,34 +504,34 @@ public class World : TWorld {
     ];
     List<TSpot>? _crowdSpots;
 
-    public List<TMazeMove> MazeMoves => _mazeMoves ??= [
-        new() { room = RoomArena33, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
-        new() { room = RoomArena34, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
-        new() { room = RoomArena35, exits = [TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
-        new() { room = RoomArena36, exits = [TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
-        new() { room = RoomArena37, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
-        new() { room = RoomArena38, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
-        new() { room = RoomArena39, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
-        new() { room = RoomArena40, exits = [TMazeDir.mdPolnoc, TMazeDir.mdZachod] },
-        new() { room = RoomArena41, exits = [TMazeDir.mdPolnoc, TMazeDir.mdWschod] },
-        new() { room = RoomArena42, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
-        new() { room = RoomArena43, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
-        new() { room = RoomArena44, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
-        new() { room = RoomArena45, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdZachod] },
-        new() { room = RoomArena46, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod] },
-        new() { room = RoomArena47, exits = [TMazeDir.mdPolodnie, TMazeDir.mdWschod, TMazeDir.mdZachod] },
-        new() { room = RoomArena48, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
-        new() { room = RoomArena49, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
-        new() { room = RoomArena50, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdZachod] },
-        new() { room = RoomArena51, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod] },
-        new() { room = RoomArena52, exits = [TMazeDir.mdPolodnie, TMazeDir.mdWschod, TMazeDir.mdZachod] },
-        new() { room = RoomArena53, exits = [TMazeDir.mdPolodnie, TMazeDir.mdWschod, TMazeDir.mdZachod] },
-        new() { room = RoomArena54, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdZachod] },
-        new() { room = RoomArena55, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod] },
-        new() { room = RoomArena56, exits = [TMazeDir.mdPolodnie, TMazeDir.mdZachod] },
-        new() { room = RoomArena57, exits = [TMazeDir.mdPolodnie, TMazeDir.mdWschod] },
-    ];
-    List<TMazeMove>? _mazeMoves;
+    public Dictionary<int, List<TMazeDir>> MazeMoves => _mazeMoves ??= new() {
+        [RoomArena33] = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod],
+        [RoomArena34] = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod],
+        [RoomArena35] = [TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod],
+        [RoomArena36] = [TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod],
+        [RoomArena37] = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod],
+        [RoomArena38] = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod],
+        [RoomArena39] = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod],
+        [RoomArena40] = [TMazeDir.mdPolnoc, TMazeDir.mdZachod],
+        [RoomArena41] = [TMazeDir.mdPolnoc, TMazeDir.mdWschod],
+        [RoomArena42] = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod],
+        [RoomArena43] = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod],
+        [RoomArena44] = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod],
+        [RoomArena45] = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdZachod],
+        [RoomArena46] = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod],
+        [RoomArena47] = [TMazeDir.mdPolodnie, TMazeDir.mdWschod, TMazeDir.mdZachod],
+        [RoomArena48] = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod],
+        [RoomArena49] = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod],
+        [RoomArena50] = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdZachod],
+        [RoomArena51] = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod],
+        [RoomArena52] = [TMazeDir.mdPolodnie, TMazeDir.mdWschod, TMazeDir.mdZachod],
+        [RoomArena53] = [TMazeDir.mdPolodnie, TMazeDir.mdWschod, TMazeDir.mdZachod],
+        [RoomArena54] = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdZachod],
+        [RoomArena55] = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod],
+        [RoomArena56] = [TMazeDir.mdPolodnie, TMazeDir.mdZachod],
+        [RoomArena57] = [TMazeDir.mdPolodnie, TMazeDir.mdWschod],
+    };
+    Dictionary<int, List<TMazeDir>>? _mazeMoves;
 
     public List<TCheckpoint> CheckpointRules => _checkpointRules ??= [
         new(400, 0, 1, (-Game.MaxInt - 1), 19),

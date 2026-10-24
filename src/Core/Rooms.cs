@@ -983,9 +983,8 @@ public class Rooms {
                     if (game.Verb == CmdLista) {
                         Out.WriteLine(TxtRoom100_05);
                     }
-                    for (int i = 0; i < game.World.QuestOffers.Count; i++) {
-                        TQuestOffer q = game.World.QuestOffers[i];
-                        game.World.StartQuest(q.cmd, q.line, q.quest, q.kills);
+                    if (game.World.QuestOffers.TryGetValue(game.Command, out TQuestOffer? offer)) {
+                        game.World.StartQuest(offer.line, offer.quest, offer.kills);
                     }
                     if (game.Verb == CmdZakoncz && game.Rest == CmdQuest) {
                         if (game.World.Quest == 0) {
