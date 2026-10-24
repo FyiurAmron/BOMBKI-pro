@@ -184,6 +184,17 @@ public class Character {
         Out.WriteLine(TxtTrainingVerb + skillName + TxtTrainingThreshold + value
             + TxtTraining_29 + game.Player.Practice + TxtShared_19);
 
+    int Stat(TStat stat) =>
+        game.Player.Stats[stat];
+
+    void TrainSkill(TSkill skill, string name, int wisdom, int strength, int dexterity, int cap, int gain) {
+        if (GatesMet(wisdom, strength, dexterity) && (game.Skills.Values[skill] < cap) && (game.Player.Practice > 0)) {
+            game.Skills.Values[skill] += gain;
+            game.Player.Practice -= 1;
+            WriteTrainingGain(name, game.Skills.Values[skill]);
+        }
+    }
+
     public void Training() {
         switch (game.Verb) {
             case CmdPatrz:
@@ -206,11 +217,7 @@ public class Character {
             case CmdCwicz:
                 switch (game.Rest) {
                     case CmdKopac:
-                        if ((game.Player.Stats[TStat.Wisdom] > 10) && (game.Player.Stats[TStat.Strength] > 11) && (game.Player.Practice > 0)) {
-                            game.Skills.Values[TSkill.Kick] += game.Player.Stats[TStat.Wisdom];
-                            game.Player.Practice -= 1;
-                            WriteTrainingGain(TxtTrainingDigging, game.Skills.Values[TSkill.Kick]);
-                        }
+                        TrainSkill(TSkill.Kick, TxtTrainingDigging, 10, 11, -1, int.MaxValue, Stat(TStat.Wisdom));
                         break;
                     case CmdUciekac:
                         if (game.Player.Stats[TStat.Wisdom] > 10) {
@@ -227,32 +234,16 @@ public class Character {
 
                         break;
                     case CmdPowrot:
-                        if ((game.Player.Stats[TStat.Wisdom] > 17) && (game.Skills.Values[TSkill.Returning] < 90) && (game.Player.Practice > 0)) {
-                            game.Skills.Values[TSkill.Returning] += 2 * game.Player.Stats[TStat.Wisdom] - 3;
-                            game.Player.Practice -= 1;
-                            WriteTrainingGain(TxtTrainingReturning, game.Skills.Values[TSkill.Returning]);
-                        }
+                        TrainSkill(TSkill.Returning, TxtTrainingReturning, 17, -1, -1, 90, (2 * Stat(TStat.Wisdom)) - 3);
                         break;
                     case TxtTrainingParrying:
-                        if ((game.Player.Stats[TStat.Wisdom] > 15) && (game.Player.Stats[TStat.Dexterity] > 11) && (game.Skills.Values[TSkill.Parry] < 90) && (game.Player.Practice > 0)) {
-                            game.Skills.Values[TSkill.Parry] += game.Player.Stats[TStat.Wisdom] + game.Player.Stats[TStat.Dexterity] - 14;
-                            game.Player.Practice -= 1;
-                            WriteTrainingGain(TxtTrainingParrying, game.Skills.Values[TSkill.Parry]);
-                        }
+                        TrainSkill(TSkill.Parry, TxtTrainingParrying, 15, -1, 11, 90, Stat(TStat.Wisdom) + Stat(TStat.Dexterity) - 14);
                         break;
                     case CmdPorownanie:
-                        if ((game.Player.Stats[TStat.Wisdom] > 11) && (game.Skills.Values[TSkill.Comparing] < 90) && (game.Player.Practice > 0)) {
-                            game.Skills.Values[TSkill.Comparing] += 3 * game.Player.Stats[TStat.Wisdom] - 9;
-                            game.Player.Practice -= 1;
-                            WriteTrainingGain(TxtTrainingComparing, game.Skills.Values[TSkill.Comparing]);
-                        }
+                        TrainSkill(TSkill.Comparing, TxtTrainingComparing, 11, -1, -1, 90, (3 * Stat(TStat.Wisdom)) - 9);
                         break;
                     case TxtTrainingCooking:
-                        if ((game.Player.Stats[TStat.Wisdom] > 18) && (game.Skills.Values[TSkill.Cooking] < 90) && (game.Player.Practice > 0)) {
-                            game.Skills.Values[TSkill.Cooking] += game.Player.Stats[TStat.Wisdom] + 1;
-                            game.Player.Practice -= 1;
-                            WriteTrainingGain(TxtTrainingCooking, game.Skills.Values[TSkill.Cooking]);
-                        }
+                        TrainSkill(TSkill.Cooking, TxtTrainingCooking, 18, -1, -1, 90, Stat(TStat.Wisdom) + 1);
                         break;
                 }
                 break;
