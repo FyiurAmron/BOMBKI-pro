@@ -216,14 +216,12 @@ public class TFoodItem {
 }
 
 public class TBeastKill {
-    public string cmd = "";
     public TMonster beast;
     public TFoe foe;
     public bool unlessFled;
 }
 
 public class TArenaKill {
-    public string cmd = "";
     public TMonster monster;
     public bool pills;
 }
@@ -234,8 +232,9 @@ public class TMazeMove {
 }
 
 public class TPlantKill {
-    public string cmd = "";
     public TMonster plant;
+    public TFoe foe;
+    public bool ifAlive;
 }
 
 public class TRace {
@@ -256,7 +255,6 @@ public class TSheetItem {
 }
 
 public class TStreetKill {
-    public string cmd = "";
     public TMonster target;
     public bool extra;
     public TStreetKind kind;
@@ -290,7 +288,6 @@ public record TShopRule(TBagItem item, bool selling);
 public enum TConcertBonus { cbNone, cbPipe, cbSuit }
 
 public class TConcertKill {
-    public string cmd = "";
     public TMonster monster;
     public TFoe foe;
     public TConcertBonus bonus;

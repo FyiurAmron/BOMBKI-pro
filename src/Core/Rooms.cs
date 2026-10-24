@@ -192,18 +192,8 @@ public class Rooms {
                 }
                 break;
         }
-        for (int bi = 0; bi < game.Combat.BeastKills.Count; bi++) {
-            TBeastKill b = game.Combat.BeastKills[bi];
-            if (b.unlessFled) {
-                game.Combat.KillBeastUnlessFled(b.cmd, IntSlot.Into(game.World.Monsters, b.beast), b.foe);
-            } else {
-                game.Combat.KillBeast(b.cmd, IntSlot.Into(game.World.Monsters, b.beast), b.foe);
-            }
-        }
-        for (int ai = 0; ai < game.Combat.ArenaKills.Count; ai++) {
-            TArenaKill a = game.Combat.ArenaKills[ai];
-            game.Combat.ArenaKill(a.cmd, a.monster, a.pills);
-        }
+        game.Combat.KillBeasts();
+        game.Combat.KillArenaFoes();
         switch (game.Verb) {
             case CmdPolodnie:
                 game.World.MazeMove(TMazeDir.mdPolodnie);

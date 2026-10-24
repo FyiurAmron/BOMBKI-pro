@@ -112,19 +112,14 @@ public class Combat : TCombat {
             f.requireEnergy, f.antDoughnut);
     }
 
-    public void KillBeast(string cmd, IntSlot beast, TFoe foe) {
-        if ((game.Matches(cmd)) && (game.Session.Room == beast.Get())) {
-            Fight(foe);
-            beast.Set(0);
+    public void KillBeasts() {
+        if (!BeastKills.TryGetValue(game.Command, out TBeastKill? kill) || (game.Session.Room != game.World.Monsters[kill.beast])) {
+            return;
         }
-    }
 
-    public void KillBeastUnlessFled(string cmd, IntSlot beast, TFoe foe) {
-        if ((game.Matches(cmd)) && (game.Session.Room == beast.Get())) {
-            Fight(foe);
-            if (!Fled) {
-                beast.Set(0);
-            }
+        Fight(kill.foe);
+        if (!(kill.unlessFled && Fled)) {
+            game.World.Monsters[kill.beast] = 0;
         }
     }
 
@@ -380,15 +375,17 @@ public class Combat : TCombat {
         FightExperience = 0;
     }
 
-    public void ArenaKill(string cmd, TMonster monster, bool pills) {
-        if ((game.Matches(cmd)) && (game.Session.Room == game.World.Monsters[monster])) {
-            Fight(TFoe.HardEnemy);
-            game.World.Monsters[monster] = 0;
-            if (pills) {
-                game.Inventory.PillGain();
-            } else {
-                game.Inventory.SuitGain();
-            }
+    public void KillArenaFoes() {
+        if (!ArenaKills.TryGetValue(game.Command, out TArenaKill? kill) || (game.Session.Room != game.World.Monsters[kill.monster])) {
+            return;
+        }
+
+        Fight(TFoe.HardEnemy);
+        game.World.Monsters[kill.monster] = 0;
+        if (kill.pills) {
+            game.Inventory.PillGain();
+        } else {
+            game.Inventory.SuitGain();
         }
     }
 
@@ -418,28 +415,14 @@ public class Combat : TCombat {
         (CmdOrganista, TMonster.Keyboardist),
     ];
 
-    public void KillPlant(string cmd, IntSlot Plant) {
-        if ((game.Matches(cmd)) && (Plant.Get() == game.Session.Room)) {
-            Fight(TFoe.VeryEasyEnemy);
-            Plant.Set(0);
+    void KillPlants() {
+        if (!PlantKills.TryGetValue(game.Command, out TPlantKill? kill) || (game.World.Monsters[kill.plant] != game.Session.Room)) {
+            return;
         }
-    }
 
-    public void KillPlantIfAlive(string cmd, IntSlot Plant) {
-        if ((game.Matches(cmd)) && (Plant.Get() == game.Session.Room)) {
-            Fight(TFoe.VeryEasyEnemy);
-            if (game.Player.Energy > 0) {
-                Plant.Set(0);
-            }
-        }
-    }
-
-    public void KillPlantEasyIfAlive(string cmd, IntSlot Plant) {
-        if ((game.Matches(cmd)) && (Plant.Get() == game.Session.Room)) {
-            Fight(TFoe.EasyEnemy);
-            if (game.Player.Energy > 0) {
-                Plant.Set(0);
-            }
+        Fight(kill.foe);
+        if (!kill.ifAlive || (game.Player.Energy > 0)) {
+            game.World.Monsters[kill.plant] = 0;
         }
     }
 
@@ -516,38 +499,28 @@ public class Combat : TCombat {
                 break;
         }
 
-        for (int i = 0; i < PlantKills.Count; i++) {
-            KillPlant(PlantKills[i].cmd, IntSlot.Into(game.World.Monsters, PlantKills[i].plant));
-        }
-
-        KillPlantIfAlive(CmdZabij + CmdStokrotka, IntSlot.Into(game.World.Monsters, TMonster.Daisy));
-
-        for (int i = 0; i < EasyPlantKills.Count; i++) {
-            KillPlantEasyIfAlive(EasyPlantKills[i].cmd, IntSlot.Into(game.World.Monsters, EasyPlantKills[i].plant));
-        }
+        KillPlants();
     }
 
-    public void KillStreetFoe(string cmd, IntSlot target, bool extra, TStreetKind kind) {
-        if ((game.Matches(cmd)) && (target.Get() == game.Session.Room)) {
-            switch (kind) {
-                case TStreetKind.skDog:
-                    FightDog();
-                    break;
-                case TStreetKind.skFolk:
-                    Fight(TFoe.VeryEasyEnemy);
-                    break;
-            }
-            target.Set(0);
-            if (extra) {
-                switch (kind) {
-                    case TStreetKind.skDog:
-                        Out.WriteLine(TxtKillDog_01);
-                        break;
-                    case TStreetKind.skFolk:
-                        game.Inventory.SuitGain();
-                        break;
-                }
-            }
+    void KillStreetFoe() {
+        if (!StreetKills.TryGetValue(game.Command, out TStreetKill? kill) || (game.World.Monsters[kill.target] != game.Session.Room)) {
+            return;
+        }
+
+        if (kill.kind == TStreetKind.skDog) {
+            FightDog();
+        } else {
+            Fight(TFoe.VeryEasyEnemy);
+        }
+
+        game.World.Monsters[kill.target] = 0;
+        if (!kill.extra) {
+            return;
+        }
+        if (kill.kind == TStreetKind.skDog) {
+            Out.WriteLine(TxtKillDog_01);
+        } else {
+            game.Inventory.SuitGain();
         }
     }
 
@@ -576,38 +549,30 @@ public class Combat : TCombat {
     }
 
     public void StreetFights() {
-        for (int ki = 0; ki < StreetKills.Count; ki++) {
-            TStreetKill k = StreetKills[ki];
-            KillStreetFoe(k.cmd, IntSlot.Into(game.World.Monsters, k.target), k.extra, k.kind);
-        }
+        KillStreetFoe();
         KillSweeper();
         KillSickMan();
     }
 
-    public void ConcertKill(string cmd, TMonster monster, TFoe foe, TConcertBonus bonus) {
-        if ((game.Matches(cmd)) && (game.Session.Room == game.World.Monsters[monster])) {
-            Fight(foe);
-            if (EnemyEnergy < 1) {
-                game.World.Monsters[monster] = 0;
-                if (bonus == TConcertBonus.cbPipe) {
-                    Roll = game.Roll(100);
-                    if (Roll < 5) {
-                        Out.WriteLine(TxtShared_08 + TxtConcertFights_01);
-                        Out.WriteLine(TxtConcertFights_02);
-                        game.Inventory.AcquireItem(TBagItem.Pipe);
-                    }
+    public void ConcertFights() {
+        if (!ConcertKills.TryGetValue(game.Command, out TConcertKill? kill) || (game.Session.Room != game.World.Monsters[kill.monster])) {
+            return;
+        }
+
+        Fight(kill.foe);
+        if (EnemyEnergy < 1) {
+            game.World.Monsters[kill.monster] = 0;
+            if (kill.bonus == TConcertBonus.cbPipe) {
+                Roll = game.Roll(100);
+                if (Roll < 5) {
+                    Out.WriteLine(TxtShared_08 + TxtConcertFights_01);
+                    Out.WriteLine(TxtConcertFights_02);
+                    game.Inventory.AcquireItem(TBagItem.Pipe);
                 }
             }
-            if (bonus == TConcertBonus.cbSuit) {
-                game.Inventory.SuitGain();
-            }
         }
-    }
-
-    public void ConcertFights() {
-        for (int ci = 0; ci < ConcertKills.Count; ci++) {
-            TConcertKill c = ConcertKills[ci];
-            ConcertKill(c.cmd, c.monster, c.foe, c.bonus);
+        if (kill.bonus == TConcertBonus.cbSuit) {
+            game.Inventory.SuitGain();
         }
     }
 
@@ -743,80 +708,77 @@ public class Combat : TCombat {
     ];
     List<TFightExpStat>? _fightExpStats;
 
-    public List<TBeastKill> BeastKills => _beastKills ??= [
-        new() { cmd = CmdZabij + CmdSlimak, beast = TMonster.Snail, foe = TFoe.WeakEnemy, unlessFled = true },
-        new() { cmd = CmdZabij + CmdKornik, beast = TMonster.Woodworm, foe = TFoe.WeakEnemy, unlessFled = true },
-        new() { cmd = CmdZabij + CmdMucha, beast = TMonster.Fly, foe = TFoe.WeakEnemy, unlessFled = true },
-        new() { cmd = CmdZabij + CmdZuk, beast = TMonster.Beetle, foe = TFoe.WeakEnemy, unlessFled = true },
-        new() { cmd = CmdZabij + CmdKaraluch, beast = TMonster.Cockroach, foe = TFoe.WeakEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdMrowka, beast = TMonster.Ant, foe = TFoe.WeakEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdPajak, beast = TMonster.Spider, foe = TFoe.WeakEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdDzik, beast = TMonster.Boar, foe = TFoe.WeakishEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdSzczur, beast = TMonster.Rat, foe = TFoe.WeakishEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdLis, beast = TMonster.Fox, foe = TFoe.WeakishEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdKuropatwa, beast = TMonster.Partridge, foe = TFoe.WeakishEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdZajac, beast = TMonster.Hare, foe = TFoe.WeakishEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdOrzel, beast = TMonster.Eagle, foe = TFoe.WeakishEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdSarna, beast = TMonster.Deer, foe = TFoe.WeakishEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdSlon, beast = TMonster.Elephant, foe = TFoe.MediumEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdLew, beast = TMonster.Lion, foe = TFoe.MediumEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdZyrafa, beast = TMonster.Giraffe, foe = TFoe.MediumEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdWilk, beast = TMonster.Wolf, foe = TFoe.MediumEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdWielblad, beast = TMonster.Camel, foe = TFoe.MediumEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdStrus, beast = TMonster.Ostrich, foe = TFoe.MediumEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdBoa, beast = TMonster.Boa, foe = TFoe.MediumEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdBizon, beast = TMonster.Bison, foe = TFoe.MediumEnemy, unlessFled = false },
-        new() { cmd = CmdZabij + CmdPantera, beast = TMonster.Panther, foe = TFoe.MediumEnemy, unlessFled = false },
-    ];
-    List<TBeastKill>? _beastKills;
+    public Dictionary<string, TBeastKill> BeastKills => _beastKills ??= new() {
+        [$"{CmdZabij}{CmdSlimak}"] = new() { beast = TMonster.Snail, foe = TFoe.WeakEnemy, unlessFled = true },
+        [$"{CmdZabij}{CmdKornik}"] = new() { beast = TMonster.Woodworm, foe = TFoe.WeakEnemy, unlessFled = true },
+        [$"{CmdZabij}{CmdMucha}"] = new() { beast = TMonster.Fly, foe = TFoe.WeakEnemy, unlessFled = true },
+        [$"{CmdZabij}{CmdZuk}"] = new() { beast = TMonster.Beetle, foe = TFoe.WeakEnemy, unlessFled = true },
+        [$"{CmdZabij}{CmdKaraluch}"] = new() { beast = TMonster.Cockroach, foe = TFoe.WeakEnemy, unlessFled = false },
+        [$"{CmdZabij}{CmdMrowka}"] = new() { beast = TMonster.Ant, foe = TFoe.WeakEnemy, unlessFled = false },
+        [$"{CmdZabij}{CmdPajak}"] = new() { beast = TMonster.Spider, foe = TFoe.WeakEnemy, unlessFled = false },
+        [$"{CmdZabij}{CmdDzik}"] = new() { beast = TMonster.Boar, foe = TFoe.WeakishEnemy, unlessFled = false },
+        [$"{CmdZabij}{CmdSzczur}"] = new() { beast = TMonster.Rat, foe = TFoe.WeakishEnemy, unlessFled = false },
+        [$"{CmdZabij}{CmdLis}"] = new() { beast = TMonster.Fox, foe = TFoe.WeakishEnemy, unlessFled = false },
+        [$"{CmdZabij}{CmdKuropatwa}"] = new() { beast = TMonster.Partridge, foe = TFoe.WeakishEnemy, unlessFled = false },
+        [$"{CmdZabij}{CmdZajac}"] = new() { beast = TMonster.Hare, foe = TFoe.WeakishEnemy, unlessFled = false },
+        [$"{CmdZabij}{CmdOrzel}"] = new() { beast = TMonster.Eagle, foe = TFoe.WeakishEnemy, unlessFled = false },
+        [$"{CmdZabij}{CmdSarna}"] = new() { beast = TMonster.Deer, foe = TFoe.WeakishEnemy, unlessFled = false },
+        [$"{CmdZabij}{CmdSlon}"] = new() { beast = TMonster.Elephant, foe = TFoe.MediumEnemy, unlessFled = false },
+        [$"{CmdZabij}{CmdLew}"] = new() { beast = TMonster.Lion, foe = TFoe.MediumEnemy, unlessFled = false },
+        [$"{CmdZabij}{CmdZyrafa}"] = new() { beast = TMonster.Giraffe, foe = TFoe.MediumEnemy, unlessFled = false },
+        [$"{CmdZabij}{CmdWilk}"] = new() { beast = TMonster.Wolf, foe = TFoe.MediumEnemy, unlessFled = false },
+        [$"{CmdZabij}{CmdWielblad}"] = new() { beast = TMonster.Camel, foe = TFoe.MediumEnemy, unlessFled = false },
+        [$"{CmdZabij}{CmdStrus}"] = new() { beast = TMonster.Ostrich, foe = TFoe.MediumEnemy, unlessFled = false },
+        [$"{CmdZabij}{CmdBoa}"] = new() { beast = TMonster.Boa, foe = TFoe.MediumEnemy, unlessFled = false },
+        [$"{CmdZabij}{CmdBizon}"] = new() { beast = TMonster.Bison, foe = TFoe.MediumEnemy, unlessFled = false },
+        [$"{CmdZabij}{CmdPantera}"] = new() { beast = TMonster.Panther, foe = TFoe.MediumEnemy, unlessFled = false },
+    };
+    Dictionary<string, TBeastKill>? _beastKills;
 
-    public List<TArenaKill> ArenaKills => _arenaKills ??= [
-        new() { cmd = CmdZabij + CmdGladiator, monster = TMonster.Gladiator, pills = true },
-        new() { cmd = CmdZabij + CmdWojownik, monster = TMonster.Warrior, pills = true },
-        new() { cmd = CmdZabij + CmdTrener, monster = TMonster.Tamer, pills = false },
-    ];
-    List<TArenaKill>? _arenaKills;
+    public Dictionary<string, TArenaKill> ArenaKills => _arenaKills ??= new() {
+        [$"{CmdZabij}{CmdGladiator}"] = new() { monster = TMonster.Gladiator, pills = true },
+        [$"{CmdZabij}{CmdWojownik}"] = new() { monster = TMonster.Warrior, pills = true },
+        [$"{CmdZabij}{CmdTrener}"] = new() { monster = TMonster.Tamer, pills = false },
+    };
+    Dictionary<string, TArenaKill>? _arenaKills;
 
-    public List<TPlantKill> PlantKills => _plantKills ??= [
-        new() { cmd = CmdZabij + CmdSzczaw, plant = TMonster.Sorrel },
-        new() { cmd = CmdZabij + CmdKoniczynka, plant = TMonster.Clover },
-        new() { cmd = CmdZabij + CmdMlecz, plant = TMonster.SowThistle },
-        new() { cmd = CmdZabij + CmdDmuchawiec, plant = TMonster.Dandelion },
-    ];
-    List<TPlantKill>? _plantKills;
+    public Dictionary<string, TPlantKill> PlantKills => _plantKills ??= new() {
+        [$"{CmdZabij}{CmdSzczaw}"] = new() { plant = TMonster.Sorrel, foe = TFoe.VeryEasyEnemy, ifAlive = false },
+        [$"{CmdZabij}{CmdKoniczynka}"] = new() { plant = TMonster.Clover, foe = TFoe.VeryEasyEnemy, ifAlive = false },
+        [$"{CmdZabij}{CmdMlecz}"] = new() { plant = TMonster.SowThistle, foe = TFoe.VeryEasyEnemy, ifAlive = false },
+        [$"{CmdZabij}{CmdDmuchawiec}"] = new() { plant = TMonster.Dandelion, foe = TFoe.VeryEasyEnemy, ifAlive = false },
+        [$"{CmdZabij}{CmdStokrotka}"] = new() { plant = TMonster.Daisy, foe = TFoe.VeryEasyEnemy, ifAlive = true },
+        [$"{CmdZabij}{CmdRoza}"] = new() { plant = TMonster.Rose, foe = TFoe.EasyEnemy, ifAlive = true },
+        [$"{CmdZabij}{CmdOset}"] = new() { plant = TMonster.Thistle, foe = TFoe.EasyEnemy, ifAlive = true },
+        [$"{CmdZabij}{CmdMalina}"] = new() { plant = TMonster.Raspberry, foe = TFoe.EasyEnemy, ifAlive = true },
+        [$"{CmdZabij}{CmdAgrest}"] = new() { plant = TMonster.Gooseberry, foe = TFoe.EasyEnemy, ifAlive = true },
+        [$"{CmdZabij}{CmdJezyna}"] = new() { plant = TMonster.Blackberry, foe = TFoe.EasyEnemy, ifAlive = true },
+    };
+    Dictionary<string, TPlantKill>? _plantKills;
 
-    public List<TPlantKill> EasyPlantKills => _easyPlantKills ??= [
-        new() { cmd = CmdZabij + CmdRoza, plant = TMonster.Rose },
-        new() { cmd = CmdZabij + CmdOset, plant = TMonster.Thistle },
-        new() { cmd = CmdZabij + CmdMalina, plant = TMonster.Raspberry },
-        new() { cmd = CmdZabij + CmdAgrest, plant = TMonster.Gooseberry },
-        new() { cmd = CmdZabij + CmdJezyna, plant = TMonster.Blackberry },
-    ];
-    List<TPlantKill>? _easyPlantKills;
+    public Dictionary<string, TConcertKill> ConcertKills => _concertKills ??= new() {
+        [$"{CmdZabij}{CmdDziecko}"] = new() { monster = TMonster.Kid, foe = TFoe.WeakishEnemy, bonus = TConcertBonus.cbNone },
+        [$"{CmdZabij}{CmdDziadek}"] = new() { monster = TMonster.OldMan, foe = TFoe.WeakishEnemy, bonus = TConcertBonus.cbPipe },
+        [$"{CmdZabij}{CmdWariat}"] = new() { monster = TMonster.Lunatic, foe = TFoe.MediumEnemy, bonus = TConcertBonus.cbNone },
+        [$"{CmdZabij}{CmdSluchacz}"] = new() { monster = TMonster.Listener, foe = TFoe.MediumEnemy, bonus = TConcertBonus.cbNone },
+        [$"{CmdZabij}{CmdCzlowiek}"] = new() { monster = TMonster.Man, foe = TFoe.MediumEnemy, bonus = TConcertBonus.cbNone },
+        [$"{CmdZabij}{CmdFan}"] = new() { monster = TMonster.Fan, foe = TFoe.MediumEnemy, bonus = TConcertBonus.cbNone },
+        [$"{CmdZabij}{CmdReporter}"] = new() { monster = TMonster.Reporter, foe = TFoe.MediumEnemy, bonus = TConcertBonus.cbNone },
+        [$"{CmdZabij}{CmdPolicjant}"] = new() { monster = TMonster.Policeman, foe = TFoe.HardEnemy, bonus = TConcertBonus.cbNone },
+        [$"{CmdZabij}{CmdGoryl}"] = new() { monster = TMonster.Gorilla, foe = TFoe.HardEnemy, bonus = TConcertBonus.cbSuit },
+        [$"{CmdZabij}{CmdOchroniarz}"] = new() { monster = TMonster.Bouncer, foe = TFoe.HardEnemy, bonus = TConcertBonus.cbSuit },
+    };
+    Dictionary<string, TConcertKill>? _concertKills;
 
-    public List<TConcertKill> ConcertKills => _concertKills ??= [
-        new() { cmd = CmdZabij + CmdDziecko, monster = TMonster.Kid, foe = TFoe.WeakishEnemy, bonus = TConcertBonus.cbNone },
-        new() { cmd = CmdZabij + CmdDziadek, monster = TMonster.OldMan, foe = TFoe.WeakishEnemy, bonus = TConcertBonus.cbPipe },
-        new() { cmd = CmdZabij + CmdWariat, monster = TMonster.Lunatic, foe = TFoe.MediumEnemy, bonus = TConcertBonus.cbNone },
-        new() { cmd = CmdZabij + CmdSluchacz, monster = TMonster.Listener, foe = TFoe.MediumEnemy, bonus = TConcertBonus.cbNone },
-        new() { cmd = CmdZabij + CmdCzlowiek, monster = TMonster.Man, foe = TFoe.MediumEnemy, bonus = TConcertBonus.cbNone },
-        new() { cmd = CmdZabij + CmdFan, monster = TMonster.Fan, foe = TFoe.MediumEnemy, bonus = TConcertBonus.cbNone },
-        new() { cmd = CmdZabij + CmdReporter, monster = TMonster.Reporter, foe = TFoe.MediumEnemy, bonus = TConcertBonus.cbNone },
-        new() { cmd = CmdZabij + CmdPolicjant, monster = TMonster.Policeman, foe = TFoe.HardEnemy, bonus = TConcertBonus.cbNone },
-        new() { cmd = CmdZabij + CmdGoryl, monster = TMonster.Gorilla, foe = TFoe.HardEnemy, bonus = TConcertBonus.cbSuit },
-        new() { cmd = CmdZabij + CmdOchroniarz, monster = TMonster.Bouncer, foe = TFoe.HardEnemy, bonus = TConcertBonus.cbSuit },
-    ];
-    List<TConcertKill>? _concertKills;
-
-    public List<TStreetKill> StreetKills => _streetKills ??= [
-        new() { cmd = CmdZabij + CmdOwczarek, target = TMonster.Shepherd, extra = false, kind = TStreetKind.skDog },
-        new() { cmd = CmdZabij + CmdPiesek, target = TMonster.Pooch, extra = false, kind = TStreetKind.skDog },
-        new() { cmd = CmdZabij + CmdJamnik, target = TMonster.Dachshund, extra = false, kind = TStreetKind.skDog },
-        new() { cmd = CmdZabij + CmdSpaniel, target = TMonster.Spaniel, extra = true, kind = TStreetKind.skDog },
-        new() { cmd = CmdZabij + CmdPudel, target = TMonster.Poodle, extra = false, kind = TStreetKind.skDog },
-        new() { cmd = CmdZabij + CmdTaksowkarz, target = TMonster.Cabman, extra = true, kind = TStreetKind.skFolk },
-        new() { cmd = CmdZabij + CmdSprzedawca, target = TMonster.Vendor, extra = true, kind = TStreetKind.skFolk },
-        new() { cmd = CmdZabij + CmdPijak, target = TMonster.Drunkard, extra = false, kind = TStreetKind.skFolk },
-    ];
-    List<TStreetKill>? _streetKills;
+    public Dictionary<string, TStreetKill> StreetKills => _streetKills ??= new() {
+        [$"{CmdZabij}{CmdOwczarek}"] = new() { target = TMonster.Shepherd, extra = false, kind = TStreetKind.skDog },
+        [$"{CmdZabij}{CmdPiesek}"] = new() { target = TMonster.Pooch, extra = false, kind = TStreetKind.skDog },
+        [$"{CmdZabij}{CmdJamnik}"] = new() { target = TMonster.Dachshund, extra = false, kind = TStreetKind.skDog },
+        [$"{CmdZabij}{CmdSpaniel}"] = new() { target = TMonster.Spaniel, extra = true, kind = TStreetKind.skDog },
+        [$"{CmdZabij}{CmdPudel}"] = new() { target = TMonster.Poodle, extra = false, kind = TStreetKind.skDog },
+        [$"{CmdZabij}{CmdTaksowkarz}"] = new() { target = TMonster.Cabman, extra = true, kind = TStreetKind.skFolk },
+        [$"{CmdZabij}{CmdSprzedawca}"] = new() { target = TMonster.Vendor, extra = true, kind = TStreetKind.skFolk },
+        [$"{CmdZabij}{CmdPijak}"] = new() { target = TMonster.Drunkard, extra = false, kind = TStreetKind.skFolk },
+    };
+    Dictionary<string, TStreetKill>? _streetKills;
 }
