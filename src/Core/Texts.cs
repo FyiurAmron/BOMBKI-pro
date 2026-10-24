@@ -846,6 +846,7 @@ Kręte schody wiją się przed tobą jak robaki po deszczu.";
     public const string TxtTrainingCooking = "POTRAWKI";
     public const string CmdPatrz = "PATRZ ";
     public const string CmdPlakat = "PLAKAT";
+    public const string CmdPatrzPlakat = $"{CmdPatrz}{CmdPlakat}";
     public const string CmdAfisz = "AFISZ";
     public const string CmdZabij = "ZABIJ ";
     public const string CmdPotwor = "POTWOR";

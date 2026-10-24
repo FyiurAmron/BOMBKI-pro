@@ -107,6 +107,7 @@ public class Rooms {
     public const int RoomForest5 = 109;
     public const int RoomFutureRoad = 110;
     public const int RoomDead = 10000;
+    public const int BeerDropChance = 15;
 
     public const int StaruchPrice = 200;
 
@@ -242,7 +243,7 @@ public class Rooms {
             if (!game.Combat.Fled) {
                 monster.Set(0);
                 game.Combat.Loot = game.Roll(stats.lootRand);
-                Out.WriteLine(TxtShared_08 + game.Combat.Loot + TxtShared_09);
+                Out.WriteLine($"{TxtShared_08}{game.Combat.Loot}{TxtShared_09}");
                 game.Player.Money += game.Combat.Loot;
                 game.Combat.TryCageLoot(stats.lootThreshold);
             } else {
@@ -265,7 +266,7 @@ public class Rooms {
             number = number,
             position = position,
             name = name,
-            intro = [TxtYouAreIn + TxtSimpleRoom_01],
+            intro = [$"{TxtYouAreIn}{TxtSimpleRoom_01}"],
             exits = Exits(direction),
         };
 
@@ -291,17 +292,17 @@ public class Rooms {
             number = RoomSalon,
             position = new(0, -1, 0),
             name = TxtPlaceSalon,
-            intro = [TxtYouAreIn + TxtRoom1_01, TxtRoom1_02, TxtShared_04, TxtRoom1_03],
+            intro = [$"{TxtYouAreIn}{TxtRoom1_01}", TxtRoom1_02, TxtShared_04, TxtRoom1_03],
             exits = Exits(CmdPolnoc, CmdWschod, CmdPolodnie, CmdZachod, CmdDol),
-            posters = [new(CmdPatrz + CmdPlakat, [TxtShared_05, TxtRoom1_09])],
+            posters = [new(CmdPatrzPlakat, [TxtShared_05, TxtRoom1_09])],
         },
         new() {
             number = RoomTraining,
             position = new(1, -1, 0),
             name = TxtPlacePokojTreningowy1,
-            intro = [TxtYouAreIn + TxtRoom2_01, TxtRoom2_02, TxtShared_04],
+            intro = [$"{TxtYouAreIn}{TxtRoom2_01}", TxtRoom2_02, TxtShared_04],
             exits = Exits(CmdZachod),
-            posters = [new(CmdPatrz + CmdPlakat, [TxtShared_05, TxtRoom2_04])],
+            posters = [new(CmdPatrzPlakat, [TxtShared_05, TxtRoom2_04])],
             turn = phase => {
                 if (phase == TRoomPhase.Command) {
                     game.Character.HandleTrain();
@@ -324,9 +325,9 @@ public class Rooms {
             number = RoomSchoolHall,
             position = new(-2, -1, 0),
             name = TxtPlaceSzkolaZycia,
-            intro = [TxtYouAreIn + TxtRoom4_01, TxtRoom4_02],
+            intro = [$"{TxtYouAreIn}{TxtRoom4_01}", TxtRoom4_02],
             exits = Exits(CmdWschod, CmdZachod),
-            posters = [new(CmdPatrz + CmdAfisz, [TxtRoom4_05])],
+            posters = [new($"{CmdPatrz}{CmdAfisz}", [TxtRoom4_05])],
         },
         new() {
             number = RoomLost,
@@ -334,7 +335,7 @@ public class Rooms {
             name = TxtPlacePokojOrientacyjny,
             intro = [TxtRoom5_01],
             exits = Exits(CmdPolnoc, CmdWschod, CmdPolodnie, CmdZachod, CmdGora, CmdDol),
-            posters = [new(CmdPatrz + CmdPlakat, [TxtRoom5_10])],
+            posters = [new(CmdPatrzPlakat, [TxtRoom5_10])],
         },
         SideRoom(RoomSchoolSide1, new(-4, -1, 0), CmdWschod, $"{TxtPlacePokoj} 1"),
         SideRoom(RoomSchoolSide3, new(-3, -2, 0), CmdPolnoc, $"{TxtPlacePokoj} 3"),
@@ -344,16 +345,16 @@ public class Rooms {
             number = RoomSchoolLanding,
             position = new(-3, -1, 1),
             name = $"{TxtPlacePokoj} 4",
-            intro = [TxtYouAreIn + TxtRoom9_01, TxtRoom9_02],
+            intro = [$"{TxtYouAreIn}{TxtRoom9_01}", TxtRoom9_02],
             exits = Exits(CmdWschod, CmdGora, CmdDol),
         },
         new() {
             number = RoomCageCorridor,
             position = new(-3, -1, 2),
             name = TxtPlaceWejsciaDoKlatek,
-            intro = [TxtYouAreIn + TxtRoom11_01, TxtRoom11_03, TxtShared_04],
+            intro = [$"{TxtYouAreIn}{TxtRoom11_01}", TxtRoom11_03, TxtShared_04],
             exits = Exits(CmdPolnoc, CmdWschod, CmdPolodnie, CmdZachod, CmdGora, CmdDol),
-            posters = [new(CmdPatrz + CmdPlakat, [TxtShared_13, TxtRoom11_10])],
+            posters = [new(CmdPatrzPlakat, [TxtShared_13, TxtRoom11_10])],
         },
         new() {
             number = RoomCageWeakling,
@@ -427,7 +428,7 @@ public class Rooms {
                     } else {
                         game.World.Monsters[CageHuge] = 0;
                         game.Combat.Loot = game.Roll(game.Combat.CageHugeStats.lootRand);
-                        Out.WriteLine(TxtShared_08 + game.Combat.Loot + TxtShared_09);
+                        Out.WriteLine($"{TxtShared_08}{game.Combat.Loot}{TxtShared_09}");
                         game.Player.Money += game.Combat.Loot;
                         game.Combat.TryCageLoot(game.Combat.CageHugeStats.lootThreshold);
                     }
@@ -438,7 +439,7 @@ public class Rooms {
             number = RoomCageReward,
             position = new(-2, -1, 1),
             name = TxtPlaceJedynaDrogaNieProwadzacaDoKlatek,
-            intro = [TxtYouAreIn + TxtRoom17_01],
+            intro = [$"{TxtYouAreIn}{TxtRoom17_01}"],
             exits = Exits(CmdZachod),
             turn = phase => {
                 if (phase == TRoomPhase.Enter) {
@@ -466,9 +467,9 @@ public class Rooms {
             number = RoomCityCentre,
             position = new(0, 0, 0),
             name = TxtPlaceCentrumMiasta,
-            intro = [TxtYouAreIn + TxtRoom20_01],
+            intro = [$"{TxtYouAreIn}{TxtRoom20_01}"],
             exits = Exits(CmdPolnoc, CmdWschod, CmdPolodnie, CmdZachod),
-            posters = [new(CmdPatrz + CmdPlakat, [TxtRoom20_02])],
+            posters = [new(CmdPatrzPlakat, [TxtRoom20_02])],
             turn = StreetTurn,
         },
         new() {
@@ -491,9 +492,9 @@ public class Rooms {
             number = RoomBakery,
             position = new(1, 1, 0),
             name = TxtPlacePiekarnia,
-            intro = [TxtYouAreIn + TxtRoom23_01, TxtRoom23_02],
+            intro = [$"{TxtYouAreIn}{TxtRoom23_01}", TxtRoom23_02],
             exits = Exits(CmdZachod),
-            posters = [new(CmdPatrz + CmdPlakat, [TxtRoom23_04])],
+            posters = [new(CmdPatrzPlakat, [TxtRoom23_04])],
             turn = phase => {
                 if (phase == TRoomPhase.Enter) {
                     game.World.DescribeStreet();
@@ -506,9 +507,9 @@ public class Rooms {
             number = RoomArmoury,
             position = new(-1, 1, 0),
             name = TxtPlaceZbrojownia,
-            intro = [TxtYouAreIn + TxtRoom24_01, TxtRoom24_02],
+            intro = [$"{TxtYouAreIn}{TxtRoom24_01}", TxtRoom24_02],
             exits = Exits(CmdWschod),
-            posters = [new(CmdPatrz + CmdPlakat, [TxtRoom24_04])],
+            posters = [new(CmdPatrzPlakat, [TxtRoom24_04])],
             turn = phase => {
                 if (phase == TRoomPhase.Enter) {
                     game.World.DescribeStreet();
@@ -524,8 +525,8 @@ public class Rooms {
             name = TxtPlaceSklepWielobranzowy,
             intro = [TxtRoom25_01],
             exits = Exits(CmdZachod),
-            posters = [new(CmdPatrz + CmdWywieszka, [TxtRoom25_03]),
-                       new(CmdPatrz + CmdPoster, [TxtGeneralStoreShop_06]), ],
+            posters = [new($"{CmdPatrz}{CmdWywieszka}", [TxtRoom25_03]),
+                       new($"{CmdPatrz}{CmdPoster}", [TxtGeneralStoreShop_06]), ],
             turn = phase => {
                 if (phase == TRoomPhase.Enter) {
                     game.World.DescribeStreet();
@@ -541,7 +542,7 @@ public class Rooms {
             name = TxtPlaceSklepMagiczny,
             intro = [TxtRoom26_01],
             exits = Exits(CmdWschod),
-            posters = [new(CmdPatrz + CmdPlakat, [TxtRoom26_02])],
+            posters = [new(CmdPatrzPlakat, [TxtRoom26_02])],
             turn = phase => {
                 if (phase == TRoomPhase.Enter) {
                     game.World.DescribeStreet();
@@ -571,7 +572,7 @@ public class Rooms {
             name = TxtPlaceWejscieNaArene,
             intro = [TxtRoom32_01],
             exits = Exits(CmdPolnoc, CmdPolodnie),
-            posters = [new(CmdPatrz + CmdPlakat, [TxtRoom32_03])],
+            posters = [new(CmdPatrzPlakat, [TxtRoom32_03])],
         },
         ArenaRoom(RoomArena33, new(-1, 2, 1)),
         ArenaRoom(RoomArena34, new(-1, 3, 1)),
@@ -609,7 +610,7 @@ public class Rooms {
             number = RoomEntertainmentCave,
             position = new(-2, 1, -1),
             name = TxtPlaceJaskiniaRozrywek,
-            intro = [TxtYouAreIn + TxtRoom60_01, TxtRoom60_02],
+            intro = [$"{TxtYouAreIn}{TxtRoom60_01}", TxtRoom60_02],
             exits = Exits(CmdWschod, CmdGora),
         },
         new() {
@@ -618,7 +619,7 @@ public class Rooms {
             name = $"{TxtPlaceTlum} 1",
             intro = [TxtConcertRooms_01],
             exits = Exits(CmdPolnoc, CmdWschod, CmdPolodnie, CmdZachod),
-            posters = [new(CmdPatrz + CmdPlakat, [TxtConcertRooms_07])],
+            posters = [new(CmdPatrzPlakat, [TxtConcertRooms_07])],
             turn = CrowdTurn,
         },
         new() {
@@ -641,7 +642,7 @@ public class Rooms {
             number = RoomCrowd4,
             position = new(0, 1, -1),
             name = $"{TxtPlaceTlum} 4",
-            intro = [TxtYouAreIn + TxtConcertRooms_13, TxtConcertRooms_14],
+            intro = [$"{TxtYouAreIn}{TxtConcertRooms_13}", TxtConcertRooms_14],
             exits = Exits(CmdPolnoc, CmdPolodnie, CmdZachod),
             turn = CrowdTurn,
         },
@@ -665,14 +666,14 @@ public class Rooms {
             number = RoomPub,
             position = new(-1, 3, -1),
             name = TxtPlacePiwiarnia,
-            intro = [TxtYouAreIn + TxtConcertRooms_18, TxtConcertRooms_19],
+            intro = [$"{TxtYouAreIn}{TxtConcertRooms_18}", TxtConcertRooms_19],
             exits = Exits(CmdWschod, CmdPolodnie),
             turn = phase => {
                 if (phase == TRoomPhase.Enter) {
-                    if (game.World.Monsters[Minibarman] == 67) {
+                    if (game.World.Monsters[Minibarman] == RoomPub) {
                         Out.WriteLine(TxtConcertRooms_20);
                     }
-                    if (game.World.Monsters[Fatso] == 67) {
+                    if (game.World.Monsters[Fatso] == RoomPub) {
                         Out.WriteLine(TxtConcertRooms_21);
                     }
                     game.World.DescribeCrowd();
@@ -683,26 +684,26 @@ public class Rooms {
                     case CmdZabij:
                         switch (game.Rest) {
                             case CmdMiniBarman:
-                                if (game.World.Monsters[Minibarman] == 67) {
+                                if (game.World.Monsters[Minibarman] == RoomPub) {
                                     Out.WriteLine(TxtConcertRooms_23);
                                     game.Combat.Fight(VeryHardEnemy);
                                     if (game.Player.Energy > 0) {
                                         game.World.Monsters[Minibarman] = 0;
                                         game.Combat.Roll = game.Roll(100);
-                                        if (game.Combat.Roll < 15) {
-                                            Out.WriteLine(TxtConcertRooms_25 + TxtShared_08 + TxtPiwoTail);
+                                        if (game.Combat.Roll < BeerDropChance) {
+                                            Out.WriteLine($"{TxtConcertRooms_25}{TxtShared_08}{TxtPiwoTail}");
                                             game.Inventory.AcquireItem(TBagItem.Beer);
                                         }
                                     }
                                 }
                                 break;
                             case CmdGrubas:
-                                if (game.World.Monsters[Fatso] == 67) {
+                                if (game.World.Monsters[Fatso] == RoomPub) {
                                     game.Combat.Fight(VeryHardEnemy);
                                     if (game.Player.Energy > 0) {
                                         game.World.Monsters[Fatso] = 0;
-                                        if (game.Combat.Roll < 15) {
-                                            Out.WriteLine(TxtConcertRooms_26 + TxtShared_08 + TxtPiwoTail);
+                                        if (game.Combat.Roll < BeerDropChance) {
+                                            Out.WriteLine($"{TxtConcertRooms_26}{TxtShared_08}{TxtPiwoTail}");
                                             game.Inventory.AcquireItem(TBagItem.Beer);
                                         }
                                     }
@@ -719,7 +720,7 @@ public class Rooms {
             name = TxtPlaceWejscieNaScene,
             intro = [TxtConcertRooms_27],
             exits = Exits(CmdWschod, CmdZachod),
-            posters = [new(CmdPatrz + CmdTabliczka, [TxtConcertRooms_32])],
+            posters = [new($"{CmdPatrz}{CmdTabliczka}", [TxtConcertRooms_32])],
             turn = phase => {
                 if (phase == TRoomPhase.Enter) {
                     game.World.DescribeCrowd();
@@ -739,24 +740,24 @@ public class Rooms {
             exits = Exits(CmdPolodnie, CmdZachod),
             turn = phase => {
                 if (phase == TRoomPhase.Enter) {
-                    if (game.World.Monsters[DJ] == 69) {
+                    if (game.World.Monsters[DJ] == RoomBackstage) {
                         Out.WriteLine(TxtConcertRooms_35);
                     }
                     return;
                 }
                 if (game.Verb == CmdZabij && game.Rest == CmdDJ) {
-                    if (game.World.Monsters[DJ] == 69) {
+                    if (game.World.Monsters[DJ] == RoomBackstage) {
                         game.Combat.Fight(VeryHardEnemy);
                         if (game.Combat.EnemyEnergy < 0) {
                             game.World.Monsters[DJ] = 0;
                             game.Combat.Roll = game.Roll(100);
                             if (game.Combat.Roll < 25) {
-                                Out.WriteLine(TxtShared_08 + TxtConcertRooms_38);
+                                Out.WriteLine($"{TxtShared_08}{TxtConcertRooms_38}");
                                 game.Inventory.AcquireItem(TBagItem.DryRation);
                             }
                             if (game.Combat.Roll < 3) {
-                                Out.WriteLine(TxtShared_08 + TxtConcertRooms_39);
-                                Out.WriteLine(TxtBang + TxtUniqeItem + TxtConcertRooms_40);
+                                Out.WriteLine($"{TxtShared_08}{TxtConcertRooms_39}");
+                                Out.WriteLine($"{TxtBang}{TxtUniqeItem}{TxtConcertRooms_40}");
                                 game.Inventory.AcquireItem(TBagItem.Cassette);
                             }
                         }
@@ -806,17 +807,17 @@ public class Rooms {
             number = RoomBar,
             position = new(1, 1, 1),
             name = TxtPlaceBarPodDwomaPedalami,
-            intro = [TxtYouAreIn + TxtRoom76_01, TxtRoom76_02],
+            intro = [$"{TxtYouAreIn}{TxtRoom76_01}", TxtRoom76_02],
             exits = Exits(CmdPolodnie),
             turn = phase => {
                 if (phase == TRoomPhase.Enter) {
-                    if (game.World.Monsters[Maciek] == 76) {
+                    if (game.World.Monsters[Maciek] == RoomBar) {
                         Out.WriteLine(TxtRoom76_05);
                     }
-                    if (game.World.Monsters[Pedal] == 76) {
+                    if (game.World.Monsters[Pedal] == RoomBar) {
                         Out.WriteLine(TxtRoom76_06);
                     }
-                    if (game.World.Monsters[Couple] == 76) {
+                    if (game.World.Monsters[Couple] == RoomBar) {
                         Out.WriteLine(TxtRoom76_07);
                     }
                     return;
@@ -881,7 +882,7 @@ public class Rooms {
             name = $"{TxtPlaceBluszcz} 4",
             intro = [TxtRoom80_01],
             exits = Exits(CmdPolnoc, CmdWschod, CmdPolodnie, CmdZachod),
-            posters = [new(CmdPatrz + CmdNapis, [TxtRoom80_04])],
+            posters = [new($"{CmdPatrz}{CmdNapis}", [TxtRoom80_04])],
             turn = phase => {
                 if (phase == TRoomPhase.Enter) {
                     game.World.DescribePlants();
@@ -890,7 +891,7 @@ public class Rooms {
                 game.Combat.PlantFights();
                 if (game.Verb == CmdPatrz && game.Rest == CmdStudnia) {
                     game.Combat.Roll = (game.Roll(3) + 1);
-                    Out.WriteLine(TxtRoom80_05 + game.Combat.Roll + TxtShared_23);
+                    Out.WriteLine($"{TxtRoom80_05}{game.Combat.Roll}{TxtShared_23}");
                     game.Player.Money += game.Combat.Roll;
                     game.Combat.Roll = game.Roll(100);
                     if (game.Combat.Roll < 10) {
@@ -1031,7 +1032,7 @@ public class Rooms {
                 game.Combat.Roll = game.Roll(100);
                 if (game.Combat.Roll < 40) {
                     int damage = Math.Max(0, 25 - game.Player.Stats[TStat.Dexterity]);
-                    Out.WriteLine(TxtRoom87_03 + damage + TxtShared_26);
+                    Out.WriteLine($"{TxtRoom87_03}{damage}{TxtShared_26}");
                     if (!game.Player.ChangeEnergy(-damage)) {
                         game.Session.Room = RoomDead;
                     }
@@ -1156,7 +1157,7 @@ public class Rooms {
             name = $"{TxtPlaceDroga} 1",
             intro = [TxtRoom101_01],
             exits = Exits(CmdPolnoc, CmdWschod, CmdPolodnie, CmdZachod),
-            posters = [new(CmdPatrz + CmdDrogowskaz, [TxtRoom101_05])],
+            posters = [new($"{CmdPatrz}{CmdDrogowskaz}", [TxtRoom101_05])],
         },
         new() {
             number = RoomRoad2,
