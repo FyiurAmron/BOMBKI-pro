@@ -1008,6 +1008,9 @@ public class Game {
     ];
     List<TCommandEntry>? _groundCommands;
 
+    public static void Main() =>
+        new Game().Start();
+
     public void Start() {
         Randomize();
         ChooseRace();
