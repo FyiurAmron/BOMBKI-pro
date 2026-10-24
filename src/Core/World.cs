@@ -23,9 +23,9 @@ public class World : TWorld {
         rooms.RoomInDirection(number, cmd);
 
     readonly List<(TMazeDir dir, string cmd, string label)> MazeExitLabels = [
-        (TMazeDir.mdPolodnie, CmdPolodnie, TxtExitPolodnie),
         (TMazeDir.mdPolnoc, CmdPolnoc, TxtExitPolnoc),
         (TMazeDir.mdWschod, CmdWschod, TxtExitWschod),
+        (TMazeDir.mdPolodnie, CmdPolodnie, TxtExitPolodnie),
         (TMazeDir.mdZachod, CmdZachod, TxtExitZachod),
     ];
 

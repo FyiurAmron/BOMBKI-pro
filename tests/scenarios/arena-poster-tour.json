@@ -71,7 +71,7 @@
     },
     {
       "label": "room 32 exits",
-      "expect": "POŁUDNIE:\\ Droga\\ na\\ arenę[\\s\\S]*?PÓŁNOC:\\ Arena\\ 1[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "PÓŁNOC:\\ Arena\\ 1[\\s\\S]*?POŁUDNIE:\\ Droga\\ na\\ arenę[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -81,7 +81,7 @@
     },
     {
       "label": "room 33 names the maze exits",
-      "expect": "POŁUDNIE:\\ Wejście\\ na\\ arenę[\\s\\S]*?PÓŁNOC:\\ Arena\\ 2[\\s\\S]*?WSCHÓD:\\ Arena\\ 3[\\s\\S]*?ZACHÓD:\\ Arena\\ 4[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "PÓŁNOC:\\ Arena\\ 2[\\s\\S]*?WSCHÓD:\\ Arena\\ 3[\\s\\S]*?POŁUDNIE:\\ Wejście\\ na\\ arenę[\\s\\S]*?ZACHÓD:\\ Arena\\ 4[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WYJSCIE"
     }
   ]

@@ -31,7 +31,7 @@
     },
     {
       "label": "salon lists all target names",
-      "expect": "POŁUDNIE:\\ Tam\\ gdzie\\ zaczynasz\\ grę[\\s\\S]*?WSCHÓD:\\ Pokój\\ treningowy\\ \\(1\\)[\\s\\S]*?DÓŁ:\\ Poddziemny\\ pokój\\ treningowy\\ \\(2\\)[\\s\\S]*?ZACHÓD:\\ Przejście\\ do\\ Szkoły[\\s\\S]*?PÓŁNOC:\\ Centrum\\ miasta[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "PÓŁNOC:\\ Centrum\\ miasta[\\s\\S]*?WSCHÓD:\\ Pokój\\ treningowy\\ \\(1\\)[\\s\\S]*?POŁUDNIE:\\ Tam\\ gdzie\\ zaczynasz\\ grę[\\s\\S]*?ZACHÓD:\\ Przejście\\ do\\ Szkoły[\\s\\S]*?DÓŁ:\\ Poddziemny\\ pokój\\ treningowy\\ \\(2\\)[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -41,7 +41,7 @@
     },
     {
       "label": "city centre names streets and salon",
-      "expect": "POŁUDNIE:\\ Salon[\\s\\S]*?PÓŁNOC:\\ Ul\\.\\ Sklepikowa\\ 1[\\s\\S]*?ZACHÓD:\\ Ul\\.\\ Długa[\\s\\S]*?WSCHÓD:\\ Przejście\\ na\\ Ciemną[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "PÓŁNOC:\\ Ul\\.\\ Sklepikowa\\ 1[\\s\\S]*?WSCHÓD:\\ Przejście\\ na\\ Ciemną[\\s\\S]*?POŁUDNIE:\\ Salon[\\s\\S]*?ZACHÓD:\\ Ul\\.\\ Długa[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -51,7 +51,7 @@
     },
     {
       "label": "shop street names its neighbours",
-      "expect": "POŁUDNIE:\\ Centrum\\ miasta[\\s\\S]*?PÓŁNOC:\\ Ul\\.\\ Sklepikowa\\ 2[\\s\\S]*?WSCHÓD:\\ Piekarnia[\\s\\S]*?ZACHÓD:\\ Zbrojownia[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "PÓŁNOC:\\ Ul\\.\\ Sklepikowa\\ 2[\\s\\S]*?WSCHÓD:\\ Piekarnia[\\s\\S]*?POŁUDNIE:\\ Centrum\\ miasta[\\s\\S]*?ZACHÓD:\\ Zbrojownia[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -61,7 +61,7 @@
     },
     {
       "label": "second shop street names its neighbours",
-      "expect": "POŁUDNIE:\\ Ul\\.\\ Sklepikowa\\ 1[\\s\\S]*?WSCHÓD:\\ Sklep\\ wielobranżowy[\\s\\S]*?ZACHÓD:\\ Sklep\\ magiczny[\\s\\S]*?PÓŁNOC:\\ Brama\\ na\\ Trakt[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "PÓŁNOC:\\ Brama\\ na\\ Trakt[\\s\\S]*?WSCHÓD:\\ Sklep\\ wielobranżowy[\\s\\S]*?POŁUDNIE:\\ Ul\\.\\ Sklepikowa\\ 1[\\s\\S]*?ZACHÓD:\\ Sklep\\ magiczny[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "POLNOC"
     },
     {
@@ -76,7 +76,7 @@
     },
     {
       "label": "quest master names the roads",
-      "expect": "POŁUDNIE:\\ Brama\\ na\\ Trakt[\\s\\S]*?WSCHÓD:\\ Droga\\ o\\ której\\ możesz\\ pomarzyć\\ \\(bo\\ jest\\ w\\ produkcji!!!\\)[\\s\\S]*?ZACHÓD:\\ droga\\ 1[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "WSCHÓD:\\ Droga\\ o\\ której\\ możesz\\ pomarzyć\\ \\(bo\\ jest\\ w\\ produkcji!!!\\)[\\s\\S]*?POŁUDNIE:\\ Brama\\ na\\ Trakt[\\s\\S]*?ZACHÓD:\\ droga\\ 1[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WSCHOD"
     },
     {
@@ -146,7 +146,7 @@
     },
     {
       "label": "orientation room names all six ways",
-      "expect": "WSCHÓD:\\ Szkoła\\ Życia[\\s\\S]*?ZACHÓD:\\ Pokój\\ 1[\\s\\S]*?PÓŁNOC:\\ Pokój\\ 2[\\s\\S]*?POŁUDNIE:\\ Pokój\\ 3[\\s\\S]*?GÓRA:\\ Pokój\\ 4[\\s\\S]*?DÓŁ:\\ Pokój\\ 5[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "PÓŁNOC:\\ Pokój\\ 2[\\s\\S]*?WSCHÓD:\\ Szkoła\\ Życia[\\s\\S]*?POŁUDNIE:\\ Pokój\\ 3[\\s\\S]*?ZACHÓD:\\ Pokój\\ 1[\\s\\S]*?GÓRA:\\ Pokój\\ 4[\\s\\S]*?DÓŁ:\\ Pokój\\ 5[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "GORA"
     },
     {
@@ -156,7 +156,7 @@
     },
     {
       "label": "landing names the corridor and the orientation room",
-      "expect": "DÓŁ:\\ Pokój\\ orientacyjny[\\s\\S]*?GÓRA:\\ Wejścia\\ do\\ klatek[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "GÓRA:\\ Wejścia\\ do\\ klatek[\\s\\S]*?DÓŁ:\\ Pokój\\ orientacyjny[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "GORA"
     },
     {
@@ -166,7 +166,7 @@
     },
     {
       "label": "cage corridor names every cage",
-      "expect": "WSCHÓD:\\ Klatka\\ cieniasa[\\s\\S]*?ZACHÓD:\\ Klatka\\ silnego[\\s\\S]*?PÓŁNOC:\\ Klatka\\ zręcznego[\\s\\S]*?POŁUDNIE:\\ Klatka\\ odpornego[\\s\\S]*?GÓRA:\\ Klatka\\ silnego,\\ odpornego\\ i\\ zręcznego[\\s\\S]*?DÓŁ:\\ Pokój\\ 4[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
+      "expect": "PÓŁNOC:\\ Klatka\\ zręcznego[\\s\\S]*?WSCHÓD:\\ Klatka\\ cieniasa[\\s\\S]*?POŁUDNIE:\\ Klatka\\ odpornego[\\s\\S]*?ZACHÓD:\\ Klatka\\ silnego[\\s\\S]*?GÓRA:\\ Klatka\\ silnego,\\ odpornego\\ i\\ zręcznego[\\s\\S]*?DÓŁ:\\ Pokój\\ 4[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WYJSCIE"
     }
   ]
