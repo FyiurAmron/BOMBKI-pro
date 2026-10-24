@@ -48,7 +48,7 @@ public class UnitsSwiatTests {
         game.Session.ExitRequested = false;
         game.Session.Room = room;
         using (FeedStdin(cmds)) {
-            game.Rooms.DispatchRoom();
+            game.World.DispatchRoom();
         }
     }
 
@@ -57,7 +57,7 @@ public class UnitsSwiatTests {
         RoomSetup();
         game.Session.Room = 5;
         using (FeedStdin("EXIT|PATRZ PLAKAT|WYJSCIE")) {
-            game.Rooms.DispatchRoom();
+            game.World.DispatchRoom();
         }
 
         Assert.Equal(5, game.Session.Room);
@@ -68,7 +68,7 @@ public class UnitsSwiatTests {
         RoomSetup();
         game.Session.Room = 1;
         using (FeedStdin("EXIT|PATRZ PLAKAT|WYJSCIE")) {
-            game.Rooms.DispatchRoom();
+            game.World.DispatchRoom();
         }
 
         Assert.Equal(1, game.Session.Room);
@@ -200,7 +200,7 @@ public class UnitsSwiatTests {
 
     [Fact]
     public void NettleThroneReturnsToCaveMouth() {
-        var throne = game.Rooms.RoomDefs.Single(room => room.number == Rooms.RoomNettleThrone);
+        var throne = game.World.RoomDefs.Single(room => room.number == Rooms.RoomNettleThrone);
         Assert.Contains(throne.moves, move => move.cmd == Texts.CmdPolnoc && move.dest == Rooms.RoomCaveMouth);
         Assert.DoesNotContain(throne.moves, move => move.cmd == Texts.CmdPolodnie && move.dest == Rooms.RoomCaveMouth);
     }
@@ -227,7 +227,7 @@ public class UnitsSwiatTests {
 
     [Fact]
     public void RoomMovesAreTwoWay() {
-        var rooms = game.Rooms.RoomDefs.ToDictionary(room => room.number);
+        var rooms = game.World.RoomDefs.ToDictionary(room => room.number);
         foreach (var room in rooms.Values) {
             foreach (var move in room.moves) {
                 if ((room.number == Rooms.RoomArenaEntrance) && (move.dest == Rooms.RoomArena33)) {
@@ -242,12 +242,12 @@ public class UnitsSwiatTests {
         var arena = game.MazeMoves.Single(move => move.room == Rooms.RoomArena33);
         Assert.Contains(TMazeDir.mdPolodnie, arena.exits);
         Assert.Equal(Rooms.RoomArenaEntrance,
-            game.Rooms.RoomInDirection(Rooms.RoomArena33, game.MazeDirectionCommand(TMazeDir.mdPolodnie)));
+            game.World.RoomInDirection(Rooms.RoomArena33, game.MazeDirectionCommand(TMazeDir.mdPolodnie)));
 
         var mazeRooms = game.MazeMoves.ToDictionary(move => move.room);
         foreach (var maze in mazeRooms.Values) {
             foreach (TMazeDir dir in maze.exits) {
-                int? destination = game.Rooms.RoomInDirection(maze.room, game.MazeDirectionCommand(dir));
+                int? destination = game.World.RoomInDirection(maze.room, game.MazeDirectionCommand(dir));
                 Assert.NotNull(destination);
                 if (destination == Rooms.RoomArenaEntrance) {
                     Assert.Equal(Rooms.RoomArena33, maze.room);
@@ -262,15 +262,15 @@ public class UnitsSwiatTests {
 
     [Fact]
     public void RoomNamesCoverConnectivity() {
-        var rooms = game.Rooms.RoomDefs;
+        var rooms = game.World.RoomDefs;
         Assert.All(rooms, room => Assert.False(string.IsNullOrWhiteSpace(room.name), $"room {room.number} has no name"));
         Assert.Equal(rooms.Count, rooms.Select(room => room.name).Distinct().Count());
         Assert.All(rooms, room => Assert.All(room.moves,
             move => Assert.Contains(rooms, target => target.number == move.dest)));
         Assert.All(rooms, room => Assert.All(room.moves,
-            move => Assert.Equal(move.dest, game.Rooms.RoomInDirection(room.number, move.cmd))));
+            move => Assert.Equal(move.dest, game.World.RoomInDirection(room.number, move.cmd))));
         Assert.All(game.MazeMoves, maze => Assert.All(maze.exits, dir => {
-            int? target = game.Rooms.RoomInDirection(maze.room, game.MazeDirectionCommand(dir));
+            int? target = game.World.RoomInDirection(maze.room, game.MazeDirectionCommand(dir));
             Assert.NotNull(target);
             Assert.Contains(rooms, room => room.number == target);
         }));
@@ -278,9 +278,9 @@ public class UnitsSwiatTests {
 
     [Fact]
     public void CageRewardConnectsEastOfSchoolLanding() {
-        var landing = game.Rooms.RoomDefs.Single(room => room.number == Rooms.RoomSchoolLanding);
-        var reward = game.Rooms.RoomDefs.Single(room => room.number == Rooms.RoomCageReward);
-        var hugeCage = game.Rooms.RoomDefs.Single(room => room.number == Rooms.RoomCageHuge);
+        var landing = game.World.RoomDefs.Single(room => room.number == Rooms.RoomSchoolLanding);
+        var reward = game.World.RoomDefs.Single(room => room.number == Rooms.RoomCageReward);
+        var hugeCage = game.World.RoomDefs.Single(room => room.number == Rooms.RoomCageHuge);
 
         Assert.Equal(new Rooms.TCoordinate(-2, -1, 1), reward.position);
         Assert.Contains(landing.moves, move => move.cmd == Texts.CmdWschod && move.dest == reward.number);
@@ -290,7 +290,7 @@ public class UnitsSwiatTests {
 
     [Fact]
     public void MapCoordinatesAreUniqueAndPartitionLayoutIsFixed() {
-        var rooms = game.Rooms.RoomDefs;
+        var rooms = game.World.RoomDefs;
         Assert.Equal(rooms.Count, rooms.Select(room => room.position).Distinct().Count());
 
         Dictionary<int, Rooms.TCoordinate> fixedCells = new() {
@@ -310,7 +310,7 @@ public class UnitsSwiatTests {
 
         Assert.All(fixedCells, entry =>
             Assert.Equal(entry.Value, rooms.Single(room => room.number == entry.Key).position));
-        Assert.Equal(Rooms.RoomFutureRoad, game.Rooms.RoomInDirection(Rooms.RoomQuestMaster, Texts.CmdWschod));
+        Assert.Equal(Rooms.RoomFutureRoad, game.World.RoomInDirection(Rooms.RoomQuestMaster, Texts.CmdWschod));
     }
 
     [Fact]
@@ -489,7 +489,7 @@ public class UnitsSwiatTests {
         game.Player.Money = 200;
         game.World.OldElf = false;
         using (FeedStdin("ROZMAWIAJ STARUCH")) {
-            game.Rooms.DispatchRoom();
+            game.World.DispatchRoom();
         }
 
         Assert.Equal(Rooms.RoomCityCentre, game.Session.Room);

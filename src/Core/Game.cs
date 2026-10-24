@@ -5,6 +5,7 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using static Texts;
+using static World;
 using static Rooms;
 
 public class Game {
@@ -14,18 +15,80 @@ public class Game {
     public TGear Gear = new();
     public TBag Bag = new();
     public Combat Combat { get; }
-    public TWorld World = new();
+    public World World { get; }
     public TSession Session = new();
     public Character Character { get; }
     public Inventory Inventory { get; }
-    public Rooms Rooms { get; }
 
     public Game() {
         Combat = new Combat(this);
         Character = new Character(this);
         Inventory = new Inventory(this);
-        Rooms = new Rooms(this);
+        World = new World(this);
     }
+
+    public void MoveTo(int room) =>
+        World.MoveTo(room);
+
+    public void MoveWhen(List<TMovement> moves) =>
+        World.MoveWhen(moves);
+
+    public bool MoveWhenOrQuit(List<TMovement> moves) =>
+        World.MoveWhenOrQuit(moves);
+
+    public void SpawnAt(List<TSpawnedAt> placements) =>
+        World.SpawnAt(placements);
+
+    public void SpawnMonsters() =>
+        World.SpawnMonsters();
+
+    public void DescribePlants() =>
+        World.DescribePlants();
+
+    public void DescribeStreet() =>
+        World.DescribeStreet();
+
+    public void DescribeStage() =>
+        World.DescribeStage();
+
+    public void DescribeCrowd() =>
+        World.DescribeCrowd();
+
+    public void DescribeBeasts() =>
+        World.DescribeBeasts();
+
+    public List<TMazeMove> MazeMoves =>
+        World.MazeMoves;
+
+    public string MazeDirectionCommand(TMazeDir dir) =>
+        World.MazeDirectionCommand(dir);
+
+    public void MazeMove(TMazeDir dir) =>
+        World.MazeMove(dir);
+
+    public void StartQuest(string cmd, string line, int quest, int kills) =>
+        World.StartQuest(cmd, line, quest, kills);
+
+    public void Checkpoints() =>
+        World.Checkpoints();
+
+    public bool Buy(TBagItem item) =>
+        World.Buy(item);
+
+    public bool Sell(TBagItem item) =>
+        World.Sell(item);
+
+    public void BakeryShop() =>
+        World.BakeryShop();
+
+    public void ArmouryShop() =>
+        World.ArmouryShop();
+
+    public void GeneralStoreShop() =>
+        World.GeneralStoreShop();
+
+    public void MagicShop() =>
+        World.MagicShop();
 
     public void TryLoot(TBagItem item, int threshold, string foundMsg) =>
         Combat.TryLoot(item, threshold, foundMsg);
@@ -345,61 +408,11 @@ public class Game {
 
     public const int MaxInt = 32767;
 
-    public List<TQuestOffer> QuestOffers => _questOffers ??= [
-        new($"{CmdZacznij}{CmdQuest} 1", TxtRoom100_09, 1, 75),
-        new($"{CmdZacznij}{CmdQuest} 2", TxtRoom100_10, 2, 50),
-        new($"{CmdZacznij}{CmdQuest} 3", TxtRoom100_11, 3, 50),
-    ];
-    List<TQuestOffer>? _questOffers;
 
-    public List<TGroundItem> GroundItems => _groundItems ??= [
-        new(TBagItem.OldSword, TxtStart_07),
-        new(TBagItem.SmallShield, TxtGroundItemLabel + TxtStart_08),
-        new(TBagItem.Heart, TxtGroundItemLabel + TxtStart_09),
-        new(TBagItem.Diploma, TxtGroundItemLabel + TxtStart_10),
-        new(TBagItem.Pipe, TxtStart_11),
-    ];
-    List<TGroundItem>? _groundItems;
 
-    public void MoveTo(int room) {
-        Session.Room = room;
-        Session.OuterRoom = room;
-        GroundItemLines();
-    }
 
-    public void GroundItemLines() {
-        for (int ti = 0; ti < GroundItems.Count; ti++) {
-            TGroundItem t = GroundItems[ti];
-            if (Bag.HasGroundItem(t.item, Session.OuterRoom)) {
-                Out.WriteLine(t.line);
-            }
-        }
-    }
 
-    public void MoveWhen(List<TMovement> moves) {
-        for (int i = 0; i < moves.Count; i++) {
-            if (!Matches(moves[i].cmd)) {
-                continue;
-            }
-            if (moves[i].predicate?.Invoke() == false) {
-                string? blocked = moves[i].blocked;
-                if (blocked != null) {
-                    Out.WriteLine(blocked);
-                }
-                continue;
-            }
-            MoveTo(moves[i].dest);
-        }
-    }
 
-    public bool MoveWhenOrQuit(List<TMovement> moves) {
-        if (Verb == CmdWyjscie) {
-            Session.ExitRequested = true;
-            return true;
-        }
-        MoveWhen(moves);
-        return false;
-    }
 
     public void WriteLines(List<string> lines) {
         for (int i = 0; i < lines.Count; i++) {
@@ -437,21 +450,6 @@ public class Game {
         Out.Write("\x1b[m");
     }
 
-    public void StartQuest(string cmd, string line, int quest, int kills) {
-        if (!Matches(cmd)) {
-            return;
-        }
-
-        if (World.Quest > 0) {
-            Out.WriteLine(TxtRoom100_17);
-            return;
-        }
-
-        Out.WriteLine(line);
-        World.Quest = quest;
-        World.QuestKills = kills;
-        World.LiroyKilled = World.Monsters[TMonster.Liroy] == 0;
-    }
 
     public List<TBand> PosExpBands => _posExpBands ??= [
         new(1, 2, 10, 0), new(3, 3, 19, 0), new(4, 6, 9, 0),
@@ -490,188 +488,6 @@ public class Game {
 
 
 
-    public List<TSpawnedAt> CageInits => _cageInits ??= [
-        new(TMonster.CageWeakling, RoomCageWeakling),
-        new(TMonster.CageStrong, RoomCageStrong),
-        new(TMonster.CageAgile, RoomCageAgile),
-        new(TMonster.CageTough, RoomCageTough),
-        new(TMonster.CageHuge, RoomCageHuge),
-    ];
-    List<TSpawnedAt>? _cageInits;
-
-    public List<TSpawnedAt> PubSpawns => _pubSpawns ??= [
-        new(TMonster.Minibarman, RoomPub),
-        new(TMonster.Fatso, RoomPub),
-        new(TMonster.DJ, RoomBackstage),
-        new(TMonster.Pedal, RoomBar),
-        new(TMonster.Couple, RoomBar),
-        new(TMonster.Maciek, RoomBar),
-    ];
-    List<TSpawnedAt>? _pubSpawns;
-
-
-    public List<TSpot> PlantSpots => _plantSpots ??= [
-        new(TMonster.Sorrel, TxtDescribePlants_01),
-        new(TMonster.Daisy, TxtDescribePlants_02),
-        new(TMonster.Clover, TxtDescribePlants_03),
-        new(TMonster.SowThistle, TxtDescribePlants_04),
-        new(TMonster.Dandelion, TxtDescribePlants_05),
-        new(TMonster.Rose, TxtDescribePlants_06),
-        new(TMonster.Thistle, TxtDescribePlants_07),
-        new(TMonster.Blackberry, TxtDescribePlants_08),
-        new(TMonster.Gooseberry, TxtDescribePlants_09),
-        new(TMonster.Raspberry, TxtDescribePlants_10),
-        new(TMonster.Grass, TxtDescribePlants_11),
-    ];
-    List<TSpot>? _plantSpots;
-
-    public List<TSpot> BeastSpots => _beastSpots ??= [
-        new(TMonster.Woodworm, TxtDescribeBeasts_01),
-        new(TMonster.Fly, TxtDescribeBeasts_02),
-        new(TMonster.Bacterium, TxtDescribeBeasts_03),
-        new(TMonster.Snail, TxtDescribeBeasts_04),
-        new(TMonster.Beetle, TxtDescribeBeasts_05),
-        new(TMonster.Cockroach, TxtDescribeBeasts_06),
-        new(TMonster.Ant, TxtDescribeBeasts_07),
-        new(TMonster.Spider, TxtDescribeBeasts_08),
-        new(TMonster.Boar, TxtDescribeBeasts_09),
-        new(TMonster.Rat, TxtDescribeBeasts_10),
-        new(TMonster.Fox, TxtDescribeBeasts_11),
-        new(TMonster.Partridge, TxtDescribeBeasts_12),
-        new(TMonster.Hare, TxtDescribeBeasts_13),
-        new(TMonster.Mongrel, TxtDescribeBeasts_14),
-        new(TMonster.Eagle, TxtDescribeBeasts_15),
-        new(TMonster.Deer, TxtDescribeBeasts_16),
-        new(TMonster.Elephant, TxtDescribeBeasts_17),
-        new(TMonster.Lion, TxtDescribeBeasts_18),
-        new(TMonster.Giraffe, TxtDescribeBeasts_19),
-        new(TMonster.Camel, TxtDescribeBeasts_20),
-        new(TMonster.Ostrich, TxtDescribeBeasts_21),
-        new(TMonster.Boa, TxtDescribeBeasts_22),
-        new(TMonster.Wolf, TxtDescribeBeasts_23),
-        new(TMonster.Bison, TxtDescribeBeasts_24),
-        new(TMonster.Panther, TxtDescribeBeasts_25),
-        new(TMonster.Gladiator, TxtDescribeBeasts_26),
-        new(TMonster.Warrior, TxtDescribeBeasts_27),
-        new(TMonster.Tamer, TxtDescribeBeasts_28),
-    ];
-    List<TSpot>? _beastSpots;
-
-    public List<TSpot> StreetSpots => _streetSpots ??= [
-        new(TMonster.Dachshund, TxtDescribeStreet_01),
-        new(TMonster.Shepherd, TxtDescribeStreet_02),
-        new(TMonster.Pooch, TxtDescribeStreet_03),
-        new(TMonster.Spaniel, TxtDescribeStreet_04),
-        new(TMonster.Poodle, TxtDescribeStreet_05),
-        new(TMonster.Cabman, TxtDescribeStreet_06),
-        new(TMonster.Vendor, TxtDescribeStreet_07),
-        new(TMonster.Sweeper, TxtDescribeStreet_08),
-        new(TMonster.Drunkard, TxtDescribeStreet_09),
-        new(TMonster.SickMan, TxtDescribeStreet_10),
-    ];
-    List<TSpot>? _streetSpots;
-
-    public List<TSpot> StageSpots => _stageSpots ??= [
-        new(TMonster.Guitarist, TxtDescribeStage_01),
-        new(TMonster.Drummer, TxtDescribeStage_02),
-        new(TMonster.Keyboardist, TxtDescribeStage_03),
-        new(TMonster.Liroy, TxtDescribeStage_04),
-    ];
-    List<TSpot>? _stageSpots;
-
-    public List<TSpot> CrowdSpots => _crowdSpots ??= [
-        new(TMonster.Kid, TxtDescribeCrowd_01),
-        new(TMonster.Lunatic, TxtDescribeCrowd_02),
-        new(TMonster.Listener, TxtDescribeCrowd_03),
-        new(TMonster.Fan, TxtDescribeCrowd_04),
-        new(TMonster.Man, TxtDescribeCrowd_05),
-        new(TMonster.Policeman, TxtDescribeCrowd_06),
-        new(TMonster.Bouncer, TxtDescribeCrowd_07),
-        new(TMonster.Gorilla, TxtDescribeCrowd_08),
-        new(TMonster.OldMan, TxtDescribeCrowd_09),
-        new(TMonster.Reporter, TxtDescribeCrowd_10),
-    ];
-    List<TSpot>? _crowdSpots;
-
-    public void SpawnAt(List<TSpawnedAt> placements) {
-        foreach (TSpawnedAt placement in placements) {
-            World.Monsters[placement.monster] = placement.room;
-        }
-    }
-
-    public void SpawnGroup(List<TMonster> targets, int spread, int Base) {
-        foreach (TMonster target in targets) {
-            World.Monsters[target] = Roll(spread) + Base;
-        }
-    }
-
-    public bool PastLimit(List<TMonster> targets, int limit) =>
-        targets.All(target => World.Monsters[target] > limit);
-
-    List<TMonster> MonstersOf(params TMonster[] monsters) =>
-        [.. monsters];
-
-    public void SpawnMonsters() {
-        do {
-            SpawnGroup(MonstersOf(TMonster.Bacterium, TMonster.Snail, TMonster.Beetle, TMonster.Cockroach, TMonster.Ant,
-                TMonster.Spider, TMonster.Boar, TMonster.Fox, TMonster.Rat, TMonster.Partridge), 38, RoomCityCentre);
-        } while (!PastLimit(MonstersOf(TMonster.Bacterium, TMonster.Snail, TMonster.Beetle, TMonster.Cockroach, TMonster.Ant,
-            TMonster.Spider, TMonster.Boar, TMonster.Fox, TMonster.Rat, TMonster.Partridge), RoomArenaEntrance));
-        do {
-            SpawnGroup(MonstersOf(TMonster.Deer, TMonster.Eagle, TMonster.Hare, TMonster.Mongrel, TMonster.Woodworm, TMonster.Fly), 38, RoomCityCentre);
-        } while (!PastLimit(MonstersOf(TMonster.Deer, TMonster.Eagle, TMonster.Hare, TMonster.Mongrel, TMonster.Woodworm, TMonster.Fly), RoomArenaEntrance));
-        do {
-            SpawnGroup(MonstersOf(TMonster.Elephant, TMonster.Lion, TMonster.Giraffe, TMonster.Camel, TMonster.Ostrich,
-                TMonster.Boa, TMonster.Wolf, TMonster.Bison, TMonster.Panther), 38, RoomCityCentre);
-        } while (!PastLimit(MonstersOf(TMonster.Elephant, TMonster.Lion, TMonster.Giraffe, TMonster.Camel, TMonster.Ostrich,
-            TMonster.Boa, TMonster.Wolf, TMonster.Bison, TMonster.Panther), RoomArenaEntrance));
-        do {
-            SpawnGroup(MonstersOf(TMonster.Gladiator, TMonster.Warrior, TMonster.Tamer), 38, RoomCityCentre);
-        } while (!PastLimit(MonstersOf(TMonster.Gladiator, TMonster.Warrior, TMonster.Tamer), RoomArenaEntrance));
-        do {
-            SpawnGroup(MonstersOf(TMonster.Dachshund, TMonster.Shepherd, TMonster.Pooch, TMonster.Spaniel, TMonster.Poodle), 7, RoomCityCentre);
-        } while (!PastLimit(MonstersOf(TMonster.Dachshund, TMonster.Shepherd, TMonster.Pooch, TMonster.Spaniel, TMonster.Poodle), 19));
-        do {
-            SpawnGroup(MonstersOf(TMonster.Cabman, TMonster.Vendor, TMonster.Sweeper, TMonster.Drunkard, TMonster.SickMan), 7, RoomCityCentre);
-        } while (!PastLimit(MonstersOf(TMonster.Cabman, TMonster.Vendor, TMonster.Sweeper, TMonster.Drunkard, TMonster.SickMan), 19));
-        do {
-            SpawnGroup(MonstersOf(TMonster.Kid), 7, RoomEntertainmentCave);
-            SpawnGroup(MonstersOf(TMonster.Lunatic, TMonster.Listener, TMonster.Fan, TMonster.Man), 8, RoomEntertainmentCave);
-        } while (!PastLimit(MonstersOf(TMonster.Kid, TMonster.Lunatic, TMonster.Listener, TMonster.Fan, TMonster.Man), RoomEntertainmentCave));
-        do {
-            SpawnGroup(MonstersOf(TMonster.Policeman, TMonster.Bouncer, TMonster.Gorilla), 9, RoomEntertainmentCave);
-            SpawnGroup(MonstersOf(TMonster.OldMan), 8, RoomEntertainmentCave);
-            SpawnGroup(MonstersOf(TMonster.Reporter), 7, RoomEntertainmentCave);
-        } while (!PastLimit(MonstersOf(TMonster.Policeman, TMonster.Bouncer, TMonster.Gorilla, TMonster.OldMan, TMonster.Reporter), RoomEntertainmentCave));
-        SpawnGroup(MonstersOf(TMonster.Guitarist, TMonster.Drummer, TMonster.Keyboardist, TMonster.Liroy), 3, RoomStage1);
-        SpawnAt(PubSpawns);
-        World.Door = true;
-        World.OldElf = true;
-        do {
-            SpawnGroup(MonstersOf(TMonster.Sorrel, TMonster.Clover, TMonster.Daisy, TMonster.SowThistle, TMonster.Dandelion,
-                TMonster.Rose, TMonster.Thistle, TMonster.Raspberry, TMonster.Gooseberry, TMonster.Blackberry,
-                TMonster.Grass), 8, RoomIvy1);
-            SpawnGroup(MonstersOf(TMonster.Duncan), 8, RoomIvy1);
-        } while (!((World.Monsters[TMonster.Sorrel] < RoomCavePath) && (World.Monsters[TMonster.Daisy] < RoomCavePath)
-            && (World.Monsters[TMonster.Clover] < RoomCavePath) && (World.Monsters[TMonster.SowThistle] < RoomCavePath)
-            && (World.Monsters[TMonster.Dandelion] < RoomCavePath) && (World.Monsters[TMonster.Rose] < RoomCavePath)
-            && (World.Monsters[TMonster.Thistle] < RoomCavePath) && (World.Monsters[TMonster.Raspberry] < RoomCavePath)));
-    }
-
-
-
-
-    public void DescribePlants() {
-        for (int i = 0; i < PlantSpots.Count; i++) {
-            if (World.Monsters[PlantSpots[i].where] == Session.Room) {
-                Out.WriteLine(PlantSpots[i].text);
-            }
-        }
-
-        if (Session.Room == World.Monsters[TMonster.Duncan]) {
-            Out.WriteLine(TxtDescribePlants_12);
-        }
-    }
 
 
 
@@ -693,40 +509,28 @@ public class Game {
 
 
 
-    public void DescribeStreet() {
-        for (int i = 0; i < StreetSpots.Count; i++) {
-            if (World.Monsters[StreetSpots[i].where] == Session.Room) {
-                Out.WriteLine(StreetSpots[i].text);
-            }
-        }
-    }
 
 
 
 
-    public void DescribeStage() {
-        for (int i = 0; i < StageSpots.Count; i++) {
-            if (World.Monsters[StageSpots[i].where] == Session.Room) {
-                Out.WriteLine(StageSpots[i].text);
-            }
-        }
-    }
 
-    public void DescribeCrowd() {
-        for (int i = 0; i < CrowdSpots.Count; i++) {
-            if (World.Monsters[CrowdSpots[i].where] == Session.Room) {
-                Out.WriteLine(CrowdSpots[i].text);
-            }
-        }
-    }
 
-    public void DescribeBeasts() {
-        for (int i = 0; i < BeastSpots.Count; i++) {
-            if (World.Monsters[BeastSpots[i].where] == Session.Room) {
-                Out.WriteLine(BeastSpots[i].text);
-            }
-        }
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -787,55 +591,8 @@ public class Game {
 
 
 
-    public List<TMazeMove> MazeMoves => _mazeMoves ??= [
-        new() { room = RoomArena33, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
-        new() { room = RoomArena34, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
-        new() { room = RoomArena35, exits = [TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
-        new() { room = RoomArena36, exits = [TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
-        new() { room = RoomArena37, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
-        new() { room = RoomArena38, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
-        new() { room = RoomArena39, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
-        new() { room = RoomArena40, exits = [TMazeDir.mdPolnoc, TMazeDir.mdZachod] },
-        new() { room = RoomArena41, exits = [TMazeDir.mdPolnoc, TMazeDir.mdWschod] },
-        new() { room = RoomArena42, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
-        new() { room = RoomArena43, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
-        new() { room = RoomArena44, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
-        new() { room = RoomArena45, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdZachod] },
-        new() { room = RoomArena46, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod] },
-        new() { room = RoomArena47, exits = [TMazeDir.mdPolodnie, TMazeDir.mdWschod, TMazeDir.mdZachod] },
-        new() { room = RoomArena48, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
-        new() { room = RoomArena49, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod] },
-        new() { room = RoomArena50, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdZachod] },
-        new() { room = RoomArena51, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod] },
-        new() { room = RoomArena52, exits = [TMazeDir.mdPolodnie, TMazeDir.mdWschod, TMazeDir.mdZachod] },
-        new() { room = RoomArena53, exits = [TMazeDir.mdPolodnie, TMazeDir.mdWschod, TMazeDir.mdZachod] },
-        new() { room = RoomArena54, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdZachod] },
-        new() { room = RoomArena55, exits = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod] },
-        new() { room = RoomArena56, exits = [TMazeDir.mdPolodnie, TMazeDir.mdZachod] },
-        new() { room = RoomArena57, exits = [TMazeDir.mdPolodnie, TMazeDir.mdWschod] },
-    ];
-    List<TMazeMove>? _mazeMoves;
 
-    public string MazeDirectionCommand(TMazeDir dir) =>
-        dir switch {
-            TMazeDir.mdPolodnie => CmdPolodnie,
-            TMazeDir.mdPolnoc => CmdPolnoc,
-            TMazeDir.mdWschod => CmdWschod,
-            TMazeDir.mdZachod => CmdZachod,
-            _ => throw new ArgumentOutOfRangeException(nameof(dir)),
-        };
 
-    public void MazeMove(TMazeDir dir) {
-        TMazeMove? maze = MazeMoves.FirstOrDefault(move => move.room == Session.Room);
-        if (maze?.exits.Contains(dir) != true) {
-            return;
-        }
-
-        int? destination = Rooms.RoomInDirection(Session.Room, MazeDirectionCommand(dir));
-        if (destination is int room) {
-            MoveTo(room);
-        }
-    }
 
 
 
@@ -995,224 +752,32 @@ public class Game {
 
 
 
-    public List<TShopOffer> ShopOffers => _shopOffers ??= [
-        new() { item = TBagItem.OldSword, buyPrice = 70, buyName = TxtBuyOldSword_01,
-            sellPrice = 30, sellLines = [TxtSellOldSword_01, TxtSellOldSword_02], },
-        new() { item = TBagItem.SmallShield, buyPrice = 15, buyName = TxtBuySmallShield_01,
-            sellPrice = 8, sellLines = [TxtSellSmallShield_01], },
-        new() { item = TBagItem.Pipe, buyPrice = 480, buyName = TxtTakeDrop_05,
-            sellPrice = 120, sellLines = [$"{TxtSellVerb}{TxtSellPipe_01}"], },
-        new() { item = TBagItem.Tracksuit, buyPrice = 35, buyName = TxtBuyTracksuit_01,
-            sellPrice = 15, sellLines = [$"{TxtSellVerb}{TxtSellTracksuit_01}"], },
-        new() { item = TBagItem.Cassette, buyPrice = 1999, buyName = TxtBuyCassette_01,
-            sellPrice = 1000,
-            sellLines = [$"{TxtSellVerb}{TxtSellCassette_01}"], },
-        new() { item = TBagItem.SpikedSuit, buyPrice = 1000, buyLine = TxtBuySpikedSuit_01,
-            sellPrice = 500, sellLines = [$"{TxtSellVerb}{TxtSellSpikedSuit_01}"], },
-        new() { item = TBagItem.ManaBottle, buyPrice = 20, buyGate = 15, buyLine = TxtBuyManaBottle_01 },
-        new() { item = TBagItem.LuckyLeaf, buyPrice = 830, buyGate = 820, buyLine = TxtBuyLuckyLeaf_01,
-            sellPrice = 400, sellLines = [$"{TxtSellVerb}{TxtSellLuckyLeaf_01}"], },
-        new() { item = TBagItem.TeleportPill, buyPrice = 235, buyName = TxtBuyTeleportPill_01,
-            sellPrice = 170, sellLines = [TxtSellTeleportPill_01], },
-        new() { item = TBagItem.CompareScroll, buyPrice = 40, buyLine = TxtBuyCompareScroll_01,
-            sellPrice = 18, sellLines = [TxtSellCompareScroll_01], },
-        new() { item = TBagItem.Doughnut, buyPrice = 8, buyName = CmdPaczek },
-        new() { item = TBagItem.Cookie, buyPrice = 12, buyName = CmdCiastko },
-        new() { item = TBagItem.DryRation, buyPrice = 15, buyName = TxtItemSuchaRacje },
-        new() { item = TBagItem.BreadRoll, buyPrice = 19, buyName = TxtItemBulke },
-        new() { item = TBagItem.Bread, buyPrice = 24, buyName = CmdChleb },
-        new() { item = TBagItem.Sausage, buyPrice = 29, buyName = TxtItemWeke },
-    ];
-    List<TShopOffer>? _shopOffers;
-
-    public TShopOffer? ShopOffer(TBagItem item) =>
-        ShopOffers.FirstOrDefault(o => o.item == item);
-
-
-    public bool Buy(TBagItem item) {
-        TShopOffer? offer = ShopOffer(item);
-        if ((offer is null)
-            || (Player.Money < (offer.buyGate >= 0 ? offer.buyGate : offer.buyPrice))) {
-            return false;
-        }
-
-        Out.WriteLine(offer.buyLine != TxtEmpty
-            ? offer.buyLine
-            : $"{TxtShopVerb}{offer.buyName}{TxtSpaceZa}{offer.buyPrice}{TxtSpaceMonet}");
-        Player.Money -= offer.buyPrice;
-        AcquireItem(item);
-        return true;
-    }
-
-    public bool Sell(TBagItem item) {
-        TShopOffer? offer = ShopOffer(item);
-        if ((offer is null) || IsEquipped(item) || !LoseItem(item)) {
-            return false;
-        }
-
-        offer.sellLines.ForEach(Out.WriteLine);
-        Player.Money += offer.sellPrice;
-        return true;
-    }
-
-
-    public void RunShopRules(List<TShopRule> rules) {
-        TShopRule? rule = rules.FirstOrDefault(r => Matches(r.cmd));
-        if (rule is null) {
-            return;
-        }
-
-        if (rule.selling) {
-            Sell(rule.item);
-        } else {
-            Buy(rule.item);
-        }
-    }
-
-    public List<TShopRule> ArmouryRules => _armouryRules ??= [
-        new(CmdKup + CmdStary, TBagItem.OldSword, false),
-        new(CmdSprzedaj + CmdStary, TBagItem.OldSword, true),
-        new(CmdKup + CmdMala, TBagItem.SmallShield, false),
-        new(CmdSprzedaj + CmdMala, TBagItem.SmallShield, true),
-    ];
-    List<TShopRule>? _armouryRules;
-
-    public List<TShopRule> GeneralStoreRules => _generalStoreRules ??= [
-        new(CmdKup + CmdFajka, TBagItem.Pipe, false),
-        new(CmdKup + CmdKomplet, TBagItem.Tracksuit, false),
-        new(CmdSprzedaj + CmdKomplet, TBagItem.Tracksuit, true),
-        new(CmdSprzedaj + CmdFajka, TBagItem.Pipe, true),
-        new(CmdKup + CmdKaseta, TBagItem.Cassette, false),
-        new(CmdKup + TxtWornGarnitur, TBagItem.SpikedSuit, false),
-        new(CmdSprzedaj + TxtWornGarnitur, TBagItem.SpikedSuit, true),
-        new(CmdSprzedaj + CmdKaseta, TBagItem.Cassette, true),
-    ];
-    List<TShopRule>? _generalStoreRules;
-
-    public List<TShopRule> MagicShopRules => _magicShopRules ??= [
-        new(CmdKup + CmdMalaButelkaMany, TBagItem.ManaBottle, false),
-        new(CmdKup + CmdListek, TBagItem.LuckyLeaf, false),
-        new(CmdSprzedaj + CmdListek, TBagItem.LuckyLeaf, true),
-        new(CmdKup + CmdPigulkaTransportujaca, TBagItem.TeleportPill, false),
-        new(CmdSprzedaj + CmdPigulkaTransportujaca, TBagItem.TeleportPill, true),
-        new(CmdKup + CmdScrollPorownywanie, TBagItem.CompareScroll, false),
-        new(CmdSprzedaj + CmdScrollPorownywanie, TBagItem.CompareScroll, true),
-    ];
-    List<TShopRule>? _magicShopRules;
-
-    public List<TShopRule> BakeryRules => _bakeryRules ??= [
-        new(CmdKup + CmdPaczek, TBagItem.Doughnut, false),
-        new(CmdKup + CmdCiastko, TBagItem.Cookie, false),
-        new(CmdKup + CmdSuchaRacja, TBagItem.DryRation, false),
-        new(CmdKup + CmdBulka, TBagItem.BreadRoll, false),
-        new(CmdKup + CmdChleb, TBagItem.Bread, false),
-        new(CmdKup + CmdWeka, TBagItem.Sausage, false),
-    ];
-    List<TShopRule>? _bakeryRules;
-
-    public void BakeryShop() {
-        if (Verb == CmdLista) {
-            WriteLines([
-                TxtShared_24,
-                TxtBakeryShop_01,
-                TxtBakeryShop_02,
-                TxtBakeryShop_03,
-                TxtBakeryShop_04,
-                TxtBakeryShop_05,
-                TxtBakeryShop_06,
-            ]);
-        }
-
-        StreetFights();
-        RunShopRules(BakeryRules);
-    }
-
-
-    public List<TShopStock> ArmouryStock => _armouryStock ??= [
-        new() { lines = [TxtArmouryShop_01] },
-        new() { lines = [TxtArmouryShop_02] },
-    ];
-    List<TShopStock>? _armouryStock;
-
-    public List<TShopStock> GeneralStoreStock => _generalStoreStock ??= [
-        new() { lines = [TxtGeneralStoreShop_02] },
-        new() { lines = [TxtGeneralStoreShop_03, TxtGeneralStoreShop_04, TxtGeneralStoreShop_05] },
-    ];
-    List<TShopStock>? _generalStoreStock;
-
-    public void ShowStock(List<string> lines) =>
-        lines.ForEach(Out.WriteLine);
-
-    public void ArmouryShop() {
-        if (Verb == CmdLista) {
-            Out.WriteLine(TxtShared_24);
-            for (int si2 = 0; si2 < ArmouryStock.Count; si2++) {
-                ShowStock(ArmouryStock[si2].lines);
-            }
-
-            Out.WriteLine(TxtArmouryShop_03);
-        }
-        StreetFights();
-        RunShopRules(ArmouryRules);
-    }
-
-    public void GeneralStoreShop() {
-        if (Verb == CmdLista) {
-            Out.WriteLine(TxtGeneralStoreShop_01);
-            for (int si2 = 0; si2 < GeneralStoreStock.Count; si2++) {
-                ShowStock(GeneralStoreStock[si2].lines);
-            }
-        }
-        RunShopRules(GeneralStoreRules);
-    }
-
-    public void MagicShop() {
-        if (Verb == CmdLista) {
-            WriteLines([
-                TxtMagicShop_01,
-                TxtMagicShop_02,
-                TxtMagicShop_03,
-                TxtMagicShop_04,
-                TxtMagicShop_05,
-                TxtMagicShop_06,
-                TxtMagicShop_07,
-                TxtMagicShop_08,
-            ]);
-        }
-
-        RunShopRules(MagicShopRules);
-    }
 
 
 
 
 
 
-    public List<TCheckpoint> CheckpointRules => _checkpointRules ??= [
-        new(400, 0, 1, (-MaxInt - 1), 19),
-        new(180, 0, 1, (-MaxInt - 1), 7),
-        new(360, 1, 2, (-MaxInt - 1), 7),
-        new(540, 2, 3, (-MaxInt - 1), 7),
-        new(300, 0, 1, 8, 12),
-        new(500, 1, 2, 8, 12),
-    ];
-    List<TCheckpoint>? _checkpointRules;
 
-    public void ReachCheckpoint(int exp, int stage, int next, int loStr, int hiStr) {
-        if ((Player.Experience >= exp) && (Session.CheckpointStage == stage)
-            && (Player.Stats[TStat.Strength] >= loStr) && (Player.Stats[TStat.Strength] <= hiStr)) {
-            Out.WriteLine(TxtCheckpoints_01);
-            Session.CheckpointStage = next;
-            SpawnMonsters();
-        }
-    }
 
-    public void Checkpoints() {
-        for (int ci = 0; ci < CheckpointRules.Count; ci++) {
-            TCheckpoint c = CheckpointRules[ci];
-            ReachCheckpoint(c.exp, c.stage, c.next, c.loStr, c.hiStr);
-        }
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1469,7 +1034,7 @@ public class Game {
             }
 
             Session.ExitRequested = false;
-            Rooms.DispatchRoom();
+            World.DispatchRoom();
             if (Session.ExitRequested) {
                 return;
             }
@@ -1496,7 +1061,7 @@ public class Game {
         Skills = save.Skills;
         Gear = save.Gear;
         Bag = save.Bag;
-        World = save.World;
+        World.Load(save.World);
         Session = save.Session;
         RecalcBag();
         Out.WriteLine(TxtLoadCharacter_01 + Gear.WornGarment);

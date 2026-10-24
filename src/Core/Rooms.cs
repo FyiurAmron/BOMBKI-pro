@@ -1,4 +1,3 @@
-
 using static TMonster;
 using static TFoe;
 using static TStreetKind;
@@ -9,11 +8,7 @@ public class Rooms {
 
     public Rooms(Game game) {
         this.game = game;
-        foreach (TRoom room in RoomDefs) {
-            room.moves = [.. room.exits.Select(exit => ResolveMove(room, exit))];
-        }
     }
-
 
     public const int RoomStart = 0;
     public const int RoomSalon = 1;
@@ -261,25 +256,6 @@ public class Rooms {
             Out.WriteLine(aliveLine);
         } else if (game.World.Monsters[monster] == 0) {
             Out.WriteLine(deadLine);
-        }
-    }
-
-    public void GrantQuestReward(int quest, int exp) {
-        Out.WriteLine(TxtRoom100_12);
-        Out.WriteLine(TxtQuestReward + exp + TxtSpaceKunsztDashes);
-        game.Player.Experience += exp;
-        game.World.Quest = 0;
-        game.World.QuestKills = 0;
-        game.AcquirePermit();
-        switch (quest) {
-            case 1:
-                break;
-            case 2:
-                game.LoseItem(TBagItem.Diploma);
-                break;
-            case 3:
-                game.LoseItem(TBagItem.Pipe);
-                break;
         }
     }
 
@@ -1188,8 +1164,8 @@ public class Rooms {
                     if (game.Verb == CmdLista) {
                         game.WriteLines([TxtRoom100_05, TxtRoom100_06, TxtRoom100_07, TxtRoom100_08]);
                     }
-                    for (int i = 0; i < game.QuestOffers.Count; i++) {
-                        TQuestOffer q = game.QuestOffers[i];
+                    for (int i = 0; i < game.World.QuestOffers.Count; i++) {
+                        TQuestOffer q = game.World.QuestOffers[i];
                         game.StartQuest(q.cmd, q.line, q.quest, q.kills);
                     }
                     if (game.Verb == CmdZakoncz && game.Rest == CmdQuest) {
@@ -1200,21 +1176,21 @@ public class Rooms {
                         switch (game.World.Quest) {
                             case 1:
                                 if (game.World.QuestKills < 1) {
-                                    GrantQuestReward(1, 100);
+                                    game.World.GrantQuestReward(1, 100);
                                 } else {
                                     Out.WriteLine(TxtRoom100_19);
                                 }
                                 break;
                             case 2:
                                 if ((game.World.QuestKills < 1) && game.World.LiroyKilled && (game.Bag.Items[TBagItem.Diploma] > 0)) {
-                                    GrantQuestReward(2, 250);
+                                    game.World.GrantQuestReward(2, 250);
                                 } else {
                                     Out.WriteLine(TxtRoom100_19);
                                 }
                                 break;
                             case 3:
                                 if ((game.World.QuestKills < 1) && game.World.LiroyKilled && (game.Bag.Items[TBagItem.Pipe] > 0)) {
-                                    GrantQuestReward(3, 425);
+                                    game.World.GrantQuestReward(3, 425);
                                 } else {
                                     Out.WriteLine(TxtRoom100_19);
                                 }
@@ -1321,18 +1297,11 @@ public class Rooms {
     ];
     List<TRoom>? _roomDefs;
 
-    Dictionary<int, TRoom> RoomIndex => _roomIndex ??= BuildRoomIndex();
+    public Dictionary<int, TRoom> RoomIndex => _roomIndex ??= BuildRoomIndex();
     Dictionary<int, TRoom>? _roomIndex;
 
     Dictionary<TCoordinate, TRoom> RoomGrid => _roomGrid ??= BuildRoomGrid();
     Dictionary<TCoordinate, TRoom>? _roomGrid;
-
-    readonly List<(TMazeDir dir, string cmd, string label)> MazeExitLabels = [
-        (TMazeDir.mdPolodnie, CmdPolodnie, TxtExitPolodnie),
-        (TMazeDir.mdPolnoc, CmdPolnoc, TxtExitPolnoc),
-        (TMazeDir.mdWschod, CmdWschod, TxtExitWschod),
-        (TMazeDir.mdZachod, CmdZachod, TxtExitZachod),
-    ];
 
     Dictionary<int, TRoom> BuildRoomIndex() =>
         RoomDefs.ToDictionary(room => room.number);
@@ -1361,7 +1330,7 @@ public class Rooms {
             ? adjacent.number
             : null;
 
-    TMovement ResolveMove(TRoom room, TRoomExit exit) {
+    public TMovement ResolveMove(TRoom room, TRoomExit exit) {
         int destination = RoomInDirection(room.number, exit.cmd)
             ?? throw new InvalidOperationException($"room {room.number} exits {exit.cmd} into an empty coordinate");
         return new() {
@@ -1386,79 +1355,4 @@ public class Rooms {
             state = state,
             blocked = blocked,
         };
-
-    string ExitLabel(string cmd) =>
-        cmd switch {
-            CmdPolnoc => TxtExitPolnoc,
-            CmdPolodnie => TxtExitPolodnie,
-            CmdWschod => TxtExitWschod,
-            CmdZachod => TxtExitZachod,
-            CmdGora => TxtExitGora,
-            CmdDol => TxtExitDol,
-            _ => TxtEmpty,
-        };
-
-    string RoomName(int number) =>
-        RoomIndex.TryGetValue(number, out TRoom? room) ? room.name : TxtEmpty;
-
-    void WriteMazeExits(int number) {
-        TMazeMove? maze = game.MazeMoves.FirstOrDefault(move => move?.room == number);
-        if (maze == null) {
-            return;
-        }
-        Out.WriteLine(TxtShared_03);
-        foreach ((TMazeDir dir, string cmd, string label) in MazeExitLabels) {
-            if (maze.exits.Contains(dir) && RoomInDirection(number, cmd) is int destination) {
-                Out.Write(label);
-                Out.WriteLine(RoomName(destination));
-            }
-        }
-    }
-
-    void WriteExits(TRoom room) {
-        if (room.maze) {
-            WriteMazeExits(room.number);
-            return;
-        }
-        if (!room.moves.Any()) {
-            return;
-        }
-        Out.WriteLine(TxtShared_03);
-        foreach (TMovement move in room.moves) {
-            Out.Write(ExitLabel(move.cmd));
-            Out.WriteLine(RoomName(move.dest));
-        }
-    }
-
-    public void DispatchRoom() {
-        if (RoomIndex.TryGetValue(game.Session.Room, out TRoom? room)) {
-            RunRoom(room);
-        }
-    }
-
-    void RunRoom(TRoom room) {
-        game.WriteLines(room.intro);
-        room.turn?.Invoke(TRoomPhase.Enter);
-        do {
-            game.ReadCommand();
-
-            if (game.Verb == CmdExit) {
-                WriteExits(room);
-            }
-
-            if (game.Session.Room == room.number) {
-                room.turn?.Invoke(TRoomPhase.Command);
-            }
-
-            if (game.MoveWhenOrQuit(room.moves)) {
-                return;
-            }
-
-            for (int pi = 0; pi < room.posters.Count; pi++) {
-                if (game.Matches(room.posters[pi].cmd)) {
-                    game.WriteLines(room.posters[pi].lines);
-                }
-            }
-        } while (game.Session.Room == room.number);
-    }
 }

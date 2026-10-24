@@ -1,4 +1,5 @@
 using static Texts;
+using static World;
 using static Rooms;
 
 public class Character {
@@ -165,7 +166,7 @@ public class Character {
         } while (chosen < 0);
         game.Player.Energy = (50 + Races[chosen].EnergyBonus);
         game.Player.Practice = 10;
-        game.SpawnAt(game.CageInits);
+        game.SpawnAt(game.World.CageInits);
         game.Player.Level = 1;
         game.Player.MaxMana += 100;
         game.Player.Mana = game.Player.MaxMana;
