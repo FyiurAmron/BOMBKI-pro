@@ -250,49 +250,27 @@ public class World : TWorld {
             && (Monsters[TMonster.Thistle] < RoomCavePath) && (Monsters[TMonster.Raspberry] < RoomCavePath)));
     }
 
-    public void DescribePlants() {
-        for (int i = 0; i < PlantSpots.Count; i++) {
-            if (Monsters[PlantSpots[i].where] == game.Session.Room) {
-                Out.WriteLine(PlantSpots[i].text);
-            }
-        }
+    void Describe(List<TSpot> spots) =>
+        spots.Where(spot => Monsters[spot.where] == game.Session.Room).Select(spot => spot.text).ToList().ForEach(Out.WriteLine);
 
+    public void DescribePlants() {
+        Describe(PlantSpots);
         if (game.Session.Room == Monsters[TMonster.Duncan]) {
             Out.WriteLine(TxtDescribePlants_12);
         }
     }
 
-    public void DescribeStreet() {
-        for (int i = 0; i < StreetSpots.Count; i++) {
-            if (Monsters[StreetSpots[i].where] == game.Session.Room) {
-                Out.WriteLine(StreetSpots[i].text);
-            }
-        }
-    }
+    public void DescribeStreet() =>
+        Describe(StreetSpots);
 
-    public void DescribeStage() {
-        for (int i = 0; i < StageSpots.Count; i++) {
-            if (Monsters[StageSpots[i].where] == game.Session.Room) {
-                Out.WriteLine(StageSpots[i].text);
-            }
-        }
-    }
+    public void DescribeStage() =>
+        Describe(StageSpots);
 
-    public void DescribeCrowd() {
-        for (int i = 0; i < CrowdSpots.Count; i++) {
-            if (Monsters[CrowdSpots[i].where] == game.Session.Room) {
-                Out.WriteLine(CrowdSpots[i].text);
-            }
-        }
-    }
+    public void DescribeCrowd() =>
+        Describe(CrowdSpots);
 
-    public void DescribeBeasts() {
-        for (int i = 0; i < BeastSpots.Count; i++) {
-            if (Monsters[BeastSpots[i].where] == game.Session.Room) {
-                Out.WriteLine(BeastSpots[i].text);
-            }
-        }
-    }
+    public void DescribeBeasts() =>
+        Describe(BeastSpots);
 
     public string MazeDirectionCommand(TMazeDir dir) =>
         dir switch {
@@ -373,9 +351,6 @@ public class World : TWorld {
         }
     }
 
-    public void ShowStock(List<string> lines) =>
-        lines.ForEach(Out.WriteLine);
-
     public void BakeryShop() {
         if (game.Verb == CmdLista) {
             game.WriteLines([
@@ -391,9 +366,7 @@ public class World : TWorld {
     public void ArmouryShop() {
         if (game.Verb == CmdLista) {
             Out.WriteLine(TxtShared_24);
-            for (int si2 = 0; si2 < ArmouryStock.Count; si2++) {
-                ShowStock(ArmouryStock[si2].lines);
-            }
+            game.WriteLines(ArmouryStock);
 
             Out.WriteLine(TxtArmouryShop_03);
         }
@@ -404,9 +377,7 @@ public class World : TWorld {
     public void GeneralStoreShop() {
         if (game.Verb == CmdLista) {
             Out.WriteLine(TxtGeneralStoreShop_01);
-            for (int si2 = 0; si2 < GeneralStoreStock.Count; si2++) {
-                ShowStock(GeneralStoreStock[si2].lines);
-            }
+            game.WriteLines(GeneralStoreStock);
         }
         RunShopRules(GeneralStoreRules);
     }
@@ -650,16 +621,10 @@ public class World : TWorld {
     ];
     List<TShopRule>? _bakeryRules;
 
-    public List<TShopStock> ArmouryStock => _armouryStock ??= [
-        new() { lines = [TxtArmouryShop_01] },
-        new() { lines = [TxtArmouryShop_02] },
-    ];
-    List<TShopStock>? _armouryStock;
+    public List<string> ArmouryStock => _armouryStock ??= [TxtArmouryShop_01, TxtArmouryShop_02];
+    List<string>? _armouryStock;
 
-    public List<TShopStock> GeneralStoreStock => _generalStoreStock ??= [
-        new() { lines = [TxtGeneralStoreShop_02] },
-        new() { lines = [TxtGeneralStoreShop_03] },
-    ];
-    List<TShopStock>? _generalStoreStock;
+    public List<string> GeneralStoreStock => _generalStoreStock ??= [TxtGeneralStoreShop_02, TxtGeneralStoreShop_03];
+    List<string>? _generalStoreStock;
 
 }

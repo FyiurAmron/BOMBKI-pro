@@ -288,10 +288,6 @@ public class TItemCarryModifiers {
 
 public record TShopRule(string cmd, TBagItem item, bool selling);
 
-public class TShopStock {
-    public List<string> lines = [];
-}
-
 public enum TConcertBonus { cbNone, cbPipe, cbSuit }
 
 public class TConcertKill {

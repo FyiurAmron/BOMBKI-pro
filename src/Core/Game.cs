@@ -140,11 +140,8 @@ public class Game {
 
     public const int MaxInt = 32767;
 
-    public void WriteLines(List<string> lines) {
-        for (int i = 0; i < lines.Count; i++) {
-            Out.WriteLine(lines[i]);
-        }
-    }
+    public void WriteLines(List<string> lines) =>
+        lines.ForEach(Out.WriteLine);
 
     public void ShowIntro() {
         Crt.ClrScr();
