@@ -429,7 +429,6 @@ public class Game {
         WriteRainbow(TxtShowIntro_12);
         Out.WriteLine();
         Out.WriteLine(TxtShowIntro_13);
-        Out.WriteLine(TxtShowIntro_14);
     }
 
     public List<string> ReadBanner() =>
@@ -731,15 +730,7 @@ public class Game {
     }
 
     public void Death() {
-        WriteLines([
-            TxtDeath_01,
-            TxtDeath_02,
-            TxtDeath_03,
-            TxtDeath_04,
-            TxtDeath_05,
-            TxtDeath_06,
-            TxtDeath_07,
-        ]);
+        Out.WriteLine(TxtDeath_01);
         Player.Energy = Player.MaxEnergy;
         Player.Experience = (Player.Experience - (250 - Roll(50) + (5 * Player.Level))).Clamp(0, MaxInt);
         MoveTo(RoomCityCentre);
@@ -1023,7 +1014,7 @@ public class Game {
                 Out.WriteLine(TxtStart_01 + (Bag.Count - Bag.Limit) + TxtStart_02);
                 Out.WriteLine(TxtStart_03 + ((Bag.Count - Bag.Limit) * 10) + TxtFightTailEnergii);
                 if (!Player.ChangeEnergy(-((Bag.Count - Bag.Limit) * 10))) {
-                    Session.Room = DeadRoom;
+                    Session.Room = RoomDead;
                 }
             }
 
@@ -1032,7 +1023,7 @@ public class Game {
                 Out.WriteLine(TxtStart_05 + Combat.Roll + TxtStart_06);
                 Combat.PoisonRounds -= 1;
                 if (!Player.ChangeEnergy(-Combat.Roll)) {
-                    Session.Room = DeadRoom;
+                    Session.Room = RoomDead;
                 }
             }
 
@@ -1042,7 +1033,7 @@ public class Game {
                 return;
             }
 
-            if (Session.Room == DeadRoom) {
+            if (Session.Room == RoomDead) {
                 Death();
             }
 

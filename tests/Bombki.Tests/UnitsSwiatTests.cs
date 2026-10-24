@@ -508,12 +508,12 @@ public class UnitsSwiatTests {
         game.Player.Stats[TStat.Dexterity] = 10;
         for (int i = 1; i <= 20; i++) {
             PokojAt("PATRZ|POLNOC", 87);
-            if (game.Session.Room == Texts.DeadRoom) {
+            if (game.Session.Room == Rooms.RoomDead) {
                 break;
             }
         }
 
-        Assert.Equal(Texts.DeadRoom, game.Session.Room);
+        Assert.Equal(Rooms.RoomDead, game.Session.Room);
         Assert.Equal(0, game.Player.Energy);
     }
 
@@ -524,12 +524,12 @@ public class UnitsSwiatTests {
         game.Player.Energy = 50;
         for (int i = 1; i <= 100; i++) {
             PokojAt("PATRZ STUDNIA|POLNOC", 80);
-            if (game.Session.Room == Texts.DeadRoom) {
+            if (game.Session.Room == Rooms.RoomDead) {
                 break;
             }
         }
 
-        Assert.Equal(Texts.DeadRoom, game.Session.Room);
+        Assert.Equal(Rooms.RoomDead, game.Session.Room);
         Assert.Equal(0, game.Player.Energy);
     }
 }

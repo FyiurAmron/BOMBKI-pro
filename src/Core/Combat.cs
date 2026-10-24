@@ -1,4 +1,5 @@
 using static Texts;
+using static Rooms;
 
 public class Combat : TCombat {
     readonly Game game;
@@ -497,7 +498,7 @@ public class Combat : TCombat {
         if (game.Player.Energy < 1) {
             Out.WriteLine(TxtFightKilled);
             Crt.Delay(3000);
-            game.Session.Room = DeadRoom;
+            game.Session.Room = RoomDead;
         }
         FightExperience = 0;
     }
@@ -535,7 +536,7 @@ public class Combat : TCombat {
                     case CmdLiroy:
                         if (game.World.Monsters[TMonster.Liroy] == game.Session.Room) {
                             Fight(TFoe.NotEasyEnemy);
-                            if ((game.Session.Room != DeadRoom) && (game.Player.Energy > 0) && !Fled) {
+                            if ((game.Session.Room != RoomDead) && (game.Player.Energy > 0) && !Fled) {
                                 Out.WriteLine(TxtStageFights_01);
                                 game.Player.Money += 30;
                                 game.CassetteGain();
@@ -612,12 +613,7 @@ public class Combat : TCombat {
                 break;
             case CmdSecret:
                 if ((game.Rest == CmdLista) && (game.World.Monsters[TMonster.Duncan] == game.Session.Room)) {
-                    game.WriteLines([
-                        TxtPlantFights_01,
-                        TxtPlantFights_02,
-                        TxtPlantFights_03,
-                        TxtPlantFights_04,
-                    ]);
+                    Out.WriteLine(TxtPlantFights_01);
                 }
 
                 break;
@@ -642,14 +638,7 @@ public class Combat : TCombat {
             case CmdRozmawiaj:
                 if ((game.Rest == CmdDuncan) && (game.World.Monsters[TMonster.Duncan] == game.Session.Room)) {
                     if (game.World.DuncanQuest == 0) {
-                        game.WriteLines([
-                            TxtPlantFights_07,
-                            TxtPlantFights_08,
-                            TxtPlantFights_09,
-                            TxtPlantFights_10,
-                            TxtPlantFights_11,
-                            TxtPlantFights_12,
-                        ]);
+                        Out.WriteLine(TxtPlantFights_07);
                         game.World.DuncanQuest = 75;
                     }
                     if (game.World.DuncanQuest != 0) {
@@ -658,7 +647,6 @@ public class Combat : TCombat {
 
                     if (game.World.DuncanQuest == -125) {
                         Out.WriteLine(TxtPlantFights_14);
-                        Out.WriteLine(TxtPlantFights_15);
                         game.World.DuncanQuest = 0;
                         game.Player.Experience += 125;
                         Out.WriteLine(TxtPlantFights_16);
@@ -692,7 +680,7 @@ public class Combat : TCombat {
             if (extra) {
                 switch (kind) {
                     case TStreetKind.skDog:
-                        game.WriteLines([TxtKillDog_01, TxtKillDog_02, TxtKillDog_03]);
+                        Out.WriteLine(TxtKillDog_01);
                         break;
                     case TStreetKind.skFolk:
                         game.SuitGain();

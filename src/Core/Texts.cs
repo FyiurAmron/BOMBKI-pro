@@ -30,36 +30,36 @@ public static class Texts {
     public const string TxtFightCookingLearn = "Uczysz się ZDOLNOŚCI POTRAWKI!!!";
     public const string TxtFightKilled = "!!!!!!!!!!!Zostałeś zabity!!!!!!!!!!!!";
     public const string TxtShowIntro_12 = "Versja \"pro\" czyli \"in PROgress\" 2026-????";
-    public const string TxtShowIntro_13 = "Dużo poprawek więc się ciesz i graj!";
-    public const string TxtShowIntro_14 = "Działają i duże i małe litery i polskie znaki i bez!";
-    public const string TxtRoom5_01 = "SZOK!!! AAA UPSI O NIE FUJ ACH AJ OCH NEIN EEE UGH!";
-    public const string TxtRoom5_02 = "Stwierdzasz że w tym pokoju jest no, dużo pokoi! O nie!!! Jak się wydostać?!?";
-    public const string TxtRoom5_03 = "Aha (na ścianie jest PLAKAT)";
+    public const string TxtShowIntro_13 = $@"Dużo poprawek więc się ciesz i graj!
+Działają i duże i małe litery i polskie znaki i bez!";
+    public const string TxtRoom5_01 = $@"SZOK!!! AAA UPSI O NIE FUJ ACH AJ OCH NEIN EEE UGH!
+Stwierdzasz że w tym pokoju jest no, dużo pokoi! O nie!!! Jak się wydostać?!?
+Aha (na ścianie jest PLAKAT)";
     public const string TxtShared_01 = "%.";
     public const string TxtShared_02 = ">";
     public const string TxtShared_03 = "Dostępne WYJŚCIA:";
-    public const string TxtRoom5_10 = "Na plakacie bynajmniej pisze:";
-    public const string TxtRoom5_11 = "\"To jest pokój do orientacji w terenie oraz w kierunkach\"";
+    public const string TxtRoom5_10 = $@"Na plakacie bynajmniej pisze:
+""To jest pokój do orientacji w terenie oraz w kierunkach""";
     public const string TxtRoom0_01 = "Tu zaczyna się grę";
     public const string TxtRoom1_01 = "okrągłym salonie wypełnionym witrażami";
     public const string TxtRoom1_02 = "W powietrzu unoszą się zapachy i są to zapachy OK";
     public const string TxtShared_04 = "No a poza tym na ścianie jest PLAKAT";
     public const string TxtRoom1_03 = "Napisz PATRZ PLAKAT aby go odczytać";
     public const string TxtShared_05 = "--- Na plakacie pisze:";
-    public const string TxtRoom1_09 = "Jeśli chcesz trenować udaj się do pokoju treningowego";
-    public const string TxtRoom1_10 = "Jeśli chcesz nauczyć się nowych komend idź do Szkoły Życia";
-    public const string TxtRoom1_11 = "Dopiero potem idź do miasta";
-    public const string TxtRoom1_12 = "A oto tajne komendy:";
-    public const string TxtRoom1_16 = " JA - wszystko o tobie, BIERZ, UŻYJ, zdejmij, ODRZUĆ i inne";
-    public const string TxtRoom1_17 = " ZMIEŃ KOLOR, ZMIEŃ TŁO - no domyśl się";
-    public const string TxtRoom1_18 = " Uwaga z ostatniej chwili: komenda SPIJ!";
+    public const string TxtRoom1_09 = $@"Jeśli chcesz trenować udaj się do pokoju treningowego
+Jeśli chcesz nauczyć się nowych komend idź do Szkoły Życia
+Dopiero potem idź do miasta
+A oto tajne komendy:
+ JA - wszystko o tobie, BIERZ, UŻYJ, zdejmij, ODRZUĆ i inne
+ ZMIEŃ KOLOR, ZMIEŃ TŁO - no domyśl się
+ Uwaga z ostatniej chwili: komenda SPIJ!";
     public const string TxtRoom4_01 = "hallu Szkoły Życia - ogarnia cię cykoria";
     public const string TxtRoom4_02 = "No a poza tym na ścianie jest AFISZ";
-    public const string TxtRoom4_05 = "--- Na afiszu bynajmniej pisze";
-    public const string TxtRoom4_06 = "To jest Szkoła Życia kuj komendy albo zginiesz!!!";
-    public const string TxtRoom4_07 = "Jeśli chodzi o ekwipunek to BIERZ (przedmiot) = bierzesz przedmiot";
-    public const string TxtRoom4_08 = "UŻYJ (przedmiot) = używasz przedmiotu ODRZUC (przedmiot) = odrzucasz";
-    public const string TxtRoom4_09 = "Bronie i tarcze i ubrania można zdjąć komenda ODLOZ (przedmiot)";
+    public const string TxtRoom4_05 = $@"--- Na afiszu bynajmniej pisze
+To jest Szkoła Życia kuj komendy albo zginiesz!!!
+Jeśli chodzi o ekwipunek to BIERZ (przedmiot) = bierzesz przedmiot
+UŻYJ (przedmiot) = używasz przedmiotu ODRZUC (przedmiot) = odrzucasz
+Bronie i tarcze i ubrania można zdjąć komenda ODLOZ (przedmiot)";
     public const string TxtShared_06 = "Ten pokój jest cały obryzgany krwią na ścianach flaki i mózgi ludzkie";
     public const string TxtRoom13_01 = "Silny, napakowany POTWÓR stoi pod ścianą";
     public const string TxtShared_07 = "Parujące wnętrzności potwora są rozwleczone dookoła";
@@ -73,27 +73,27 @@ public static class Texts {
     public const string TxtRoom11_01 = "pokoju prowadzącym do klatek";
     public const string TxtRoom11_03 = "We wszystkich kierunkach są klatki i ujadające się w nich potwory";
     public const string TxtShared_13 = "Na plakacie pisze:";
-    public const string TxtRoom11_10 = "W klatkach są potworki - ZABIJ je! Komenda: ZABIJ [coś] - zabija";
-    public const string TxtRoom11_11 = "Czasami coś wypadnie z potworka i może ci się to przydać";
-    public const string TxtRoom30_01 = "Ulica Długa ciągnie się w nieskończoność, sorki";
-    public const string TxtRoom30_02 = "Na GÓRZE prowadzą kręte schody na arenę przeznaczoną do walki";
+    public const string TxtRoom11_10 = $@"W klatkach są potworki - ZABIJ je! Komenda: ZABIJ [coś] - zabija
+Czasami coś wypadnie z potworka i może ci się to przydać";
+    public const string TxtRoom30_01 = $@"Ulica Długa ciągnie się w nieskończoność, sorki
+Na GÓRZE prowadzą kręte schody na arenę przeznaczoną do walki";
     public const string TxtRoom60_01 = "Jaskini Rozrywek. Jaskinia ciągnie się na PÓŁNOC, na WSCHODZIE";
-    public const string TxtRoom60_02 = "jest słyszalny jakiś dziwny hałas, na zachodzie zaś \"la la la la\" ";
-    public const string TxtRoom60_03 = "Zawsze możesz wrócić się idąc na GÓRĘ ;)";
-    public const string TxtRoom73_01 = "Jesteś na drodze prowadzącej do Jaskini Rozrywek.";
-    public const string TxtRoom73_02 = "Dalej wiedzie strome zejście, a z dołu dziwna muzyka.";
-    public const string TxtRoom75_01 = "Jesteś na ulicy Ciemnej, właściwie na razie nie jest tu jeszcze tak ciemno ";
-    public const string TxtRoom75_02 = "Ta ulica wygląda na remontowaną, na PÓŁNOC widzisz jakiś bar ";
-    public const string TxtRoom75_03 = "Na POŁUDNIE przebiegają cię dreszcze, jest tam naprawdę ciemno";
-    public const string TxtRoom83_01 = "............................. PIERDUT......... PIERDUT...... PIERDUT...";
-    public const string TxtRoom83_02 = "Dopiero teraz się zorientowałeś że na środku stoi wielkie drzewo";
-    public const string TxtRoom83_03 = "Hmmm, ale zaraz... Te krzaki na ZACHÓD wyglądają bardzo podejrzanie...";
-    public const string TxtRoom100_01 = "Znalazłeś się na rozjeździe dróg, drogi pilnuje QUEST-MASTER ";
-    public const string TxtRoom100_02 = "QUEST-MASTER nie puści cię dalej dopóki nie zaczniesz i nie rozwiążesz QUESTa";
-    public const string TxtRoom100_05 = "ŁATWY QUEST      - ZACZNIJ QUEST 1";
-    public const string TxtRoom100_06 = "PRZECIETNY QUEST - ZACZNIJ QUEST 2";
-    public const string TxtRoom100_07 = "TRUDNY QUEST     - ZACZNIJ QUEST 3";
-    public const string TxtRoom100_08 = "Komenda \"ZAKONCZ QUEST\" oznacza że QUEST został wykonany";
+    public const string TxtRoom60_02 = $@"jest słyszalny jakiś dziwny hałas, na zachodzie zaś ""la la la la""
+Zawsze możesz wrócić się idąc na GÓRĘ ;)";
+    public const string TxtRoom73_01 = $@"Jesteś na drodze prowadzącej do Jaskini Rozrywek.
+Dalej wiedzie strome zejście, a z dołu dziwna muzyka.";
+    public const string TxtRoom75_01 = $@"Jesteś na ulicy Ciemnej, właściwie na razie nie jest tu jeszcze tak ciemno
+Ta ulica wygląda na remontowaną, na PÓŁNOC widzisz jakiś bar
+Na POŁUDNIE przebiegają cię dreszcze, jest tam naprawdę ciemno";
+    public const string TxtRoom83_01 = $@"............................. PIERDUT......... PIERDUT...... PIERDUT...
+Dopiero teraz się zorientowałeś że na środku stoi wielkie drzewo
+Hmmm, ale zaraz... Te krzaki na ZACHÓD wyglądają bardzo podejrzanie...";
+    public const string TxtRoom100_01 = $@"Znalazłeś się na rozjeździe dróg, drogi pilnuje QUEST-MASTER
+QUEST-MASTER nie puści cię dalej dopóki nie zaczniesz i nie rozwiążesz QUESTa";
+    public const string TxtRoom100_05 = $@"ŁATWY QUEST      - ZACZNIJ QUEST 1
+PRZECIETNY QUEST - ZACZNIJ QUEST 2
+TRUDNY QUEST     - ZACZNIJ QUEST 3
+Komenda ""ZAKONCZ QUEST"" oznacza że QUEST został wykonany";
     public const string TxtRoom100_09 = "ZABIJ 75 potworów";
     public const string TxtRoom100_10 = "ZABIJ 50 potworów w tym LIROYA i daj mi DYPLOM Szkoły Życia";
     public const string TxtRoom100_11 = "ZABIJ 50 potworów w tym LIROYA i daj mi FAJKĘ";
@@ -234,26 +234,26 @@ public static class Texts {
     public const string TxtTakeDrop_10 = "DYPLOM Szkoły Życia, i przestajesz czuć przepływającą przez ciebie moc";
     public const string TxtUseItems_01 = "Zapalasz fajeczkę i pykasz z zadowoleniem";
     public const string TxtUseItems_02 = "zakrwawione SERCE i odzyskujesz 5% ENERGII";
-    public const string TxtUseItems_03 = "Patrzysz się na DYPLOM:";
-    public const string TxtUseItems_04 = "----------------------------------------";
-    public const string TxtUseItems_05 = "|         DYPLOM SZKOŁY ŻYCIA          |";
+    public const string TxtUseItems_03 = $@"Patrzysz się na DYPLOM:
+----------------------------------------
+|         DYPLOM SZKOŁY ŻYCIA          |";
     public const string TxtUseItems_06 = "|                                      |";
-    public const string TxtUseItems_07 = "|    BRAWO! BEZ WIĘKSZYCH PROBLEMÓW    |";
-    public const string TxtUseItems_08 = "|    PRZEBRNAŁEŚ PRZEZ SZKOŁĘ ŻYCIA    |";
-    public const string TxtUseItems_09 = "|     W NAGRODĘ ZA DUŻĄ AKTYWNOŚĆ      |";
-    public const string TxtUseItems_10 = "| DAJE CI OTO TEN DYPLOM SZKOŁY ŻYCIA  |";
-    public const string TxtUseItems_11 = "|______________________________________|";
+    public const string TxtUseItems_07 = $@"|    BRAWO! BEZ WIĘKSZYCH PROBLEMÓW    |
+|    PRZEBRNAŁEŚ PRZEZ SZKOŁĘ ŻYCIA    |
+|     W NAGRODĘ ZA DUŻĄ AKTYWNOŚĆ      |
+| DAJE CI OTO TEN DYPLOM SZKOŁY ŻYCIA  |
+|______________________________________|";
     public const string TxtUseItems_12 = "pączek i tyjesz 1 kilo (dostajesz 8% ENERGII)";
     public const string TxtUseItems_13 = "ciastko i tyjesz 2 kilo (dostajesz 12% ENERGII)";
     public const string TxtUseItems_14 = "suchą rację i chudniesz 3 kilo (dostajesz 16% ENERGII)";
     public const string TxtUseItems_15 = "bułkę i stwierdzasz że zyskałeś 20%";
     public const string TxtUseItems_16 = "Grrrrrrrrr... Głupia PRZEPUSTKA";
     public const string TxtUseItems_17 = "|========================|";
-    public const string TxtUseItems_18 = "| Niniejszym zaświadczam |";
-    public const string TxtUseItems_19 = "|  Iż osoba posiadająca  |";
-    public const string TxtUseItems_20 = "|      Ten dokument      |";
-    public const string TxtUseItems_21 = "|   Ukończyła pozytywnie |";
-    public const string TxtUseItems_22 = "| Jeden z moich QUESTów  |";
+    public const string TxtUseItems_18 = $@"| Niniejszym zaświadczam |
+|  Iż osoba posiadająca  |
+|      Ten dokument      |
+|   Ukończyła pozytywnie |
+| Jeden z moich QUESTów  |";
     public const string TxtUseItems_23 = "duży ciepły chleb i jesteś pełny (zyskujesz 26%)";
     public const string TxtUseItems_24 = "Ten przedmiot jest typu: śmieć. S.Z -8 MAXE +5 ZRE +1";
     public const string TxtUseItems_25 = "długaśną wekę i tyjąc 15 kilo zyskujesz 34%";
@@ -264,10 +264,10 @@ public static class Texts {
     public const string TxtUseItems_30 = "LISTEK jest typu: śmieć. Max przedmiotów + 3";
     public const string TxtUseItems_31 = "Wkładasz GARNITUR z kolcami na swe (nie)wysportowane ciało";
     public const string TxtUseItems_32 = "Wszystko zaczyna wirować, potem nagły błysk i znajdujesz się w przeszłości";
-    public const string TxtUseItems_33 = "Brak obycia w posługiwaniu się magicznymi przedmiotami sprawił, że";
-    public const string TxtUseItems_34 = "znacznie opadłeś z sił i stałeś się bardzo zmęczony";
-    public const string TxtUseItems_35 = "Masz pewne obycie w magicznych przedmiotach ale mimo wszystko";
-    public const string TxtUseItems_36 = "opadłeś z sił i stałeś się zmęczony";
+    public const string TxtUseItems_33 = $@"Brak obycia w posługiwaniu się magicznymi przedmiotami sprawił, że
+znacznie opadłeś z sił i stałeś się bardzo zmęczony";
+    public const string TxtUseItems_35 = $@"Masz pewne obycie w magicznych przedmiotach ale mimo wszystko
+opadłeś z sił i stałeś się zmęczony";
     public const string TxtUseItems_37 = "Znasz się na tego typu przedmiotach, wyszedłeś z tego bez szwanku";
     public const string TxtUseItems_38 = "Zdejmujesz GARNITUR z kolcami ze swego (nie)wysportowanego ciała";
     public const string TxtDisplayPrefs_01 = "Podaj liczbę koloru";
@@ -279,21 +279,21 @@ public static class Texts {
     public const string TxtArenaMaze_09 = "Możesz iść na:";
     public const string TxtArenaMaze_10 = "Dostępne wyjście:";
     public const string TxtStageFights_01 = "Gratulacje!!! Zabiłeś Liroya i dostajesz za darmo 30 KASY";
-    public const string TxtPlantFights_01 = "Oto co aktualnie MAM do zaoferowania: (pamiętaj, u mnie tylko kupujemy)";
-    public const string TxtPlantFights_02 = "MARCHEWKA Z SADU DUNCANA   : 7000";
-    public const string TxtPlantFights_03 = "PRZEPUSTKA QUEST-MASTERA   :  400";
-    public const string TxtPlantFights_04 = "PLECAK                     : 4800";
+    public const string TxtPlantFights_01 = $@"Oto co aktualnie MAM do zaoferowania: (pamiętaj, u mnie tylko kupujemy)
+MARCHEWKA Z SADU DUNCANA   : 7000
+PRZEPUSTKA QUEST-MASTERA   :  400
+PLECAK                     : 4800";
     public const string TxtPlantFights_05 = "Oto podrobiona PRZEPUSTKA: he, he, nawet QUEST-MASTER się nie pokapuje";
     public const string TxtPlantFights_06 = "He he he, miło się z tobą robi interesy";
-    public const string TxtPlantFights_07 = "Uch a coż to za straszna roślina - przeląkł się DUNCAN widząc ciebie";
-    public const string TxtPlantFights_08 = "Aaam to jakiś wał a nie roślina - mówi po chwili - Jak ci się nudzi to ";
-    public const string TxtPlantFights_09 = "możesz pomoc mi wyrywać chwasty, szczególnie zabójcza dla moich marcheweczek";
-    public const string TxtPlantFights_10 = "jest ta wredna POKRZYWA, szkoda że tak jak inne potwory się odregenerowuje";
-    public const string TxtPlantFights_11 = "Ale jak ja zabijesz, powiedzmy... 4 razy to może dać sobie spokój";
-    public const string TxtPlantFights_12 = "Co ci dam w zamian? Trochę KUNSZTU, a mój stary pracuje na czarnym rynku";
+    public const string TxtPlantFights_07 = $@"Uch a coż to za straszna roślina - przeląkł się DUNCAN widząc ciebie
+Aaam to jakiś wał a nie roślina - mówi po chwili - Jak ci się nudzi to
+możesz pomoc mi wyrywać chwasty, szczególnie zabójcza dla moich marcheweczek
+jest ta wredna POKRZYWA, szkoda że tak jak inne potwory się odregenerowuje
+Ale jak ja zabijesz, powiedzmy... 4 razy to może dać sobie spokój
+Co ci dam w zamian? Trochę KUNSZTU, a mój stary pracuje na czarnym rynku";
     public const string TxtPlantFights_13 = "To co zabijesz te rośliny czy będziemy tu stać jak ostatnie łosie?";
-    public const string TxtPlantFights_14 = "Dzięki dzięki, to była dobra robota, od teraz możesz pisać przy mnie:";
-    public const string TxtPlantFights_15 = "SECRET LISTA, to może akurat będę coś miał na zbyciu, adios";
+    public const string TxtPlantFights_14 = $@"Dzięki dzięki, to była dobra robota, od teraz możesz pisać przy mnie:
+SECRET LISTA, to może akurat będę coś miał na zbyciu, adios";
     public const string TxtPlantFights_16 = "--------- Zdobyłeś 125 KUNSZTU ------------------------";
     public const string TxtPlantFights_17 = "Ha ha ha wolają setki liści TRAWY - to będzie walka";
     public const string TxtPlantFights_18 = "Uff strudzony postanawiasz odpocząć tylu przeciwników dawno nie widziałeś";
@@ -329,13 +329,13 @@ public static class Texts {
     public const string TxtChooseRace_13 = "Źle znaki dałeś, jeszcze raz imię:";
     public const string TxtChooseRace_14 = "Za długie, daj krótsze:";
     public const string TxtChooseRace_15 = "No imię DAWAJ!";
-    public const string TxtChooseRace_03 = "Witaj w BOMBKI (PRO): interaktywnej formie rozrywki!";
-    public const string TxtChooseRace_10 = "Komenda EXIT podaje wszystkie aktualnie dostępne WYJŚCIA";
-    public const string TxtChooseRace_11 = "Poruszasz się za pomocą komend PÓŁNOC POŁUDNIE WSCHÓD ZACHÓD GÓRA DÓŁ";
-    public const string TxtChooseRace_12 = "Aby się patrzeć UŻYJ komendy PATRZ razem z rzeczą którą chcesz obejrzeć";
-    public const string TxtKillDog_01 = "Gdy nagle!!!! Niebiosa się otwierają";
-    public const string TxtKillDog_02 = "a spaniel przemawia do ciebie ludzkim głosem!!!";
-    public const string TxtKillDog_03 = "HAU HAU CHAMIE PO CO MNIE ZABIŁEŚ???";
+    public const string TxtChooseRace_03 = $@"Witaj w BOMBKI (PRO): interaktywnej formie rozrywki!
+Komenda EXIT podaje wszystkie aktualnie dostępne WYJŚCIA
+Poruszasz się za pomocą komend PÓŁNOC POŁUDNIE WSCHÓD ZACHÓD GÓRA DÓŁ
+Aby się patrzeć UŻYJ komendy PATRZ razem z rzeczą którą chcesz obejrzeć";
+    public const string TxtKillDog_01 = $@"Gdy nagle!!!! Niebiosa się otwierają
+a spaniel przemawia do ciebie ludzkim głosem!!!
+HAU HAU CHAMIE PO CO MNIE ZABIŁEŚ???";
     public const string TxtKillSweeper_01 = "Zyskałeś KOMPLET ograbiając zamiatacza";
     public const string TxtKillSickMan_01 = "Z grubego portfela żebraka wyciągasz bonus!!!";
     public const string TxtShared_23 = " MONET!";
@@ -369,23 +369,23 @@ public static class Texts {
     public const string TxtTraining_29 = "% masz ";
     public const string TxtTraining_31 = "Albo masz za dobrze wytrenowane albo za mało PRAKTYK";
     public const string TxtSaveCharacter_01 = "All right!!! Gra zapisana! ;)";
-    public const string TxtDeath_01 = "AJAJAJAJAJ TWOJA GŁOWA NAWALA JAK STARY AJFON!!!";
-    public const string TxtDeath_02 = "Nic na to nie poradzę, trzeba było się starać";
-    public const string TxtDeath_03 = "Nagle refleksja: czy ja w ogóle umiem walczyć? Po co ja żyję?";
-    public const string TxtDeath_04 = "Niestety wraz ze śmiercią tracisz KUNSZT adekwatnie do twojego levelka";
-    public const string TxtDeath_05 = "Pojawisz się w centrum miasta... Powodzenia";
-    public const string TxtDeath_06 = "PS: aha potwory się odregenerowaly";
-    public const string TxtDeath_07 = "PS2: z ostatniej chwili: he he he spróbuj odloadować postać >:)";
+    public const string TxtDeath_01 = $@"AJAJAJAJAJ TWOJA GŁOWA NAWALA JAK STARY AJFON!!!
+Nic na to nie poradzę, trzeba było się starać
+Nagle refleksja: czy ja w ogóle umiem walczyć? Po co ja żyję?
+Niestety wraz ze śmiercią tracisz KUNSZT adekwatnie do twojego levelka
+Pojawisz się w centrum miasta... Powodzenia
+PS: aha potwory się odregenerowaly
+PS2: z ostatniej chwili: he he he spróbuj odloadować postać >:)";
     public const string TxtShared_24 = "NAZWA         CENA";
-    public const string TxtBakeryShop_01 = "PACZEK     :   8";
-    public const string TxtBakeryShop_02 = "CIASTKO    :   12";
-    public const string TxtBakeryShop_03 = "SUCHA RACJA:   15";
-    public const string TxtBakeryShop_04 = "BUŁKA      :   19";
-    public const string TxtBakeryShop_05 = "CHLEB      :   24";
-    public const string TxtBakeryShop_06 = "WEKA       :   29";
+    public const string TxtBakeryShop_01 = $@"PACZEK     :   8
+CIASTKO    :   12
+SUCHA RACJA:   15
+BUŁKA      :   19
+CHLEB      :   24
+WEKA       :   29";
     public const string TxtBuyOldSword_01 = "Zwykły mały !STARY! Mieczyk";
-    public const string TxtSellOldSword_01 = "SPRZEDAWCA mówi ci: wypchaj się z tym mieczem";
-    public const string TxtSellOldSword_02 = "Albo dobra kupię go od ciebie za 30 MONET";
+    public const string TxtSellOldSword_01 = $@"SPRZEDAWCA mówi ci: wypchaj się z tym mieczem
+Albo dobra kupię go od ciebie za 30 MONET";
     public const string TxtBuySmallShield_01 = "!MAŁA! Tarcza";
     public const string TxtSellSmallShield_01 = "Ta tarcza jest bajer frajer, kupię ją od ciebie za 8 MONET";
     public const string TxtBuyTracksuit_01 = "KOMPLET Ubrań firmy \"SYF\"";
@@ -407,36 +407,36 @@ public static class Texts {
     public const string TxtArmouryShop_03 = "DŁUGI MIECZ GLADIATORA  : 3200  2%";
     public const string TxtGeneralStoreShop_01 = "NAZWA                        CENA";
     public const string TxtGeneralStoreShop_02 = "FAJKA                      :  480";
-    public const string TxtGeneralStoreShop_03 = "!KOMPLET! UBRAŃ FIRMY \"SYF\":   35";
-    public const string TxtGeneralStoreShop_04 = "!KASETA! LIROYA            : 1999 4%";
-    public const string TxtGeneralStoreShop_05 = "GARNITUR Z KOLCAMI(3)      : 1000 2,5%";
+    public const string TxtGeneralStoreShop_03 = $@"!KOMPLET! UBRAŃ FIRMY ""SYF"":   35
+!KASETA! LIROYA            : 1999 4%
+GARNITUR Z KOLCAMI(3)      : 1000 2,5%";
     public const string TxtGeneralStoreShop_06 = "Okazja!!! Przy zakupie garnituru kolce gratis!!!";
-    public const string TxtMagicShop_01 = "NAZWA                  CENA";
-    public const string TxtMagicShop_02 = "MAŁA BUTELKA MANY       :   20";
-    public const string TxtMagicShop_03 = "ŚREDNIA BUTELKA MANY    :   40";
-    public const string TxtMagicShop_04 = "SPORA BUTELKA MANY      :   80";
-    public const string TxtMagicShop_05 = "LISTEK SZCZĘŚCIA        :  820 3%";
-    public const string TxtMagicShop_06 = "Pierścionek zaręczynowy : 1800 n/a";
-    public const string TxtMagicShop_07 = "PIGUŁKA TRANSPORTUJĄCA  :  235";
-    public const string TxtMagicShop_08 = "SCROLL PORÓWNYWANIE     :   40";
+    public const string TxtMagicShop_01 = $@"NAZWA                  CENA
+MAŁA BUTELKA MANY       :   20
+ŚREDNIA BUTELKA MANY    :   40
+SPORA BUTELKA MANY      :   80
+LISTEK SZCZĘŚCIA        :  820 3%
+Pierścionek zaręczynowy : 1800 n/a
+PIGUŁKA TRANSPORTUJĄCA  :  235
+SCROLL PORÓWNYWANIE     :   40";
     public const string TxtConcertFights_01 = "FAJKĘ z ust dziadka";
     public const string TxtConcertFights_02 = "Ten przedmiot jest UNIQUE 5%";
     public const string TxtCheckpoints_01 = "###################!!!CHECKPOINT!!!#########################";
     public const string TxtRoom2_01 = "pokoju gdzie Rambo trenuje swych uczniów (teraz go tu nie ma)";
     public const string TxtRoom2_02 = "Wszędzie są przedmioty do różnych rodzajów ćwiczeń";
-    public const string TxtRoom2_04 = "Aby trenować UŻYJ komendy TRENUJ razem z ";
-    public const string TxtRoom2_05 = "SIŁA, ZRĘCZNOŚĆ lub MĄDROŚĆ";
-    public const string TxtRoom3_01 = "Zszedłeś na DÓŁ gdzie trenuje się medytując";
-    public const string TxtRoom3_02 = "Na środku na wielki materac przeznaczony do medytacji";
-    public const string TxtRoom3_03 = "Na ściance jest piękniutki PLAKAT";
+    public const string TxtRoom2_04 = $@"Aby trenować UŻYJ komendy TRENUJ razem z
+SIŁA, ZRĘCZNOŚĆ lub MĄDROŚĆ";
+    public const string TxtRoom3_01 = $@"Zszedłeś na DÓŁ gdzie trenuje się medytując
+Na środku na wielki materac przeznaczony do medytacji
+Na ściance jest piękniutki PLAKAT";
     public const string TxtRoom9_01 = "malutkim pokoju ale widzisz WYJŚCIA w dwie strony ";
     public const string TxtRoom9_02 = "Skądś słyszysz dziwne niepokojące wrzaski";
     public const string TxtRoom12_01 = "POTWÓR (cienias) stoi na jednej nodze pod ścianą";
-    public const string TxtConcertRooms_01 = "Kiedy podszedłeś bliżej zbaraniałeś - to sala koncertowa!!!";
-    public const string TxtConcertRooms_02 = "Wokół tłumy słuchają muzyki, dziwna to muzyka - właściwie same słowa";
-    public const string TxtConcertRooms_03 = "Na ścianie jest PLAKAT";
-    public const string TxtConcertRooms_07 = " Na plakacie pisze:";
-    public const string TxtConcertRooms_08 = "20 X 98' koncert LIROYA - zapraszamy wszystkich";
+    public const string TxtConcertRooms_01 = $@"Kiedy podszedłeś bliżej zbaraniałeś - to sala koncertowa!!!
+Wokół tłumy słuchają muzyki, dziwna to muzyka - właściwie same słowa
+Na ścianie jest PLAKAT";
+    public const string TxtConcertRooms_07 = $@" Na plakacie pisze:
+20 X 98' koncert LIROYA - zapraszamy wszystkich";
     public const string TxtConcertRooms_09 = "Na brzegach tłum jest mniejszy, mimo to uczucie ścisku irytuje cię";
     public const string TxtConcertRooms_11 = "Na brzegach tłum jest rzadszy, boisz się pomyśleć co się dzieje w środku";
     public const string TxtConcertRooms_13 = "środku tłumu a do tego przy balustradkach - co za tłok";
@@ -447,27 +447,27 @@ public static class Texts {
     public const string TxtConcertRooms_19 = "Ty pijasz jabola!!! Nie rezygnując ze swych przyzwyczajeń rozglądasz się";
     public const string TxtConcertRooms_20 = "Widzisz mini-barmana spieszącego się aby podać wszystkim nawarzone PIWO";
     public const string TxtConcertRooms_21 = "Widzisz grubasa który po wypiciu 18 piw wyraznie ma pewne objawy spicia";
-    public const string TxtConcertRooms_23 = "---------------  ROUND ONE --------------------";
-    public const string TxtConcertRooms_24 = "----------------  FIGHT -----------------------";
+    public const string TxtConcertRooms_23 = $@"---------------  ROUND ONE --------------------
+----------------  FIGHT -----------------------";
     public const string TxtConcertRooms_25 = "Z ciała mini-barmana ";
     public const string TxtConcertRooms_26 = "Z ciała grubasa ";
-    public const string TxtConcertRooms_27 = "To jest wejście na scenę na której tańczy LIROY - uważaj";
-    public const string TxtConcertRooms_28 = "Na ścianie wisi TABLICZKA";
+    public const string TxtConcertRooms_27 = $@"To jest wejście na scenę na której tańczy LIROY - uważaj
+Na ścianie wisi TABLICZKA";
     public const string TxtConcertRooms_31 = "Ps: hej dzieci jeśli chcecie zobaczyć tamten świat podłączcie się do 1000 wat";
     public const string TxtConcertRooms_32 = "*** NIE UPOWAŻNIONYM WSTĘP WZBRONIONY ***";
-    public const string TxtConcertRooms_33 = "Jesteś na scenie, właściwie to dopiero początek sceny";
-    public const string TxtConcertRooms_34 = "Właściwie jesteś jeszcze za kulisami bo widzowie cię nie widzą";
+    public const string TxtConcertRooms_33 = $@"Jesteś na scenie, właściwie to dopiero początek sceny
+Właściwie jesteś jeszcze za kulisami bo widzowie cię nie widzą";
     public const string TxtConcertRooms_35 = "DJ pilnuje aby wszystko przebiegało zgodnie z playbackiem";
     public const string TxtConcertRooms_38 = "SUCHĄ RACJĘ z ciała DJa";
     public const string TxtConcertRooms_39 = "KASETĘ LIROYA z ciała DJa";
     public const string TxtConcertRooms_40 = "3% !!!";
-    public const string TxtConcertRooms_41 = "All right - jesteś na scenie!!! Na twój widok ochroniarze coś mamroczą";
-    public const string TxtConcertRooms_42 = "Tłumy cię praktycznie nie zauważają bo ich oczy skierowane są na LIROYA";
-    public const string TxtConcertRooms_43 = "Gdy nagle wśród tłumu zauważasz niezłą lalę, jednak ona kocha LIROYA :(";
-    public const string TxtConcertRooms_46 = "Ludzie się na ciebie gapią, jesteś na środku sceny!!! Któś ci mówi:";
-    public const string TxtConcertRooms_47 = "Hey man it's cool yeah! A ty na to: je je kul kul...";
-    public const string TxtConcertRooms_48 = "Ufff przebiegłeś przez środek sceny więc trema cię już nie dręczy";
-    public const string TxtConcertRooms_49 = "Dalej pisać nie ma o czym więc możesz mi naskoczyć";
+    public const string TxtConcertRooms_41 = $@"All right - jesteś na scenie!!! Na twój widok ochroniarze coś mamroczą
+Tłumy cię praktycznie nie zauważają bo ich oczy skierowane są na LIROYA
+Gdy nagle wśród tłumu zauważasz niezłą lalę, jednak ona kocha LIROYA :(";
+    public const string TxtConcertRooms_46 = $@"Ludzie się na ciebie gapią, jesteś na środku sceny!!! Któś ci mówi:
+Hey man it's cool yeah! A ty na to: je je kul kul...";
+    public const string TxtConcertRooms_48 = $@"Ufff przebiegłeś przez środek sceny więc trema cię już nie dręczy
+Dalej pisać nie ma o czym więc możesz mi naskoczyć";
     public const string TxtLoadCharacter_01 = "Suckemall:";
     public const string TxtCheckLevelUp_01 = "<<<<<<<<<=+=+=+!!!#####Zdobyłeś level#####!!!+=+=+=<<<<<<<<<<<<<";
     public const string TxtCheckLevelUp_02 = "<<<<<<<<<<<<Zyskałeś ";
@@ -506,8 +506,8 @@ public static class Texts {
     public const string TxtCmdOpenPortal_01 = "Otwierasz magiczny portal który przenosi cię do miasta";
     public const string TxtCmdOpenPortal_02 = "Nie udaje ci się otworzyć magicznego portalu";
     public const string TxtCmdOpenPortal_03 = "Jesteś lama i zamiast dostać portal to tracisz manę.";
-    public const string TxtCmdSetKickThresholds_01 = "Zadam ci parę pytań:";
-    public const string TxtCmdSetKickThresholds_02 = "1) Poniżej jakiej ENERGII chcesz zacząć KOPAĆ";
+    public const string TxtCmdSetKickThresholds_01 = $@"Zadam ci parę pytań:
+1) Poniżej jakiej ENERGII chcesz zacząć KOPAĆ";
     public const string TxtCmdSetKickThresholds_03 = "2) Do jakiej ilości MANY chcesz KOPAĆ";
     public const string TxtCmdShowSkills_01 = "KOPANIE       - ";
     public const string TxtShared_26 = "%";
@@ -521,117 +521,117 @@ public static class Texts {
     public const string TxtRoom15_01 = "Powolny acz odporny na ból POTWÓR spokojnie leży pod ścianą";
     public const string TxtRoom16_01 = "Ogromny POTWÓR widząc mięso rzuca się na ciebie";
     public const string TxtRoom17_01 = "pokoju w którym jest PLAKAT (i śmierdzi tu)";
-    public const string TxtRoom17_03 = "Sorry że nie umyłem pokoju ale nie mam na to czasu";
-    public const string TxtRoom17_04 = "Jeśli byłeś aktywny to powinieneś liczyć na nagrodę";
-    public const string TxtRoom17_05 = "Sprawdź czy leży tu coś, potem możesz wrócić do klatek";
-    public const string TxtRoom19_01 = "Jesteś w przejściu do Szkoły Życia.";
-    public const string TxtRoom19_02 = "WITAJ PRZYGODO!!!";
+    public const string TxtRoom17_03 = $@"Sorry że nie umyłem pokoju ale nie mam na to czasu
+Jeśli byłeś aktywny to powinieneś liczyć na nagrodę
+Sprawdź czy leży tu coś, potem możesz wrócić do klatek";
+    public const string TxtRoom19_01 = $@"Jesteś w przejściu do Szkoły Życia.
+WITAJ PRZYGODO!!!";
     public const string TxtRoom20_01 = "centrum miasta: na ścianie jest PLAKAT (duży ruch)";
     public const string TxtRoom20_02 = "To jest miasto: radź sobie sam!";
     public const string TxtRoom76_01 = "barze \"POD DWOMA PEDAŁAMI\". Chcąc rozwikłać tę dziwną nazwę";
-    public const string TxtRoom76_02 = "pytasz się barmana: przepraszam, dlaczego ten bar nazywa się  ";
-    public const string TxtRoom76_03 = "\"POD DWOMA PEDAŁAMI\"? A on na to: \"Właściwie to nie wiem,";
-    public const string TxtRoom76_04 = "ale spytam się żony: Mareeek!!!\"";
+    public const string TxtRoom76_02 = $@"pytasz się barmana: przepraszam, dlaczego ten bar nazywa się
+""POD DWOMA PEDAŁAMI""? A on na to: ""Właściwie to nie wiem,
+ale spytam się żony: Mareeek!!!""";
     public const string TxtRoom76_05 = "MACIEK, tutejszy barman serwuje tutaj drinki (możliwa LISTA)";
     public const string TxtRoom76_06 = "PEDAŁ czeka tu na tego jedynego";
     public const string TxtRoom76_07 = "PARA - Jacek i Jurek - obmyślają miesiąc miodowy";
-    public const string TxtRoom76_09 = "DRINK        CENA";
-    public const string TxtRoom76_10 = "ORAL DRINK     130";
-    public const string TxtRoom76_11 = "ONANISOFT      180";
-    public const string TxtRoom76_12 = "PEDAŁ&SPRZĘGŁO 220";
+    public const string TxtRoom76_09 = $@"DRINK        CENA
+ORAL DRINK     130
+ONANISOFT      180
+PEDAŁ&SPRZĘGŁO 220";
     public const string TxtRoom76_13 = "I co z tego??? Z tym mchem to wyglądasz na 12, nikt ci piwa nie sprzeda.";
-    public const string TxtRoom77_01 = "Znalazłeś się wśród bluszczu, wokół ciebie tajemnicze rośliny ";
-    public const string TxtRoom77_02 = "Musisz bardzo uważać, tu nawet stokrotka może być zabójcza";
-    public const string TxtRoom78_01 = "Wszedłeś w gąszcz roślin i kwiatów";
-    public const string TxtRoom78_02 = "Nie ma co opisywać, wystarczy powiedzieć, że jest tu bydło chwastów";
-    public const string TxtRoom79_01 = "Słyszysz pokrzywę którą pożera bezbronny szczaw... Ohyda";
-    public const string TxtRoom79_02 = "Wokół tak ciemno, że gdyby nie ja już dawno byś zginął";
-    public const string TxtRoom80_01 = "Choć to mało prawdopodobne tutaj jest jeszcze ciemniej";
-    public const string TxtRoom80_02 = "Ponadto w niektórych miejscach znajduje się błoto i inne bzdury";
-    public const string TxtRoom80_03 = "Na środku znajduje się STUDNIA i mało czytelny NAPIS";
+    public const string TxtRoom77_01 = $@"Znalazłeś się wśród bluszczu, wokół ciebie tajemnicze rośliny
+Musisz bardzo uważać, tu nawet stokrotka może być zabójcza";
+    public const string TxtRoom78_01 = $@"Wszedłeś w gąszcz roślin i kwiatów
+Nie ma co opisywać, wystarczy powiedzieć, że jest tu bydło chwastów";
+    public const string TxtRoom79_01 = $@"Słyszysz pokrzywę którą pożera bezbronny szczaw... Ohyda
+Wokół tak ciemno, że gdyby nie ja już dawno byś zginął";
+    public const string TxtRoom80_01 = $@"Choć to mało prawdopodobne tutaj jest jeszcze ciemniej
+Ponadto w niektórych miejscach znajduje się błoto i inne bzdury
+Na środku znajduje się STUDNIA i mało czytelny NAPIS";
     public const string TxtRoom80_04 = "Pisze tutaj: ☻a☻rzy☻ d☻ s☻udn☻ (no mówiłem, że mało czytelny)";
     public const string TxtRoom80_05 = "Zaglądasz do środka studni: coś tam jest, wyciągasz ";
     public const string TxtRoom80_06 = "Jak śmiesz podbierać moje świętości!!! GIŃ CHAMIE GIŃ!";
     public const string TxtRoom80_07 = "ODDAWAJ MOJE PIENIĄDZE!!!";
-    public const string TxtRoom81_01 = "Przedzierasz się przez cały ten syf i najchętniej byś";
-    public const string TxtRoom81_02 = "teraz pożyczył kosiarki od swego kolegi Tomka";
-    public const string TxtRoom82_01 = "W tej komnacie jest znacznie jaśniej a to dlatego że napromieniowane";
-    public const string TxtRoom82_02 = "i zmutowane rośliny idą w twym kierunku";
-    public const string TxtRoom84_01 = "To ciekawe, że wcześniej nie zauważyłeś tych krzaków. Przedzierasz";
-    public const string TxtRoom84_02 = "się przez ich gąszcz. Wygląda to na niezbyt miłą krainę";
-    public const string TxtRoom84_03 = "Dalej na ZACHÓD widzisz jakieś podejrzane budowle, a na POŁUDNIE... brrrr.";
-    public const string TxtRoom84_04 = "Na POŁUDNIE jak gdyby któś się obżerał, ale bardzo głośno i niebezpiecznie";
-    public const string TxtRoom87_01 = "Mlask, mlask, ktoś rzeczywiście się obżera. Czy jesteś 100% pewnym, że";
-    public const string TxtRoom87_02 = "chcesz się zagłębić w te niebadane czeluście piekielne? Może lepiej wróć!";
+    public const string TxtRoom81_01 = $@"Przedzierasz się przez cały ten syf i najchętniej byś
+teraz pożyczył kosiarki od swego kolegi Tomka";
+    public const string TxtRoom82_01 = $@"W tej komnacie jest znacznie jaśniej a to dlatego że napromieniowane
+i zmutowane rośliny idą w twym kierunku";
+    public const string TxtRoom84_01 = $@"To ciekawe, że wcześniej nie zauważyłeś tych krzaków. Przedzierasz
+się przez ich gąszcz. Wygląda to na niezbyt miłą krainę
+Dalej na ZACHÓD widzisz jakieś podejrzane budowle, a na POŁUDNIE... brrrr.
+Na POŁUDNIE jak gdyby któś się obżerał, ale bardzo głośno i niebezpiecznie";
+    public const string TxtRoom87_01 = $@"Mlask, mlask, ktoś rzeczywiście się obżera. Czy jesteś 100% pewnym, że
+chcesz się zagłębić w te niebadane czeluście piekielne? Może lepiej wróć!";
     public const string TxtRoom87_03 = "No pięknie wlazłeś w jakieś toksyczne substancje, aaa, to parzy! Tracisz ";
-    public const string TxtRoom88_01 = "Jeżu, coż to jest! Na tronie siedzi 20 razy większa od ciebie POKRZYWA";
-    public const string TxtRoom88_02 = "Wokół niej uwijają się pracowite mlecze dostarczając jej świeżego";
-    public const string TxtRoom88_03 = "mięsa ludzkiego!!! Uwielbia ona mózgi które wysysa jak pyszny pudding";
-    public const string TxtRoom88_04 = "W pewnym momecie zauważa ciebie: \"Witaj wędrowcze, podobam ci się?\" (TAK, NIE)";
+    public const string TxtRoom88_01 = $@"Jeżu, coż to jest! Na tronie siedzi 20 razy większa od ciebie POKRZYWA
+Wokół niej uwijają się pracowite mlecze dostarczając jej świeżego
+mięsa ludzkiego!!! Uwielbia ona mózgi które wysysa jak pyszny pudding
+W pewnym momecie zauważa ciebie: ""Witaj wędrowcze, podobam ci się?"" (TAK, NIE)";
     public const string TxtRoom88_05 = "TAK lub NIE >";
     public const string TxtRoom88_06 = "No to giń!!!";
     public const string TxtRoom88_07 = "Ufff, to była przygoda, wokół gromadziły się setki mleczów - nie miałbyś szans!";
-    public const string TxtRoom89_01 = "Jesteś w przejściu na Ulicę Ciemną.";
-    public const string TxtRoom89_02 = "Jest tam ciemno.";
-    public const string TxtRoom99_01 = "Jesteś przy bramie prowadzącej na Trakt.";
-    public const string TxtRoom99_02 = "Brama jak szklanka - w połowie otwarta, w połowie zamknięta. Nie, to bez sensu.";
-    public const string TxtRoom85_01 = "Do dobra, wygląda to na jakiś dom, wejdźmy do środka?";
-    public const string TxtRoom85_02 = "God damn, a niech mnie ma bób w swojej opiece, te DRZWI żyją!!!";
+    public const string TxtRoom89_01 = $@"Jesteś w przejściu na Ulicę Ciemną.
+Jest tam ciemno.";
+    public const string TxtRoom99_01 = $@"Jesteś przy bramie prowadzącej na Trakt.
+Brama jak szklanka - w połowie otwarta, w połowie zamknięta. Nie, to bez sensu.";
+    public const string TxtRoom85_01 = $@"Do dobra, wygląda to na jakiś dom, wejdźmy do środka?
+God damn, a niech mnie ma bób w swojej opiece, te DRZWI żyją!!!";
     public const string TxtRoom85_03 = "DRZWI wyciągają swe drewniane ręce w twym kierunku mówiąc: NIE WPUSZCZĘ!!!";
     public const string TxtRoom85_07 = "Spróbuj ominąć te mega-przypakowane DRZWI których by się He-man nie powstydził!";
     public const string TxtRoom86_01 = "Dobra, jesteś w środku. Brak oświetlenia cię nie wzrusza, dookoła różne GARNKI";
     public const string TxtRoom86_02 = "W rogu zauważasz małego wygłodzonego elfiego starucha";
     public const string TxtRoom86_03 = "Widzisz tu tylko płaszcz po staruchu który zniknął w przestrzeń";
     public const string TxtRoom86_04 = "Z jęzorem na wierzchu patrzysz do garnków lecz nic w nich nie ma";
-    public const string TxtRoom86_05 = "STARUCH mówi ci: \"Hej, kto ty jesteś że magiczne DRZWI nie powstrzymały cię???";
-    public const string TxtRoom86_06 = "Musisz być niezłym wojownikiem, spoxolandia. Głodny jestem, przynieś mi 4 WEKI";
-    public const string TxtRoom86_07 = "oraz około 200 KASY, a dam ci takie numery o jakich ci się nie śniło!\"";
-    public const string TxtRoom86_08 = "STARUCH mówi ci: ooo jaka piękna WEKA... MNIAM i druga trzecia i czwarta!";
-    public const string TxtRoom86_09 = "To było dobre żarcie!!! TERAZ WYSKAKUJ Z HAJSU, CO SIĘ TAK GAPISZ???";
-    public const string TxtRoom86_10 = "WYNOCHA STĄD!!! Mrammmarammaramaammaram BUM!!! -T-E-L-E-P-O-R-T-Y-";
-    public const string TxtRoom86_11 = "Wygląda że zrobił cię w wuja... A może jednak nie? Co to? SCROLL powrotu!";
-    public const string TxtRoom86_12 = "I piwsko na osłodzenie życia, no trudno. Przynajmniej czegoś się nauczyłeś";
+    public const string TxtRoom86_05 = $@"STARUCH mówi ci: ""Hej, kto ty jesteś że magiczne DRZWI nie powstrzymały cię???
+Musisz być niezłym wojownikiem, spoxolandia. Głodny jestem, przynieś mi 4 WEKI
+oraz około 200 KASY, a dam ci takie numery o jakich ci się nie śniło!""";
+    public const string TxtRoom86_08 = $@"STARUCH mówi ci: ooo jaka piękna WEKA... MNIAM i druga trzecia i czwarta!
+To było dobre żarcie!!! TERAZ WYSKAKUJ Z HAJSU, CO SIĘ TAK GAPISZ???
+WYNOCHA STĄD!!! Mrammmarammaramaammaram BUM!!! -T-E-L-E-P-O-R-T-Y-
+Wygląda że zrobił cię w wuja... A może jednak nie? Co to? SCROLL powrotu!
+I piwsko na osłodzenie życia, no trudno. Przynajmniej czegoś się nauczyłeś";
     public const string TxtRoom86_13 = "Aaaa, spadaj stąd bo ci kości połamię!!!";
-    public const string TxtRoom86_14 = "Hmmm ubranie jest, ale ciało gdzieś zniknęło! Wtem słyszysz głos!";
-    public const string TxtRoom86_15 = "--- TO BYŁ TWÓJ BŁĄD --- ... dostajesz oćmienia lecz nie wiesz co to było!";
-    public const string TxtRoom21_01 = "Jesteś na ulicy na ulicy Sklepikowej - jak sama nazwa wskazuje";
-    public const string TxtRoom21_02 = "Jest tu parę sklepików które być może ci się przydadzą";
-    public const string TxtRoom22_01 = "Ciągnie się tędy ulica Sklepikowa. Jest tu jeszcze parę";
-    public const string TxtRoom22_02 = "interesujących sklepów. Dalej jest jeszcze kilka nieistotnych ulic.";
-    public const string TxtRoom101_01 = "Idziesz drogą do miasta po drodze mijasz DROGOWSKAZ. Jest tu o wiele ";
-    public const string TxtRoom101_02 = "niebezpieczniej niż w mieście pełno tu zezimierzkow różnego rodzaju";
-    public const string TxtRoom101_03 = "Jeśli nie chcesz mieć kłopotów lepiej dobrze trzymaj się drogi...";
+    public const string TxtRoom86_14 = $@"Hmmm ubranie jest, ale ciało gdzieś zniknęło! Wtem słyszysz głos!
+--- TO BYŁ TWÓJ BŁĄD --- ... dostajesz oćmienia lecz nie wiesz co to było!";
+    public const string TxtRoom21_01 = $@"Jesteś na ulicy na ulicy Sklepikowej - jak sama nazwa wskazuje
+Jest tu parę sklepików które być może ci się przydadzą";
+    public const string TxtRoom22_01 = $@"Ciągnie się tędy ulica Sklepikowa. Jest tu jeszcze parę
+interesujących sklepów. Dalej jest jeszcze kilka nieistotnych ulic.";
+    public const string TxtRoom101_01 = $@"Idziesz drogą do miasta po drodze mijasz DROGOWSKAZ. Jest tu o wiele
+niebezpieczniej niż w mieście pełno tu zezimierzkow różnego rodzaju
+Jeśli nie chcesz mieć kłopotów lepiej dobrze trzymaj się drogi...";
     public const string TxtRoom101_05 = "WSCHÓD - miasto, ZACHÓD - shigghlerathr";
     public const string TxtRoom110_01 = "Ta droga jest jeszcze w produkcji.";
-    public const string TxtRoom102_01 = "Idziesz dalej kamienistą drogą, przydała by ci się jaka bryczka najlepiej ";
-    public const string TxtRoom102_02 = "ale cóż, konie są tylko dla najbogatszych. Dla biedoty nogi.";
-    public const string TxtRoom103_01 = "Co to za głupota? Droga skręca trochę w lewo, trochę w prawo. Ale";
-    public const string TxtRoom103_02 = "przecież równie dobrze mogła by iść środkiem, zyskali by na tym wszyscy";
-    public const string TxtRoom103_03 = "A szczególnie ty, bo bolą cię nogi od tego chodzenia niemożebnie";
-    public const string TxtRoom103_04 = "Ups. Droga się kończy na tej przepastnej rzece. O dalszej podróży nie ma mowy";
+    public const string TxtRoom102_01 = $@"Idziesz dalej kamienistą drogą, przydała by ci się jaka bryczka najlepiej
+ale cóż, konie są tylko dla najbogatszych. Dla biedoty nogi.";
+    public const string TxtRoom103_01 = $@"Co to za głupota? Droga skręca trochę w lewo, trochę w prawo. Ale
+przecież równie dobrze mogła by iść środkiem, zyskali by na tym wszyscy
+A szczególnie ty, bo bolą cię nogi od tego chodzenia niemożebnie
+Ups. Droga się kończy na tej przepastnej rzece. O dalszej podróży nie ma mowy";
     public const string TxtForest_01 = "Wiele wskazuje na to, że jesteś w lesie, ale ciężko to stwierdzić jednoznacznie, bo cały widok zasłaniają ci drzewa.";
     public const string TxtRoom23_01 = "piekarni, sklep przesiąknięty jest przyjemnym zapachem chleba";
-    public const string TxtRoom23_02 = "Piekarz miło się na ciebie patrzy wycierając mąkę z twarzy";
-    public const string TxtRoom23_03 = "Na ścianie jest PLAKAT cały w mące";
-    public const string TxtRoom23_04 = "LISTA - LISTA dostępnych rzeczy, KUP (przedmiot) - kupujesz go";
-    public const string TxtRoom23_05 = "PO ODEJŚCIU OD LADY REKLAMACJI NIE UWZGLĘDNIA SIĘ";
+    public const string TxtRoom23_02 = $@"Piekarz miło się na ciebie patrzy wycierając mąkę z twarzy
+Na ścianie jest PLAKAT cały w mące";
+    public const string TxtRoom23_04 = $@"LISTA - LISTA dostępnych rzeczy, KUP (przedmiot) - kupujesz go
+PO ODEJŚCIU OD LADY REKLAMACJI NIE UWZGLĘDNIA SIĘ";
     public const string TxtRoom24_01 = "zbrojowni - sklep niedawno został otwarty";
-    public const string TxtRoom24_02 = "SPRZEDAWCA (brzydka aura) STARA się wciśnąć ci jakiś towar ";
-    public const string TxtRoom24_03 = "Na ścianie wisi PLAKAT";
+    public const string TxtRoom24_02 = $@"SPRZEDAWCA (brzydka aura) STARA się wciśnąć ci jakiś towar
+Na ścianie wisi PLAKAT";
     public const string TxtRoom24_04 = "LISTA, KUP xxx i SPRZEDAJ xxx to jest dostępne w tym sklepie";
-    public const string TxtRoom25_01 = "Wszedłeś do sklepu wielobranżowego, stwierdzasz obecność SPRZEDAWCY";
-    public const string TxtRoom25_02 = "Na drzwiach została wywieszona WYWIESZKA";
+    public const string TxtRoom25_01 = $@"Wszedłeś do sklepu wielobranżowego, stwierdzasz obecność SPRZEDAWCY
+Na drzwiach została wywieszona WYWIESZKA";
     public const string TxtRoom25_03 = "* SKLEP OTWARTY DO ODWOŁANIA *";
     public const string TxtRoom26_01 = "Wchodzisz do sklepu ale niczego tu nie ma poza SPRZEDAWCĄ i jego towarem";
     public const string TxtRoom26_02 = "* OTWARTE Z POWODU CHOROBY *";
-    public const string TxtRoom31_01 = "Idąc ulicą długą na PÓŁNOC spostrzegasz Jaskinię Rozrywek";
-    public const string TxtRoom31_02 = "A na POŁUDNIE baśniowy gaj...";
-    public const string TxtRoom32_01 = "To arena. Przychodzą tu tacy jak ty po to, aby mordować";
-    public const string TxtRoom32_02 = "!!! O nie!!!!!! To straszne!!! (Heh. dał się nabrać) (napisz PATRZ PLAKAT)";
-    public const string TxtRoom32_03 = "Na plakacie pisze";
-    public const string TxtRoom32_04 = "Nie atakuj ludzi i zwierząt z zoo chyba że masz 3 level (lub wyżej :p)";
-    public const string TxtRoom58_01 = "Jesteś na drodze prowadzącej na arenę.";
-    public const string TxtRoom58_02 = "Kręte schody wiją się przed tobą jak robaki po deszczu.";
+    public const string TxtRoom31_01 = $@"Idąc ulicą długą na PÓŁNOC spostrzegasz Jaskinię Rozrywek
+A na POŁUDNIE baśniowy gaj...";
+    public const string TxtRoom32_01 = $@"To arena. Przychodzą tu tacy jak ty po to, aby mordować
+!!! O nie!!!!!! To straszne!!! (Heh. dał się nabrać) (napisz PATRZ PLAKAT)";
+    public const string TxtRoom32_03 = $@"Na plakacie pisze
+Nie atakuj ludzi i zwierząt z zoo chyba że masz 3 level (lub wyżej :p)";
+    public const string TxtRoom58_01 = $@"Jesteś na drodze prowadzącej na arenę.
+Kręte schody wiją się przed tobą jak robaki po deszczu.";
     public const string TxtStart_01 = "Jesteś obładowany!!! Masz o ";
     public const string TxtStart_02 = " za dużo";
     public const string TxtStart_03 = "Tracisz ";
@@ -945,5 +945,4 @@ public static class Texts {
     public const string TxtItemWeke = "WEKĘ";
     public const string TxtPiwoTail = "napój bogów: PIWO!!!";
     public const string TxtEatVerb = "Zjadasz ";
-    public const int DeadRoom = 10000;
 }

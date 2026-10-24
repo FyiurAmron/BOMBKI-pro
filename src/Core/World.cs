@@ -381,11 +381,6 @@ public class World : TWorld {
             game.WriteLines([
                 TxtShared_24,
                 TxtBakeryShop_01,
-                TxtBakeryShop_02,
-                TxtBakeryShop_03,
-                TxtBakeryShop_04,
-                TxtBakeryShop_05,
-                TxtBakeryShop_06,
             ]);
         }
 
@@ -418,16 +413,7 @@ public class World : TWorld {
 
     public void MagicShop() {
         if (game.Verb == CmdLista) {
-            game.WriteLines([
-                TxtMagicShop_01,
-                TxtMagicShop_02,
-                TxtMagicShop_03,
-                TxtMagicShop_04,
-                TxtMagicShop_05,
-                TxtMagicShop_06,
-                TxtMagicShop_07,
-                TxtMagicShop_08,
-            ]);
+            Out.WriteLine(TxtMagicShop_01);
         }
 
         RunShopRules(MagicShopRules);
@@ -595,7 +581,7 @@ public class World : TWorld {
 
     public List<TShopOffer> ShopOffers => _shopOffers ??= [
         new() { item = TBagItem.OldSword, buyPrice = 70, buyName = TxtBuyOldSword_01,
-            sellPrice = 30, sellLines = [TxtSellOldSword_01, TxtSellOldSword_02], },
+            sellPrice = 30, sellLines = [TxtSellOldSword_01], },
         new() { item = TBagItem.SmallShield, buyPrice = 15, buyName = TxtBuySmallShield_01,
             sellPrice = 8, sellLines = [TxtSellSmallShield_01], },
         new() { item = TBagItem.Pipe, buyPrice = 480, buyName = TxtTakeDrop_05,
@@ -672,7 +658,7 @@ public class World : TWorld {
 
     public List<TShopStock> GeneralStoreStock => _generalStoreStock ??= [
         new() { lines = [TxtGeneralStoreShop_02] },
-        new() { lines = [TxtGeneralStoreShop_03, TxtGeneralStoreShop_04, TxtGeneralStoreShop_05] },
+        new() { lines = [TxtGeneralStoreShop_03] },
     ];
     List<TShopStock>? _generalStoreStock;
 

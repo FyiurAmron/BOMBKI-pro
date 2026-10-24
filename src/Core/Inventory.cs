@@ -1,4 +1,5 @@
 using static Texts;
+using static Rooms;
 
 public class Inventory {
     readonly Game game;
@@ -21,7 +22,7 @@ public class Inventory {
 
     public void GainLoot100(int threshold, string line1, string line2, TBagItem item) {
         game.Combat.Roll = game.Roll(100);
-        if ((game.Combat.Roll < threshold) && (game.Session.Room != DeadRoom)) {
+        if ((game.Combat.Roll < threshold) && (game.Session.Room != RoomDead)) {
             Out.WriteLine(TxtShared_08 + line1);
             if (line2 != "") {
                 Out.WriteLine(TxtBang + TxtUniqeItem + line2);
@@ -242,16 +243,10 @@ public class Inventory {
                         if (game.Bag.Items[TBagItem.Diploma] > 0) {
                             game.WriteLines([
                                 TxtUseItems_03,
-                                TxtUseItems_04,
-                                TxtUseItems_05,
                                 TxtUseItems_06,
                                 TxtUseItems_06,
                                 TxtUseItems_06,
                                 TxtUseItems_07,
-                                TxtUseItems_08,
-                                TxtUseItems_09,
-                                TxtUseItems_10,
-                                TxtUseItems_11,
                             ]);
                         }
 
@@ -282,13 +277,11 @@ public class Inventory {
                             game.SpawnMonsters();
                             if (game.Player.Stats[TStat.Wisdom] < 10) {
                                 Out.WriteLine(TxtUseItems_33);
-                                Out.WriteLine(TxtUseItems_34);
                                 game.Player.MaxEnergy -= 1;
                                 game.Player.Energy = 1;
                                 game.Player.Experience -= 50;
                             } else if (game.Player.Stats[TStat.Wisdom] < 16) {
                                 Out.WriteLine(TxtUseItems_35);
-                                Out.WriteLine(TxtUseItems_36);
                                 if (!game.Player.ChangeEnergy(-40)) {
                                     game.Player.Energy = 1;
                                 }
@@ -311,10 +304,6 @@ public class Inventory {
                     game.WriteLines([
                         TxtUseItems_17,
                         TxtUseItems_18,
-                        TxtUseItems_19,
-                        TxtUseItems_20,
-                        TxtUseItems_21,
-                        TxtUseItems_22,
                         TxtUseItems_17,
                     ]);
                 }

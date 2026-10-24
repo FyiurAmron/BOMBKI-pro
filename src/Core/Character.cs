@@ -172,12 +172,7 @@ public class Character {
         game.Player.Mana = game.Player.MaxMana;
         game.SpawnMonsters();
         game.Bag.AddGroundItem(TBagItem.OldSword, RoomStart);
-        game.WriteLines([
-            TxtChooseRace_03,
-            TxtChooseRace_10,
-            TxtChooseRace_11,
-            TxtChooseRace_12,
-        ]);
+        Out.WriteLine(TxtChooseRace_03);
     }
 
     public bool GatesMet(int reqWisdom, int reqStrength, int reqDexterity) =>
@@ -267,7 +262,6 @@ public class Character {
     public void CmdSetKickThresholds() {
         if (game.Skills.Values[TSkill.Kick] > 0) {
             Out.WriteLine(TxtCmdSetKickThresholds_01);
-            Out.WriteLine(TxtCmdSetKickThresholds_02);
             game.Skills.Values[TSkill.KickMaxEnergy] = Crt.ReadInt();
             Out.WriteLine(TxtCmdSetKickThresholds_03);
             game.Skills.Values[TSkill.KickMinMana] = Crt.ReadInt();

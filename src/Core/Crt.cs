@@ -418,7 +418,7 @@ public static class Out {
         : new FileStream(new SafeFileHandle(1, false), FileAccess.Write);
 
     public static void WriteRaw(string value) {
-        byte[] bytes = Encoding.UTF8.GetBytes(value);
+        byte[] bytes = Encoding.UTF8.GetBytes(value.Replace("\r\n", "\n").Replace("\n", "\r\n"));
         Stdout.Write(bytes, 0, bytes.Length);
         Stdout.Flush();
     }
