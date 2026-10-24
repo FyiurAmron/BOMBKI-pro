@@ -276,7 +276,6 @@ public record SaveData(
     TSession Session);
 
 public class TShopOffer {
-    public TBagItem item;
     public int buyPrice, buyGate = -1, sellPrice;
     public string buyName = "", buyLine = "";
     public List<string> sellLines = [];
@@ -286,7 +285,7 @@ public class TItemCarryModifiers {
     public int armor, dexterity, maxEnergy, maxMana, wisdom;
 }
 
-public record TShopRule(string cmd, TBagItem item, bool selling);
+public record TShopRule(TBagItem item, bool selling);
 
 public enum TConcertBonus { cbNone, cbPipe, cbSuit }
 

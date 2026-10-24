@@ -310,7 +310,7 @@ public class World : TWorld {
     }
 
     public TShopOffer? ShopOffer(TBagItem item) =>
-        ShopOffers.FirstOrDefault(o => o.item == item);
+        ShopOffers.GetValueOrDefault(item);
 
     public bool Buy(TBagItem item) {
         TShopOffer? offer = ShopOffer(item);
@@ -338,9 +338,8 @@ public class World : TWorld {
         return true;
     }
 
-    public void RunShopRules(List<TShopRule> rules) {
-        TShopRule? rule = rules.FirstOrDefault(r => game.Matches(r.cmd));
-        if (rule is null) {
+    public void RunShopRules(Dictionary<string, TShopRule> rules) {
+        if (!rules.TryGetValue(game.Command, out TShopRule? rule)) {
             return;
         }
 
@@ -550,76 +549,112 @@ public class World : TWorld {
     ];
     List<TCheckpoint>? _checkpointRules;
 
-    public List<TShopOffer> ShopOffers => _shopOffers ??= [
-        new() { item = TBagItem.OldSword, buyPrice = 70, buyName = TxtBuyOldSword_01,
-            sellPrice = 30, sellLines = [TxtSellOldSword_01], },
-        new() { item = TBagItem.SmallShield, buyPrice = 15, buyName = TxtBuySmallShield_01,
-            sellPrice = 8, sellLines = [TxtSellSmallShield_01], },
-        new() { item = TBagItem.Pipe, buyPrice = 480, buyName = TxtTakeDrop_05,
-            sellPrice = 120, sellLines = [$"{TxtSellVerb}{TxtSellPipe_01}"], },
-        new() { item = TBagItem.Tracksuit, buyPrice = 35, buyName = TxtBuyTracksuit_01,
-            sellPrice = 15, sellLines = [$"{TxtSellVerb}{TxtSellTracksuit_01}"], },
-        new() { item = TBagItem.Cassette, buyPrice = 1999, buyName = TxtBuyCassette_01,
+    public Dictionary<TBagItem, TShopOffer> ShopOffers => _shopOffers ??= new() {
+        [TBagItem.OldSword] = new() {
+            buyPrice = 70,
+            buyName = TxtBuyOldSword_01,
+            sellPrice = 30,
+            sellLines = [TxtSellOldSword_01],
+        },
+        [TBagItem.SmallShield] = new() {
+            buyPrice = 15,
+            buyName = TxtBuySmallShield_01,
+            sellPrice = 8,
+            sellLines = [TxtSellSmallShield_01],
+        },
+        [TBagItem.Pipe] = new() {
+            buyPrice = 480,
+            buyName = TxtTakeDrop_05,
+            sellPrice = 120,
+            sellLines = [$"{TxtSellVerb}{TxtSellPipe_01}"],
+        },
+        [TBagItem.Tracksuit] = new() {
+            buyPrice = 35,
+            buyName = TxtBuyTracksuit_01,
+            sellPrice = 15,
+            sellLines = [$"{TxtSellVerb}{TxtSellTracksuit_01}"],
+        },
+        [TBagItem.Cassette] = new() {
+            buyPrice = 1999,
+            buyName = TxtBuyCassette_01,
             sellPrice = 1000,
-            sellLines = [$"{TxtSellVerb}{TxtSellCassette_01}"], },
-        new() { item = TBagItem.SpikedSuit, buyPrice = 1000, buyLine = TxtBuySpikedSuit_01,
-            sellPrice = 500, sellLines = [$"{TxtSellVerb}{TxtSellSpikedSuit_01}"], },
-        new() { item = TBagItem.ManaBottle, buyPrice = 20, buyGate = 15, buyLine = TxtBuyManaBottle_01 },
-        new() { item = TBagItem.LuckyLeaf, buyPrice = 830, buyGate = 820, buyLine = TxtBuyLuckyLeaf_01,
-            sellPrice = 400, sellLines = [$"{TxtSellVerb}{TxtSellLuckyLeaf_01}"], },
-        new() { item = TBagItem.TeleportPill, buyPrice = 235, buyName = TxtBuyTeleportPill_01,
-            sellPrice = 170, sellLines = [TxtSellTeleportPill_01], },
-        new() { item = TBagItem.CompareScroll, buyPrice = 40, buyLine = TxtBuyCompareScroll_01,
-            sellPrice = 18, sellLines = [TxtSellCompareScroll_01], },
-        new() { item = TBagItem.Doughnut, buyPrice = 8, buyName = CmdPaczek },
-        new() { item = TBagItem.Cookie, buyPrice = 12, buyName = CmdCiastko },
-        new() { item = TBagItem.DryRation, buyPrice = 15, buyName = TxtItemSuchaRacje },
-        new() { item = TBagItem.BreadRoll, buyPrice = 19, buyName = TxtItemBulke },
-        new() { item = TBagItem.Bread, buyPrice = 24, buyName = CmdChleb },
-        new() { item = TBagItem.Sausage, buyPrice = 29, buyName = TxtItemWeke },
-    ];
-    List<TShopOffer>? _shopOffers;
+            sellLines = [$"{TxtSellVerb}{TxtSellCassette_01}"],
+        },
+        [TBagItem.SpikedSuit] = new() {
+            buyPrice = 1000,
+            buyLine = TxtBuySpikedSuit_01,
+            sellPrice = 500,
+            sellLines = [$"{TxtSellVerb}{TxtSellSpikedSuit_01}"],
+        },
+        [TBagItem.ManaBottle] = new() { buyPrice = 20, buyGate = 15, buyLine = TxtBuyManaBottle_01 },
+        [TBagItem.LuckyLeaf] = new() {
+            buyPrice = 830,
+            buyGate = 820,
+            buyLine = TxtBuyLuckyLeaf_01,
+            sellPrice = 400,
+            sellLines = [$"{TxtSellVerb}{TxtSellLuckyLeaf_01}"],
+        },
+        [TBagItem.TeleportPill] = new() {
+            buyPrice = 235,
+            buyName = TxtBuyTeleportPill_01,
+            sellPrice = 170,
+            sellLines = [TxtSellTeleportPill_01],
+        },
+        [TBagItem.CompareScroll] = new() {
+            buyPrice = 40,
+            buyLine = TxtBuyCompareScroll_01,
+            sellPrice = 18,
+            sellLines = [TxtSellCompareScroll_01],
+        },
+        [TBagItem.Doughnut] = new() { buyPrice = 8, buyName = CmdPaczek },
+        [TBagItem.Cookie] = new() { buyPrice = 12, buyName = CmdCiastko },
+        [TBagItem.DryRation] = new() { buyPrice = 15, buyName = TxtItemSuchaRacje },
+        [TBagItem.BreadRoll] = new() { buyPrice = 19, buyName = TxtItemBulke },
+        [TBagItem.Bread] = new() { buyPrice = 24, buyName = CmdChleb },
+        [TBagItem.Sausage] = new() { buyPrice = 29, buyName = TxtItemWeke },
+    };
+    Dictionary<TBagItem, TShopOffer>? _shopOffers;
 
-    public List<TShopRule> ArmouryRules => _armouryRules ??= [
-        new(CmdKup + CmdStary, TBagItem.OldSword, false),
-        new(CmdSprzedaj + CmdStary, TBagItem.OldSword, true),
-        new(CmdKup + CmdMala, TBagItem.SmallShield, false),
-        new(CmdSprzedaj + CmdMala, TBagItem.SmallShield, true),
-    ];
-    List<TShopRule>? _armouryRules;
+    public Dictionary<string, TShopRule> ArmouryRules => _armouryRules ??= new() {
+        [$"{CmdKup}{CmdStary}"] = new(TBagItem.OldSword, false),
+        [$"{CmdSprzedaj}{CmdStary}"] = new(TBagItem.OldSword, true),
+        [$"{CmdKup}{CmdMala}"] = new(TBagItem.SmallShield, false),
+        [$"{CmdSprzedaj}{CmdMala}"] = new(TBagItem.SmallShield, true),
+    };
+    Dictionary<string, TShopRule>? _armouryRules;
 
-    public List<TShopRule> GeneralStoreRules => _generalStoreRules ??= [
-        new(CmdKup + CmdFajka, TBagItem.Pipe, false),
-        new(CmdKup + CmdKomplet, TBagItem.Tracksuit, false),
-        new(CmdSprzedaj + CmdKomplet, TBagItem.Tracksuit, true),
-        new(CmdSprzedaj + CmdFajka, TBagItem.Pipe, true),
-        new(CmdKup + CmdKaseta, TBagItem.Cassette, false),
-        new(CmdKup + TxtWornGarnitur, TBagItem.SpikedSuit, false),
-        new(CmdSprzedaj + TxtWornGarnitur, TBagItem.SpikedSuit, true),
-        new(CmdSprzedaj + CmdKaseta, TBagItem.Cassette, true),
-    ];
-    List<TShopRule>? _generalStoreRules;
+    public Dictionary<string, TShopRule> GeneralStoreRules => _generalStoreRules ??= new() {
+        [$"{CmdKup}{CmdFajka}"] = new(TBagItem.Pipe, false),
+        [$"{CmdKup}{CmdKomplet}"] = new(TBagItem.Tracksuit, false),
+        [$"{CmdSprzedaj}{CmdKomplet}"] = new(TBagItem.Tracksuit, true),
+        [$"{CmdSprzedaj}{CmdFajka}"] = new(TBagItem.Pipe, true),
+        [$"{CmdKup}{CmdKaseta}"] = new(TBagItem.Cassette, false),
+        [$"{CmdKup}{TxtWornGarnitur}"] = new(TBagItem.SpikedSuit, false),
+        [$"{CmdSprzedaj}{TxtWornGarnitur}"] = new(TBagItem.SpikedSuit, true),
+        [$"{CmdSprzedaj}{CmdKaseta}"] = new(TBagItem.Cassette, true),
+    };
+    Dictionary<string, TShopRule>? _generalStoreRules;
 
-    public List<TShopRule> MagicShopRules => _magicShopRules ??= [
-        new(CmdKup + CmdMalaButelkaMany, TBagItem.ManaBottle, false),
-        new(CmdKup + CmdListek, TBagItem.LuckyLeaf, false),
-        new(CmdSprzedaj + CmdListek, TBagItem.LuckyLeaf, true),
-        new(CmdKup + CmdPigulkaTransportujaca, TBagItem.TeleportPill, false),
-        new(CmdSprzedaj + CmdPigulkaTransportujaca, TBagItem.TeleportPill, true),
-        new(CmdKup + CmdScrollPorownywanie, TBagItem.CompareScroll, false),
-        new(CmdSprzedaj + CmdScrollPorownywanie, TBagItem.CompareScroll, true),
-    ];
-    List<TShopRule>? _magicShopRules;
+    public Dictionary<string, TShopRule> MagicShopRules => _magicShopRules ??= new() {
+        [$"{CmdKup}{CmdMalaButelkaMany}"] = new(TBagItem.ManaBottle, false),
+        [$"{CmdKup}{CmdListek}"] = new(TBagItem.LuckyLeaf, false),
+        [$"{CmdSprzedaj}{CmdListek}"] = new(TBagItem.LuckyLeaf, true),
+        [$"{CmdKup}{CmdPigulkaTransportujaca}"] = new(TBagItem.TeleportPill, false),
+        [$"{CmdSprzedaj}{CmdPigulkaTransportujaca}"] = new(TBagItem.TeleportPill, true),
+        [$"{CmdKup}{CmdScrollPorownywanie}"] = new(TBagItem.CompareScroll, false),
+        [$"{CmdSprzedaj}{CmdScrollPorownywanie}"] = new(TBagItem.CompareScroll, true),
+    };
+    Dictionary<string, TShopRule>? _magicShopRules;
 
-    public List<TShopRule> BakeryRules => _bakeryRules ??= [
-        new(CmdKup + CmdPaczek, TBagItem.Doughnut, false),
-        new(CmdKup + CmdCiastko, TBagItem.Cookie, false),
-        new(CmdKup + CmdSuchaRacja, TBagItem.DryRation, false),
-        new(CmdKup + CmdBulka, TBagItem.BreadRoll, false),
-        new(CmdKup + CmdChleb, TBagItem.Bread, false),
-        new(CmdKup + CmdWeka, TBagItem.Sausage, false),
-    ];
-    List<TShopRule>? _bakeryRules;
+    public Dictionary<string, TShopRule> BakeryRules => _bakeryRules ??= new() {
+        [$"{CmdKup}{CmdPaczek}"] = new(TBagItem.Doughnut, false),
+        [$"{CmdKup}{CmdCiastko}"] = new(TBagItem.Cookie, false),
+        [$"{CmdKup}{CmdSuchaRacja}"] = new(TBagItem.DryRation, false),
+        [$"{CmdKup}{CmdBulka}"] = new(TBagItem.BreadRoll, false),
+        [$"{CmdKup}{CmdChleb}"] = new(TBagItem.Bread, false),
+        [$"{CmdKup}{CmdWeka}"] = new(TBagItem.Sausage, false),
+    };
+    Dictionary<string, TShopRule>? _bakeryRules;
 
     public List<string> ArmouryStock => _armouryStock ??= [TxtArmouryShop_01, TxtArmouryShop_02];
     List<string>? _armouryStock;
