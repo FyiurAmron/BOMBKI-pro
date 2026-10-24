@@ -144,7 +144,7 @@ public static class Crt {
     }
 
     public static bool KeyPressed() =>
-        IsWindows ? WindowsTerminal.KeyPressed() : UnixKeyPressed();
+        IsWindows ? WinKeyPressed() : UnixKeyPressed();
 
     static bool UnixKeyPressed() {
         PollFd fds = new() { fd = 0, events = 1 };
@@ -164,7 +164,7 @@ public static class Crt {
     }
 
     public static char ReadKey() {
-        char key = IsWindows ? WindowsTerminal.ReadKeyRaw() : UnixReadKey();
+        char key = IsWindows ? WinReadKey() : UnixReadKey();
         if (key == '\x3') {
             Interrupt();
         }
@@ -229,10 +229,57 @@ public static class Crt {
     public static bool DebugEnabled() =>
         Environment.GetEnvironmentVariable("BOMBKI_DEBUG") == "2137";
 
+    public const int HistoryLimit = 100;
+    public static readonly List<string> HistoryLines = [];
+    static int _historyIndex;
+    static string _historyDraft = "";
+
+    public static void BeginHistory() {
+        _historyIndex = HistoryLines.Count;
+        _historyDraft = "";
+    }
+
+    public static void RememberHistory(string line) {
+        if (string.IsNullOrWhiteSpace(line)) {
+            return;
+        }
+
+        if (HistoryLines.Count == HistoryLimit) {
+            HistoryLines.RemoveAt(0);
+        }
+
+        HistoryLines.Add(line);
+    }
+
+    public static string HistoryUp(string current) {
+        if (!HistoryLines.Any()) {
+            return current;
+        }
+
+        if (_historyIndex == HistoryLines.Count) {
+            _historyDraft = current;
+        }
+
+        if (_historyIndex > 0) {
+            _historyIndex--;
+        }
+
+        return HistoryLines[_historyIndex];
+    }
+
+    public static string HistoryDown(string current) {
+        if (_historyIndex >= HistoryLines.Count) {
+            return current;
+        }
+
+        _historyIndex++;
+        return _historyIndex < HistoryLines.Count ? HistoryLines[_historyIndex] : _historyDraft;
+    }
+
     public static string ReadLn() {
-        History.Begin();
-        string line = IsWindows ? WindowsTerminal.ReadLine() : UnixReadLn();
-        History.Remember(line);
+        BeginHistory();
+        string line = IsWindows ? WinReadLn() : UnixReadLn();
+        RememberHistory(line);
         return StripDiacritics(line).ToUpperInvariant();
     }
 
@@ -258,9 +305,9 @@ public static class Crt {
             } else if (b == 27) {
                 char sequence = ConsumeEscape();
                 if (sequence == 'A') {
-                    ReplaceLine(bytes, History.Up(CurrentLine(bytes)));
+                    ReplaceLine(bytes, HistoryUp(CurrentLine(bytes)));
                 } else if (sequence == 'B') {
-                    ReplaceLine(bytes, History.Down(CurrentLine(bytes)));
+                    ReplaceLine(bytes, HistoryDown(CurrentLine(bytes)));
                 }
             } else if (b == 8 || b == 127) {
                 if (bytes.Any()) {
@@ -305,6 +352,62 @@ public static class Crt {
             length++;
         }
         return length;
+    }
+
+    static bool WinKeyPressed() =>
+        Console.KeyAvailable;
+
+    static char WinReadKey() =>
+        Console.ReadKey(intercept: true).KeyChar;
+
+    static string WinReadLn() {
+        StringBuilder sb = new();
+        while (true) {
+            ConsoleKeyInfo key = Console.ReadKey(intercept: true);
+            if (key.KeyChar == '\x3') {
+                Interrupt();
+            }
+
+            if (key.Key == ConsoleKey.Enter || key.KeyChar == '\n') {
+                EchoNewLine();
+                return sb.ToString();
+            }
+            if (key.Key == ConsoleKey.UpArrow) {
+                WinReplaceLine(sb, HistoryUp(sb.ToString()));
+                continue;
+            }
+            if (key.Key == ConsoleKey.DownArrow) {
+                WinReplaceLine(sb, HistoryDown(sb.ToString()));
+                continue;
+            }
+            if (key.Key == ConsoleKey.Backspace || key.Key == ConsoleKey.Delete || key.KeyChar == '\b') {
+                if (sb.Length > 0) {
+                    sb.Length--;
+                    EchoErase();
+                }
+                continue;
+            }
+            if (key.KeyChar == '\0') {
+                continue;
+            }
+
+            sb.Append(key.KeyChar);
+            EchoChar(key.KeyChar);
+        }
+    }
+
+    static void WinReplaceLine(StringBuilder sb, string line) {
+        while (sb.Length > 0) {
+            sb.Length--;
+            EchoErase();
+        }
+
+        if (line.Length == 0) {
+            return;
+        }
+
+        sb.Append(line);
+        EchoText(line);
     }
 }
 
