@@ -118,14 +118,11 @@ public class World : TWorld {
         GroundItemLines();
     }
 
-    public void GroundItemLines() {
-        for (int ti = 0; ti < GroundItems.Count; ti++) {
-            TGroundItem t = GroundItems[ti];
-            if (game.Bag.HasGroundItem(t.item, game.Session.OuterRoom)) {
-                Out.WriteLine(t.line);
-            }
-        }
-    }
+    public void GroundItemLines() =>
+        GroundItems
+            .Where(entry => game.Bag.HasGroundItem(entry.Key, game.Session.OuterRoom))
+            .ToList()
+            .ForEach(entry => Out.WriteLine(entry.Value));
 
     public void MoveWhen(List<TMovement> moves) {
         for (int i = 0; i < moves.Count; i++) {
@@ -183,9 +180,9 @@ public class World : TWorld {
         LiroyKilled = Monsters[TMonster.Liroy] == 0;
     }
 
-    public void SpawnAt(List<TSpawnedAt> placements) {
-        foreach (TSpawnedAt placement in placements) {
-            Monsters[placement.monster] = placement.room;
+    public void SpawnAt(Dictionary<TMonster, int> placements) {
+        foreach ((TMonster monster, int room) in placements) {
+            Monsters[monster] = room;
         }
     }
 
@@ -245,8 +242,8 @@ public class World : TWorld {
             && (Monsters[TMonster.Thistle] < RoomCavePath) && (Monsters[TMonster.Raspberry] < RoomCavePath)));
     }
 
-    void Describe(List<TSpot> spots) =>
-        spots.Where(spot => Monsters[spot.where] == game.Session.Room).Select(spot => spot.text).ToList().ForEach(Out.WriteLine);
+    void Describe(Dictionary<TMonster, string> spots) =>
+        spots.Where(spot => Monsters[spot.Key] == game.Session.Room).Select(spot => spot.Value).ToList().ForEach(Out.WriteLine);
 
     public void DescribePlants() {
         Describe(PlantSpots);
@@ -393,116 +390,116 @@ public class World : TWorld {
     };
     Dictionary<string, TQuestOffer>? _questOffers;
 
-    public List<TGroundItem> GroundItems => _groundItems ??= [
-        new(TBagItem.OldSword, TxtStart_07),
-        new(TBagItem.SmallShield, TxtGroundItemLabel + TxtStart_08),
-        new(TBagItem.Heart, TxtGroundItemLabel + TxtStart_09),
-        new(TBagItem.Diploma, TxtGroundItemLabel + TxtStart_10),
-        new(TBagItem.Pipe, TxtStart_11),
-    ];
-    List<TGroundItem>? _groundItems;
+    public Dictionary<TBagItem, string> GroundItems => _groundItems ??= new() {
+        [TBagItem.OldSword] = TxtStart_07,
+        [TBagItem.SmallShield] = TxtGroundItemLabel + TxtStart_08,
+        [TBagItem.Heart] = TxtGroundItemLabel + TxtStart_09,
+        [TBagItem.Diploma] = TxtGroundItemLabel + TxtStart_10,
+        [TBagItem.Pipe] = TxtStart_11,
+    };
+    Dictionary<TBagItem, string>? _groundItems;
 
-    public List<TSpawnedAt> CageInits => _cageInits ??= [
-        new(TMonster.CageWeakling, RoomCageWeakling),
-        new(TMonster.CageStrong, RoomCageStrong),
-        new(TMonster.CageAgile, RoomCageAgile),
-        new(TMonster.CageTough, RoomCageTough),
-        new(TMonster.CageHuge, RoomCageHuge),
-    ];
-    List<TSpawnedAt>? _cageInits;
+    public Dictionary<TMonster, int> CageInits => _cageInits ??= new() {
+        [TMonster.CageWeakling] = RoomCageWeakling,
+        [TMonster.CageStrong] = RoomCageStrong,
+        [TMonster.CageAgile] = RoomCageAgile,
+        [TMonster.CageTough] = RoomCageTough,
+        [TMonster.CageHuge] = RoomCageHuge,
+    };
+    Dictionary<TMonster, int>? _cageInits;
 
-    public List<TSpawnedAt> PubSpawns => _pubSpawns ??= [
-        new(TMonster.Minibarman, RoomPub),
-        new(TMonster.Fatso, RoomPub),
-        new(TMonster.DJ, RoomBackstage),
-        new(TMonster.Pedal, RoomBar),
-        new(TMonster.Couple, RoomBar),
-        new(TMonster.Maciek, RoomBar),
-    ];
-    List<TSpawnedAt>? _pubSpawns;
+    public Dictionary<TMonster, int> PubSpawns => _pubSpawns ??= new() {
+        [TMonster.Minibarman] = RoomPub,
+        [TMonster.Fatso] = RoomPub,
+        [TMonster.DJ] = RoomBackstage,
+        [TMonster.Pedal] = RoomBar,
+        [TMonster.Couple] = RoomBar,
+        [TMonster.Maciek] = RoomBar,
+    };
+    Dictionary<TMonster, int>? _pubSpawns;
 
-    public List<TSpot> PlantSpots => _plantSpots ??= [
-        new(TMonster.Sorrel, TxtDescribePlants_01),
-        new(TMonster.Daisy, TxtDescribePlants_02),
-        new(TMonster.Clover, TxtDescribePlants_03),
-        new(TMonster.SowThistle, TxtDescribePlants_04),
-        new(TMonster.Dandelion, TxtDescribePlants_05),
-        new(TMonster.Rose, TxtDescribePlants_06),
-        new(TMonster.Thistle, TxtDescribePlants_07),
-        new(TMonster.Blackberry, TxtDescribePlants_08),
-        new(TMonster.Gooseberry, TxtDescribePlants_09),
-        new(TMonster.Raspberry, TxtDescribePlants_10),
-        new(TMonster.Grass, TxtDescribePlants_11),
-    ];
-    List<TSpot>? _plantSpots;
+    public Dictionary<TMonster, string> PlantSpots => _plantSpots ??= new() {
+        [TMonster.Sorrel] = TxtDescribePlants_01,
+        [TMonster.Daisy] = TxtDescribePlants_02,
+        [TMonster.Clover] = TxtDescribePlants_03,
+        [TMonster.SowThistle] = TxtDescribePlants_04,
+        [TMonster.Dandelion] = TxtDescribePlants_05,
+        [TMonster.Rose] = TxtDescribePlants_06,
+        [TMonster.Thistle] = TxtDescribePlants_07,
+        [TMonster.Blackberry] = TxtDescribePlants_08,
+        [TMonster.Gooseberry] = TxtDescribePlants_09,
+        [TMonster.Raspberry] = TxtDescribePlants_10,
+        [TMonster.Grass] = TxtDescribePlants_11,
+    };
+    Dictionary<TMonster, string>? _plantSpots;
 
-    public List<TSpot> BeastSpots => _beastSpots ??= [
-        new(TMonster.Woodworm, TxtDescribeBeasts_01),
-        new(TMonster.Fly, TxtDescribeBeasts_02),
-        new(TMonster.Bacterium, TxtDescribeBeasts_03),
-        new(TMonster.Snail, TxtDescribeBeasts_04),
-        new(TMonster.Beetle, TxtDescribeBeasts_05),
-        new(TMonster.Cockroach, TxtDescribeBeasts_06),
-        new(TMonster.Ant, TxtDescribeBeasts_07),
-        new(TMonster.Spider, TxtDescribeBeasts_08),
-        new(TMonster.Boar, TxtDescribeBeasts_09),
-        new(TMonster.Rat, TxtDescribeBeasts_10),
-        new(TMonster.Fox, TxtDescribeBeasts_11),
-        new(TMonster.Partridge, TxtDescribeBeasts_12),
-        new(TMonster.Hare, TxtDescribeBeasts_13),
-        new(TMonster.Mongrel, TxtDescribeBeasts_14),
-        new(TMonster.Eagle, TxtDescribeBeasts_15),
-        new(TMonster.Deer, TxtDescribeBeasts_16),
-        new(TMonster.Elephant, TxtDescribeBeasts_17),
-        new(TMonster.Lion, TxtDescribeBeasts_18),
-        new(TMonster.Giraffe, TxtDescribeBeasts_19),
-        new(TMonster.Camel, TxtDescribeBeasts_20),
-        new(TMonster.Ostrich, TxtDescribeBeasts_21),
-        new(TMonster.Boa, TxtDescribeBeasts_22),
-        new(TMonster.Wolf, TxtDescribeBeasts_23),
-        new(TMonster.Bison, TxtDescribeBeasts_24),
-        new(TMonster.Panther, TxtDescribeBeasts_25),
-        new(TMonster.Gladiator, TxtDescribeBeasts_26),
-        new(TMonster.Warrior, TxtDescribeBeasts_27),
-        new(TMonster.Tamer, TxtDescribeBeasts_28),
-    ];
-    List<TSpot>? _beastSpots;
+    public Dictionary<TMonster, string> BeastSpots => _beastSpots ??= new() {
+        [TMonster.Woodworm] = TxtDescribeBeasts_01,
+        [TMonster.Fly] = TxtDescribeBeasts_02,
+        [TMonster.Bacterium] = TxtDescribeBeasts_03,
+        [TMonster.Snail] = TxtDescribeBeasts_04,
+        [TMonster.Beetle] = TxtDescribeBeasts_05,
+        [TMonster.Cockroach] = TxtDescribeBeasts_06,
+        [TMonster.Ant] = TxtDescribeBeasts_07,
+        [TMonster.Spider] = TxtDescribeBeasts_08,
+        [TMonster.Boar] = TxtDescribeBeasts_09,
+        [TMonster.Rat] = TxtDescribeBeasts_10,
+        [TMonster.Fox] = TxtDescribeBeasts_11,
+        [TMonster.Partridge] = TxtDescribeBeasts_12,
+        [TMonster.Hare] = TxtDescribeBeasts_13,
+        [TMonster.Mongrel] = TxtDescribeBeasts_14,
+        [TMonster.Eagle] = TxtDescribeBeasts_15,
+        [TMonster.Deer] = TxtDescribeBeasts_16,
+        [TMonster.Elephant] = TxtDescribeBeasts_17,
+        [TMonster.Lion] = TxtDescribeBeasts_18,
+        [TMonster.Giraffe] = TxtDescribeBeasts_19,
+        [TMonster.Camel] = TxtDescribeBeasts_20,
+        [TMonster.Ostrich] = TxtDescribeBeasts_21,
+        [TMonster.Boa] = TxtDescribeBeasts_22,
+        [TMonster.Wolf] = TxtDescribeBeasts_23,
+        [TMonster.Bison] = TxtDescribeBeasts_24,
+        [TMonster.Panther] = TxtDescribeBeasts_25,
+        [TMonster.Gladiator] = TxtDescribeBeasts_26,
+        [TMonster.Warrior] = TxtDescribeBeasts_27,
+        [TMonster.Tamer] = TxtDescribeBeasts_28,
+    };
+    Dictionary<TMonster, string>? _beastSpots;
 
-    public List<TSpot> StreetSpots => _streetSpots ??= [
-        new(TMonster.Dachshund, TxtDescribeStreet_01),
-        new(TMonster.Shepherd, TxtDescribeStreet_02),
-        new(TMonster.Pooch, TxtDescribeStreet_03),
-        new(TMonster.Spaniel, TxtDescribeStreet_04),
-        new(TMonster.Poodle, TxtDescribeStreet_05),
-        new(TMonster.Cabman, TxtDescribeStreet_06),
-        new(TMonster.Vendor, TxtDescribeStreet_07),
-        new(TMonster.Sweeper, TxtDescribeStreet_08),
-        new(TMonster.Drunkard, TxtDescribeStreet_09),
-        new(TMonster.SickMan, TxtDescribeStreet_10),
-    ];
-    List<TSpot>? _streetSpots;
+    public Dictionary<TMonster, string> StreetSpots => _streetSpots ??= new() {
+        [TMonster.Dachshund] = TxtDescribeStreet_01,
+        [TMonster.Shepherd] = TxtDescribeStreet_02,
+        [TMonster.Pooch] = TxtDescribeStreet_03,
+        [TMonster.Spaniel] = TxtDescribeStreet_04,
+        [TMonster.Poodle] = TxtDescribeStreet_05,
+        [TMonster.Cabman] = TxtDescribeStreet_06,
+        [TMonster.Vendor] = TxtDescribeStreet_07,
+        [TMonster.Sweeper] = TxtDescribeStreet_08,
+        [TMonster.Drunkard] = TxtDescribeStreet_09,
+        [TMonster.SickMan] = TxtDescribeStreet_10,
+    };
+    Dictionary<TMonster, string>? _streetSpots;
 
-    public List<TSpot> StageSpots => _stageSpots ??= [
-        new(TMonster.Guitarist, TxtDescribeStage_01),
-        new(TMonster.Drummer, TxtDescribeStage_02),
-        new(TMonster.Keyboardist, TxtDescribeStage_03),
-        new(TMonster.Liroy, TxtDescribeStage_04),
-    ];
-    List<TSpot>? _stageSpots;
+    public Dictionary<TMonster, string> StageSpots => _stageSpots ??= new() {
+        [TMonster.Guitarist] = TxtDescribeStage_01,
+        [TMonster.Drummer] = TxtDescribeStage_02,
+        [TMonster.Keyboardist] = TxtDescribeStage_03,
+        [TMonster.Liroy] = TxtDescribeStage_04,
+    };
+    Dictionary<TMonster, string>? _stageSpots;
 
-    public List<TSpot> CrowdSpots => _crowdSpots ??= [
-        new(TMonster.Kid, TxtDescribeCrowd_01),
-        new(TMonster.Lunatic, TxtDescribeCrowd_02),
-        new(TMonster.Listener, TxtDescribeCrowd_03),
-        new(TMonster.Fan, TxtDescribeCrowd_04),
-        new(TMonster.Man, TxtDescribeCrowd_05),
-        new(TMonster.Policeman, TxtDescribeCrowd_06),
-        new(TMonster.Bouncer, TxtDescribeCrowd_07),
-        new(TMonster.Gorilla, TxtDescribeCrowd_08),
-        new(TMonster.OldMan, TxtDescribeCrowd_09),
-        new(TMonster.Reporter, TxtDescribeCrowd_10),
-    ];
-    List<TSpot>? _crowdSpots;
+    public Dictionary<TMonster, string> CrowdSpots => _crowdSpots ??= new() {
+        [TMonster.Kid] = TxtDescribeCrowd_01,
+        [TMonster.Lunatic] = TxtDescribeCrowd_02,
+        [TMonster.Listener] = TxtDescribeCrowd_03,
+        [TMonster.Fan] = TxtDescribeCrowd_04,
+        [TMonster.Man] = TxtDescribeCrowd_05,
+        [TMonster.Policeman] = TxtDescribeCrowd_06,
+        [TMonster.Bouncer] = TxtDescribeCrowd_07,
+        [TMonster.Gorilla] = TxtDescribeCrowd_08,
+        [TMonster.OldMan] = TxtDescribeCrowd_09,
+        [TMonster.Reporter] = TxtDescribeCrowd_10,
+    };
+    Dictionary<TMonster, string>? _crowdSpots;
 
     public Dictionary<int, List<TMazeDir>> MazeMoves => _mazeMoves ??= new() {
         [RoomArena33] = [TMazeDir.mdPolodnie, TMazeDir.mdPolnoc, TMazeDir.mdWschod, TMazeDir.mdZachod],

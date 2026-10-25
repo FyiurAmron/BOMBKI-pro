@@ -285,17 +285,20 @@ public class Game {
         }
     }
 
-    static readonly List<(string from, string to)> Abbreviations = [
-        (CmdPn, CmdPolnoc), (CmdPd, CmdPolodnie), (CmdW, CmdWschod), (CmdZ, CmdZachod),
-        (CmdG, CmdGora), (CmdD, CmdDol), (CmdE, CmdExit), (CmdM, CmdMode),
-    ];
+    static readonly Dictionary<string, string> Abbreviations = new() {
+        [CmdPn] = CmdPolnoc,
+        [CmdPd] = CmdPolodnie,
+        [CmdW] = CmdWschod,
+        [CmdZ] = CmdZachod,
+        [CmdG] = CmdGora,
+        [CmdD] = CmdDol,
+        [CmdE] = CmdExit,
+        [CmdM] = CmdMode,
+    };
 
     public void ExpandAbbrev() {
-        for (int i = 0; i < Abbreviations.Count; i++) {
-            if (Matches(Abbreviations[i].from)) {
-                Command = Abbreviations[i].to;
-                return;
-            }
+        if (Abbreviations.TryGetValue(Command, out string? expanded)) {
+            Command = expanded;
         }
     }
 

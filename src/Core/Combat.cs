@@ -390,13 +390,11 @@ public class Combat : TCombat {
     }
 
     public void StageFights() {
-        BandMembers.ForEach(member => {
-            if (game.Matches($"{CmdZabij}{member.cmd}") && (game.World.Monsters[member.monster] == game.Session.Room)) {
-                Fight(TFoe.VeryEasyEnemy);
-                game.World.Monsters[member.monster] = 0;
-                game.Inventory.CassetteGain();
-            }
-        });
+        if (game.Verb == CmdZabij && BandMembers.TryGetValue(game.Rest, out TMonster member) && (game.World.Monsters[member] == game.Session.Room)) {
+            Fight(TFoe.VeryEasyEnemy);
+            game.World.Monsters[member] = 0;
+            game.Inventory.CassetteGain();
+        }
         if (game.Matches($"{CmdZabij}{CmdLiroy}") && (game.World.Monsters[TMonster.Liroy] == game.Session.Room)) {
             Fight(TFoe.NotEasyEnemy);
             if ((game.Session.Room != RoomDead) && (game.Player.Energy > 0) && !Fled) {
@@ -409,11 +407,11 @@ public class Combat : TCombat {
         }
     }
 
-    static readonly List<(string cmd, TMonster monster)> BandMembers = [
-        (CmdPerkusista, TMonster.Drummer),
-        (CmdGitarzysta, TMonster.Guitarist),
-        (CmdOrganista, TMonster.Keyboardist),
-    ];
+    static readonly Dictionary<string, TMonster> BandMembers = new() {
+        [CmdPerkusista] = TMonster.Drummer,
+        [CmdGitarzysta] = TMonster.Guitarist,
+        [CmdOrganista] = TMonster.Keyboardist,
+    };
 
     void KillPlants() {
         if (!PlantKills.TryGetValue(game.Command, out TPlantKill? kill) || (game.World.Monsters[kill.plant] != game.Session.Room)) {

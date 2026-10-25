@@ -166,10 +166,6 @@ public record IntSlot(Func<int> Get, Action<int> Set) {
 
 public record TGearEffect(TGearItem? Slot = null, string? Garment = null, int Strength = 0, int Luck = 0, int Armor = 0, int Worn = 0);
 
-public record TGroundItem(TBagItem item, string line);
-
-public record TSpawnedAt(TMonster monster, int room);
-
 public record TCheckpoint(int exp, int stage, int next, int loStr, int hiStr);
 
 public class TTrainable {
@@ -181,8 +177,6 @@ public class TTrainable {
 public record TCommandEntry(string cmd, Action run);
 
 public record TDodgeBound(int limit, int player, int enemy);
-
-public record TSpot(TMonster where, string text);
 
 public class TFoeStats {
     public int energyBase, energyRand, dexterityBase, dexterityRand;
