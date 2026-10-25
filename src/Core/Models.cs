@@ -125,7 +125,6 @@ public class TWorld {
 public class TSession {
     public int Room, OuterRoom;
     public int CheckpointStage;
-    public bool SavedFlag;
     public int SleepHours, Overall;
     [JsonIgnore]
     public bool ExitRequested;
@@ -173,8 +172,6 @@ public class TTrainable {
     public int minPractice, cost;
     public string cmdForm = "", nounForm = "";
 }
-
-public record TCommandEntry(string cmd, Action run);
 
 public record TDodgeBound(int limit, int player, int enemy);
 

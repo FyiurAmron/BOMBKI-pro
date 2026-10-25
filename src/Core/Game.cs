@@ -41,7 +41,7 @@ public class Game {
     public string Verb = "";
     public string Rest = "";
 
-    string NormalizeCommand(string value) {
+    public string NormalizeCommand(string value) {
         value = value.Trim();
         if (!value.Contains("  ")) {
             return value;
@@ -275,14 +275,14 @@ public class Game {
     }
 
     public void HandleGround() {
-        for (int gi = 0; gi < GroundCommands.Count; gi++) {
-            if ((GroundCommands[gi].cmd == TxtEmpty) || (Matches(GroundCommands[gi].cmd))) {
-                GroundCommands[gi].run();
-                if (Session.ExitRequested) {
-                    return;
-                }
-            }
+        if (GroundCommands.TryGetValue(Command, out Action? run)) {
+            run();
         }
+        Inventory.TakeDrop();
+        Inventory.UseItems();
+        CmdRefuseFoodDrop();
+        CmdOpenPortal();
+        DisplayPrefs();
     }
 
     static readonly Dictionary<string, string> Abbreviations = new() {
@@ -321,10 +321,7 @@ public class Game {
         $"{Player.Name}.json";
 
     public void SaveCharacter() {
-        Command = CmdJa;
-        Session.SavedFlag = true;
         Out.WriteLine(TxtSaveCharacter_01);
-        Crt.ClrScr();
         SaveData save = new(Player, Skills, Gear, Bag, World, Session);
         File.WriteAllText(SaveFileName(), JsonSerializer.Serialize(save, SaveFormat));
     }
@@ -335,9 +332,9 @@ public class Game {
         Player.Experience = (Player.Experience - (250 - Roll(50) + (5 * Player.Level))).Clamp(0, MaxInt);
         World.MoveTo(RoomCityCentre);
         World.SpawnMonsters();
-        Command = CmdPamietaj;
         Crt.ReadLn();
         SaveCharacter();
+        Crt.ClrScr();
     }
 
     public void CmdScan() =>
@@ -369,13 +366,6 @@ public class Game {
         Inventory.SetInventoryItemCount(TBagItem.OldSword, 1);
         Inventory.SetInventoryItemCount(TBagItem.SmallShield, 1);
         Player.Stats[TStat.Strength]--;
-    }
-
-    public void CmdJustSaved() {
-        if (Session.SavedFlag) {
-            Command = CmdZdolnosci;
-            Session.SavedFlag = false;
-        }
     }
 
     public void CmdDrinkBeer() {
@@ -527,38 +517,32 @@ public class Game {
     public void CmdSpeede() =>
         Inventory.AcquirePermit();
 
-    public List<TCommandEntry> GroundCommands => _groundCommands ??= [
-        new(CmdPamietaj, SaveCharacter),
-        new(CmdScan2, CmdScan),
-        new(CmdCzysc + CmdEkran, CmdClearScreen),
-        new(CmdDawaj + CmdEn, CmdGiveEnergy),
-        new(CmdDawaj + CmdKunszt, CmdGiveKunszt),
-        new(CmdZabieraj + CmdKase, CmdTakeMoney),
-        new(CmdUstaw + CmdSz, CmdResetArmor),
-        new(CmdZdejmuj, CmdStrip),
-        new(CmdJa, Character.ShowCharacter),
-        new(TxtEmpty, Inventory.TakeDrop),
-        new(TxtEmpty, CmdJustSaved),
-        new(CmdUzyj + CmdPiwo, CmdDrinkBeer),
-        new(CmdUzyj + CmdStary, CmdWieldOldSword),
-        new(CmdOdloz + CmdStary, CmdUnwieldOldSword),
-        new(CmdUzyj + CmdMala, CmdWieldSmallShield),
-        new(CmdOdloz + CmdMala, CmdUnwieldSmallShield),
-        new(TxtEmpty, Inventory.UseItems),
-        new(CmdZwiej, CmdSetFleeEnergy),
-        new(CmdSpij, CmdSleep),
-        new(CmdPorownaj, CmdCompare),
-        new(CmdDawaj + CmdKase, CmdGiveMoney),
-        new(TxtEmpty, CmdRefuseFoodDrop),
-        new(TxtEmpty, CmdOpenPortal),
-        new(CmdUzyj + CmdScrollPorownywanie, CmdUseCompareScroll),
-        new(CmdKop, Character.CmdSetKickThresholds),
-        new(CmdJestem + CmdSpeede2, CmdSpeede),
-        new(CmdZdolnosci, Character.CmdShowSkills),
-        new(TxtEmpty, DisplayPrefs),
-        new(CmdWlacz + CmdPostac, LoadCharacter),
-    ];
-    List<TCommandEntry>? _groundCommands;
+    public Dictionary<string, Action> GroundCommands => _groundCommands ??= new() {
+        [CmdPamietaj] = SaveCharacter,
+        [CmdScan2] = CmdScan,
+        [$"{CmdCzysc}{CmdEkran}"] = CmdClearScreen,
+        [$"{CmdDawaj}{CmdEn}"] = CmdGiveEnergy,
+        [$"{CmdDawaj}{CmdKunszt}"] = CmdGiveKunszt,
+        [$"{CmdZabieraj}{CmdKase}"] = CmdTakeMoney,
+        [$"{CmdUstaw}{CmdSz}"] = CmdResetArmor,
+        [CmdZdejmuj] = CmdStrip,
+        [CmdJa] = Character.ShowCharacter,
+        [$"{CmdUzyj}{CmdPiwo}"] = CmdDrinkBeer,
+        [$"{CmdUzyj}{CmdStary}"] = CmdWieldOldSword,
+        [$"{CmdOdloz}{CmdStary}"] = CmdUnwieldOldSword,
+        [$"{CmdUzyj}{CmdMala}"] = CmdWieldSmallShield,
+        [$"{CmdOdloz}{CmdMala}"] = CmdUnwieldSmallShield,
+        [CmdZwiej] = CmdSetFleeEnergy,
+        [CmdSpij] = CmdSleep,
+        [CmdPorownaj] = CmdCompare,
+        [$"{CmdDawaj}{CmdKase}"] = CmdGiveMoney,
+        [$"{CmdUzyj}{CmdScrollPorownywanie}"] = CmdUseCompareScroll,
+        [CmdKop] = Character.CmdSetKickThresholds,
+        [$"{CmdJestem}{CmdSpeede2}"] = CmdSpeede,
+        [CmdZdolnosci] = Character.CmdShowSkills,
+        [$"{CmdWlacz}{CmdPostac}"] = LoadCharacter,
+    };
+    Dictionary<string, Action>? _groundCommands;
 
     public static void Main() =>
         new Game().Start();
@@ -603,7 +587,7 @@ public class Game {
     }
 
     public void LoadCharacter() {
-        Command = Crt.ReadLn();
+        Crt.ReadLn();
         LoadGame();
     }
 

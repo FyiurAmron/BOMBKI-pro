@@ -1073,7 +1073,6 @@ public class UnitsItemsTests {
             game.LoadGame();
         } finally {
             File.Delete(path);
-            game.Session.SavedFlag = false;
         }
         Assert.Equal(2, game.Bag.Items[TBagItem.Beer]);
         Assert.Equal(0, game.Bag.Items[TBagItem.Diploma]);
@@ -1127,7 +1126,6 @@ public class UnitsItemsTests {
             game.LoadGame();
         } finally {
             File.Delete(path);
-            game.Session.SavedFlag = false;
         }
         Assert.Equal(3, game.Bag.Count);
     }

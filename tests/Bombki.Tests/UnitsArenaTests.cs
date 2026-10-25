@@ -121,6 +121,16 @@ public class UnitsArenaTests {
         }
     }
 
+    [Fact]
+    public void PorownanieKeepsTheTypedCommand() {
+        game.Player.Mana = 10;
+        game.Command = "POROWNAJ";
+        using (FeedStdin("WSCHOD")) {
+            game.Combat.CompareFoe();
+        }
+        Assert.Equal("POROWNAJ", game.Command);
+    }
+
     void MiniarenaSetup() {
         game.Session.ExitRequested = false;
         UnitsSeed.Reseed(game);

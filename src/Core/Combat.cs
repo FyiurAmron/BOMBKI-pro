@@ -149,13 +149,13 @@ public class Combat : TCombat {
     public void CompareFoe() {
         Roll = game.Roll(100);
         Out.WriteLine(TxtCompareFoe_01);
-        game.Command = Crt.ReadLn();
+        string foe = game.NormalizeCommand(Crt.ReadLn());
         game.Session.Overall = (game.Player.Level + game.Player.Stats[TStat.Strength] + DexterityBonus(game.Player.Stats[TStat.Dexterity]) + ParryBonus(game.Skills.Values[TSkill.Parry]) + KickBonus(game.Skills.Values[TSkill.Kick]));
-        if (CompareFoeTable.TryGetValue(game.Verb, out var rules)) {
+        if (CompareFoeTable.TryGetValue(foe, out var rules)) {
             CompareFoeRules(rules);
-        } else if (DogCompareCommands.Contains(game.Verb)) {
+        } else if (DogCompareCommands.Contains(foe)) {
             Out.WriteLine(TxtCompareFoe_34);
-        } else if (game.Verb == CmdBakteria) {
+        } else if (foe == CmdBakteria) {
             Out.WriteLine(TxtCompareFoe_36);
             game.Player.ChangeMana(5);
         }

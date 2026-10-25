@@ -134,7 +134,6 @@ public class Character {
         }
         if (File.Exists(game.SaveFileName())) {
             game.LoadGame();
-            game.Session.SavedFlag = false;
             return;
         }
         do {
