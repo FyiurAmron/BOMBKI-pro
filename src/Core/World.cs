@@ -79,12 +79,17 @@ public class World : TWorld {
 
     void RunRoom(TRoom room) {
         game.WriteLines(room.intro);
+        WriteExits(room);
         room.turn?.Invoke(TRoomPhase.Enter);
         do {
             game.ReadCommand();
 
             if (game.Verb == CmdExit) {
                 WriteExits(room);
+            }
+
+            if (game.Rest == TxtEmpty && game.Verb.StartsWith(CmdPatrz.TrimEnd())) {
+                game.WriteLines(room.intro);
             }
 
             if (game.Session.Room == room.number) {

@@ -75,3 +75,6 @@
 - co-ordinate-based world map
   - each room is now (x,y,z)-located, and room exists follow the map structure
   - added some glue rooms and moved/removed some blocking ones
+- room examination
+  - entering a room lists its exits after the description, same as the WYJSCIE command
+  - PATRZ without an argument shows the current room's description
