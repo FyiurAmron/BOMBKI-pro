@@ -180,7 +180,9 @@ public class Inventory {
         if (FoodItems.TryGetValue(game.Command, out TFoodItem? food)) {
             EatFood(food.item, food.verb, food.line, food.gain, food.stat, food.cap);
         }
-        UseCommands.FirstOrDefault(entry => game.Matches(entry.cmd))?.run();
+        if (UseCommands.TryGetValue(game.Command, out Action? use)) {
+            use();
+        }
     }
 
     void UseTeleportPill() {
@@ -220,15 +222,15 @@ public class Inventory {
         }
     }
 
-    List<TCommandEntry> UseCommands => _useCommands ??= [
-        new($"{CmdUzyj}{CmdFajka}", () => SayIfHeld(TBagItem.Pipe, TxtUseItems_01)),
-        new($"{CmdUzyj}{CmdSerce}", () => {
+    Dictionary<string, Action> UseCommands => _useCommands ??= new() {
+        [$"{CmdUzyj}{CmdFajka}"] = () => SayIfHeld(TBagItem.Pipe, TxtUseItems_01),
+        [$"{CmdUzyj}{CmdSerce}"] = () => {
             if (LoseItem(TBagItem.Heart)) {
                 Out.WriteLine($"{TxtEatVerb}{TxtUseItems_02}");
                 game.Player.ChangeEnergy(5);
             }
-        }),
-        new($"{CmdUzyj}{CmdDyplom}", () => {
+        },
+        [$"{CmdUzyj}{CmdDyplom}"] = () => {
             if (game.Bag.Items[TBagItem.Diploma] > 0) {
                 game.WriteLines([
                     TxtUseItems_03,
@@ -238,14 +240,14 @@ public class Inventory {
                     TxtUseItems_07,
                 ]);
             }
-        }),
-        new($"{CmdUzyj}{CmdKaseta}", () => Out.WriteLine(TxtUseItems_24)),
-        new($"{CmdUzyj}{CmdKomplet}", () => SayIf(Equip(TBagItem.Tracksuit), TxtUseItems_28)),
-        new($"{CmdUzyj}{CmdListek}", () => SayIfHeld(TBagItem.LuckyLeaf, TxtUseItems_30)),
-        new($"{CmdUzyj}{TxtWornGarnitur}", () => SayIf(Equip(TBagItem.SpikedSuit), TxtUseItems_31)),
-        new($"{CmdUzyj}{CmdPigulka}", UseTeleportPill),
-        new($"{CmdZniszcz}{CmdPrzepustka}", () => SayIf(LosePermit(), TxtUseItems_16)),
-        new($"{CmdPatrz}{CmdPrzepustka}", () => {
+        },
+        [$"{CmdUzyj}{CmdKaseta}"] = () => Out.WriteLine(TxtUseItems_24),
+        [$"{CmdUzyj}{CmdKomplet}"] = () => SayIf(Equip(TBagItem.Tracksuit), TxtUseItems_28),
+        [$"{CmdUzyj}{CmdListek}"] = () => SayIfHeld(TBagItem.LuckyLeaf, TxtUseItems_30),
+        [$"{CmdUzyj}{TxtWornGarnitur}"] = () => SayIf(Equip(TBagItem.SpikedSuit), TxtUseItems_31),
+        [$"{CmdUzyj}{CmdPigulka}"] = UseTeleportPill,
+        [$"{CmdZniszcz}{CmdPrzepustka}"] = () => SayIf(LosePermit(), TxtUseItems_16),
+        [$"{CmdPatrz}{CmdPrzepustka}"] = () => {
             if (game.Bag.Permit > 0) {
                 game.WriteLines([
                     TxtUseItems_17,
@@ -253,11 +255,11 @@ public class Inventory {
                     TxtUseItems_17,
                 ]);
             }
-        }),
-        new($"{CmdOdloz}{CmdKomplet}", () => SayIf(Unequip(TBagItem.Tracksuit), TxtUseItems_29)),
-        new($"{CmdOdloz}{TxtWornGarnitur}", () => SayIf(Unequip(TBagItem.SpikedSuit), TxtUseItems_38)),
-    ];
-    List<TCommandEntry>? _useCommands;
+        },
+        [$"{CmdOdloz}{CmdKomplet}"] = () => SayIf(Unequip(TBagItem.Tracksuit), TxtUseItems_29),
+        [$"{CmdOdloz}{TxtWornGarnitur}"] = () => SayIf(Unequip(TBagItem.SpikedSuit), TxtUseItems_38),
+    };
+    Dictionary<string, Action>? _useCommands;
 
     public void RecalcBag() {
         game.Bag.Count = Enum.GetValues<TBagItem>().Sum(item => game.Bag.Items[item]) + game.Bag.Permit;
