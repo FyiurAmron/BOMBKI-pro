@@ -216,13 +216,13 @@ public class Rooms {
             game.Combat.EnemyDexterity = stats.dexterity;
             game.Combat.EnemyStrength = stats.strength;
             game.Combat.DoFight();
-            if (!game.Combat.Fled) {
+            if (game.Combat.WonFight) {
                 monster.Set(0);
                 game.Combat.Loot = game.Roll(stats.lootRand);
                 Out.WriteLine($"{TxtShared_08}{game.Combat.Loot}{TxtShared_09}");
                 game.Player.Money += game.Combat.Loot;
                 game.Combat.TryCageLoot(stats.lootThreshold);
-            } else {
+            } else if (game.Combat.Fled) {
                 game.Combat.Fled = false;
             }
         }
@@ -381,15 +381,15 @@ public class Rooms {
                     game.Combat.EnemyDexterity = game.Combat.CageHugeStats.dexterity;
                     game.Combat.EnemyStrength = game.Combat.CageHugeStats.strength;
                     game.Combat.DoFight();
-                    if (game.Combat.Fled) {
-                        game.Combat.Fled = false;
-                        game.World.MoveTo(RoomCageCorridor);
-                    } else {
+                    if (game.Combat.WonFight) {
                         game.World.Monsters[CageHuge] = 0;
                         game.Combat.Loot = game.Roll(game.Combat.CageHugeStats.lootRand);
                         Out.WriteLine($"{TxtShared_08}{game.Combat.Loot}{TxtShared_09}");
                         game.Player.Money += game.Combat.Loot;
                         game.Combat.TryCageLoot(game.Combat.CageHugeStats.lootThreshold);
+                    } else if (game.Combat.Fled) {
+                        game.Combat.Fled = false;
+                        game.World.MoveTo(RoomCageCorridor);
                     }
                 }
             },
@@ -619,7 +619,7 @@ public class Rooms {
                                 if (game.World.Monsters[Minibarman] == RoomPub) {
                                     Out.WriteLine(TxtConcertRooms_23);
                                     game.Combat.Fight(VeryHardEnemy);
-                                    if (game.Player.Energy > 0) {
+                                    if (game.Combat.WonFight) {
                                         game.World.Monsters[Minibarman] = 0;
                                         game.Combat.Roll = game.Roll(100);
                                         if (game.Combat.Roll < BeerDropChance) {
@@ -632,7 +632,7 @@ public class Rooms {
                             case CmdGrubas:
                                 if (game.World.Monsters[Fatso] == RoomPub) {
                                     game.Combat.Fight(VeryHardEnemy);
-                                    if (game.Player.Energy > 0) {
+                                    if (game.Combat.WonFight) {
                                         game.World.Monsters[Fatso] = 0;
                                         if (game.Combat.Roll < BeerDropChance) {
                                             Out.WriteLine($"{TxtConcertRooms_26}{TxtShared_08}{TxtPiwoTail}");
@@ -680,7 +680,7 @@ public class Rooms {
                 if (game.Verb == CmdZabij && game.Rest == CmdDJ) {
                     if (game.World.Monsters[DJ] == RoomBackstage) {
                         game.Combat.Fight(VeryHardEnemy);
-                        if (game.Combat.EnemyEnergy < 0) {
+                        if (game.Combat.WonFight) {
                             game.World.Monsters[DJ] = 0;
                             game.Combat.Roll = game.Roll(100);
                             if (game.Combat.Roll < 25) {
@@ -762,8 +762,10 @@ public class Rooms {
                         switch (game.Rest) {
                             case CmdPedal:
                                 game.Combat.Fight(EasyEnemy);
-                                game.World.Monsters[Pedal] = 0;
-                                game.Inventory.PillGain();
+                                if (game.Combat.WonFight) {
+                                    game.World.Monsters[Pedal] = 0;
+                                    game.Inventory.PillGain();
+                                }
                                 break;
                             case CmdPara:
                                 game.Combat.Fight(VeryHardEnemy);
@@ -941,7 +943,7 @@ public class Rooms {
                 game.Combat.FireballCharges = 5;
                 game.Combat.PoisonCharges = 1;
                 game.Combat.DoFight();
-                if (game.Combat.EnemyEnergy < 0) {
+                if (game.Combat.WonFight) {
                     game.Inventory.LeafGain();
                     game.Inventory.PillGain();
                     game.Inventory.ScrollGain();
@@ -1024,7 +1026,7 @@ public class Rooms {
                                 game.Combat.EnemyDexterity = 26;
                                 game.Combat.EnemyEnergy = 188;
                                 game.Combat.DoFight();
-                                if (game.Combat.EnemyEnergy < 1) {
+                                if (game.Combat.WonFight) {
                                     game.Inventory.AcquirePermit();
                                 }
                             }

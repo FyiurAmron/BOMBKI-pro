@@ -96,7 +96,12 @@
     },
     {
       "label": "the plant wins",
-      "expect": "Zostałeś\\ zabity",
+      "expect": "Zostałeś\\ zabity[\\s\\S]*?Pojawisz\\ się\\ w\\ centrum\\ miasta",
+      "send": ""
+    },
+    {
+      "label": "resurrected in the city centre",
+      "expect": "Jesteś\\ w\\ centrum\\ miasta[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
       "send": "WYJSCIE"
     },
     {

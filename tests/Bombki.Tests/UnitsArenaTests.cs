@@ -453,8 +453,25 @@ public class UnitsArenaTests {
     public void HeartLootIgnoresGroundHeart() {
         LootSetup();
         game.Bag.AddGroundItem(TBagItem.Heart, 7);
-        game.Combat.CompositeFight(1, 0, 1, 0, 1, 0, 0, 1, 20, false, false);
+        game.Combat.CompositeFight(1, 0, 1, 0, 1, 0, 0, 1, 20, false);
         Assert.Equal(1, game.Bag.Items[TBagItem.Heart]);
+    }
+
+    [Fact]
+    public void CompositeFightDoesNotAwardLootAfterDeath() {
+        LootSetup();
+        game.Player.MaxEnergy = 1;
+        game.Player.Energy = 1;
+        game.Player.Stats[TStat.Strength] = 1;
+        game.Player.Stats[TStat.Dexterity] = 10;
+        game.Player.Money = 123;
+
+        game.Combat.CompositeFight(30000, 0, 10, 0, 32767, 0, 500, 1, 20, false);
+
+        Assert.Equal(Rooms.RoomDead, game.Session.Room);
+        Assert.False(game.Combat.WonFight);
+        Assert.Equal(123, game.Player.Money);
+        Assert.Equal(0, game.Bag.Items[TBagItem.Heart]);
     }
 
     [Fact]

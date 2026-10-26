@@ -81,6 +81,9 @@ public class World : TWorld {
         game.WriteLines(room.intro);
         WriteExits(room);
         room.turn?.Invoke(TRoomPhase.Enter);
+        if (game.Session.Room == RoomDead) {
+            return;
+        }
         do {
             game.ReadCommand();
 

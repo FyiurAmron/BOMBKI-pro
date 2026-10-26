@@ -254,6 +254,40 @@ public class UnitsCombatTests {
     }
 
     [Fact]
+    public void FightDogDoesNotAwardLootAfterDeath() {
+        WalkaSetup(1, 0, 1, 5, 10, 10, 0, 0);
+        game.Player.Energy = 1;
+        game.Player.Money = 123;
+        game.Bag.Items[TBagItem.Heart] = 0;
+
+        game.Combat.FightDog();
+
+        Assert.Equal(Rooms.RoomDead, game.Session.Room);
+        Assert.False(game.Combat.WonFight);
+        Assert.Equal(123, game.Player.Money);
+        Assert.Equal(0, game.Bag.Items[TBagItem.Heart]);
+    }
+
+    [Fact]
+    public void SickManFleeDoesNotAwardMoney() {
+        WalkaSetup(50, 1, 1, 2, 1, 1, 0, 0);
+        game.Player.Energy = 20;
+        game.Player.Mana = 20;
+        game.Player.Money = 123;
+        game.Skills.Values[TSkill.Fleeing] = 100;
+        game.Skills.Values[TSkill.FleeEnergy] = 100;
+        game.Session.Room = 71;
+        game.World.Monsters[TMonster.SickMan] = 71;
+        game.Command = "ZABIJ ZEBRAK";
+
+        game.Combat.KillSickMan();
+
+        Assert.True(game.Combat.Fled);
+        Assert.False(game.Combat.WonFight);
+        Assert.Equal(123, game.Player.Money);
+    }
+
+    [Fact]
     public void WalkaFukroll() {
         WalkaSetup(0, 10, 2, 1, 10, 10, 0, 0);
         game.Gear.Values[TGearItem.LuckRoll] = 1;

@@ -130,6 +130,47 @@ public class UnitsSwiatTests {
     }
 
     [Fact]
+    public void Pokoj13DeathDoesNotAwardLoot() {
+        RoomSetup();
+        game.Player.MaxEnergy = 1;
+        game.Player.Energy = 1;
+        game.Player.Stats[TStat.Strength] = 1;
+        game.Player.Stats[TStat.Dexterity] = 3;
+        game.Player.Money = 123;
+        game.World.Monsters[TMonster.CageStrong] = 13;
+
+        PokojAt("ZABIJ POTWOR", 13);
+
+        Assert.Equal(Rooms.RoomDead, game.Session.Room);
+        Assert.Equal(123, game.Player.Money);
+        Assert.False(game.Bag.HasGroundItem(TBagItem.OldSword));
+        Assert.False(game.Bag.HasGroundItem(TBagItem.SmallShield));
+        Assert.False(game.Bag.HasGroundItem(TBagItem.Heart));
+    }
+
+    [Fact]
+    public void Pokoj16DeathDoesNotAwardLoot() {
+        RoomSetup();
+        game.Player.MaxEnergy = 1;
+        game.Player.Energy = 1;
+        game.Player.Stats[TStat.Strength] = 1;
+        game.Player.Stats[TStat.Dexterity] = 11;
+        game.Player.Money = 123;
+        game.World.Monsters[TMonster.CageHuge] = Rooms.RoomCageHuge;
+        game.Session.Room = Rooms.RoomCageHuge;
+
+        using (FeedStdin("ZABIJ POTWOR")) {
+            game.World.DispatchRoom();
+        }
+
+        Assert.Equal(Rooms.RoomDead, game.Session.Room);
+        Assert.Equal(123, game.Player.Money);
+        Assert.False(game.Bag.HasGroundItem(TBagItem.OldSword));
+        Assert.False(game.Bag.HasGroundItem(TBagItem.SmallShield));
+        Assert.False(game.Bag.HasGroundItem(TBagItem.Heart));
+    }
+
+    [Fact]
     public void Pokoj13Flee() {
         RoomSetup();
         game.World.Monsters[TMonster.CageStrong] = 13;

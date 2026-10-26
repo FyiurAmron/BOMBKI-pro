@@ -71,12 +71,7 @@
     },
     {
       "label": "the twenty-times-bigger POKRZYWA cannot be beaten",
-      "expect": "No\\ to\\ giń!!![\\s\\S]*?Zostałeś zabity[\\s\\S]*?[0-9]+%\\.\\-?[0-9]+>",
-      "send": ""
-    },
-    {
-      "label": "death handler runs on the next pass",
-      "expect": "Pojawisz\\ się\\ w\\ centrum\\ miasta",
+      "expect": "No\\ to\\ giń!!![\\s\\S]*?Zostałeś zabity[\\s\\S]*?Pojawisz\\ się\\ w\\ centrum\\ miasta",
       "send": ""
     },
     {

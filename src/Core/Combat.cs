@@ -4,6 +4,8 @@ using static Rooms;
 public class Combat : TCombat {
     readonly Game game;
 
+    public bool WonFight => EnemyEnergy < 1 && game.Player.Energy > 0 && !Fled;
+
     public Combat(Game game) {
         this.game = game;
     }
@@ -68,6 +70,10 @@ public class Combat : TCombat {
         EnemyDexterity = 10;
         EnemyStrength = 5;
         DoFight();
+        if (!WonFight) {
+            return;
+        }
+
         Loot = game.Roll(15);
         Out.WriteLine(TxtShared_08 + Loot + TxtFightDog_01);
         game.Player.Money += Loot;
@@ -75,7 +81,7 @@ public class Combat : TCombat {
     }
 
     public void CompositeFight(int EnemyEnergyBase, int EnemyEnergyRand, int EnemyDexterityBase, int EnemyDexterityRand, int EnemyStrengthBase, int EnemyStrengthRand,
-        int LootBase, int LootRand, int HeartChance, bool RequireEnergy, bool AntDoughnut) {
+        int LootBase, int LootRand, int HeartChance, bool AntDoughnut) {
         EnemyEnergy = EnemyEnergyRand > 0 ? game.Roll(EnemyEnergyRand) + EnemyEnergyBase : EnemyEnergyBase;
 
         EnemyDexterity = EnemyDexterityRand > 0 ? game.Roll(EnemyDexterityRand) + EnemyDexterityBase : EnemyDexterityBase;
@@ -83,7 +89,7 @@ public class Combat : TCombat {
         EnemyStrength = EnemyStrengthRand > 0 ? game.Roll(EnemyStrengthRand) + EnemyStrengthBase : EnemyStrengthBase;
 
         DoFight();
-        if (!Fled && (!RequireEnergy || (game.Player.Energy > 0))) {
+        if (WonFight) {
             Loot = (game.Roll(LootRand) + LootBase);
             Out.WriteLine(TxtShared_08 + Loot + TxtCompositeFight_01);
             game.Player.Money += Loot;
@@ -109,7 +115,7 @@ public class Combat : TCombat {
         TFoeStats f = Foes[foe];
         CompositeFight(f.energyBase, f.energyRand, f.dexterityBase, f.dexterityRand,
             f.strengthBase, f.strengthRand, f.lootBase, f.lootRand, f.heartChance,
-            f.requireEnergy, f.antDoughnut);
+            f.antDoughnut);
     }
 
     public void KillBeasts() {
@@ -339,7 +345,7 @@ public class Combat : TCombat {
                 }
             }
         } while (!((game.Player.Energy < 1) || (EnemyEnergy < 1) || Fled));
-        if ((EnemyEnergy < 1) && (game.Player.Energy > 0)) {
+        if (WonFight) {
             FightExperience = Math.Max(0, FightExperience
                 - Bonus(game.Player.MaxEnergy, (75, 2), (115, 3))
                 - Bonus(game.Skills.Values[TSkill.Parry], (50, 2), (75, 2), (95, 1))
@@ -381,6 +387,10 @@ public class Combat : TCombat {
         }
 
         Fight(TFoe.HardEnemy);
+        if (!WonFight) {
+            return;
+        }
+
         game.World.Monsters[kill.monster] = 0;
         if (kill.pills) {
             game.Inventory.PillGain();
@@ -392,12 +402,16 @@ public class Combat : TCombat {
     public void StageFights() {
         if (game.Verb == CmdZabij && BandMembers.TryGetValue(game.Rest, out TMonster member) && (game.World.Monsters[member] == game.Session.Room)) {
             Fight(TFoe.VeryEasyEnemy);
+            if (!WonFight) {
+                return;
+            }
+
             game.World.Monsters[member] = 0;
             game.Inventory.CassetteGain();
         }
         if (game.Matches($"{CmdZabij}{CmdLiroy}") && (game.World.Monsters[TMonster.Liroy] == game.Session.Room)) {
             Fight(TFoe.NotEasyEnemy);
-            if ((game.Session.Room != RoomDead) && (game.Player.Energy > 0) && !Fled) {
+            if (WonFight) {
                 Out.WriteLine(TxtStageFights_01);
                 game.Player.Money += 30;
                 game.Inventory.CassetteGain();
@@ -511,6 +525,10 @@ public class Combat : TCombat {
             Fight(TFoe.VeryEasyEnemy);
         }
 
+        if (!WonFight) {
+            return;
+        }
+
         game.World.Monsters[kill.target] = 0;
         if (!kill.extra) {
             return;
@@ -525,6 +543,10 @@ public class Combat : TCombat {
     public void KillSweeper() {
         if ((game.Verb == CmdZabij && game.Rest == CmdZamiatacz) && (game.World.Monsters[TMonster.Sweeper] == game.Session.Room)) {
             Fight(TFoe.VeryEasyEnemy);
+            if (!WonFight) {
+                return;
+            }
+
             game.World.Monsters[TMonster.Sweeper] = 0;
             Roll = game.Roll(100);
             if (Roll < 35) {
@@ -537,7 +559,7 @@ public class Combat : TCombat {
     public void KillSickMan() {
         if ((game.Verb == CmdZabij && game.Rest == CmdZebrak) && (game.World.Monsters[TMonster.SickMan] == game.Session.Room)) {
             Fight(TFoe.VeryEasyEnemy);
-            if (game.Player.Energy > 0) {
+            if (WonFight) {
                 Roll = game.Roll(10);
                 Out.WriteLine(TxtKillSickMan_01 + Roll + TxtShared_23);
                 game.Player.Money += Roll;
@@ -558,15 +580,17 @@ public class Combat : TCombat {
         }
 
         Fight(kill.foe);
-        if (EnemyEnergy < 1) {
-            game.World.Monsters[kill.monster] = 0;
-            if (kill.bonus == TConcertBonus.cbPipe) {
-                Roll = game.Roll(100);
-                if (Roll < 5) {
-                    Out.WriteLine(TxtShared_08 + TxtConcertFights_01);
-                    Out.WriteLine(TxtConcertFights_02);
-                    game.Inventory.AcquireItem(TBagItem.Pipe);
-                }
+        if (!WonFight) {
+            return;
+        }
+
+        game.World.Monsters[kill.monster] = 0;
+        if (kill.bonus == TConcertBonus.cbPipe) {
+            Roll = game.Roll(100);
+            if (Roll < 5) {
+                Out.WriteLine(TxtShared_08 + TxtConcertFights_01);
+                Out.WriteLine(TxtConcertFights_02);
+                game.Inventory.AcquireItem(TBagItem.Pipe);
             }
         }
         if (kill.bonus == TConcertBonus.cbSuit) {
@@ -610,28 +634,28 @@ public class Combat : TCombat {
     public TEnumList<TFoe, TFoeStats> Foes => _foes ??= new([
         new() { energyBase = 1, energyRand = 0, dexterityBase = 1, dexterityRand = 0,
             strengthBase = 2, strengthRand = 0, lootBase = 0, lootRand = 3,
-            heartChance = 0, requireEnergy = false, antDoughnut = true, },
+            heartChance = 0, antDoughnut = true, },
         new() { energyBase = 34, energyRand = 3, dexterityBase = 8, dexterityRand = 4,
             strengthBase = 10, strengthRand = 0, lootBase = 10, lootRand = 21,
-            heartChance = 5, requireEnergy = false, antDoughnut = false, },
+            heartChance = 5, antDoughnut = false, },
         new() { energyBase = 50, energyRand = 5, dexterityBase = 10, dexterityRand = 5,
             strengthBase = 13, strengthRand = 2, lootBase = 30, lootRand = 30,
-            heartChance = 7, requireEnergy = false, antDoughnut = false, },
+            heartChance = 7, antDoughnut = false, },
         new() { energyBase = 60, energyRand = 6, dexterityBase = 12, dexterityRand = 3,
             strengthBase = 15, strengthRand = 3, lootBase = 20, lootRand = 40,
-            heartChance = 7, requireEnergy = false, antDoughnut = false, },
+            heartChance = 7, antDoughnut = false, },
         new() { energyBase = 90, energyRand = 10, dexterityBase = 14, dexterityRand = 2,
             strengthBase = 17, strengthRand = 2, lootBase = 10, lootRand = 55,
-            heartChance = 4, requireEnergy = true, antDoughnut = false, },
+            heartChance = 4, antDoughnut = false, },
         new() { energyBase = 100, energyRand = 20, dexterityBase = 16, dexterityRand = 0,
             strengthBase = 18, strengthRand = 2, lootBase = 30, lootRand = 30,
-            heartChance = 4, requireEnergy = true, antDoughnut = false, },
+            heartChance = 4, antDoughnut = false, },
         new() { energyBase = 130, energyRand = 20, dexterityBase = 20, dexterityRand = 0,
             strengthBase = 19, strengthRand = 2, lootBase = 20, lootRand = 45,
-            heartChance = 4, requireEnergy = true, antDoughnut = false, },
+            heartChance = 4, antDoughnut = false, },
         new() { energyBase = 72, energyRand = 3, dexterityBase = 13, dexterityRand = 2,
             strengthBase = 16, strengthRand = 2, lootBase = 15, lootRand = 50,
-            heartChance = 5, requireEnergy = false, antDoughnut = false, },
+            heartChance = 5, antDoughnut = false, },
     ]);
     TEnumList<TFoe, TFoeStats>? _foes;
 

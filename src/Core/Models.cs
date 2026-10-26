@@ -178,7 +178,7 @@ public record TDodgeBound(int limit, int player, int enemy);
 public class TFoeStats {
     public int energyBase, energyRand, dexterityBase, dexterityRand;
     public int strengthBase, strengthRand, lootBase, lootRand, heartChance;
-    public bool requireEnergy, antDoughnut;
+    public bool antDoughnut;
 }
 
 public class TCageStats {
